@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "json-server --port 4000 db.json"
+    "build:db": "node merge-db.js",
+    "dev": "concurrently -n merge,server -c yellow,blue \"node merge-db.js --watch\" \"json-server --port 4000 db.json\""
   },
   "keywords": [],
   "author": "",
@@ -11,5 +12,8 @@
   "description": "",
   "dependencies": {
     "json-server": "^1.0.0-beta.15"
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.3"
   }
 }

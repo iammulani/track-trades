@@ -7,25 +7,33 @@ Everything runs on your machine; libraries are pulled from the internet at insta
 
 ```
 track-trades/
-├── backend/            # json-server — the database + REST API
-│   └── db.json         # the single source of truth (all data lives here)
-├── frontend/           # React UI (Vite + TypeScript)
+├── backend/
+│   ├── data/            # source of truth — one JSON file per resource
+│   │   └── trades.json  # -> becomes the "trades" endpoint
+│   ├── merge-db.js      # merges data/*.json into db.json (--watch re-merges on edit)
+│   └── db.json          # GENERATED — what json-server actually serves; gitignored
+├── frontend/            # React UI (Vite + TypeScript)
 │   └── src/
-│       ├── app/        # App shell: router + top-level composition
-│       ├── modules/    # feature modules (one folder per feature)
-│       └── shared/     # cross-cutting: api client, UI primitives, utils
-└── specs/              # feature specs — READ THESE before building a feature
+│       ├── app/         # App shell: router + top-level composition
+│       ├── modules/     # feature modules (one folder per feature)
+│       └── shared/      # cross-cutting: api client, UI primitives, utils
+└── specs/               # feature specs — READ THESE before building a feature
 ```
 
 ## Run
 
 ```bash
 npm run install:all   # install backend + frontend deps
-npm run dev           # runs json-server (:4000) and Vite (:5173) together
+npm run dev           # merges backend/data -> db.json (watching), runs json-server (:4000)
+                       # and Vite (:5173) together
 ```
 
 Frontend calls the API through the `/api` proxy (see `frontend/vite.config.ts`),
 which forwards to `http://localhost:4000` — no CORS setup needed.
+
+**Adding a resource:** drop a new file in `backend/data/` (e.g. `tags.json`, holding
+either an array or object) — `merge-db.js` picks it up automatically and it becomes
+`/tags` on next merge. Never hand-edit `backend/db.json`; it's regenerated and gitignored.
 
 ## Conventions (non-negotiable — keeps modules easy to edit)
 
@@ -48,6 +56,9 @@ which forwards to `http://localhost:4000` — no CORS setup needed.
 5. **Shared before bespoke.** Reusable UI (Card, Badge, StatTile) and formatting live
    in `src/shared/` and are imported by modules — never copy-pasted.
 6. **Import a module only through its `index.ts` barrel** from outside the module.
+7. **Domain-only modules skip the `Page.tsx`.** A module can exist purely as a shared
+   data layer for other feature modules (e.g. `modules/trades`) — no page, no route,
+   just `types/` + `api/` + `hooks/` + `utils/` behind its barrel.
 
 ## Spec-driven workflow
 
