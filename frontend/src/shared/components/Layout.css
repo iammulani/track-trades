@@ -1,0 +1,35 @@
+.layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.layout__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 32px;
+  border-bottom: 1px solid var(--border);
+}
+
+.layout__brand {
+  font-weight: 600;
+  font-size: 20px;
+  color: var(--text-h);
+  text-decoration: none;
+}
+
+.layout__nav a {
+  color: var(--text);
+  text-decoration: none;
+  margin-left: 24px;
+}
+
+.layout__nav a:hover {
+  color: var(--text-h);
+}
+
+.layout__main {
+  flex: 1;
+  padding: 32px;
+}

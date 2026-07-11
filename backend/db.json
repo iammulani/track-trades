@@ -1,0 +1,22 @@
+{
+  "trades": [
+    {
+      "id": 1,
+      "symbol": "AAPL",
+      "type": "buy",
+      "quantity": 10,
+      "price": 189.5,
+      "date": "2026-06-02",
+      "notes": "Initial position"
+    },
+    {
+      "id": 2,
+      "symbol": "AAPL",
+      "type": "sell",
+      "quantity": 4,
+      "price": 201.25,
+      "date": "2026-07-01",
+      "notes": "Partial profit booking"
+    }
+  ]
+}
