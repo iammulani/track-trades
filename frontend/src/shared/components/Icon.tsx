@@ -1,7 +1,18 @@
 /** Inline SVG icons — no external dependency, currentColor-driven. */
 
 export type IconName =
-  'dashboard' | 'log' | 'about' | 'target' | 'dollar' | 'layers' | 'trending' | 'clock' | 'logo'
+  | 'dashboard'
+  | 'log'
+  | 'about'
+  | 'target'
+  | 'dollar'
+  | 'layers'
+  | 'trending'
+  | 'clock'
+  | 'logo'
+  | 'eye'
+  | 'plus'
+  | 'x'
 
 const PATHS: Record<IconName, string> = {
   dashboard: 'M3 3h7v7H3zM14 3h7v4h-7zM14 10h7v11h-7zM3 13h7v8H3z',
@@ -15,6 +26,9 @@ const PATHS: Record<IconName, string> = {
   trending: 'M3 17l6-6 4 4 8-8M21 7v6M21 7h-6',
   clock: 'M12 3a9 9 0 100 18 9 9 0 000-18zm0 4v5l3 2',
   logo: 'M4 14l5-5 4 4 7-7M4 20h16',
+  eye: 'M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7zM12 15a3 3 0 100-6 3 3 0 000 6z',
+  plus: 'M12 5v14M5 12h14',
+  x: 'M18 6L6 18M6 6l12 12',
 }
 
 interface IconProps {

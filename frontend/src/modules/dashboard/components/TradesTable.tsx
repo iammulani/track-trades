@@ -1,4 +1,5 @@
 import { Card } from '../../../shared/components/Card'
+import { avatarColor } from '../../../shared/utils/avatarColor'
 import {
   formatDateTime,
   formatDuration,
@@ -19,14 +20,6 @@ function toneClass(value: number | null): string {
   if (value > 0) return 'num--good'
   if (value < 0) return 'num--critical'
   return ''
-}
-
-/** A stable per-symbol accent for the avatar chip. */
-const AVATAR_HUES = ['#4f46e5', '#12b76a', '#f79009', '#7a5af8', '#0ba5ec', '#f04438', '#ee46bc']
-function avatarColor(symbol: string): string {
-  let h = 0
-  for (let i = 0; i < symbol.length; i++) h = (h * 31 + symbol.charCodeAt(i)) % AVATAR_HUES.length
-  return AVATAR_HUES[h]
 }
 
 /** The detail table: one row per trade, newest first. */

@@ -1,0 +1,37 @@
+[
+  {
+    "id": "1",
+    "symbol": "SOFI",
+    "category": "active",
+    "watchedSince": "2026-07-10T09:15:00",
+    "notes": "Coiling right under resistance"
+  },
+  {
+    "id": "2",
+    "symbol": "SHOP",
+    "category": "active",
+    "watchedSince": "2026-07-09T14:00:00",
+    "notes": "Watching for a break of the range high"
+  },
+  {
+    "id": "3",
+    "symbol": "UBER",
+    "category": "daily",
+    "watchedSince": "2026-07-01T10:30:00",
+    "notes": "Checking daily for a pullback entry"
+  },
+  {
+    "id": "4",
+    "symbol": "ARM",
+    "category": "daily",
+    "watchedSince": "2026-06-20T11:00:00",
+    "notes": ""
+  },
+  {
+    "id": "5",
+    "symbol": "RIVN",
+    "category": "long-term",
+    "watchedSince": "2026-05-15T09:00:00",
+    "notes": "Basing for months, needs volume to confirm"
+  }
+]

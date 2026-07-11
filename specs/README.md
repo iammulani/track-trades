@@ -51,3 +51,4 @@ The files this feature owns under `modules/<feature>/`.
 | Trades domain | [trades.spec.md](trades.spec.md)       | `frontend/src/modules/trades`    |
 | Dashboard     | [dashboard.spec.md](dashboard.spec.md) | `frontend/src/modules/dashboard` |
 | Equity Curve  | [equity.spec.md](equity.spec.md)       | `frontend/src/modules/equity`    |
+| Watchlist     | [watchlist.spec.md](watchlist.spec.md) | `frontend/src/modules/watchlist` |

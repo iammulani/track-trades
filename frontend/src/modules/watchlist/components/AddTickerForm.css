@@ -1,0 +1,90 @@
+.add-ticker {
+  padding: 16px 20px;
+}
+
+.add-ticker__form {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.add-ticker__input {
+  width: 180px;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  color: var(--text-primary);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.add-ticker__input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 20%, transparent);
+}
+
+.add-ticker__categories {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  flex: 1;
+}
+
+.add-ticker__cat {
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.12s;
+}
+
+.add-ticker__cat:hover {
+  border-color: var(--text-muted);
+}
+
+.add-ticker__cat.is-active {
+  border-color: transparent;
+  color: #fff;
+  font-weight: 600;
+}
+
+.add-ticker__cat--amber.is-active {
+  background: var(--amber);
+}
+
+.add-ticker__cat--accent.is-active {
+  background: var(--accent);
+}
+
+.add-ticker__cat--violet.is-active {
+  background: var(--violet);
+}
+
+.add-ticker__submit {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 18px;
+  border-radius: var(--radius-sm);
+  border: none;
+  background: var(--grad-accent);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(79, 70, 229, 0.3);
+}
+
+.add-ticker__submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
+}

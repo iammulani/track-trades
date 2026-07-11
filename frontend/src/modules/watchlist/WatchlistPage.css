@@ -1,0 +1,27 @@
+.watchlist-page {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 1240px;
+  margin: 0 auto;
+}
+
+.watchlist-page__title {
+  font-size: 26px;
+  letter-spacing: -0.02em;
+}
+
+.watchlist-page__subtitle {
+  margin: 4px 0 0;
+  color: var(--text-muted);
+  font-size: 15px;
+}
+
+.watchlist-page__state {
+  color: var(--text-secondary);
+  padding: 8px 0;
+}
+
+.watchlist-page__state--error {
+  color: var(--critical-text);
+}
