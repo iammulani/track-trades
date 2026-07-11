@@ -4,6 +4,7 @@
   "main": "index.js",
   "scripts": {
     "build:db": "node merge-db.js",
+    "reset:db": "node merge-db.js --reset",
     "dev": "concurrently -n merge,server -c yellow,blue \"node merge-db.js --watch\" \"json-server --port 4000 db.json\""
   },
   "keywords": [],
@@ -14,6 +15,7 @@
     "json-server": "^1.0.0-beta.15"
   },
   "devDependencies": {
+    "chokidar": "^3.6.0",
     "concurrently": "^10.0.3"
   }
 }

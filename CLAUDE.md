@@ -10,8 +10,8 @@ track-trades/
 ├── backend/
 │   ├── data/            # source of truth — one JSON file per resource
 │   │   └── trades.json  # -> becomes the "trades" endpoint
-│   ├── merge-db.js      # merges data/*.json into db.json (--watch re-merges on edit)
-│   └── db.json          # GENERATED — what json-server actually serves; gitignored
+│   ├── merge-db.js      # keeps data/*.json <-> db.json in sync, both directions
+│   └── db.json          # what json-server actually serves; gitignored
 ├── frontend/            # React UI (Vite + TypeScript)
 │   └── src/
 │       ├── app/         # App shell: router + top-level composition
@@ -24,16 +24,26 @@ track-trades/
 
 ```bash
 npm run install:all   # install backend + frontend deps
-npm run dev           # merges backend/data -> db.json (watching), runs json-server (:4000)
-                       # and Vite (:5173) together
+npm run dev           # syncs backend/data <-> db.json (watching both), runs
+                       # json-server (:4000) and Vite (:5173) together
 ```
 
 Frontend calls the API through the `/api` proxy (see `frontend/vite.config.ts`),
 which forwards to `http://localhost:4000` — no CORS setup needed.
 
+**Anything added/edited/removed through the app — a trade, a watchlist item —
+gets written back to `backend/data/*.json` automatically** while `npm run dev`
+is running (json-server writes `db.json`; `merge-db.js` mirrors that back out
+to the per-resource file). **Commit `backend/data/*.json` whenever you want to
+save a snapshot of your data** — `db.json` itself is gitignored, so you never
+commit that file directly.
+
 **Adding a resource:** drop a new file in `backend/data/` (e.g. `tags.json`, holding
 either an array or object) — `merge-db.js` picks it up automatically and it becomes
-`/tags` on next merge. Never hand-edit `backend/db.json`; it's regenerated and gitignored.
+`/tags` on next sync. Never hand-edit `backend/db.json`; it's derived from `data/`
+and kept in sync automatically. To force a hard reset back to the committed
+`data/*.json` (discarding anything only reflected in a stale `db.json`), run
+`npm run reset:db --prefix backend`.
 
 ## Conventions (non-negotiable — keeps modules easy to edit)
 
