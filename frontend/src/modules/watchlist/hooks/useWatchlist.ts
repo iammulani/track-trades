@@ -1,6 +1,15 @@
 import { useCallback, useEffect, useState } from 'react'
-import { addWatchlistItem, fetchWatchlist, removeWatchlistItem } from '../api/watchlistApi'
-import type { NewWatchlistItem, WatchlistItemWithMetrics } from '../types/watchlistItem'
+import {
+  addWatchlistItem,
+  fetchWatchlist,
+  removeWatchlistItem,
+  updateWatchlistCategory,
+} from '../api/watchlistApi'
+import type {
+  NewWatchlistItem,
+  WatchCategory,
+  WatchlistItemWithMetrics,
+} from '../types/watchlistItem'
 import { sortByWatchedDesc, withWatchMetrics } from '../utils/watchlistMetrics'
 
 interface WatchlistState {
@@ -10,6 +19,7 @@ interface WatchlistState {
   adding: boolean
   addItem: (input: NewWatchlistItem) => Promise<void>
   removeItem: (id: string) => Promise<void>
+  updateCategory: (id: string, category: WatchCategory) => Promise<void>
 }
 
 /** Fetches the watchlist and derives "how long watched" for each item. */
@@ -19,8 +29,10 @@ export function useWatchlist(): WatchlistState {
   const [error, setError] = useState<string | null>(null)
   const [adding, setAdding] = useState(false)
 
-  const load = useCallback(() => {
-    setLoading(true)
+  /** silent = true skips the loading flag, so a refetch after add/remove/update
+   * doesn't flash the whole list away while it reloads. */
+  const load = useCallback((silent = false) => {
+    if (!silent) setLoading(true)
     return fetchWatchlist()
       .then((raw) => {
         setItems(sortByWatchedDesc(raw.map(withWatchMetrics)))
@@ -29,7 +41,9 @@ export function useWatchlist(): WatchlistState {
       .catch((err: unknown) => {
         setError(err instanceof Error ? err.message : 'Failed to load watchlist')
       })
-      .finally(() => setLoading(false))
+      .finally(() => {
+        if (!silent) setLoading(false)
+      })
   }, [])
 
   useEffect(() => {
@@ -41,7 +55,7 @@ export function useWatchlist(): WatchlistState {
       setAdding(true)
       try {
         await addWatchlistItem(input)
-        await load()
+        await load(true)
       } finally {
         setAdding(false)
       }
@@ -52,10 +66,18 @@ export function useWatchlist(): WatchlistState {
   const removeItem = useCallback(
     async (id: string) => {
       await removeWatchlistItem(id)
-      await load()
+      await load(true)
     },
     [load],
   )
 
-  return { items, loading, error, adding, addItem, removeItem }
+  const updateCategory = useCallback(
+    async (id: string, category: WatchCategory) => {
+      await updateWatchlistCategory(id, category)
+      await load(true)
+    },
+    [load],
+  )
+
+  return { items, loading, error, adding, addItem, removeItem, updateCategory }
 }

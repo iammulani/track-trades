@@ -3,8 +3,8 @@
 ## Purpose
 
 Track symbols the trader is keeping an eye on but hasn't traded yet — added by
-typing a ticker, tagged with _why_ it's being watched, and showing how long
-it's been on the list.
+typing a ticker, tagged with _why_ it's being watched, movable between reasons
+as the setup evolves, and showing how long it's been on the list.
 
 ## Data
 
@@ -36,9 +36,11 @@ Reached via the **Watchlist** sidebar item. Top to bottom:
 
 1. **Header** — title "Watchlist" + one-line subtitle.
 2. **Add form** (`AddTickerForm`) — a ticker text input (auto-uppercased) plus a
-   required category picker (segmented pill buttons, one of the three above,
-   defaults to "Watch Daily"), and an Add button. Submitting posts the item with
-   `watchedSince` set to _now_ and clears the input.
+   required category picker (segmented pill buttons, one of the three above),
+   and an Add button. The category picker **defaults to whatever filter tab is
+   currently active** (falls back to "Watch Daily" when the active tab is "All"),
+   so adding while filtered doesn't silently mismatch. Submitting posts the item
+   with `watchedSince` set to _now_ and clears the input.
 3. **Filter tabs** (`CategoryFilterTabs`) — `All` plus the three categories, each
    with a live count and a colour dot matching its category. The active filter
    is reflected in the URL as `?category=<value>` (or no param for "All"), so a
@@ -46,7 +48,9 @@ Reached via the **Watchlist** sidebar item. Top to bottom:
 4. **Table** (`WatchlistTable`) — one row per item (respecting the active
    filter), newest-watched first. Columns: `Stock` (avatar chip, reusing the
    shared per-symbol colour), `Watching for` (the humanised duration), `Since`
-   (datetime), `Reason` (`CategoryBadge`), `Notes`, and a remove (×) action.
+   (datetime), `Reason` (`CategorySelect` — an inline dropdown, not a static
+   badge: picking a different value **moves the item to that category**
+   immediately), `Notes`, and a remove (×) action.
 
 ## Behaviour
 
@@ -54,7 +58,18 @@ Reached via the **Watchlist** sidebar item. Top to bottom:
 - **Colour = category**, fixed mapping: `active` → amber, `daily` → accent
   (indigo), `long-term` → violet — always paired with the category label, never
   colour alone.
-- Removing an item calls `DELETE /watchlist/:id` and refetches.
+- **After adding, the view always resets to the "All" filter.** This is
+  deliberate: an item added while looking at, say, "Actively Watching" won't
+  appear there if its category differs, and without this reset the add would
+  look like it silently failed. Resetting to "All" guarantees the new item is
+  always visible right after submit.
+- **Moving categories** calls `PATCH /watchlist/:id` with the new `category`
+  and refetches.
+- **Removing requires confirmation** — clicking × opens a `ConfirmDialog`
+  (shared component) naming the symbol; only confirming calls
+  `DELETE /watchlist/:id`.
+- Refetches after add/remove/move are silent (no loading flash) — only the
+  first load shows the loading state.
 - **States:** loading → "Loading…"; error → message; empty list → prompt to add
   a ticker; empty _filtered_ result → "No symbols in this category yet."
 
@@ -66,16 +81,19 @@ frontend/src/modules/watchlist/
 ├── WatchlistPage.css
 ├── index.ts                    # exports WatchlistPage
 ├── types/watchlistItem.ts      # WatchlistItem, WatchCategory, derived types
-├── api/watchlistApi.ts         # fetchWatchlist, addWatchlistItem, removeWatchlistItem
-├── hooks/useWatchlist.ts       # fetch + derive + add/remove actions
+├── api/watchlistApi.ts         # fetchWatchlist, addWatchlistItem, removeWatchlistItem, updateWatchlistCategory
+├── hooks/useWatchlist.ts       # fetch + derive + add/remove/updateCategory actions (silent refetch)
 ├── utils/
 │   ├── categories.ts           # CATEGORIES (fixed order + tone), categoryMeta()
 │   └── watchlistMetrics.ts     # withWatchMetrics, formatWatchedLabel, sortByWatchedDesc
 └── components/
-    ├── AddTickerForm.tsx       # ticker input + category picker + submit
+    ├── AddTickerForm.tsx       # ticker input + category picker (follows active filter) + submit
     ├── CategoryFilterTabs.tsx  # All/Active/Daily/Long-term, with counts
-    ├── CategoryBadge.tsx       # category pill
-    └── WatchlistTable.tsx      # the detail table
+    ├── CategorySelect.tsx      # inline dropdown pill — reassigns an item's category
+    └── WatchlistTable.tsx      # the detail table; owns the remove-confirmation flow
+
+frontend/src/shared/components/
+└── ConfirmDialog.tsx           # generic confirm/cancel modal, reusable for other destructive actions
 ```
 
 Uses `shared/utils/avatarColor.ts` (also used by the dashboard's trades table)

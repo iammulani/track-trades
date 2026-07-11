@@ -4,6 +4,7 @@ import { AddTickerForm } from './components/AddTickerForm'
 import { CategoryFilterTabs, type CategoryFilter } from './components/CategoryFilterTabs'
 import { WatchlistTable } from './components/WatchlistTable'
 import { useWatchlist } from './hooks/useWatchlist'
+import type { NewWatchlistItem } from './types/watchlistItem'
 import { CATEGORIES } from './utils/categories'
 import './WatchlistPage.css'
 
@@ -11,7 +12,7 @@ const VALID_FILTERS: CategoryFilter[] = ['all', ...CATEGORIES.map((c) => c.value
 
 export function WatchlistPage() {
   const [searchParams, setSearchParams] = useSearchParams()
-  const { items, loading, error, adding, addItem, removeItem } = useWatchlist()
+  const { items, loading, error, adding, addItem, removeItem, updateCategory } = useWatchlist()
 
   const filterParam = searchParams.get('category')
   const filter: CategoryFilter = VALID_FILTERS.includes(filterParam as CategoryFilter)
@@ -42,6 +43,13 @@ export function WatchlistPage() {
     }
   }
 
+  // Always land back on "All" after adding — otherwise adding a symbol whose
+  // category doesn't match the current filter looks like nothing happened.
+  async function handleAdd(input: NewWatchlistItem) {
+    await addItem(input)
+    setSearchParams({})
+  }
+
   return (
     <section className="watchlist-page">
       <header className="watchlist-page__header">
@@ -51,7 +59,11 @@ export function WatchlistPage() {
         </p>
       </header>
 
-      <AddTickerForm adding={adding} onAdd={addItem} />
+      <AddTickerForm
+        adding={adding}
+        onAdd={handleAdd}
+        defaultCategory={filter === 'all' ? undefined : filter}
+      />
 
       {loading && <p className="watchlist-page__state">Loading watchlist…</p>}
 
@@ -72,7 +84,11 @@ export function WatchlistPage() {
           ) : filtered.length === 0 ? (
             <p className="watchlist-page__state">No symbols in this category yet.</p>
           ) : (
-            <WatchlistTable items={filtered} onRemove={removeItem} />
+            <WatchlistTable
+              items={filtered}
+              onRemove={removeItem}
+              onUpdateCategory={updateCategory}
+            />
           )}
         </>
       )}

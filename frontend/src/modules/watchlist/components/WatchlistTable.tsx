@@ -1,17 +1,22 @@
+import { useState } from 'react'
 import { Card } from '../../../shared/components/Card'
+import { ConfirmDialog } from '../../../shared/components/ConfirmDialog'
 import { Icon } from '../../../shared/components/Icon'
 import { avatarColor } from '../../../shared/utils/avatarColor'
 import { formatDateTime } from '../../../shared/utils/format'
-import type { WatchlistItemWithMetrics } from '../types/watchlistItem'
-import { CategoryBadge } from './CategoryBadge'
+import type { WatchCategory, WatchlistItemWithMetrics } from '../types/watchlistItem'
+import { CategorySelect } from './CategorySelect'
 import './WatchlistTable.css'
 
 interface WatchlistTableProps {
   items: WatchlistItemWithMetrics[]
   onRemove: (id: string) => void
+  onUpdateCategory: (id: string, category: WatchCategory) => void
 }
 
-export function WatchlistTable({ items, onRemove }: WatchlistTableProps) {
+export function WatchlistTable({ items, onRemove, onUpdateCategory }: WatchlistTableProps) {
+  const [pending, setPending] = useState<WatchlistItemWithMetrics | null>(null)
+
   return (
     <Card className="watch-table">
       <div className="watch-table__scroll">
@@ -44,14 +49,17 @@ export function WatchlistTable({ items, onRemove }: WatchlistTableProps) {
                 <td className="ta-left watch-table__duration">{item.watchedLabel}</td>
                 <td className="ta-left cell-time">{formatDateTime(item.watchedSince)}</td>
                 <td className="ta-left">
-                  <CategoryBadge category={item.category} />
+                  <CategorySelect
+                    value={item.category}
+                    onChange={(category) => onUpdateCategory(item.id, category)}
+                  />
                 </td>
                 <td className="ta-left watch-table__notes">{item.notes || '—'}</td>
                 <td className="ta-right">
                   <button
                     type="button"
                     className="watch-table__remove"
-                    onClick={() => onRemove(item.id)}
+                    onClick={() => setPending(item)}
                     aria-label={`Remove ${item.symbol} from watchlist`}
                     title="Remove"
                   >
@@ -63,6 +71,22 @@ export function WatchlistTable({ items, onRemove }: WatchlistTableProps) {
           </tbody>
         </table>
       </div>
+
+      <ConfirmDialog
+        open={pending !== null}
+        title="Remove from watchlist?"
+        message={
+          pending
+            ? `${pending.symbol} will be removed from your watchlist. This can't be undone.`
+            : ''
+        }
+        confirmLabel="Remove"
+        onCancel={() => setPending(null)}
+        onConfirm={() => {
+          if (pending) onRemove(pending.id)
+          setPending(null)
+        }}
+      />
     </Card>
   )
 }

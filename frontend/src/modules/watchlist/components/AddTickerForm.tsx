@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { FormEvent } from 'react'
 import { Card } from '../../../shared/components/Card'
 import { Icon } from '../../../shared/components/Icon'
@@ -9,12 +9,19 @@ import './AddTickerForm.css'
 interface AddTickerFormProps {
   adding: boolean
   onAdd: (input: NewWatchlistItem) => Promise<void>
+  /** Pre-selects the category matching the currently active filter tab, if any. */
+  defaultCategory?: WatchCategory
 }
 
 /** Add a symbol to the watchlist: ticker + why you're watching it. */
-export function AddTickerForm({ adding, onAdd }: AddTickerFormProps) {
+export function AddTickerForm({ adding, onAdd, defaultCategory }: AddTickerFormProps) {
   const [symbol, setSymbol] = useState('')
-  const [category, setCategory] = useState<WatchCategory>('daily')
+  const [category, setCategory] = useState<WatchCategory>(defaultCategory ?? 'daily')
+
+  // Follow the active filter tab, so adding while filtered defaults sensibly.
+  useEffect(() => {
+    setCategory(defaultCategory ?? 'daily')
+  }, [defaultCategory])
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
