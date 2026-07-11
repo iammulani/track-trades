@@ -1,5 +1,5 @@
 .equity {
-  padding: 22px 24px;
+  padding: 18px 22px;
 }
 
 .equity__head {
@@ -7,21 +7,21 @@
   align-items: flex-start;
   justify-content: space-between;
   gap: 16px;
-  margin-bottom: 8px;
+  margin-bottom: 4px;
 }
 
 .equity__title {
-  font-size: 16px;
+  font-size: 15px;
 }
 
 .equity__sub {
-  margin: 2px 0 0;
-  font-size: 13px;
+  margin: 1px 0 0;
+  font-size: 12px;
   color: var(--text-muted);
 }
 
 .equity__total {
-  font-size: 22px;
+  font-size: 19px;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
 }
