@@ -15,6 +15,8 @@ export type IconName =
   | 'x'
   | 'search'
   | 'alert'
+  | 'arrowUpRight'
+  | 'arrowDownRight'
 
 const PATHS: Record<IconName, string> = {
   dashboard: 'M3 3h7v7H3zM14 3h7v4h-7zM14 10h7v11h-7zM3 13h7v8H3z',
@@ -34,6 +36,8 @@ const PATHS: Record<IconName, string> = {
   search: 'M11 19a8 8 0 100-16 8 8 0 000 16zM21 21l-4.35-4.35',
   alert:
     'M12 9v4m0 4h.01M10.29 3.86l-8.18 14.18A2 2 0 004 21h16a2 2 0 001.89-2.96L13.71 3.86a2 2 0 00-3.42 0z',
+  arrowUpRight: 'M7 17L17 7M8 7h9v9',
+  arrowDownRight: 'M7 7L17 17M17 8v9h-9',
 }
 
 interface IconProps {
