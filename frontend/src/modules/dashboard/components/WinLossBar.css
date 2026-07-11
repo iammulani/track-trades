@@ -1,0 +1,53 @@
+.winloss {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.winloss__track {
+  display: flex;
+  gap: 2px; /* the 2px surface gap between touching marks */
+  height: 8px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: var(--surface-2);
+}
+
+.winloss__seg {
+  height: 100%;
+}
+
+.winloss__seg--win {
+  background: var(--good);
+}
+
+.winloss__seg--loss {
+  background: var(--critical);
+}
+
+.winloss__legend {
+  display: flex;
+  gap: 16px;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.winloss__key {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.winloss__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+}
+
+.winloss__dot--win {
+  background: var(--good);
+}
+
+.winloss__dot--loss {
+  background: var(--critical);
+}

@@ -1,0 +1,28 @@
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.dashboard__header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.dashboard__subtitle {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 15px;
+}
+
+.dashboard__state {
+  color: var(--text-secondary);
+  padding: 8px 0;
+}
+
+.dashboard__state--error {
+  color: var(--critical-text);
+}

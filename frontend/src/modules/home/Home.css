@@ -1,7 +1,24 @@
+.home {
+  max-width: 640px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
 .home h1 {
-  margin: 0 0 8px;
+  margin: 0;
 }
 
 .home p {
-  color: var(--text);
+  color: var(--text-secondary);
+}
+
+.home code {
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  font-size: 13px;
+  padding: 2px 6px;
+  border-radius: 6px;
+  background: var(--surface-2);
+  color: var(--text-primary);
 }

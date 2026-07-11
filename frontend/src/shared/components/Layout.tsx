@@ -9,7 +9,8 @@ export function Layout() {
           Track Trades
         </Link>
         <nav className="layout__nav">
-          <Link to="/">Home</Link>
+          <Link to="/">Dashboard</Link>
+          <Link to="/about">About</Link>
         </nav>
       </header>
       <main className="layout__main">
