@@ -1,16 +1,37 @@
 .home {
-  max-width: 640px;
+  max-width: 720px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
 }
 
-.home h1 {
+.home__title {
+  font-size: 26px;
+  letter-spacing: -0.02em;
+}
+
+.home__lead {
+  color: var(--text-secondary);
+  font-size: 16px;
+  margin: 0 0 8px;
+}
+
+.home__card {
+  padding: 24px 26px;
+}
+
+.home__card h3 {
+  font-size: 16px;
+  margin-bottom: 12px;
+}
+
+.home__list {
   margin: 0;
-}
-
-.home p {
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
   color: var(--text-secondary);
 }
 

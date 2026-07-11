@@ -42,19 +42,24 @@ time, how long they were in it, and the result). Everything is derived from
 
 ## UI
 
-Top to bottom:
+Modern SaaS layout: a fixed **sidebar** (brand + nav, from `shared/Layout`) beside a
+content area. Content, top to bottom:
 
 1. **Header** — title "Dashboard" + one-line subtitle.
-2. **Stats row** — KPI stat tiles (`StatsGrid` → `StatTile`):
-   - **Win rate** (the hero figure of the view) with a **win/loss proportion bar**
-     underneath (green = wins, red = losses; labelled, never colour alone).
+2. **Stats row** — KPI tiles (`StatsGrid` → `StatTile`), each with an icon chip:
+   - **Win rate** (the gradient **hero** card) with a **win/loss proportion bar**
+     underneath (labelled, never colour alone).
    - **Net P&L** (green if ≥ 0, red if < 0).
    - **Total trades** (with wins/losses breakdown as sub-text).
    - **Avg return %**.
    - **Avg hold time** (humanised duration).
-3. **Trades table** (`TradesTable`) — one row per trade, most recent first. Columns:
-   `Stock` · `Side` · `Qty` · `Entry` (price + time) · `Exit` (price + time) ·
-   `Hold` (duration) · `Return %` · `P&L` · `Result` (win/loss badge).
+3. **Equity curve** (`EquityCurve`) — one-series area + line of cumulative P&L across
+   closed trades over time. Hairline grid, ~10% area wash, hover crosshair + tooltip.
+   Shown only when there are ≥ 2 equity points.
+4. **Trades table** (`TradesTable`) — one row per trade, most recent first, in a card
+   with a per-symbol avatar chip. Columns: `Stock` · `Side` · `Qty` · `Entry`
+   (price + time) · `Exit` (price + time) · `Hold` (duration) · `Return %` · `P&L` ·
+   `Result` (win/loss badge).
 
 ## Behaviour
 
@@ -76,15 +81,20 @@ frontend/src/modules/dashboard/
 ├── types/trade.ts             # Trade, TradeSide, derived types, DashboardSummary
 ├── api/tradesApi.ts           # fetchTrades()
 ├── hooks/useDashboard.ts      # fetch + derive metrics + summary; {loading,error,…}
-├── utils/tradeMetrics.ts      # computeTradeMetrics, summarize
+├── utils/
+│   ├── tradeMetrics.ts        # computeTradeMetrics, summarize
+│   └── equitySeries.ts        # buildEquitySeries (cumulative P&L points)
 └── components/
-    ├── StatsGrid.tsx          # lays out the stat tiles
-    ├── StatTile.tsx           # one KPI tile (label · value · sub)
-    ├── WinLossBar.tsx         # win/loss proportion bar
+    ├── StatsGrid.tsx          # lays out the KPI tiles
+    ├── StatTile.tsx           # one KPI tile (icon chip · label · value · sub)
+    ├── WinLossBar.tsx         # win/loss proportion bar (has onHero variant)
+    ├── EquityCurve.tsx        # cumulative-P&L area/line chart with tooltip
     ├── TradesTable.tsx        # the detail table
     └── ResultBadge.tsx        # win/loss pill
 
 frontend/src/shared/
 ├── components/Card.tsx        # surface container used across modules
+├── components/Layout.tsx      # sidebar + content shell
+├── components/Icon.tsx        # inline SVG icon set
 └── utils/format.ts            # currency / percent / duration / datetime
 ```

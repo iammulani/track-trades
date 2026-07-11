@@ -21,10 +21,23 @@ function toneClass(value: number | null): string {
   return ''
 }
 
+/** A stable per-symbol accent for the avatar chip. */
+const AVATAR_HUES = ['#4f46e5', '#12b76a', '#f79009', '#7a5af8', '#0ba5ec', '#f04438', '#ee46bc']
+function avatarColor(symbol: string): string {
+  let h = 0
+  for (let i = 0; i < symbol.length; i++) h = (h * 31 + symbol.charCodeAt(i)) % AVATAR_HUES.length
+  return AVATAR_HUES[h]
+}
+
 /** The detail table: one row per trade, newest first. */
 export function TradesTable({ trades }: TradesTableProps) {
   return (
     <Card className="trades">
+      <div className="trades__head">
+        <h3 className="trades__title">Recent trades</h3>
+        <span className="trades__count">{trades.length} trades</span>
+      </div>
+
       <div className="trades__scroll">
         <table className="trades__table">
           <thead>
@@ -43,7 +56,18 @@ export function TradesTable({ trades }: TradesTableProps) {
           <tbody>
             {trades.map((t) => (
               <tr key={t.id}>
-                <td className="ta-left trades__symbol">{t.symbol}</td>
+                <td className="ta-left">
+                  <div className="trades__stock">
+                    <span
+                      className="trades__avatar"
+                      style={{ background: avatarColor(t.symbol) }}
+                      aria-hidden="true"
+                    >
+                      {t.symbol.slice(0, 2)}
+                    </span>
+                    <span className="trades__symbol">{t.symbol}</span>
+                  </div>
+                </td>
                 <td className="ta-left">
                   <span className={`side side--${t.side}`}>{t.side}</span>
                 </td>

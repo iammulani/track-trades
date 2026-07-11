@@ -1,16 +1,11 @@
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
   gap: 16px;
 }
 
-/* Let the hero (win rate) tile lead the row with a little more room. */
-.stats-grid > :first-child {
-  grid-column: span 1;
-}
-
-@media (min-width: 900px) {
+@media (min-width: 1024px) {
   .stats-grid {
-    grid-template-columns: 1.4fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr;
   }
 }

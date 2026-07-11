@@ -1,19 +1,48 @@
-import { Link, Outlet } from 'react-router-dom'
+import { NavLink, Outlet } from 'react-router-dom'
+import { Icon, type IconName } from './Icon'
 import './Layout.css'
+
+interface NavItem {
+  to: string
+  label: string
+  icon: IconName
+  end?: boolean
+}
+
+const NAV: NavItem[] = [
+  { to: '/', label: 'Dashboard', icon: 'dashboard', end: true },
+  { to: '/about', label: 'About', icon: 'about' },
+]
 
 export function Layout() {
   return (
-    <div className="layout">
-      <header className="layout__header">
-        <Link to="/" className="layout__brand">
-          Track Trades
-        </Link>
-        <nav className="layout__nav">
-          <Link to="/">Dashboard</Link>
-          <Link to="/about">About</Link>
+    <div className="shell">
+      <aside className="sidebar">
+        <div className="sidebar__brand">
+          <span className="sidebar__logo">
+            <Icon name="logo" size={18} />
+          </span>
+          <span className="sidebar__name">Track Trades</span>
+        </div>
+
+        <nav className="sidebar__nav">
+          {NAV.map((item) => (
+            <NavLink
+              key={item.to}
+              to={item.to}
+              end={item.end}
+              className={({ isActive }) => `sidebar__link${isActive ? ' is-active' : ''}`}
+            >
+              <Icon name={item.icon} size={18} />
+              <span>{item.label}</span>
+            </NavLink>
+          ))}
         </nav>
-      </header>
-      <main className="layout__main">
+
+        <div className="sidebar__footer">Local-first · your data stays on your machine</div>
+      </aside>
+
+      <main className="content">
         <Outlet />
       </main>
     </div>

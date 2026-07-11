@@ -2,20 +2,31 @@
   display: flex;
   flex-direction: column;
   gap: 24px;
-  max-width: 1200px;
+  max-width: 1240px;
   margin: 0 auto;
 }
 
 .dashboard__header {
   display: flex;
-  flex-direction: column;
-  gap: 4px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dashboard__title {
+  font-size: 26px;
+  letter-spacing: -0.02em;
 }
 
 .dashboard__subtitle {
-  margin: 0;
+  margin: 4px 0 0;
   color: var(--text-muted);
   font-size: 15px;
+}
+
+.dashboard__grid {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
 
 .dashboard__state {

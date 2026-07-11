@@ -1,5 +1,21 @@
 .trades {
-  padding: 4px;
+  padding: 4px 4px 8px;
+}
+
+.trades__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 20px 14px;
+}
+
+.trades__title {
+  font-size: 16px;
+}
+
+.trades__count {
+  font-size: 13px;
+  color: var(--text-muted);
 }
 
 .trades__scroll {
@@ -18,9 +34,19 @@
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  padding: 12px 16px;
-  border-bottom: 1px solid var(--border);
+  padding: 10px 16px;
+  background: var(--surface-2);
   white-space: nowrap;
+}
+
+.trades__table th:first-child {
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+.trades__table th:last-child {
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 
 .trades__table td {
@@ -33,6 +59,10 @@
 
 .trades__table tbody tr:last-child td {
   border-bottom: none;
+}
+
+.trades__table tbody tr {
+  transition: background 0.12s;
 }
 
 .trades__table tbody tr:hover td {
@@ -61,6 +91,24 @@
   font-weight: 600;
 }
 
+.trades__stock {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.trades__avatar {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
 .trades__symbol {
   font-weight: 600;
   color: var(--text-primary);
@@ -68,7 +116,7 @@
 
 .side {
   display: inline-flex;
-  padding: 1px 8px;
+  padding: 2px 10px;
   border-radius: 6px;
   font-size: 12px;
   font-weight: 600;
@@ -79,6 +127,12 @@
 
 .side--long {
   color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+}
+
+.side--short {
+  color: var(--amber);
+  background: color-mix(in srgb, var(--amber) 14%, transparent);
 }
 
 .cell-price {
