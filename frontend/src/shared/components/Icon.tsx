@@ -13,6 +13,8 @@ export type IconName =
   | 'eye'
   | 'plus'
   | 'x'
+  | 'search'
+  | 'alert'
 
 const PATHS: Record<IconName, string> = {
   dashboard: 'M3 3h7v7H3zM14 3h7v4h-7zM14 10h7v11h-7zM3 13h7v8H3z',
@@ -29,6 +31,9 @@ const PATHS: Record<IconName, string> = {
   eye: 'M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7zM12 15a3 3 0 100-6 3 3 0 000 6z',
   plus: 'M12 5v14M5 12h14',
   x: 'M18 6L6 18M6 6l12 12',
+  search: 'M11 19a8 8 0 100-16 8 8 0 000 16zM21 21l-4.35-4.35',
+  alert:
+    'M12 9v4m0 4h.01M10.29 3.86l-8.18 14.18A2 2 0 004 21h16a2 2 0 001.89-2.96L13.71 3.86a2 2 0 00-3.42 0z',
 }
 
 interface IconProps {

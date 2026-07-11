@@ -1,9 +1,11 @@
+import type { ReactNode } from 'react'
+import { Modal } from './Modal'
 import './ConfirmDialog.css'
 
 interface ConfirmDialogProps {
   open: boolean
   title: string
-  message: string
+  message: ReactNode
   confirmLabel?: string
   cancelLabel?: string
   onConfirm: () => void
@@ -20,30 +22,20 @@ export function ConfirmDialog({
   onConfirm,
   onCancel,
 }: ConfirmDialogProps) {
-  if (!open) return null
-
   return (
-    <div className="confirm-dialog__backdrop" onClick={onCancel}>
-      <div
-        className="confirm-dialog"
-        role="alertdialog"
-        aria-modal="true"
-        aria-labelledby="confirm-dialog-title"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <h3 id="confirm-dialog-title" className="confirm-dialog__title">
-          {title}
-        </h3>
-        <p className="confirm-dialog__message">{message}</p>
-        <div className="confirm-dialog__actions">
-          <button type="button" className="confirm-dialog__cancel" onClick={onCancel}>
-            {cancelLabel}
-          </button>
-          <button type="button" className="confirm-dialog__confirm" onClick={onConfirm}>
-            {confirmLabel}
-          </button>
-        </div>
+    <Modal open={open} onClose={onCancel} width={380} labelledBy="confirm-dialog-title">
+      <h3 id="confirm-dialog-title" className="confirm-dialog__title">
+        {title}
+      </h3>
+      <div className="confirm-dialog__message">{message}</div>
+      <div className="confirm-dialog__actions">
+        <button type="button" className="confirm-dialog__cancel" onClick={onCancel}>
+          {cancelLabel}
+        </button>
+        <button type="button" className="confirm-dialog__confirm" onClick={onConfirm}>
+          {confirmLabel}
+        </button>
       </div>
-    </div>
+    </Modal>
   )
 }

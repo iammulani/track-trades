@@ -113,3 +113,34 @@
   background: color-mix(in srgb, var(--critical) 12%, transparent);
   color: var(--critical);
 }
+
+.remove-confirm {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.remove-confirm__avatar {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  flex-shrink: 0;
+}
+
+.remove-confirm__symbol {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.remove-confirm__note {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}

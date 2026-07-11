@@ -76,9 +76,23 @@ export function WatchlistTable({ items, onRemove, onUpdateCategory }: WatchlistT
         open={pending !== null}
         title="Remove from watchlist?"
         message={
-          pending
-            ? `${pending.symbol} will be removed from your watchlist. This can't be undone.`
-            : ''
+          pending && (
+            <div className="remove-confirm">
+              <span
+                className="remove-confirm__avatar"
+                style={{ background: avatarColor(pending.symbol) }}
+                aria-hidden="true"
+              >
+                {pending.symbol.slice(0, 2)}
+              </span>
+              <div>
+                <div className="remove-confirm__symbol">{pending.symbol}</div>
+                <div className="remove-confirm__note">
+                  Will be removed from your watchlist. This can't be undone.
+                </div>
+              </div>
+            </div>
+          )
         }
         confirmLabel="Remove"
         onCancel={() => setPending(null)}

@@ -4,7 +4,7 @@
 
 Track symbols the trader is keeping an eye on but hasn't traded yet — added by
 typing a ticker, tagged with _why_ it's being watched, movable between reasons
-as the setup evolves, and showing how long it's been on the list.
+as the setup evolves, searchable, and showing how long it's been on the list.
 
 ## Data
 
@@ -34,23 +34,29 @@ as the setup evolves, and showing how long it's been on the list.
 
 Reached via the **Watchlist** sidebar item. Top to bottom:
 
-1. **Header** — title "Watchlist" + one-line subtitle.
-2. **Add form** (`AddTickerForm`) — a ticker text input (auto-uppercased) plus a
-   required category picker (segmented pill buttons, one of the three above),
-   and an Add button. The category picker **defaults to whatever filter tab is
-   currently active** (falls back to "Watch Daily" when the active tab is "All"),
-   so adding while filtered doesn't silently mismatch. Submitting posts the item
-   with `watchedSince` set to _now_ and clears the input.
-3. **Filter tabs** (`CategoryFilterTabs`) — `All` plus the three categories, each
-   with a live count and a colour dot matching its category. The active filter
-   is reflected in the URL as `?category=<value>` (or no param for "All"), so a
-   filtered view is a shareable/bookmarkable link.
-4. **Table** (`WatchlistTable`) — one row per item (respecting the active
-   filter), newest-watched first. Columns: `Stock` (avatar chip, reusing the
-   shared per-symbol colour), `Watching for` (the humanised duration), `Since`
+1. **Header** — title "Watchlist" + one-line subtitle, with an **Add** button
+   (top-right) that opens the add popup. There is no inline add form on the page.
+2. **Toolbar** — a ticker **search box** (`TickerSearch`, left) plus the
+   **filter tabs** (`CategoryFilterTabs`, right): `All` plus the three
+   categories, each with a live count and a colour dot. The active filter is
+   reflected in the URL as `?category=<value>` (or no param for "All"), so a
+   filtered view is a shareable/bookmarkable link. Search is client-side only
+   (not in the URL) and applies **within** the active category filter.
+3. **Table** (`WatchlistTable`) — one row per item (respecting filter + search),
+   newest-watched first. Columns: `Stock` (avatar chip, reusing the shared
+   per-symbol colour), `Watching for` (the humanised duration), `Since`
    (datetime), `Reason` (`CategorySelect` — an inline dropdown, not a static
    badge: picking a different value **moves the item to that category**
    immediately), `Notes`, and a remove (×) action.
+4. **Add popup** (`AddTickerModal`, shared `Modal`) — ticker input (autofocused,
+   auto-uppercased) + required category picker (segmented pills, defaults to
+   whatever filter tab was active when opened, else "Watch Daily"). If the
+   typed ticker already exists on the list, an inline warning names its current
+   category and **the Add button is disabled** — there's no reason to duplicate
+   a row; the user should move the existing one via `CategorySelect` instead.
+5. **Remove confirmation** (`ConfirmDialog`, shared `Modal`) — shows the
+   symbol prominently (avatar chip + bold ticker, not buried in a sentence) so
+   it's unambiguous which stock is about to be removed.
 
 ## Behaviour
 
@@ -58,26 +64,27 @@ Reached via the **Watchlist** sidebar item. Top to bottom:
 - **Colour = category**, fixed mapping: `active` → amber, `daily` → accent
   (indigo), `long-term` → violet — always paired with the category label, never
   colour alone.
-- **After adding, the view always resets to the "All" filter.** This is
-  deliberate: an item added while looking at, say, "Actively Watching" won't
-  appear there if its category differs, and without this reset the add would
-  look like it silently failed. Resetting to "All" guarantees the new item is
-  always visible right after submit.
+- **After adding, the view always resets to the "All" filter** and the popup
+  closes. This is deliberate: an item added while looking at, say, "Actively
+  Watching" won't appear there if its category differs, and without this reset
+  the add would look like it silently failed.
+- **Duplicate tickers are blocked at add time**, not just warned after the
+  fact — case-insensitive match against existing symbols.
 - **Moving categories** calls `PATCH /watchlist/:id` with the new `category`
   and refetches.
-- **Removing requires confirmation** — clicking × opens a `ConfirmDialog`
-  (shared component) naming the symbol; only confirming calls
-  `DELETE /watchlist/:id`.
+- **Removing requires confirmation** — clicking × opens `ConfirmDialog`; only
+  confirming calls `DELETE /watchlist/:id`.
 - Refetches after add/remove/move are silent (no loading flash) — only the
   first load shows the loading state.
 - **States:** loading → "Loading…"; error → message; empty list → prompt to add
-  a ticker; empty _filtered_ result → "No symbols in this category yet."
+  a ticker; empty filtered/search result → distinct messages ("No symbols in
+  this category yet." vs `No tickers match "<query>".`).
 
 ## Module map
 
 ```
 frontend/src/modules/watchlist/
-├── WatchlistPage.tsx           # composes form + filters + table; owns URL filter state
+├── WatchlistPage.tsx           # composes header/toolbar/table; owns URL filter + search + modal-open state
 ├── WatchlistPage.css
 ├── index.ts                    # exports WatchlistPage
 ├── types/watchlistItem.ts      # WatchlistItem, WatchCategory, derived types
@@ -87,13 +94,15 @@ frontend/src/modules/watchlist/
 │   ├── categories.ts           # CATEGORIES (fixed order + tone), categoryMeta()
 │   └── watchlistMetrics.ts     # withWatchMetrics, formatWatchedLabel, sortByWatchedDesc
 └── components/
-    ├── AddTickerForm.tsx       # ticker input + category picker (follows active filter) + submit
+    ├── AddTickerModal.tsx      # popup: ticker + category picker, duplicate-ticker warning/block
+    ├── TickerSearch.tsx        # client-side ticker search box
     ├── CategoryFilterTabs.tsx  # All/Active/Daily/Long-term, with counts
     ├── CategorySelect.tsx      # inline dropdown pill — reassigns an item's category
     └── WatchlistTable.tsx      # the detail table; owns the remove-confirmation flow
 
 frontend/src/shared/components/
-└── ConfirmDialog.tsx           # generic confirm/cancel modal, reusable for other destructive actions
+├── Modal.tsx                   # backdrop + card shell (Escape/backdrop-click to close)
+└── ConfirmDialog.tsx           # confirm/cancel modal built on Modal; message accepts rich content
 ```
 
 Uses `shared/utils/avatarColor.ts` (also used by the dashboard's trades table)
