@@ -13,13 +13,13 @@ setup evolves, searchable, and showing how long it's been on the list.
   `backend/data/watchlist.json`.
 - **Raw shape** (`types/watchlistItem.ts`):
 
-  | field          | type                                 | meaning                             |
-  | -------------- | ------------------------------------ | ------------------------------------ |
-  | `id`           | string                               | unique id                            |
-  | `symbol`       | string                               | ticker, stored upper-case            |
-  | `category`     | `"active" \| "daily" \| "long-term"` | why it's being watched               |
-  | `side`         | `"long" \| "short"`                  | the bias being watched for           |
-  | `watchedSince` | string (ISO)                         | when it was added to the list        |
+  | field          | type                                 | meaning                                 |
+  | -------------- | ------------------------------------ | --------------------------------------- |
+  | `id`           | string                               | unique id                               |
+  | `symbol`       | string                               | ticker, stored upper-case               |
+  | `category`     | `"active" \| "daily" \| "long-term"` | why it's being watched                  |
+  | `side`         | `"long" \| "short"`                  | the bias being watched for              |
+  | `watchedSince` | string (ISO)                         | when it was added to the list           |
   | `notes`        | string?                              | free text — the setup, what to wait for |
 
 - **Categories** (`utils/categories.ts` — fixed order, never reordered by data):
@@ -54,7 +54,9 @@ Reached via the **Watchlist** sidebar item. Top to bottom:
    one the dashboard's trades table uses), `Watching for` (the humanised
    duration), `Since` (datetime), `Reason` (`CategorySelect` — an inline
    dropdown, not a static badge: picking a different value **moves the item
-   to that category** immediately), `Notes`, and a remove (×) action.
+   to that category** immediately), `Notes`, a **Place Trade** action (pill
+   button, links to `/watchlist/:id/place-trade` — see
+   [place-trade.spec.md](place-trade.spec.md)), and a remove (×) action.
 4. **Add popup** (`AddTickerModal`, shared `Modal`) — ticker input (autofocused,
    auto-uppercased), a required **long/short toggle** (defaults to "Long"),
    a required category picker (segmented pills, defaults to whatever filter
@@ -118,3 +120,7 @@ frontend/src/shared/components/
 
 Uses `shared/utils/avatarColor.ts` (also used by the dashboard's trades table)
 for the per-symbol avatar chip — the one place that mapping lives.
+
+The barrel (`index.ts`) also exports `useWatchlist` and the item types —
+`modules/place-trade` consumes both to load the item being traded and remove
+it once the trade is placed.

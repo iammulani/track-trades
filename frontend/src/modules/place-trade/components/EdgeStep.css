@@ -1,0 +1,70 @@
+.edge-step {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.edge-step__field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.edge-step__label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.edge-step__textarea {
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-strong);
+  background: var(--page);
+  color: var(--text-primary);
+  font-size: 14px;
+  font-family: inherit;
+  resize: vertical;
+}
+
+.edge-step__textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 20%, transparent);
+}
+
+.edge-step__toggle {
+  display: flex;
+  gap: 8px;
+}
+
+.edge-step__toggle-btn {
+  flex: 1;
+  max-width: 140px;
+  padding: 10px 16px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-strong);
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.12s;
+}
+
+.edge-step__toggle-btn:hover {
+  border-color: var(--text-muted);
+}
+
+.edge-step__toggle-btn.is-active {
+  border-color: transparent;
+  color: #fff;
+}
+
+.edge-step__toggle-btn.is-yes {
+  background: var(--good);
+}
+
+.edge-step__toggle-btn.is-no {
+  background: var(--critical);
+}

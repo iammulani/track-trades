@@ -1,0 +1,130 @@
+import { Link, useParams } from 'react-router-dom'
+import { Icon } from '../../shared/components/Icon'
+import { PageHeader } from '../../shared/components/PageHeader'
+import { ChecklistStep } from './components/ChecklistStep'
+import { EdgeStep } from './components/EdgeStep'
+import { ReviewStep } from './components/ReviewStep'
+import { StepIndicator } from './components/StepIndicator'
+import { TradeParamsStep } from './components/TradeParamsStep'
+import { usePlaceTrade } from './hooks/usePlaceTrade'
+import './PlaceTradePage.css'
+
+export function PlaceTradePage() {
+  const { id } = useParams<{ id: string }>()
+  const {
+    item,
+    loading,
+    error,
+    steps,
+    stepIndex,
+    goNext,
+    goBack,
+    canProceed,
+    tradeParams,
+    setTradeParams,
+    edgeAnswers,
+    setEdgeAnswers,
+    checklistChecked,
+    toggleChecklistItem,
+    placing,
+    placeTrade,
+  } = usePlaceTrade(id ?? '')
+
+  const isFirstStep = stepIndex === 0
+  const isLastStep = stepIndex === steps.length - 1
+
+  return (
+    <section className="place-trade-page">
+      <PageHeader
+        icon="send"
+        title="Place Trade"
+        subtitle="Walk through your checklist before you pull the trigger."
+      />
+
+      {loading && <p className="place-trade-page__state">Loading…</p>}
+
+      {error && (
+        <p className="place-trade-page__state place-trade-page__state--error">
+          Couldn’t load the watchlist: {error}.
+        </p>
+      )}
+
+      {!loading && !error && !item && (
+        <div className="place-trade-page__state">
+          <p>That watchlist item doesn't exist (maybe it was already placed or removed).</p>
+          <Link to="/watchlist" className="place-trade-page__back-link">
+            ← Back to Watchlist
+          </Link>
+        </div>
+      )}
+
+      {!loading && !error && item && (
+        <div className="place-trade-page__card">
+          <StepIndicator steps={steps} currentIndex={stepIndex} />
+
+          <div className="place-trade-page__step-title">
+            <h2>{steps[stepIndex].title}</h2>
+            <span className="place-trade-page__step-symbol">{item.symbol}</span>
+          </div>
+
+          <div className="place-trade-page__step-body">
+            {steps[stepIndex].id === 'setup' && (
+              <TradeParamsStep side={item.side} params={tradeParams} onChange={setTradeParams} />
+            )}
+            {steps[stepIndex].id === 'edge' && (
+              <EdgeStep answers={edgeAnswers} onChange={setEdgeAnswers} />
+            )}
+            {steps[stepIndex].id === 'checklist' && (
+              <ChecklistStep checked={checklistChecked} onToggle={toggleChecklistItem} />
+            )}
+            {steps[stepIndex].id === 'review' && (
+              <ReviewStep
+                item={item}
+                tradeParams={tradeParams}
+                edgeAnswers={edgeAnswers}
+                checklistChecked={checklistChecked}
+              />
+            )}
+          </div>
+
+          <div className="place-trade-page__footer">
+            <Link to="/watchlist" className="place-trade-page__cancel">
+              Cancel
+            </Link>
+
+            <div className="place-trade-page__nav">
+              {!isFirstStep && (
+                <button type="button" className="place-trade-page__back" onClick={goBack}>
+                  <Icon name="chevronLeft" size={16} />
+                  Back
+                </button>
+              )}
+
+              {!isLastStep ? (
+                <button
+                  type="button"
+                  className="place-trade-page__next"
+                  onClick={goNext}
+                  disabled={!canProceed}
+                >
+                  Next
+                  <Icon name="chevronRight" size={16} />
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  className="place-trade-page__submit"
+                  onClick={placeTrade}
+                  disabled={placing}
+                >
+                  <Icon name="send" size={15} />
+                  {placing ? 'Placing…' : 'Place Trade'}
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+    </section>
+  )
+}

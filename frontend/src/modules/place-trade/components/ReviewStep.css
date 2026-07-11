@@ -1,0 +1,103 @@
+.review-step {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.review-step__header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.review-step__avatar {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.review-step__symbol {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+
+.review-step__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.review-step__stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+}
+
+.review-step__stat-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.review-step__stat-value {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.review-step__section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.review-step__section-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.review-step__thesis {
+  margin: 0;
+  font-size: 14px;
+  color: var(--text-primary);
+  line-height: 1.5;
+}
+
+.review-step__aligned {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.review-step__checklist {
+  margin: 0;
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 13px;
+}
+
+.review-step__checklist .is-checked {
+  color: var(--text-primary);
+}
+
+.review-step__checklist .is-unchecked {
+  color: var(--text-muted);
+  text-decoration: line-through;
+}

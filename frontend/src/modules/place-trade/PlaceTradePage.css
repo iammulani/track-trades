@@ -1,0 +1,125 @@
+.place-trade-page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.place-trade-page__state {
+  color: var(--text-secondary);
+  padding: 8px 0;
+}
+
+.place-trade-page__state--error {
+  color: var(--critical-text);
+}
+
+.place-trade-page__back-link {
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.place-trade-page__card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.place-trade-page__step-title {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.place-trade-page__step-title h2 {
+  font-size: 19px;
+}
+
+.place-trade-page__step-symbol {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+}
+
+.place-trade-page__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.place-trade-page__cancel {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.place-trade-page__cancel:hover {
+  color: var(--text-secondary);
+}
+
+.place-trade-page__nav {
+  display: flex;
+  gap: 10px;
+  margin-left: auto;
+}
+
+.place-trade-page__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 18px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-strong);
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.place-trade-page__back:hover {
+  color: var(--text-primary);
+  border-color: var(--text-muted);
+}
+
+.place-trade-page__next,
+.place-trade-page__submit {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 20px;
+  border-radius: var(--radius-sm);
+  border: none;
+  background: var(--grad-accent);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(79, 70, 229, 0.3);
+}
+
+.place-trade-page__next:disabled,
+.place-trade-page__submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.place-trade-page__submit {
+  background: var(--grad-good, var(--good));
+  box-shadow: 0 4px 14px rgba(18, 183, 106, 0.3);
+}

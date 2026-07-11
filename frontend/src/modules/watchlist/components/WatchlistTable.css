@@ -114,6 +114,31 @@
   color: var(--critical);
 }
 
+.watch-table__actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.watch-table__place-trade {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--grad-accent);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(79, 70, 229, 0.3);
+}
+
+.watch-table__place-trade:hover {
+  filter: brightness(1.05);
+}
+
 .remove-confirm {
   display: flex;
   align-items: center;

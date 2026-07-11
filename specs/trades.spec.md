@@ -49,9 +49,12 @@ persisted beyond the raw fields; everything else is computed on read.
 - `useTrades()` — fetches trades, derives per-trade metrics + summary. Returns
   `{ trades, summary, loading, error }`. This is the one hook feature pages use;
   they never call `fetchTrades` or the metrics utils directly.
+- `addTrade(input: NewTrade)` — `POST /trades`, always opens with `exitPrice`/
+  `exitTime: null`. Used by `modules/place-trade` to convert a watched symbol
+  into a live trade.
 - `buildEquitySeries(trades)` + `EquityPoint` type.
 - Types: `Trade`, `TradeSide`, `TradeStatus`, `TradeOutcome`, `TradeMetrics`,
-  `TradeWithMetrics`, `DashboardSummary`.
+  `TradeWithMetrics`, `DashboardSummary`, `NewTrade`.
 
 ## Module map
 

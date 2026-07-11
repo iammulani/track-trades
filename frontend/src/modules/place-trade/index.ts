@@ -1,0 +1,1 @@
+export { PlaceTradePage } from './PlaceTradePage'

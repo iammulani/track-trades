@@ -43,3 +43,13 @@ export interface DashboardSummary {
   bestTrade: TradeWithMetrics | null
   worstTrade: TradeWithMetrics | null
 }
+
+/** A newly-placed trade — always opens with no exit yet. */
+export interface NewTrade {
+  symbol: string
+  side: TradeSide
+  quantity: number
+  entryPrice: number
+  entryTime: string
+  notes?: string
+}

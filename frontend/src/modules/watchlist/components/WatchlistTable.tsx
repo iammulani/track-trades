@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { Card } from '../../../shared/components/Card'
 import { ConfirmDialog } from '../../../shared/components/ConfirmDialog'
 import { Icon } from '../../../shared/components/Icon'
@@ -61,15 +62,26 @@ export function WatchlistTable({ items, onRemove, onUpdateCategory }: WatchlistT
                 </td>
                 <td className="ta-left watch-table__notes">{item.notes || '—'}</td>
                 <td className="ta-right">
-                  <button
-                    type="button"
-                    className="watch-table__remove"
-                    onClick={() => setPending(item)}
-                    aria-label={`Remove ${item.symbol} from watchlist`}
-                    title="Remove"
-                  >
-                    <Icon name="x" size={14} />
-                  </button>
+                  <div className="watch-table__actions">
+                    <Link
+                      to={`/watchlist/${item.id}/place-trade`}
+                      className="watch-table__place-trade"
+                      aria-label={`Place trade for ${item.symbol}`}
+                      title="Place trade"
+                    >
+                      <Icon name="send" size={13} />
+                      Place Trade
+                    </Link>
+                    <button
+                      type="button"
+                      className="watch-table__remove"
+                      onClick={() => setPending(item)}
+                      aria-label={`Remove ${item.symbol} from watchlist`}
+                      title="Remove"
+                    >
+                      <Icon name="x" size={14} />
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}

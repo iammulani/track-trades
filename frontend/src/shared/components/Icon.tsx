@@ -17,6 +17,10 @@ export type IconName =
   | 'alert'
   | 'arrowUpRight'
   | 'arrowDownRight'
+  | 'send'
+  | 'check'
+  | 'chevronLeft'
+  | 'chevronRight'
 
 const PATHS: Record<IconName, string> = {
   dashboard: 'M3 3h7v7H3zM14 3h7v4h-7zM14 10h7v11h-7zM3 13h7v8H3z',
@@ -38,6 +42,10 @@ const PATHS: Record<IconName, string> = {
     'M12 9v4m0 4h.01M10.29 3.86l-8.18 14.18A2 2 0 004 21h16a2 2 0 001.89-2.96L13.71 3.86a2 2 0 00-3.42 0z',
   arrowUpRight: 'M7 17L17 7M8 7h9v9',
   arrowDownRight: 'M7 7L17 17M17 8v9h-9',
+  send: 'M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z',
+  check: 'M5 13l4 4L19 7',
+  chevronLeft: 'M15 18l-6-6 6-6',
+  chevronRight: 'M9 18l6-6-6-6',
 }
 
 interface IconProps {
