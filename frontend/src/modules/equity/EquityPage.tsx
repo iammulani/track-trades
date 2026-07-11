@@ -1,4 +1,5 @@
 import { useMemo } from 'react'
+import { PageHeader } from '../../shared/components/PageHeader'
 import { buildEquitySeries, useTrades } from '../trades'
 import { EquityCurve } from './components/EquityCurve'
 import './EquityPage.css'
@@ -9,12 +10,11 @@ export function EquityPage() {
 
   return (
     <section className="equity-page">
-      <header className="equity-page__header">
-        <h1 className="equity-page__title">Equity Curve</h1>
-        <p className="equity-page__subtitle">
-          Cumulative profit and loss across all closed trades.
-        </p>
-      </header>
+      <PageHeader
+        icon="trending"
+        title="Equity Curve"
+        subtitle="Cumulative profit and loss across all closed trades."
+      />
 
       {loading && <p className="equity-page__state">Loading trades…</p>}
 

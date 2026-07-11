@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { Icon } from '../../shared/components/Icon'
+import { PageHeader } from '../../shared/components/PageHeader'
 import { AddTickerModal } from './components/AddTickerModal'
 import { CategoryFilterTabs, type CategoryFilter } from './components/CategoryFilterTabs'
 import { TickerSearch } from './components/TickerSearch'
@@ -62,22 +63,11 @@ export function WatchlistPage() {
 
   return (
     <section className="watchlist-page">
-      <header className="watchlist-page__header">
-        <div>
-          <h1 className="watchlist-page__title">Watchlist</h1>
-          <p className="watchlist-page__subtitle">
-            Track symbols you're keeping an eye on, and how long you've been watching them.
-          </p>
-        </div>
-        <button
-          type="button"
-          className="watchlist-page__add-trigger"
-          onClick={() => setModalOpen(true)}
-        >
-          <Icon name="plus" size={16} />
-          Add
-        </button>
-      </header>
+      <PageHeader
+        icon="eye"
+        title="Watchlist"
+        subtitle="Track symbols you're keeping an eye on, and how long you've been watching them."
+      />
 
       {loading && <p className="watchlist-page__state">Loading watchlist…</p>}
 
@@ -92,6 +82,14 @@ export function WatchlistPage() {
           <div className="watchlist-page__toolbar">
             <TickerSearch value={search} onChange={setSearch} />
             <CategoryFilterTabs active={filter} counts={counts} onChange={handleFilterChange} />
+            <button
+              type="button"
+              className="watchlist-page__add-trigger"
+              onClick={() => setModalOpen(true)}
+            >
+              <Icon name="plus" size={16} />
+              Add
+            </button>
           </div>
 
           {items.length === 0 ? (

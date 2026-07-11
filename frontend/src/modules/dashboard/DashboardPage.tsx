@@ -1,3 +1,4 @@
+import { PageHeader } from '../../shared/components/PageHeader'
 import { useTrades } from '../trades'
 import { StatsGrid } from './components/StatsGrid'
 import { TradesTable } from './components/TradesTable'
@@ -8,12 +9,11 @@ export function DashboardPage() {
 
   return (
     <section className="dashboard">
-      <header className="dashboard__header">
-        <div>
-          <h1 className="dashboard__title">Dashboard</h1>
-          <p className="dashboard__subtitle">Your trades, win rate, and performance at a glance.</p>
-        </div>
-      </header>
+      <PageHeader
+        icon="dashboard"
+        title="Dashboard"
+        subtitle="Your trades, win rate, and performance at a glance."
+      />
 
       {loading && <p className="dashboard__state">Loading trades…</p>}
 

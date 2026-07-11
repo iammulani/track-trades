@@ -34,14 +34,18 @@ as the setup evolves, searchable, and showing how long it's been on the list.
 
 Reached via the **Watchlist** sidebar item. Top to bottom:
 
-1. **Header** — title "Watchlist" + one-line subtitle, with an **Add** button
-   (top-right) that opens the add popup. There is no inline add form on the page.
-2. **Toolbar** — a ticker **search box** (`TickerSearch`, left) plus the
-   **filter tabs** (`CategoryFilterTabs`, right): `All` plus the three
-   categories, each with a live count and a colour dot. The active filter is
-   reflected in the URL as `?category=<value>` (or no param for "All"), so a
-   filtered view is a shareable/bookmarkable link. Search is client-side only
-   (not in the URL) and applies **within** the active category filter.
+1. **Header** (`shared/PageHeader`) — icon chip + title "Watchlist" + one-line
+   subtitle. No actions here — the Add button lives in the toolbar, not the header.
+2. **Toolbar** — one row: a ticker **search box** (`TickerSearch`, left), the
+   **filter tabs** (`CategoryFilterTabs`, middle) — `All` plus the three
+   categories, each with a live count and a colour dot — and the **Add**
+   button (`margin-left: auto`, so it's right-aligned to the table's right
+   edge, on the same line as the filters rather than up in the header). The
+   active category filter is reflected in the URL as `?category=<value>` (or
+   no param for "All"), so a filtered view is a shareable/bookmarkable link.
+   Search is client-side only (not in the URL) and applies **within** the
+   active category filter. There is no inline add form on the page — Add
+   only opens the popup.
 3. **Table** (`WatchlistTable`) — one row per item (respecting filter + search),
    newest-watched first. Columns: `Stock` (avatar chip, reusing the shared
    per-symbol colour), `Watching for` (the humanised duration), `Since`
@@ -101,8 +105,9 @@ frontend/src/modules/watchlist/
     └── WatchlistTable.tsx      # the detail table; owns the remove-confirmation flow
 
 frontend/src/shared/components/
-├── Modal.tsx                   # backdrop + card shell (Escape/backdrop-click to close)
-└── ConfirmDialog.tsx           # confirm/cancel modal built on Modal; message accepts rich content
+├── PageHeader.tsx               # icon chip + title + subtitle, used by every page
+├── Modal.tsx                    # backdrop + card shell (Escape/backdrop-click to close)
+└── ConfirmDialog.tsx            # confirm/cancel modal built on Modal; message accepts rich content
 ```
 
 Uses `shared/utils/avatarColor.ts` (also used by the dashboard's trades table)

@@ -22,7 +22,7 @@ This page calls `useTrades()` for the trade list, then derives the series with
 Same sidebar shell as the rest of the app (`shared/Layout`), reached via the
 **Equity Curve** nav item. Content:
 
-1. **Header** — title "Equity Curve" + one-line subtitle.
+1. **Header** (`shared/PageHeader`) — icon chip + title "Equity Curve" + one-line subtitle.
 2. **Chart card** (`EquityCurve`) at **full size** (not the compact variant used
    inline elsewhere): one-series area + line of cumulative P&L, hairline grid
    with clean round-number y ticks, a $0 baseline, an end-dot marking the latest

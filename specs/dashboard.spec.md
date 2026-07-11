@@ -17,7 +17,7 @@ raw shape and every derived metric. This page uses `useTrades()` for
 Modern SaaS layout: a fixed **sidebar** (brand + nav, from `shared/Layout`) beside
 a content area. Content, top to bottom:
 
-1. **Header** — title "Dashboard" + one-line subtitle.
+1. **Header** (`shared/PageHeader`) — icon chip + title "Dashboard" + one-line subtitle.
 2. **Stats row** — KPI tiles (`StatsGrid` → `StatTile`), each with an icon chip:
    - **Win rate** (the gradient **hero** card) with a **win/loss proportion bar**
      underneath (labelled, never colour alone).

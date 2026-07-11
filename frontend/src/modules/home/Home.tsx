@@ -1,14 +1,15 @@
 import { Card } from '../../shared/components/Card'
+import { PageHeader } from '../../shared/components/PageHeader'
 import './Home.css'
 
 export function Home() {
   return (
     <section className="home">
-      <h1 className="home__title">About Track Trades</h1>
-      <p className="home__lead">
-        A local-first trade journal. Everything runs on your machine — the UI, the database, and the
-        API.
-      </p>
+      <PageHeader
+        icon="about"
+        title="About Track Trades"
+        subtitle="Local-first — the UI, the database, and the API all run on your machine."
+      />
 
       <Card className="home__card">
         <h3>How it works</h3>

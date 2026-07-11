@@ -6,22 +6,11 @@
   margin: 0 auto;
 }
 
-.watchlist-page__header {
+.watchlist-page__toolbar {
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 16px;
-}
-
-.watchlist-page__title {
-  font-size: 26px;
-  letter-spacing: -0.02em;
-}
-
-.watchlist-page__subtitle {
-  margin: 4px 0 0;
-  color: var(--text-muted);
-  font-size: 15px;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 
 .watchlist-page__add-trigger {
@@ -38,17 +27,11 @@
   cursor: pointer;
   box-shadow: 0 4px 14px rgba(79, 70, 229, 0.3);
   white-space: nowrap;
+  margin-left: auto;
 }
 
 .watchlist-page__add-trigger:hover {
   filter: brightness(1.05);
-}
-
-.watchlist-page__toolbar {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
 }
 
 .watchlist-page__state {
