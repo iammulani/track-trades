@@ -10,6 +10,8 @@ export async function addWatchlistItem(input: NewWatchlistItem): Promise<Watchli
   const { data } = await apiClient.post<WatchlistItem>('/watchlist', {
     symbol: input.symbol.toUpperCase(),
     category: input.category,
+    side: input.side,
+    notes: input.notes?.trim() || '',
     watchedSince: new Date().toISOString(),
   })
   return data

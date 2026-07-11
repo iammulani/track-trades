@@ -55,6 +55,65 @@
   color: var(--amber);
 }
 
+.add-modal__side {
+  display: flex;
+  gap: 6px;
+}
+
+.add-modal__side-btn {
+  flex: 1;
+  padding: 8px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-strong);
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.12s;
+}
+
+.add-modal__side-btn:hover {
+  border-color: var(--text-muted);
+}
+
+.add-modal__side-btn.is-active {
+  border-color: transparent;
+  color: #fff;
+}
+
+.add-modal__side-btn--long.is-active {
+  background: var(--accent);
+}
+
+.add-modal__side-btn--short.is-active {
+  background: var(--amber);
+}
+
+.add-modal__optional {
+  text-transform: none;
+  font-weight: 400;
+  letter-spacing: normal;
+  color: var(--text-muted);
+}
+
+.add-modal__textarea {
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-strong);
+  background: var(--page);
+  color: var(--text-primary);
+  font-size: 14px;
+  font-family: inherit;
+  resize: vertical;
+}
+
+.add-modal__textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 20%, transparent);
+}
+
 .add-modal__categories {
   display: flex;
   gap: 6px;

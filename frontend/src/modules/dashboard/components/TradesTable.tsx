@@ -1,4 +1,5 @@
 import { Card } from '../../../shared/components/Card'
+import { SideBadge } from '../../../shared/components/SideBadge'
 import { avatarColor } from '../../../shared/utils/avatarColor'
 import {
   formatDateTime,
@@ -62,7 +63,7 @@ export function TradesTable({ trades }: TradesTableProps) {
                   </div>
                 </td>
                 <td className="ta-left">
-                  <span className={`side side--${t.side}`}>{t.side}</span>
+                  <SideBadge side={t.side} />
                 </td>
                 <td className="ta-right num">{t.quantity}</td>
                 <td className="ta-left">

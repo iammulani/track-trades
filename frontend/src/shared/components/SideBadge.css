@@ -1,0 +1,20 @@
+.side-badge {
+  display: inline-flex;
+  padding: 2px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: capitalize;
+  background: var(--surface-2);
+  color: var(--text-secondary);
+}
+
+.side-badge--long {
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+}
+
+.side-badge--short {
+  color: var(--amber);
+  background: color-mix(in srgb, var(--amber) 14%, transparent);
+}

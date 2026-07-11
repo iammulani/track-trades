@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Card } from '../../../shared/components/Card'
 import { ConfirmDialog } from '../../../shared/components/ConfirmDialog'
 import { Icon } from '../../../shared/components/Icon'
+import { SideBadge } from '../../../shared/components/SideBadge'
 import { avatarColor } from '../../../shared/utils/avatarColor'
 import { formatDateTime } from '../../../shared/utils/format'
 import type { WatchCategory, WatchlistItemWithMetrics } from '../types/watchlistItem'
@@ -24,6 +25,7 @@ export function WatchlistTable({ items, onRemove, onUpdateCategory }: WatchlistT
           <thead>
             <tr>
               <th className="ta-left">Stock</th>
+              <th className="ta-left">Side</th>
               <th className="ta-left">Watching for</th>
               <th className="ta-left">Since</th>
               <th className="ta-left">Reason</th>
@@ -45,6 +47,9 @@ export function WatchlistTable({ items, onRemove, onUpdateCategory }: WatchlistT
                     </span>
                     <span className="watch-table__symbol">{item.symbol}</span>
                   </div>
+                </td>
+                <td className="ta-left">
+                  <SideBadge side={item.side} />
                 </td>
                 <td className="ta-left watch-table__duration">{item.watchedLabel}</td>
                 <td className="ta-left cell-time">{formatDateTime(item.watchedSince)}</td>

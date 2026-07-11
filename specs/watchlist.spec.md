@@ -3,8 +3,9 @@
 ## Purpose
 
 Track symbols the trader is keeping an eye on but hasn't traded yet — added by
-typing a ticker, tagged with _why_ it's being watched, movable between reasons
-as the setup evolves, searchable, and showing how long it's been on the list.
+typing a ticker, tagged with the **long/short bias** and _why_ it's being
+watched, with an optional note on the setup, movable between reasons as the
+setup evolves, searchable, and showing how long it's been on the list.
 
 ## Data
 
@@ -12,13 +13,14 @@ as the setup evolves, searchable, and showing how long it's been on the list.
   `backend/data/watchlist.json`.
 - **Raw shape** (`types/watchlistItem.ts`):
 
-  | field          | type                                 | meaning                       |
-  | -------------- | ------------------------------------ | ----------------------------- |
-  | `id`           | string                               | unique id                     |
-  | `symbol`       | string                               | ticker, stored upper-case     |
-  | `category`     | `"active" \| "daily" \| "long-term"` | why it's being watched        |
-  | `watchedSince` | string (ISO)                         | when it was added to the list |
-  | `notes`        | string?                              | free text                     |
+  | field          | type                                 | meaning                             |
+  | -------------- | ------------------------------------ | ------------------------------------ |
+  | `id`           | string                               | unique id                            |
+  | `symbol`       | string                               | ticker, stored upper-case            |
+  | `category`     | `"active" \| "daily" \| "long-term"` | why it's being watched               |
+  | `side`         | `"long" \| "short"`                  | the bias being watched for           |
+  | `watchedSince` | string (ISO)                         | when it was added to the list        |
+  | `notes`        | string?                              | free text — the setup, what to wait for |
 
 - **Categories** (`utils/categories.ts` — fixed order, never reordered by data):
   1. `active` — **Actively Watching**: near the trading area, could trigger soon.
@@ -48,16 +50,19 @@ Reached via the **Watchlist** sidebar item. Top to bottom:
    only opens the popup.
 3. **Table** (`WatchlistTable`) — one row per item (respecting filter + search),
    newest-watched first. Columns: `Stock` (avatar chip, reusing the shared
-   per-symbol colour), `Watching for` (the humanised duration), `Since`
-   (datetime), `Reason` (`CategorySelect` — an inline dropdown, not a static
-   badge: picking a different value **moves the item to that category**
-   immediately), `Notes`, and a remove (×) action.
+   per-symbol colour), `Side` (`shared/SideBadge` — long/short pill, the same
+   one the dashboard's trades table uses), `Watching for` (the humanised
+   duration), `Since` (datetime), `Reason` (`CategorySelect` — an inline
+   dropdown, not a static badge: picking a different value **moves the item
+   to that category** immediately), `Notes`, and a remove (×) action.
 4. **Add popup** (`AddTickerModal`, shared `Modal`) — ticker input (autofocused,
-   auto-uppercased) + required category picker (segmented pills, defaults to
-   whatever filter tab was active when opened, else "Watch Daily"). If the
-   typed ticker already exists on the list, an inline warning names its current
-   category and **the Add button is disabled** — there's no reason to duplicate
-   a row; the user should move the existing one via `CategorySelect` instead.
+   auto-uppercased), a required **long/short toggle** (defaults to "Long"),
+   a required category picker (segmented pills, defaults to whatever filter
+   tab was active when opened, else "Watch Daily"), and an **optional note**
+   (textarea — the setup, what to wait for). If the typed ticker already
+   exists on the list, an inline warning names its current category and
+   **the Add button is disabled** — there's no reason to duplicate a row;
+   the user should move the existing one via `CategorySelect` instead.
 5. **Remove confirmation** (`ConfirmDialog`, shared `Modal`) — shows the
    symbol prominently (avatar chip + bold ticker, not buried in a sentence) so
    it's unambiguous which stock is about to be removed.
@@ -91,14 +96,14 @@ frontend/src/modules/watchlist/
 ├── WatchlistPage.tsx           # composes header/toolbar/table; owns URL filter + search + modal-open state
 ├── WatchlistPage.css
 ├── index.ts                    # exports WatchlistPage
-├── types/watchlistItem.ts      # WatchlistItem, WatchCategory, derived types
+├── types/watchlistItem.ts      # WatchlistItem, WatchCategory, WatchSide, derived types
 ├── api/watchlistApi.ts         # fetchWatchlist, addWatchlistItem, removeWatchlistItem, updateWatchlistCategory
 ├── hooks/useWatchlist.ts       # fetch + derive + add/remove/updateCategory actions (silent refetch)
 ├── utils/
 │   ├── categories.ts           # CATEGORIES (fixed order + tone), categoryMeta()
 │   └── watchlistMetrics.ts     # withWatchMetrics, formatWatchedLabel, sortByWatchedDesc
 └── components/
-    ├── AddTickerModal.tsx      # popup: ticker + category picker, duplicate-ticker warning/block
+    ├── AddTickerModal.tsx      # popup: ticker + side + category + note, duplicate-ticker warning/block
     ├── TickerSearch.tsx        # client-side ticker search box
     ├── CategoryFilterTabs.tsx  # All/Active/Daily/Long-term, with counts
     ├── CategorySelect.tsx      # inline dropdown pill — reassigns an item's category
@@ -106,6 +111,7 @@ frontend/src/modules/watchlist/
 
 frontend/src/shared/components/
 ├── PageHeader.tsx               # icon chip + title + subtitle, used by every page
+├── SideBadge.tsx                # long/short pill — shared with the dashboard's trades table
 ├── Modal.tsx                    # backdrop + card shell (Escape/backdrop-click to close)
 └── ConfirmDialog.tsx            # confirm/cancel modal built on Modal; message accepts rich content
 ```

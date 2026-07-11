@@ -1,10 +1,13 @@
 export type WatchCategory = 'active' | 'daily' | 'long-term'
+export type WatchSide = 'long' | 'short'
 
 /** Raw watchlist item as stored in db.json. */
 export interface WatchlistItem {
   id: string
   symbol: string
   category: WatchCategory
+  /** The bias you're watching it for — long or short. */
+  side: WatchSide
   /** ISO timestamp of when the symbol was added to the watchlist. */
   watchedSince: string
   notes?: string
@@ -21,4 +24,6 @@ export interface WatchlistItemWithMetrics extends WatchlistItem {
 export interface NewWatchlistItem {
   symbol: string
   category: WatchCategory
+  side: WatchSide
+  notes?: string
 }

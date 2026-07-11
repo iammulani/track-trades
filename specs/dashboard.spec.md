@@ -60,6 +60,7 @@ frontend/src/shared/
 ├── components/Card.tsx        # surface container used across modules
 ├── components/Layout.tsx      # sidebar + content shell
 ├── components/Icon.tsx        # inline SVG icon set
+├── components/SideBadge.tsx   # long/short pill — also used by the watchlist table
 └── utils/format.ts            # currency / percent / duration / datetime
 ```
 
