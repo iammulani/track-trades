@@ -1,0 +1,1 @@
+export { EquityPage } from './EquityPage'

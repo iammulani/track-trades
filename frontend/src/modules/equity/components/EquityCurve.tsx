@@ -1,7 +1,7 @@
 import { useId, useMemo, useState } from 'react'
 import { Card } from '../../../shared/components/Card'
 import { formatDateTime, formatSignedCurrency } from '../../../shared/utils/format'
-import type { EquityPoint } from '../utils/equitySeries'
+import type { EquityPoint } from '../../trades'
 import './EquityCurve.css'
 
 interface EquityCurveProps {
@@ -9,8 +9,8 @@ interface EquityCurveProps {
 }
 
 const W = 820
-const H = 170
-const PAD = { top: 14, right: 16, bottom: 22, left: 56 }
+const H = 280
+const PAD = { top: 20, right: 20, bottom: 28, left: 60 }
 
 /** Round "nice" tick values (…, 500, 1000, 1500, …) spanning [min, max]. */
 function niceTicks(min: number, max: number, count = 3): number[] {

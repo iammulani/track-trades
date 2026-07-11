@@ -4,7 +4,7 @@ import {
   formatSignedCurrency,
   formatSignedPercent,
 } from '../../../shared/utils/format'
-import type { DashboardSummary } from '../types/trade'
+import type { DashboardSummary } from '../../trades'
 import { StatTile } from './StatTile'
 import { WinLossBar } from './WinLossBar'
 import './StatsGrid.css'

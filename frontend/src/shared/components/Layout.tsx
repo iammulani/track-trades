@@ -11,6 +11,7 @@ interface NavItem {
 
 const NAV: NavItem[] = [
   { to: '/', label: 'Dashboard', icon: 'dashboard', end: true },
+  { to: '/equity', label: 'Equity Curve', icon: 'trending' },
   { to: '/about', label: 'About', icon: 'about' },
 ]
 

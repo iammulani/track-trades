@@ -6,7 +6,7 @@ import {
   formatSignedCurrency,
   formatSignedPercent,
 } from '../../../shared/utils/format'
-import type { TradeWithMetrics } from '../types/trade'
+import type { TradeWithMetrics } from '../../trades'
 import { ResultBadge } from './ResultBadge'
 import './TradesTable.css'
 

@@ -1,4 +1,4 @@
-import type { TradeOutcome, TradeStatus } from '../types/trade'
+import type { TradeOutcome, TradeStatus } from '../../trades'
 import './ResultBadge.css'
 
 interface ResultBadgeProps {

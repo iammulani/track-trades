@@ -1,14 +1,10 @@
-import { useMemo } from 'react'
-import { useDashboard } from './hooks/useDashboard'
+import { useTrades } from '../trades'
 import { StatsGrid } from './components/StatsGrid'
-import { EquityCurve } from './components/EquityCurve'
 import { TradesTable } from './components/TradesTable'
-import { buildEquitySeries } from './utils/equitySeries'
 import './DashboardPage.css'
 
 export function DashboardPage() {
-  const { trades, summary, loading, error } = useDashboard()
-  const equity = useMemo(() => buildEquitySeries(trades), [trades])
+  const { trades, summary, loading, error } = useTrades()
 
   return (
     <section className="dashboard">
@@ -34,10 +30,7 @@ export function DashboardPage() {
           {trades.length === 0 ? (
             <p className="dashboard__state">No trades yet.</p>
           ) : (
-            <div className="dashboard__grid">
-              {equity.length > 1 && <EquityCurve points={equity} />}
-              <TradesTable trades={trades} />
-            </div>
+            <TradesTable trades={trades} />
           )}
         </>
       )}

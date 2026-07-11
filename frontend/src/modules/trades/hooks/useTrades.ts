@@ -3,16 +3,19 @@ import { fetchTrades } from '../api/tradesApi'
 import type { DashboardSummary, TradeWithMetrics } from '../types/trade'
 import { sortByEntryDesc, summarize, withMetrics } from '../utils/tradeMetrics'
 
-interface DashboardState {
+interface TradesState {
   trades: TradeWithMetrics[]
   summary: DashboardSummary | null
   loading: boolean
   error: string | null
 }
 
-/** Fetches trades and derives per-trade metrics + the dashboard summary. */
-export function useDashboard(): DashboardState {
-  const [state, setState] = useState<DashboardState>({
+/**
+ * Fetches trades and derives per-trade metrics + the summary. Shared by any
+ * feature module that needs trade data (dashboard, equity, …).
+ */
+export function useTrades(): TradesState {
+  const [state, setState] = useState<TradesState>({
     trades: [],
     summary: null,
     loading: true,

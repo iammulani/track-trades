@@ -46,6 +46,8 @@ The files this feature owns under `modules/<feature>/`.
 
 ## Index
 
-| Feature   | Spec                                   | Module                           |
-| --------- | -------------------------------------- | -------------------------------- |
-| Dashboard | [dashboard.spec.md](dashboard.spec.md) | `frontend/src/modules/dashboard` |
+| Feature       | Spec                                   | Module                           |
+| ------------- | -------------------------------------- | -------------------------------- |
+| Trades domain | [trades.spec.md](trades.spec.md)       | `frontend/src/modules/trades`    |
+| Dashboard     | [dashboard.spec.md](dashboard.spec.md) | `frontend/src/modules/dashboard` |
+| Equity Curve  | [equity.spec.md](equity.spec.md)       | `frontend/src/modules/equity`    |
