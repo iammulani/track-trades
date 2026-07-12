@@ -125,30 +125,31 @@ export const STAGE_OPTIONS: RiskOption<Stage>[] = [
     label: 'Stage 3',
     verdict: 'Risky',
     tone: 'caution',
-    summary: 'Topping process — the uptrend is losing momentum and starting to churn.',
+    summary:
+      'Price volatility around the 200 MA line is common as many stocks in stage 3 bounce below and above the 200 day average several times while topping out.',
     detailSections: [
       {
-        icon: 'info',
-        heading: 'Overview',
+        icon: 'waves',
+        heading: 'Price action',
         points: [
-          "Price action gets choppier: wider swings, failed breakouts, and a flattening moving average. The stock may still be near highs, but the character of the move has changed — it's distributing, not advancing. New entries here carry a much worse risk/reward.",
+          'Volatility increases, with the stock moving back and forth in wider, looser swings.',
+          'Although the overall price pattern may look similar to stage 2, with the stock moving higher, the price movement is much more erratic.',
         ],
       },
       {
-        icon: 'check',
-        heading: 'What it looks like',
+        icon: 'arrowDownRight',
+        heading: 'Price breaks',
         points: [
-          'Moving average flattening after a long advance',
-          'Increased volatility without net progress',
-          'Volume spikes on down days (distribution)',
+          "There is usually a major price break in the stock on an increase in volume. Often, it's the largest one-day decline since the beginning of the stage 2 advance.",
+          'On the weekly chart, the stock may put in the largest weekly decline since the beginning of the move. These price breaks almost always occur on overwhelming volume.',
         ],
       },
       {
-        icon: 'alert',
-        heading: 'Watch out for',
+        icon: 'layers',
+        heading: 'Moving average',
         points: [
-          "Assuming 'it's just a pullback' when the trend has actually changed character",
-          'Sizing up on a stock that is already extended',
+          'The stock price may undercut its 200 day MA. Price volatility around the 200 MA line is common as many stocks in stage 3 bounce below and above the 200 day average several times while topping out.',
+          'The 200 day MA will lose upside momentum, flatten out, and then roll over into a downtrend.',
         ],
       },
     ],
