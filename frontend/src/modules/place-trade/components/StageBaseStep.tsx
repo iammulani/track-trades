@@ -64,29 +64,23 @@ function OptionRow<Id extends string>({
               <span>{option.label}</span>
               <span className="risk-option-details__verdict">{option.verdict}</span>
             </div>
-            <p className="risk-option-details__description">{option.details.description}</p>
 
-            <div className="risk-option-details__section">
-              <span className="risk-option-details__section-title">
-                <Icon name="check" size={12} /> What it looks like
-              </span>
-              <ul>
-                {option.details.lookFor.map((line) => (
-                  <li key={line}>{line}</li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="risk-option-details__section">
-              <span className="risk-option-details__section-title">
-                <Icon name="alert" size={12} /> Watch out for
-              </span>
-              <ul>
-                {option.details.watchOut.map((line) => (
-                  <li key={line}>{line}</li>
-                ))}
-              </ul>
-            </div>
+            {option.detailSections.map((section) => (
+              <div className="risk-option-details__section" key={section.heading}>
+                <span className="risk-option-details__section-title">
+                  <Icon name={section.icon} size={12} /> {section.heading}
+                </span>
+                {section.points.length === 1 ? (
+                  <p>{section.points[0]}</p>
+                ) : (
+                  <ul>
+                    {section.points.map((point) => (
+                      <li key={point}>{point}</li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            ))}
           </div>
         </HoverCard>
       </span>

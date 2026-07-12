@@ -216,13 +216,6 @@
   color: #fff;
 }
 
-.risk-option-details__description {
-  margin: 0;
-  font-size: 13px;
-  line-height: 1.5;
-  color: var(--text-secondary);
-}
-
 .risk-option-details__section {
   display: flex;
   flex-direction: column;
@@ -249,4 +242,11 @@
   font-size: 13px;
   color: var(--text-secondary);
   line-height: 1.4;
+}
+
+.risk-option-details__section p {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.5;
 }

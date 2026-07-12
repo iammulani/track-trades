@@ -25,6 +25,8 @@ export type IconName =
   | 'moon'
   | 'star'
   | 'info'
+  | 'waves'
+  | 'bars'
 
 const PATHS: Record<IconName, string> = {
   dashboard: 'M3 3h7v7H3zM14 3h7v4h-7zM14 10h7v11h-7zM3 13h7v8H3z',
@@ -54,6 +56,8 @@ const PATHS: Record<IconName, string> = {
   moon: 'M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z',
   star: 'M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6-5.9-3.3-5.9 3.3 1.3-6.6-4.9-4.6 6.6-.8z',
   info: 'M12 3a9 9 0 100 18 9 9 0 000-18zm0 7v6m0-9.5v.01',
+  waves: 'M2 12c1.5-3 3.5-3 5 0s3.5 3 5 0 3.5-3 5 0 3.5 3 5 0',
+  bars: 'M5 21V13M12 21V7M19 21V15',
 }
 
 interface IconProps {
