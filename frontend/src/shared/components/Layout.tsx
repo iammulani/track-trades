@@ -1,4 +1,5 @@
 import { NavLink, Outlet } from 'react-router-dom'
+import { useTheme } from '../hooks/useTheme'
 import { Icon, type IconName } from './Icon'
 import './Layout.css'
 
@@ -17,6 +18,8 @@ const NAV: NavItem[] = [
 ]
 
 export function Layout() {
+  const { theme, toggleTheme } = useTheme()
+
   return (
     <div className="shell">
       <aside className="sidebar">
@@ -40,6 +43,16 @@ export function Layout() {
             </NavLink>
           ))}
         </nav>
+
+        <button
+          type="button"
+          className="sidebar__theme-toggle"
+          onClick={toggleTheme}
+          aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+        >
+          <Icon name={theme === 'dark' ? 'sun' : 'moon'} size={16} />
+          <span>{theme === 'dark' ? 'Light mode' : 'Dark mode'}</span>
+        </button>
 
         <div className="sidebar__footer">Local-first · your data stays on your machine</div>
       </aside>

@@ -7,6 +7,8 @@ export interface RiskCalc {
   riskAmount: number | null
   rewardAmount: number | null
   riskRewardRatio: number | null
+  riskPercent: number | null
+  rewardPercent: number | null
 }
 
 function toNumber(value: string): number | null {
@@ -33,5 +35,20 @@ export function computeRisk(side: WatchSide, params: TradeParams): RiskCalc {
       ? rewardPerShare / riskPerShare
       : null
 
-  return { riskPerShare, rewardPerShare, riskAmount, rewardAmount, riskRewardRatio }
+  const riskPercent =
+    riskPerShare !== null && entry !== null && entry !== 0 ? (riskPerShare / entry) * 100 : null
+  const rewardPercent =
+    rewardPerShare !== null && entry !== null && entry !== 0
+      ? (rewardPerShare / entry) * 100
+      : null
+
+  return {
+    riskPerShare,
+    rewardPerShare,
+    riskAmount,
+    rewardAmount,
+    riskRewardRatio,
+    riskPercent,
+    rewardPercent,
+  }
 }
