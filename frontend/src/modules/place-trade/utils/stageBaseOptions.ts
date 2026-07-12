@@ -118,6 +118,34 @@ export const STAGE_OPTIONS: RiskOption<Stage>[] = [
           'The share price may have doubled or even tripled at this point; however, this may be only the beginning.',
         ],
       },
+      {
+        icon: 'waves',
+        heading: 'Basing rhythm',
+        points: [
+          "By using the trend template you will be able to immediately identify companies that are in a stage 2 uptrend; there will be no guesswork involved. However, we are not buying a stock just because it happens to be in a stage 2 uptrend — it's important to consider what happens within the stage, from acceleration to deceleration.",
+          'Within the overall long-term uptrend there will be short or intermediate-term price action that consists of pullbacks and basing. The shorter-term moves may last from four or five weeks up to a year or more in many cases.',
+          'Most commonly, base patterns forming within a stage 2 uptrend last anywhere from 5 to 26 weeks.',
+          "During these basing periods, the stock will basically go sideways for a while, as if it's catching its breath before making the next push higher.",
+          'The sideways price is not to be confused with a stage 1 phase — the stock is now in a stage 2 uptrend, stairstepping higher from base to base. This will continue all along the stage 2 advance.',
+        ],
+      },
+      {
+        icon: 'arrowDownRight',
+        heading: 'Topping process',
+        points: [
+          "At some point, the upward momentum ceases; the stock tires, and the top is put in. This is like reaching the summit — there's no more mountain left to climb; now comes the descent.",
+          'Generally, this occurs after three to five bases have formed along the way in a stage 2 uptrend.',
+          'Bases 1 and 2 generally come off a market correction, which is the best time for jumping on board a new trend.',
+          'As the stock makes a series of bases along the stage 2 uptrend, base 3 is a little more obvious but usually still tradable.',
+        ],
+      },
+      {
+        icon: 'alert',
+        heading: 'Sell signal',
+        points: [
+          'If the stock experiences its largest daily and/or weekly price decline since the beginning of the stage 2 advance, this is a sell signal in most cases — even if it comes on the heels of a seemingly great earnings report.',
+        ],
+      },
     ],
   },
   {
