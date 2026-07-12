@@ -168,7 +168,13 @@ a small pill button, `send` icon, next to Remove). Route:
        breakout, and minimal overhead resistance — plus an `i` trigger
        explaining the reasoning (what to confirm, the "never overlook poor
        volume" warning sign, and why overhead resistance matters).
-   - **Review & Place** (`ReviewStep`) — avatar + symbol + `SideBadge`,
+   - **Review & Place** (`ReviewStep`) — avatar + symbol + `SideBadge`, the big
+     rating banner, then a **"Why N%?" breakdown** — every criterion listed with
+     its state icon and the points it contributed out of its weight
+     (`criterionPoints` / `weight`), headed by the running
+     `earnedWeight` / `totalWeight` total, so the score always reconciles on
+     screen. Dropped points are what the reader is scanning for, so partial rows
+     get an amber background and unmet rows a red one. Then
      entry/qty/stop/target, the same live `RiskSummary`, the selected
      stage/base (colored to match their tone), the indicators summary
      (checklist count, RSI, 50-day MA + distance, 52-week % stats), the VCP
@@ -209,7 +215,7 @@ frontend/src/modules/place-trade/
 │   ├── finalChecksCalc.ts            # computeContractionPercent(), largest/narrowestFromContractions, weeksInBaseTone(), largestCorrectionTone(), narrowestPullbackTone(), contractionCountTone(), contractionTightnessTone()
 │   ├── riskCalc.ts                   # computeRisk(side, params) -> RiskCalc
 │   ├── stageBaseOptions.ts           # STAGE_OPTIONS / BASE_OPTIONS static reference content
-│   └── tradeRating.ts                # computeTradeRating(), ratingVerdict()
+│   └── tradeRating.ts                # computeTradeRating(), ratingVerdict(), criterionState()/criterionPoints()/CRITERION_STATE_ICON (shared by the badge hover-card and the Review breakdown)
 └── components/
     ├── StepIndicator.tsx              # numbered progress row (dots only, no labels)
     ├── TradeRatingBadge.tsx            # star row + N/7 count + hover-card breakdown
@@ -221,7 +227,7 @@ frontend/src/modules/place-trade/
     ├── ChecklistStep.tsx              # renders a given `items` list as toggleable checkboxes
     ├── VcpStructureStep.tsx           # time/price/symmetry capture + hover-card worked example
     ├── FinalChecksStep.tsx            # overhead-supply checklist + hover-card reasoning
-    └── ReviewStep.tsx                 # final summary before submit, incl. the big rating banner
+    └── ReviewStep.tsx                 # final summary before submit, incl. the rating banner + "Why N%?" breakdown
 ```
 
 Depends on `modules/trades` (`addTrade`, `NewTrade`) and `modules/watchlist`

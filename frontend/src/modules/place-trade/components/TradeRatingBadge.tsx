@@ -1,7 +1,7 @@
 import type { CSSProperties } from 'react'
 import { HoverCard } from '../../../shared/components/HoverCard'
-import { Icon, type IconName } from '../../../shared/components/Icon'
-import type { RatingCriterion, TradeRating } from '../utils/tradeRating'
+import { Icon } from '../../../shared/components/Icon'
+import { CRITERION_STATE_ICON, criterionState, type TradeRating } from '../utils/tradeRating'
 import './TradeRatingBadge.css'
 
 interface TradeRatingBadgeProps {
@@ -10,13 +10,6 @@ interface TradeRatingBadgeProps {
 }
 
 const STAR_COUNT = 7
-
-/** full / partial / miss, from a criterion's 0..1 score. */
-function criterionState(c: RatingCriterion): { className: string; icon: IconName } {
-  if (c.score >= 1) return { className: 'is-met', icon: 'check' }
-  if (c.score > 0) return { className: 'is-partial', icon: 'alert' }
-  return { className: 'is-unmet', icon: 'x' }
-}
 
 /** A row of outline stars with an identical filled row clipped to the score — smooth
  * partial fill without needing a half-star glyph. */
@@ -57,10 +50,10 @@ export function TradeRatingBadge({ rating, size = 15 }: TradeRatingBadgeProps) {
         </div>
         <ul>
           {rating.criteria.map((c) => {
-            const { className, icon } = criterionState(c)
+            const state = criterionState(c)
             return (
-              <li key={c.id} className={className}>
-                <Icon name={icon} size={13} />
+              <li key={c.id} className={`is-${state}`}>
+                <Icon name={CRITERION_STATE_ICON[state]} size={13} />
                 {c.label}
               </li>
             )

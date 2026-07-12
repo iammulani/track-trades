@@ -80,6 +80,66 @@
   fill: var(--amber);
 }
 
+.review-step__breakdown {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.review-step__breakdown-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.review-step__breakdown-row svg {
+  flex-shrink: 0;
+}
+
+.review-step__breakdown-label {
+  flex: 1;
+  min-width: 0;
+}
+
+.review-step__breakdown-points {
+  flex-shrink: 0;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-primary);
+}
+
+.review-step__breakdown-row.is-met svg {
+  color: var(--good-text);
+}
+
+/* Dropped points are what the reader is scanning for — give them a background. */
+.review-step__breakdown-row.is-partial {
+  color: var(--text-primary);
+  background: color-mix(in srgb, var(--amber) 10%, transparent);
+}
+
+.review-step__breakdown-row.is-partial svg,
+.review-step__breakdown-row.is-partial .review-step__breakdown-points {
+  color: var(--amber-text);
+}
+
+.review-step__breakdown-row.is-unmet {
+  color: var(--text-primary);
+  background: color-mix(in srgb, var(--critical) 10%, transparent);
+}
+
+.review-step__breakdown-row.is-unmet svg,
+.review-step__breakdown-row.is-unmet .review-step__breakdown-points {
+  color: var(--critical-text);
+}
+
 .review-step__rating-text {
   display: flex;
   flex-direction: column;

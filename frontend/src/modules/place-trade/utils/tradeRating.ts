@@ -1,3 +1,4 @@
+import type { IconName } from '../../../shared/components/Icon'
 import type { WatchSide } from '../../watchlist'
 import type {
   ChecklistChecked,
@@ -32,7 +33,30 @@ export interface RatingCriterion {
 export interface TradeRating {
   /** Weighted share of the total earned, 0..1. */
   ratio: number
+  /** Weighted points earned / available — what `ratio` is the quotient of. */
+  earnedWeight: number
+  totalWeight: number
   criteria: RatingCriterion[]
+}
+
+export type CriterionState = 'met' | 'partial' | 'unmet'
+
+export function criterionState(criterion: RatingCriterion): CriterionState {
+  if (criterion.score >= 1) return 'met'
+  if (criterion.score > 0) return 'partial'
+  return 'unmet'
+}
+
+/** Shared by the badge hover-card and the Review breakdown, so the two can't drift. */
+export const CRITERION_STATE_ICON: Record<CriterionState, IconName> = {
+  met: 'check',
+  partial: 'alert',
+  unmet: 'x',
+}
+
+/** Points a criterion actually contributed, out of its `weight`. */
+export function criterionPoints(criterion: RatingCriterion): number {
+  return criterion.weight * criterion.score
 }
 
 /** best/good → full, caution → half, anything else (bad/none) → nothing. */
@@ -159,10 +183,12 @@ export function computeTradeRating(input: {
   ]
 
   const totalWeight = criteria.reduce((sum, c) => sum + c.weight, 0)
-  const earnedWeight = criteria.reduce((sum, c) => sum + c.weight * c.score, 0)
+  const earnedWeight = criteria.reduce((sum, c) => sum + criterionPoints(c), 0)
 
   return {
     ratio: totalWeight === 0 ? 0 : earnedWeight / totalWeight,
+    earnedWeight,
+    totalWeight,
     criteria,
   }
 }

@@ -23,11 +23,22 @@ import {
 import { computeIndicatorRange, computeMaDistancePercent } from '../utils/indicatorCalc'
 import { INDICATOR_CHECKLIST_ITEMS } from '../utils/indicatorChecklistItems'
 import { BASE_OPTIONS, STAGE_OPTIONS } from '../utils/stageBaseOptions'
-import { ratingVerdict, type TradeRating } from '../utils/tradeRating'
+import {
+  CRITERION_STATE_ICON,
+  criterionPoints,
+  criterionState,
+  ratingVerdict,
+  type TradeRating,
+} from '../utils/tradeRating'
 import { RiskSummary } from './RiskSummary'
 import './ReviewStep.css'
 
 const RATING_STAR_COUNT = 7
+
+/** 2 → "2", 1.6 → "1.6" — keeps whole points clean. */
+function formatPoints(value: number): string {
+  return Number.isInteger(value) ? String(value) : value.toFixed(1)
+}
 
 interface ReviewStepProps {
   item: WatchlistItemWithMetrics
@@ -108,6 +119,27 @@ export function ReviewStep({
           <span className="review-step__rating-score">{Math.round(rating.ratio * 100)}%</span>
           <span className="review-step__rating-verdict">{verdict.label}</span>
         </div>
+      </div>
+
+      <div className="review-step__section">
+        <span className="review-step__section-title">
+          Why {Math.round(rating.ratio * 100)}%? — {formatPoints(rating.earnedWeight)} of{' '}
+          {formatPoints(rating.totalWeight)} points
+        </span>
+        <ul className="review-step__breakdown">
+          {rating.criteria.map((c) => {
+            const state = criterionState(c)
+            return (
+              <li key={c.id} className={`review-step__breakdown-row is-${state}`}>
+                <Icon name={CRITERION_STATE_ICON[state]} size={14} />
+                <span className="review-step__breakdown-label">{c.label}</span>
+                <span className="review-step__breakdown-points">
+                  {formatPoints(criterionPoints(c))}/{formatPoints(c.weight)}
+                </span>
+              </li>
+            )
+          })}
+        </ul>
       </div>
 
       <div className="review-step__grid">
