@@ -21,6 +21,12 @@
   color: var(--text-muted);
 }
 
+.indicators-step__divider {
+  height: 1px;
+  background: var(--border);
+  margin: 20px 0;
+}
+
 .indicators-step__grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));

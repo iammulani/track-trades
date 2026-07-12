@@ -71,13 +71,13 @@ a small pill button, `send` icon, next to Remove). Route:
        area"), Stage 3 ("Risky"), Stage 4 ("Too risky").
      - **Base** — quality of the base it's basing in/breaking out of: Base 1
        (best) through Base 4 (avoid). Not yet filled with real notes.
-   - **Indicators** (`IndicatorsStep`) — three sections:
-     - *Trend confirmation*: a 3-item checklist (`INDICATOR_CHECKLIST_ITEMS`,
+   - **Indicators** (`IndicatorsStep`) — two sections:
+     - *Technical confirmation*: a 3-item MA checklist (`INDICATOR_CHECKLIST_ITEMS`,
        reuses `ChecklistStep`) — MA uptrend, MA stack order, 200-day MA
-       duration.
-     - *Momentum*: Weekly RSI + Daily RSI number inputs, each field
-       color-coded by `rsiTone` (good ≥80, caution 70–79, bad <70), with the
-       "RSI shouldn't be below 70" guideline note underneath.
+       duration — followed by a divider, then Weekly RSI + Daily RSI number
+       inputs, each field color-coded by `rsiTone` (good ≥80, caution 70–79,
+       bad <70), with the "RSI shouldn't be below 70" guideline note
+       underneath.
      - *52-week range*: 52-week low/high inputs, plus two live hero stats —
        "Above 52-week low" (good at ≥30%) and "Below 52-week high" (good at
        ≤25%) — each colored good/bad and paired with its guideline note.

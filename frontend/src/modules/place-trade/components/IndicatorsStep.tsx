@@ -43,21 +43,17 @@ export function IndicatorsStep({
     <div className="indicators-step">
       <section className="indicators-step__section">
         <div className="indicators-step__section-header">
-          <h3>Trend confirmation</h3>
-          <p>Confirm the moving-average structure supports this trade.</p>
+          <h3>Technical confirmation</h3>
+          <p>Confirm the moving-average structure and momentum support this trade.</p>
         </div>
         <ChecklistStep
           items={INDICATOR_CHECKLIST_ITEMS}
           checked={checklistChecked}
           onToggle={onToggleChecklist}
         />
-      </section>
 
-      <section className="indicators-step__section">
-        <div className="indicators-step__section-header">
-          <h3>Momentum</h3>
-          <p>Capture the RSI reading on both timeframes.</p>
-        </div>
+        <div className="indicators-step__divider" />
+
         <div className="indicators-step__grid">
           <label className={`indicators-step__field indicators-step__field--${rsiTone(data.weeklyRsi)}`}>
             <span className="indicators-step__label">Weekly RSI</span>
