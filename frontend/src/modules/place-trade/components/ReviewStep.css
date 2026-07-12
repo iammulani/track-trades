@@ -50,17 +50,32 @@
 }
 
 .review-step__rating-stars {
-  display: flex;
+  position: relative;
+  display: inline-flex;
+}
+
+.review-step__rating-stars-track,
+.review-step__rating-stars-fill {
+  display: inline-flex;
   align-items: center;
   gap: 3px;
+  white-space: nowrap;
+}
+
+.review-step__rating-stars-fill {
+  position: absolute;
+  inset: 0;
+  width: var(--fill, 0%);
+  overflow: hidden;
 }
 
 .review-step__rating-star {
+  flex-shrink: 0;
   color: var(--border-strong);
   fill: none;
 }
 
-.review-step__rating-star.is-filled {
+.review-step__rating-stars-fill .review-step__rating-star {
   color: var(--amber);
   fill: var(--amber);
 }

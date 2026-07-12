@@ -32,6 +32,20 @@ export function computeMaDistancePercent(entryPrice: string, fiftyDayMa: string)
   return entry !== null && ma !== null && ma !== 0 ? ((entry - ma) / ma) * 100 : null
 }
 
+export type MaDistanceTone = 'good' | 'caution' | 'bad' | 'none'
+
+/** How far above the 50-day MA the entry sits, read as *extension*: a tight entry hugs the MA
+ * (support close, stop stays tight); a big gap means price has run past its base and you're
+ * chasing. Good 0-5% above, caution 5-20% (or just below the MA), bad >20% (extended) or
+ * well below it. Thresholds are deliberately loose — treat it as a nudge, not a gate. */
+export function maDistanceTone(distancePercent: number | null): MaDistanceTone {
+  if (distancePercent === null) return 'none'
+  if (distancePercent >= 0 && distancePercent <= 5) return 'good'
+  if (distancePercent > 5 && distancePercent <= 20) return 'caution'
+  if (distancePercent < 0 && distancePercent >= -5) return 'caution'
+  return 'bad'
+}
+
 export type RsiTone = 'good' | 'caution' | 'bad' | 'none'
 
 /** Guideline: RSI should be no less than 70, ideally in the 80s/90s. */

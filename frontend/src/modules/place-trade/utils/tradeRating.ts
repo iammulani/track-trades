@@ -9,12 +9,13 @@ import type {
 import type { ChecklistItem } from './checklistItems'
 import {
   contractionCountTone,
+  contractionsTightening,
   largestCorrectionTone,
   narrowestPullbackTone,
   weeksInBaseTone,
 } from './finalChecksCalc'
 import { BREAKOUT_CONFIRMATION_CHECKLIST_ITEMS, OVERHEAD_SUPPLY_CHECKLIST_ITEMS } from './finalChecksItems'
-import { computeIndicatorRange, rsiTone } from './indicatorCalc'
+import { computeIndicatorRange, computeMaDistancePercent, maDistanceTone, rsiTone } from './indicatorCalc'
 import { INDICATOR_CHECKLIST_ITEMS } from './indicatorChecklistItems'
 import { computeRisk } from './riskCalc'
 import { BASE_OPTIONS, STAGE_OPTIONS } from './stageBaseOptions'
@@ -22,25 +23,37 @@ import { BASE_OPTIONS, STAGE_OPTIONS } from './stageBaseOptions'
 export interface RatingCriterion {
   id: string
   label: string
-  met: boolean
+  /** Relative importance; the decisive-but-underrepresented criteria carry more. */
+  weight: number
+  /** 0 (miss) … 1 (fully met), with partial credit in between. */
+  score: number
 }
 
 export interface TradeRating {
-  earned: number
-  total: number
+  /** Weighted share of the total earned, 0..1. */
+  ratio: number
   criteria: RatingCriterion[]
 }
 
-function isGoodTone(tone: string | undefined): boolean {
-  return tone === 'good' || tone === 'best'
+/** best/good → full, caution → half, anything else (bad/none) → nothing. */
+function toneScore(tone: string | undefined): number {
+  if (tone === 'best' || tone === 'good') return 1
+  if (tone === 'caution') return 0.5
+  return 0
 }
 
-function allChecked(items: ChecklistItem[], checked: ChecklistChecked): boolean {
-  return items.every((item) => checked[item.id])
+/** Share of a checklist that's ticked — gives partial credit rather than all-or-nothing. */
+function fractionChecked(items: ChecklistItem[], checked: ChecklistChecked): number {
+  if (items.length === 0) return 0
+  return items.filter((item) => checked[item.id]).length / items.length
 }
 
-/** One star per criterion — 7 total, each reusing the tone/threshold logic
- * already established in its own step. Never stored, recomputed live. */
+function boolScore(condition: boolean): number {
+  return condition ? 1 : 0
+}
+
+/** Weighted, partial-credit rating — each criterion reuses the tone/threshold logic already
+ * established in its own step, and `caution` reads earn half. Never stored, recomputed live. */
 export function computeTradeRating(input: {
   side: WatchSide
   tradeParams: TradeParams
@@ -68,60 +81,88 @@ export function computeTradeRating(input: {
     indicatorData.week52Low,
     indicatorData.week52High,
   )
+  const maDistance = computeMaDistancePercent(tradeParams.entryPrice, indicatorData.fiftyDayMa)
+
+  const rr = risk.riskRewardRatio
+  const riskRewardScore = rr === null ? 0 : rr >= 2 ? 1 : rr >= 1 ? 0.5 : 0
+
+  const vcpMet = [
+    weeksInBaseTone(vcpStructureData.weeksInBase) === 'good',
+    largestCorrectionTone(vcpStructureData.contractions) === 'good',
+    narrowestPullbackTone(vcpStructureData.contractions) === 'good',
+    contractionCountTone(vcpStructureData.contractions) === 'good',
+    contractionsTightening(vcpStructureData.contractions),
+  ].filter(Boolean).length
+
+  const weekRangeScore =
+    0.5 * boolScore(range.aboveLowPercent !== null && range.aboveLowPercent >= 30) +
+    0.5 * boolScore(range.belowHighPercent !== null && range.belowHighPercent <= 25)
 
   const criteria: RatingCriterion[] = [
     {
       id: 'risk-reward',
       label: 'Risk : Reward is 2:1 or better',
-      met: risk.riskRewardRatio !== null && risk.riskRewardRatio >= 2,
+      weight: 2,
+      score: riskRewardScore,
     },
     {
       id: 'stage-quality',
       label: 'Stage is a good trading area',
-      met: isGoodTone(stage?.tone),
+      weight: 1,
+      score: toneScore(stage?.tone),
     },
     {
       id: 'base-quality',
       label: 'Base quality is good',
-      met: isGoodTone(base?.tone),
+      weight: 1,
+      score: toneScore(base?.tone),
     },
     {
-      id: 'technical-confirmation',
-      label: 'MA checklist confirmed and RSI is strong (80+)',
-      met:
-        allChecked(INDICATOR_CHECKLIST_ITEMS, indicatorChecklistChecked) &&
-        rsiTone(indicatorData.rsi) === 'good',
+      id: 'ma-trend',
+      label: 'Moving-average structure confirmed',
+      weight: 1,
+      score: fractionChecked(INDICATOR_CHECKLIST_ITEMS, indicatorChecklistChecked),
+    },
+    {
+      id: 'relative-strength',
+      label: 'RSI is strong (70+, ideally 80+)',
+      weight: 1,
+      score: toneScore(rsiTone(indicatorData.rsi)),
+    },
+    {
+      id: 'ma-proximity',
+      label: 'Entry is close to the 50-day MA (not extended)',
+      weight: 1,
+      score: toneScore(maDistanceTone(maDistance)),
     },
     {
       id: 'week-range',
       label: 'Well clear of the 52-week low and near the high',
-      met:
-        range.aboveLowPercent !== null &&
-        range.aboveLowPercent >= 30 &&
-        range.belowHighPercent !== null &&
-        range.belowHighPercent <= 25,
+      weight: 1,
+      score: weekRangeScore,
     },
     {
       id: 'vcp-structure',
-      label: 'VCP structure (time, price, symmetry) is textbook',
-      met:
-        weeksInBaseTone(vcpStructureData.weeksInBase) === 'good' &&
-        largestCorrectionTone(vcpStructureData.contractions) === 'good' &&
-        narrowestPullbackTone(vcpStructureData.contractions) === 'good' &&
-        contractionCountTone(vcpStructureData.contractions) === 'good',
+      label: 'VCP structure (time, price, symmetry, tightening) is textbook',
+      weight: 2,
+      score: vcpMet / 5,
     },
     {
       id: 'final-checks',
-      label: 'Overhead supply and breakout confirmation fully checked',
-      met:
-        allChecked(OVERHEAD_SUPPLY_CHECKLIST_ITEMS, finalChecksChecked) &&
-        allChecked(BREAKOUT_CONFIRMATION_CHECKLIST_ITEMS, finalChecksChecked),
+      label: 'Overhead supply and breakout confirmation checked',
+      weight: 1,
+      score: fractionChecked(
+        [...OVERHEAD_SUPPLY_CHECKLIST_ITEMS, ...BREAKOUT_CONFIRMATION_CHECKLIST_ITEMS],
+        finalChecksChecked,
+      ),
     },
   ]
 
+  const totalWeight = criteria.reduce((sum, c) => sum + c.weight, 0)
+  const earnedWeight = criteria.reduce((sum, c) => sum + c.weight * c.score, 0)
+
   return {
-    earned: criteria.filter((c) => c.met).length,
-    total: criteria.length,
+    ratio: totalWeight === 0 ? 0 : earnedWeight / totalWeight,
     criteria,
   }
 }
@@ -133,8 +174,7 @@ export interface RatingVerdict {
 
 /** A quick read on the overall score — good at 85%+, caution at 50%+, bad below. */
 export function ratingVerdict(rating: TradeRating): RatingVerdict {
-  const ratio = rating.total === 0 ? 0 : rating.earned / rating.total
-  if (ratio >= 0.85) return { label: 'Excellent setup', tone: 'good' }
-  if (ratio >= 0.5) return { label: 'Good setup', tone: 'caution' }
+  if (rating.ratio >= 0.85) return { label: 'Excellent setup', tone: 'good' }
+  if (rating.ratio >= 0.5) return { label: 'Good setup', tone: 'caution' }
   return { label: 'Weak setup — reconsider', tone: 'bad' }
 }

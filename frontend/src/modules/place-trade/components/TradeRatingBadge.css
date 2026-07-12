@@ -6,17 +6,33 @@
 }
 
 .trade-rating-badge__stars {
+  position: relative;
+  display: inline-flex;
+}
+
+.trade-rating-badge__stars-track,
+.trade-rating-badge__stars-fill {
   display: inline-flex;
   align-items: center;
   gap: 3px;
+  white-space: nowrap;
+}
+
+/* Filled layer sits over the outline layer, revealed left-to-right by --fill. */
+.trade-rating-badge__stars-fill {
+  position: absolute;
+  inset: 0;
+  width: var(--fill, 0%);
+  overflow: hidden;
 }
 
 .trade-rating-badge__star {
+  flex-shrink: 0;
   color: var(--border-strong);
   fill: none;
 }
 
-.trade-rating-badge__star.is-filled {
+.trade-rating-badge__stars-fill .trade-rating-badge__star {
   color: var(--amber);
   fill: var(--amber);
 }
@@ -77,6 +93,15 @@
 
 .trade-rating-details li.is-met svg {
   color: var(--good-text);
+  flex-shrink: 0;
+}
+
+.trade-rating-details li.is-partial {
+  color: var(--text-primary);
+}
+
+.trade-rating-details li.is-partial svg {
+  color: var(--amber-text);
   flex-shrink: 0;
 }
 

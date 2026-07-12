@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react'
 import { Icon } from '../../../shared/components/Icon'
 import { SideBadge } from '../../../shared/components/SideBadge'
 import { avatarColor } from '../../../shared/utils/avatarColor'
@@ -25,6 +26,8 @@ import { BASE_OPTIONS, STAGE_OPTIONS } from '../utils/stageBaseOptions'
 import { ratingVerdict, type TradeRating } from '../utils/tradeRating'
 import { RiskSummary } from './RiskSummary'
 import './ReviewStep.css'
+
+const RATING_STAR_COUNT = 7
 
 interface ReviewStepProps {
   item: WatchlistItemWithMetrics
@@ -86,20 +89,23 @@ export function ReviewStep({
       </div>
 
       <div className={`review-step__rating review-step__rating--${verdict.tone}`}>
-        <div className="review-step__rating-stars">
-          {Array.from({ length: rating.total }, (_, i) => (
-            <Icon
-              key={i}
-              name="star"
-              size={22}
-              className={`review-step__rating-star${i < rating.earned ? ' is-filled' : ''}`}
-            />
-          ))}
+        <div
+          className="review-step__rating-stars"
+          style={{ '--fill': `${rating.ratio * 100}%` } as CSSProperties}
+        >
+          <div className="review-step__rating-stars-track">
+            {Array.from({ length: RATING_STAR_COUNT }, (_, i) => (
+              <Icon key={i} name="star" size={22} className="review-step__rating-star" />
+            ))}
+          </div>
+          <div className="review-step__rating-stars-fill" aria-hidden="true">
+            {Array.from({ length: RATING_STAR_COUNT }, (_, i) => (
+              <Icon key={i} name="star" size={22} className="review-step__rating-star" />
+            ))}
+          </div>
         </div>
         <div className="review-step__rating-text">
-          <span className="review-step__rating-score">
-            {rating.earned}/{rating.total}
-          </span>
+          <span className="review-step__rating-score">{Math.round(rating.ratio * 100)}%</span>
           <span className="review-step__rating-verdict">{verdict.label}</span>
         </div>
       </div>

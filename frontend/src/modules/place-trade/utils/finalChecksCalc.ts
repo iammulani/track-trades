@@ -55,9 +55,11 @@ export function weeksInBaseTone(value: string): VcpTone {
   return 'caution'
 }
 
-/** The best bases correct 15-25% off the high, in line with a Base 1/2 quality read. */
+/** The deepest contraction of a proper VCP typically runs 25-35% off the high (and
+ * can be more in a volatile market) — it's the *tightening* that matters, not a shallow
+ * first leg. Good ≤35%, caution ≤50%, bad beyond. */
 export function largestCorrectionTone(contractions: VcpContraction[]): VcpTone {
-  return toneFromRange(largestCorrectionPercent(contractions), 25, 35)
+  return toneFromRange(largestCorrectionPercent(contractions), 35, 50)
 }
 
 /** The final, right-most contraction should be tight — the narrower, the closer to a proper pivot. */
@@ -71,6 +73,17 @@ export function contractionCountTone(contractions: VcpContraction[]): VcpTone {
   if (n < 2) return 'bad'
   if (n <= 4) return 'good'
   return 'caution'
+}
+
+/** The defining VCP property: does every filled contraction tighten (or hold) versus the one
+ * before it? Needs at least two filled contractions to show a trend at all. Order is preserved;
+ * unfilled rows are skipped rather than breaking the sequence. */
+export function contractionsTightening(contractions: VcpContraction[]): boolean {
+  const percents = contractions
+    .map(computeContractionPercent)
+    .filter((p): p is number => p !== null)
+  if (percents.length < 2) return false
+  return percents.every((p, i) => i === 0 || p <= percents[i - 1])
 }
 
 /** Is this contraction tighter than (or equal to) the one before it? The first has no baseline to compare. */

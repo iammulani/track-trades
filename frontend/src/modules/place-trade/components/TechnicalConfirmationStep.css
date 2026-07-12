@@ -153,3 +153,41 @@
   color: var(--text-primary);
   font-variant-numeric: tabular-nums;
 }
+
+.technical-confirmation-step__ma-distance-value--good {
+  color: var(--good-text);
+}
+
+.technical-confirmation-step__ma-distance-value--caution {
+  color: var(--amber-text);
+}
+
+.technical-confirmation-step__ma-distance-value--bad {
+  color: var(--critical-text);
+}
+
+.technical-confirmation-step__ma-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.technical-confirmation-step__ma-alert svg {
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.technical-confirmation-step__ma-alert--caution {
+  color: var(--amber-text);
+  background: color-mix(in srgb, var(--amber) 12%, transparent);
+}
+
+.technical-confirmation-step__ma-alert--bad {
+  color: var(--critical-text);
+  background: color-mix(in srgb, var(--critical) 12%, transparent);
+}

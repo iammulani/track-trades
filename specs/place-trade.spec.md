@@ -34,6 +34,11 @@ overhead-supply check, then a review before it's final.
     signed, positive when entry is above the 50-day MA.
   - `rsiTone(value)` — grades the RSI reading `good` (≥80) / `caution`
     (70–79) / `bad` (<70), per the guideline that RSI shouldn't be below 70.
+  - `maDistanceTone(distancePercent)` — reads the entry's distance above the
+    50-day MA as *extension*: `good` 0–5% (near support, not extended),
+    `caution` 5–20% or up to 5% below the MA, `bad` >20% (extended — price has
+    run past its base) or further below. Shown as a colored readout in Technical
+    Confirmation, with an alert note when `caution`/`bad`.
 - **VCP Structure — derived, live, never stored** (`utils/finalChecksCalc.ts`,
   used by `VcpStructureStep`). Each contraction (T) is a `{ high, low }` pair
   (2–6 of them, `MIN_VCP_CONTRACTIONS` / `MAX_VCP_CONTRACTIONS`); nothing else
@@ -47,23 +52,36 @@ overhead-supply check, then a review before it's final.
     `bad` if it's wider than the previous one (the base isn't tightening).
   - `weeksInBaseTone` — good 5–26 weeks, bad <5 (hasn't shaken out weak
     holders), caution >26 (losing its edge).
-  - `largestCorrectionTone(contractions)` — good ≤25%, caution 25–35%, bad >35%.
+  - `largestCorrectionTone(contractions)` — good ≤35%, caution 35–50%, bad >50%
+    (the deepest contraction of a proper VCP commonly runs 25–35%; it's the
+    *tightening* that matters, not a shallow first leg).
+  - `contractionsTightening(contractions)` — true when there are ≥2 filled
+    contractions and each is ≤ the one before it (the defining VCP property).
   - `narrowestPullbackTone(contractions)` — good ≤10%, caution 10–15%, bad >15%
     (the right-most contraction should be tight going into the pivot).
   - `contractionCountTone(contractions)` — good 2–4 (a proper VCP), bad <2 (no
     tightening shown yet), caution ≥5 (base getting choppy).
 - **Trade Rating — derived, live, never stored** (`utils/tradeRating.ts`):
-  `computeTradeRating()` scores 7 independent pass/fail criteria (1 star
-  each), one reusing each step's own tone/threshold logic:
-  1. Risk : Reward ≥ 2 (Trade Setup)
-  2. Stage tone is `good`/`best` (Stage & Base)
-  3. Base tone is `good`/`best` (Stage & Base)
-  4. MA checklist fully confirmed AND `rsiTone` is `good` (Technical Confirmation)
-  5. Both `aboveLowPercent` ≥30% and `belowHighPercent` ≤25% (52-Week Range)
-  6. All four VCP tone functions are `good` (VCP Structure)
-  7. Both Final Checks checklists fully confirmed
-  `ratingVerdict()` reads the score as a quick label: "Excellent setup" (≥85%),
-  "Good setup" (≥50%), or "Weak setup — reconsider" (below that).
+  `computeTradeRating()` scores 9 **weighted** criteria, each with a `score` of
+  0..1 (partial credit — a `caution` tone reads as half, a checklist scores the
+  fraction ticked) rather than a binary star. Each reuses its own step's
+  tone/threshold logic. The overall `ratio` = Σ(weight·score) / Σ(weight):
+  1. Risk : Reward (weight 2) — 1 if ≥2, ½ if 1–2, else 0 (Trade Setup)
+  2. Stage tone (weight 1) — `toneScore` of the stage tone (Stage & Base)
+  3. Base tone (weight 1) — `toneScore` of the base tone (Stage & Base)
+  4. MA structure (weight 1) — fraction of the 3 MA checks ticked (Technical Confirmation)
+  5. Relative strength (weight 1) — `toneScore(rsiTone)`, so 70–79 earns half (Technical Confirmation)
+  6. MA proximity (weight 1) — `toneScore(maDistanceTone)`; extended entries lose it (Technical Confirmation)
+  7. 52-week range (weight 1) — ½ for `aboveLowPercent` ≥30 + ½ for `belowHighPercent` ≤25 (52-Week Range)
+  8. VCP structure (weight 2) — fraction of 5 sub-conditions met: weeks-in-base,
+     largest-correction, narrowest-pullback and contraction-count tones all `good`,
+     plus `contractionsTightening` (VCP Structure)
+  9. Final Checks (weight 1) — fraction of all 6 overhead-supply + breakout boxes ticked
+  Weights lift the decisive-but-underrepresented reads (Risk:Reward, VCP) and
+  keep the three correlated "in an uptrend" criteria (stage, MA, 52-week range) at
+  weight 1 each so trend isn't triple-counted. `ratingVerdict()` reads `ratio` as a
+  quick label: "Excellent setup" (≥85%), "Good setup" (≥50%), or "Weak setup —
+  reconsider" (below that).
 - **Writes, on submit**:
   1. `addTrade` (from `modules/trades`) — `POST /trades` with `symbol`, `side`
      (both carried over from the watchlist item), `quantity`, `entryPrice`,
@@ -86,11 +104,14 @@ a small pill button, `send` icon, next to Remove). Route:
    shown separately as the page heading below.
 3. **Trade Rating** (`TradeRatingBadge`) — sits next to the symbol in the
    step-title row on every step, and again (bigger, with a verdict label) at
-   the top of Review. Shows filled/empty star icons plus an "N/7" count from
-   `computeTradeRating()`, live across whatever's been entered so far. An `i`
-   hover-card (via `HoverCard`'s `triggerClassName="hover-card__trigger--plain"`
-   escape hatch, since the default trigger is a small fixed-size circle)
-   lists all 7 criteria with a check/x per one.
+   the top of Review. Shows a row of 7 stars filled **proportionally** to the
+   score (an outline row with an identical filled row clipped to `ratio`, so
+   partial credit shows as a partly-filled star — no half-star glyph needed)
+   plus a percentage from `computeTradeRating()`, live across whatever's been
+   entered so far. An `i` hover-card (via `HoverCard`'s
+   `triggerClassName="hover-card__trigger--plain"` escape hatch, since the
+   default trigger is a small fixed-size circle) lists all 9 criteria, each with
+   a check (fully met), an amber alert (partial), or an x (unmet).
 4. **Step body** — one of:
    - **Trade Setup** (`TradeParamsStep`) — entry price, quantity, stop loss,
      target (optional), with a live `RiskSummary` panel underneath. The panel

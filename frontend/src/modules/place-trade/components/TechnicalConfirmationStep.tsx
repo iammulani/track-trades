@@ -1,6 +1,7 @@
+import { Icon } from '../../../shared/components/Icon'
 import { formatSignedPercent } from '../../../shared/utils/format'
 import type { ChecklistChecked, IndicatorData } from '../types/placeTrade'
-import { computeMaDistancePercent, rsiTone } from '../utils/indicatorCalc'
+import { computeMaDistancePercent, maDistanceTone, rsiTone } from '../utils/indicatorCalc'
 import { INDICATOR_CHECKLIST_ITEMS } from '../utils/indicatorChecklistItems'
 import { ChecklistStep } from './ChecklistStep'
 import './TechnicalConfirmationStep.css'
@@ -32,6 +33,13 @@ export function TechnicalConfirmationStep({
 
   const tone = rsiTone(data.rsi)
   const maDistance = computeMaDistancePercent(entryPrice, data.fiftyDayMa)
+  const maTone = maDistanceTone(maDistance)
+  const maAlert =
+    maDistance !== null && (maTone === 'caution' || maTone === 'bad')
+      ? maDistance < 0
+        ? `Entry is ${formatSignedPercent(maDistance)} against the 50-day MA — below the fast average, so the short-term trend isn't confirmed.`
+        : `Entry is ${formatSignedPercent(maDistance)} above the 50-day MA — getting extended; support is far below and your stop widens.`
+      : null
 
   return (
     <div className="technical-confirmation-step">
@@ -87,11 +95,19 @@ export function TechnicalConfirmationStep({
         </label>
         <div className="technical-confirmation-step__ma-distance">
           <span className="technical-confirmation-step__label">From trading price</span>
-          <span className="technical-confirmation-step__ma-distance-value">
+          <span
+            className={`technical-confirmation-step__ma-distance-value technical-confirmation-step__ma-distance-value--${maTone}`}
+          >
             {maDistance === null ? '—' : formatSignedPercent(maDistance)}
           </span>
         </div>
       </div>
+      {maAlert && (
+        <p className={`technical-confirmation-step__ma-alert technical-confirmation-step__ma-alert--${maTone}`}>
+          <Icon name="alert" size={15} />
+          {maAlert}
+        </p>
+      )}
     </div>
   )
 }
