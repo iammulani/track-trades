@@ -1,6 +1,12 @@
 import { HoverCard } from '../../../shared/components/HoverCard'
 import { Icon } from '../../../shared/components/Icon'
 import type { ChecklistChecked, VcpStructureData } from '../types/placeTrade'
+import {
+  contractionCountTone,
+  largestCorrectionTone,
+  narrowestPullbackTone,
+  weeksInBaseTone,
+} from '../utils/finalChecksCalc'
 import { OVERHEAD_SUPPLY_CHECKLIST_ITEMS } from '../utils/finalChecksItems'
 import { ChecklistStep } from './ChecklistStep'
 import './FinalChecksStep.css'
@@ -114,7 +120,55 @@ export function FinalChecksStep({
 
       <section className="final-checks-step__section">
         <div className="final-checks-step__section-header">
-          <h3>VCP Structure</h3>
+          <div className="final-checks-step__heading-row">
+            <h3>VCP Structure</h3>
+            <HoverCard label="See a worked VCP example" trigger={<Icon name="info" size={12} />}>
+              <div className="final-checks-details">
+                <div className="final-checks-details__heading">
+                  Example — Meridian Bioscience Inc. (VIVO)
+                  <span className="final-checks-details__source">p. 202</span>
+                </div>
+
+                <div className="final-checks-details__section">
+                  <span className="final-checks-details__section-title">
+                    <Icon name="waves" size={12} /> Four tightening contractions
+                  </span>
+                  <ul>
+                    <li>
+                      The first pullback started in April 2006, when the stock declined from $19 a
+                      share to $13, correcting 31% from high to low.
+                    </li>
+                    <li>
+                      The stock then moved higher and consolidated again, falling from just under
+                      $17 to below $14 a share for a 17% pullback.
+                    </li>
+                    <li>
+                      After the second pullback, the stock rallied once again, this time just
+                      above $17 a share, and then pulled back to below $16 — a much tighter price
+                      range of about 8%.
+                    </li>
+                    <li>
+                      Finally, a short and narrow pullback of just 3% over two weeks on very low
+                      volume formed the pivot buy point.
+                    </li>
+                  </ul>
+                </div>
+
+                <div className="final-checks-details__section">
+                  <span className="final-checks-details__section-title">
+                    <Icon name="check" size={12} /> Why it worked
+                  </span>
+                  <ul>
+                    <li>
+                      After putting in four Ts with successive decreases in price volatility and
+                      volume, the stock price was primed to spike if buyers came in demanding
+                      inventory.
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </HoverCard>
+          </div>
           <p>Capture the shape of the base — time, price, and symmetry.</p>
         </div>
 
@@ -123,7 +177,9 @@ export function FinalChecksStep({
           <p className="final-checks-step__vcp-question">
             How many weeks have passed since the base started?
           </p>
-          <label className="final-checks-step__field">
+          <label
+            className={`final-checks-step__field final-checks-step__field--${weeksInBaseTone(vcpData.weeksInBase)}`}
+          >
             <span className="final-checks-step__input-label">Weeks in base</span>
             <input
               type="number"
@@ -135,6 +191,11 @@ export function FinalChecksStep({
               placeholder="0"
             />
           </label>
+          <p className="final-checks-step__note">
+            A textbook base typically runs 5 to 26 weeks — much shorter and there hasn't been
+            enough time to shake out weak holders; much longer and the setup may be losing its
+            edge.
+          </p>
         </div>
 
         <div className="final-checks-step__divider" />
@@ -146,7 +207,9 @@ export function FinalChecksStep({
             very right of the price base?
           </p>
           <div className="final-checks-step__grid">
-            <label className="final-checks-step__field">
+            <label
+              className={`final-checks-step__field final-checks-step__field--${largestCorrectionTone(vcpData.largestCorrectionPercent)}`}
+            >
               <span className="final-checks-step__input-label">Largest correction (%)</span>
               <input
                 type="number"
@@ -158,7 +221,9 @@ export function FinalChecksStep({
                 placeholder="0"
               />
             </label>
-            <label className="final-checks-step__field">
+            <label
+              className={`final-checks-step__field final-checks-step__field--${narrowestPullbackTone(vcpData.narrowestPullbackPercent)}`}
+            >
               <span className="final-checks-step__input-label">Narrowest pullback (%)</span>
               <input
                 type="number"
@@ -171,6 +236,10 @@ export function FinalChecksStep({
               />
             </label>
           </div>
+          <p className="final-checks-step__note">
+            Look for a largest correction in the 15–25% range and a final, right-most pullback
+            under about 10% — the tighter that last contraction, the closer to a proper pivot.
+          </p>
         </div>
 
         <div className="final-checks-step__divider" />
@@ -180,7 +249,9 @@ export function FinalChecksStep({
           <p className="final-checks-step__vcp-question">
             How many contractions (Ts) did the stock go through during the basing process?
           </p>
-          <label className="final-checks-step__field">
+          <label
+            className={`final-checks-step__field final-checks-step__field--${contractionCountTone(vcpData.contractionCount)}`}
+          >
             <span className="final-checks-step__input-label">Number of contractions</span>
             <input
               type="number"
@@ -192,6 +263,11 @@ export function FinalChecksStep({
               placeholder="0"
             />
           </label>
+          <p className="final-checks-step__note">
+            A healthy VCP typically shows 2 to 4 contractions, each tighter than the last. A
+            single contraction hasn't really shown tightening yet, and 5 or more often means the
+            base is getting choppy.
+          </p>
         </div>
       </section>
     </div>

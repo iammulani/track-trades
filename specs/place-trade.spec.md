@@ -34,9 +34,15 @@ review before it's final.
     signed, positive when entry is above the 50-day MA.
   - `rsiTone(value)` — grades the RSI reading `good` (≥80) / `caution`
     (70–79) / `bad` (<70), per the guideline that RSI shouldn't be below 70.
-- **VCP Structure data** — plain captured values (`weeksInBase`,
-  `largestCorrectionPercent`, `narrowestPullbackPercent`, `contractionCount`),
-  no derived calc; shown as-is on Review.
+- **VCP Structure — tone only, no % calc** (`utils/finalChecksCalc.ts`), each
+  graded `good` / `caution` / `bad` from the captured value:
+  - `weeksInBaseTone` — good 5–26 weeks, bad <5 (hasn't shaken out weak
+    holders), caution >26 (losing its edge).
+  - `largestCorrectionTone` — good ≤25%, caution 25–35%, bad >35%.
+  - `narrowestPullbackTone` — good ≤10%, caution 10–15%, bad >15% (the
+    right-most contraction should be tight going into the pivot).
+  - `contractionCountTone` — good 2–4 (a proper VCP), bad <2 (no tightening
+    shown yet), caution ≥5 (base getting choppy).
 - **Writes, on submit**:
   1. `addTrade` (from `modules/trades`) — `POST /trades` with `symbol`, `side`
      (both carried over from the watchlist item), `quantity`, `entryPrice`,
@@ -92,11 +98,14 @@ a small pill button, `send` icon, next to Remove). Route:
        from, what a healthy VCP looks like, why to be patient, the warning
        sign that supply hasn't cleared). The "contractions tightening"
        checklist item moved out of here — see VCP Structure below.
-     - **VCP Structure** — three question-led capture blocks separated by
-       dividers: *Time* (weeks in base), *Price* (largest correction % and
-       narrowest right-side pullback %), and *Symmetry* (number of
-       contractions/Ts) — each block leads with the guiding question, then a
-       plain number input.
+     - **VCP Structure** — an `i` trigger next to the heading opens a worked
+       example (Meridian Bioscience Inc. / VIVO, cited to p. 202) showing four
+       tightening contractions (31% → 17% → 8% → 3%) into the pivot. Below
+       that, three question-led capture blocks separated by dividers: *Time*
+       (weeks in base), *Price* (largest correction % and narrowest
+       right-side pullback %), and *Symmetry* (number of contractions/Ts) —
+       each block leads with the guiding question, then a number input
+       color-coded by its tone function (see Data) and a guideline note.
    - **Review & Place** (`ReviewStep`) — avatar + symbol + `SideBadge`,
      entry/qty/stop/target, the same live `RiskSummary`, the selected
      stage/base (colored to match their tone), the indicators summary
@@ -134,6 +143,7 @@ frontend/src/modules/place-trade/
 │   ├── indicatorChecklistItems.ts    # INDICATOR_CHECKLIST_ITEMS (trend-confirmation checks)
 │   ├── indicatorCalc.ts              # computeIndicatorRange(), computeMaDistancePercent(), rsiTone()
 │   ├── finalChecksItems.ts           # OVERHEAD_SUPPLY_CHECKLIST_ITEMS
+│   ├── finalChecksCalc.ts            # weeksInBaseTone(), largestCorrectionTone(), narrowestPullbackTone(), contractionCountTone()
 │   ├── riskCalc.ts                   # computeRisk(side, params) -> RiskCalc
 │   └── stageBaseOptions.ts           # STAGE_OPTIONS / BASE_OPTIONS static reference content
 └── components/
