@@ -99,7 +99,7 @@ export function PlaceTradePage() {
           <div className="place-trade-page__step-title">
             <h2>{steps[stepIndex].title}</h2>
             <div className="place-trade-page__step-meta">
-              <TradeRatingBadge rating={rating} />
+              <TradeRatingBadge rating={rating} size={20} />
               <span className="place-trade-page__step-symbol">{item.symbol}</span>
             </div>
           </div>
