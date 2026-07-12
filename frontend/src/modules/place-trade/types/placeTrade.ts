@@ -41,17 +41,18 @@ export const EMPTY_STAGE_BASE_ANSWERS: StageBaseAnswers = {
   base: null,
 }
 
-/** Values collected in the "Indicators" step — strings while editing, parsed for the live % calcs. */
+/** Values collected in the Technical Confirmation / 52-Week Range steps —
+ * strings while editing, parsed for the live % calcs. */
 export interface IndicatorData {
-  weeklyRsi: string
-  dailyRsi: string
+  rsi: string
+  fiftyDayMa: string
   week52Low: string
   week52High: string
 }
 
 export const EMPTY_INDICATOR_DATA: IndicatorData = {
-  weeklyRsi: '',
-  dailyRsi: '',
+  rsi: '70',
+  fiftyDayMa: '',
   week52Low: '',
   week52High: '',
 }

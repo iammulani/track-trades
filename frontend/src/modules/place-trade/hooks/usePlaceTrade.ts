@@ -55,12 +55,14 @@ export function usePlaceTrade(watchlistId: string) {
         return tradeParams.entryPrice.trim() !== '' && tradeParams.quantity.trim() !== ''
       case 'stage-base':
         return stageBaseAnswers.stage !== null && stageBaseAnswers.base !== null
+      case 'week-range':
+        return indicatorData.week52Low.trim() !== '' && indicatorData.week52High.trim() !== ''
       case 'edge':
         return edgeAnswers.thesis.trim() !== ''
       default:
         return true
     }
-  }, [stepIndex, tradeParams, stageBaseAnswers, edgeAnswers])
+  }, [stepIndex, tradeParams, stageBaseAnswers, indicatorData, edgeAnswers])
 
   function goNext() {
     setStepIndex((i) => Math.min(i + 1, STEPS.length - 1))

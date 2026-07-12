@@ -86,6 +86,7 @@ export function PlaceTradePage() {
             )}
             {steps[stepIndex].id === 'technical' && (
               <TechnicalConfirmationStep
+                entryPrice={tradeParams.entryPrice}
                 data={indicatorData}
                 onChange={setIndicatorData}
                 checklistChecked={indicatorChecklistChecked}

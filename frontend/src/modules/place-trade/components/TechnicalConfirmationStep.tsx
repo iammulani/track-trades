@@ -1,10 +1,12 @@
+import { formatSignedPercent } from '../../../shared/utils/format'
 import type { ChecklistChecked, IndicatorData } from '../types/placeTrade'
-import { rsiTone } from '../utils/indicatorCalc'
+import { computeMaDistancePercent, rsiTone } from '../utils/indicatorCalc'
 import { INDICATOR_CHECKLIST_ITEMS } from '../utils/indicatorChecklistItems'
 import { ChecklistStep } from './ChecklistStep'
 import './TechnicalConfirmationStep.css'
 
 interface TechnicalConfirmationStepProps {
+  entryPrice: string
   data: IndicatorData
   onChange: (data: IndicatorData) => void
   checklistChecked: ChecklistChecked
@@ -14,7 +16,11 @@ interface TechnicalConfirmationStepProps {
 const RSI_NOTE =
   'The RSI is no less than 70, and preferably in the 80s & 90s, which will generally be the case with the better selections.'
 
+const RSI_MIN = 50
+const RSI_MAX = 90
+
 export function TechnicalConfirmationStep({
+  entryPrice,
   data,
   onChange,
   checklistChecked,
@@ -23,6 +29,9 @@ export function TechnicalConfirmationStep({
   function set<K extends keyof IndicatorData>(key: K, value: string) {
     onChange({ ...data, [key]: value })
   }
+
+  const tone = rsiTone(data.rsi)
+  const maDistance = computeMaDistancePercent(entryPrice, data.fiftyDayMa)
 
   return (
     <div className="technical-confirmation-step">
@@ -37,42 +46,52 @@ export function TechnicalConfirmationStep({
 
       <div className="technical-confirmation-step__divider" />
 
-      <p className="technical-confirmation-step__intro">
-        Capture the RSI reading on both timeframes.
-      </p>
-      <div className="technical-confirmation-step__grid">
-        <label
-          className={`technical-confirmation-step__field technical-confirmation-step__field--${rsiTone(data.weeklyRsi)}`}
-        >
-          <span className="technical-confirmation-step__label">Weekly RSI</span>
-          <input
-            type="number"
-            min="0"
-            max="100"
-            step="1"
-            className="technical-confirmation-step__input"
-            value={data.weeklyRsi}
-            onChange={(e) => set('weeklyRsi', e.target.value)}
-            placeholder="0"
-          />
-        </label>
-        <label
-          className={`technical-confirmation-step__field technical-confirmation-step__field--${rsiTone(data.dailyRsi)}`}
-        >
-          <span className="technical-confirmation-step__label">Daily RSI</span>
-          <input
-            type="number"
-            min="0"
-            max="100"
-            step="1"
-            className="technical-confirmation-step__input"
-            value={data.dailyRsi}
-            onChange={(e) => set('dailyRsi', e.target.value)}
-            placeholder="0"
-          />
-        </label>
+      <p className="technical-confirmation-step__intro">Capture the RSI reading.</p>
+      <div className="technical-confirmation-step__rsi">
+        <div className="technical-confirmation-step__rsi-header">
+          <span className="technical-confirmation-step__label">RSI</span>
+          <span className={`technical-confirmation-step__rsi-value technical-confirmation-step__rsi-value--${tone}`}>
+            {data.rsi}
+          </span>
+        </div>
+        <input
+          type="range"
+          min={RSI_MIN}
+          max={RSI_MAX}
+          step={1}
+          className={`technical-confirmation-step__slider technical-confirmation-step__slider--${tone}`}
+          value={data.rsi}
+          onChange={(e) => set('rsi', e.target.value)}
+        />
+        <div className="technical-confirmation-step__rsi-scale">
+          <span>{RSI_MIN}</span>
+          <span>{RSI_MAX}</span>
+        </div>
       </div>
       <p className="technical-confirmation-step__note">{RSI_NOTE}</p>
+
+      <div className="technical-confirmation-step__divider" />
+
+      <p className="technical-confirmation-step__intro">Capture the 50-day MA.</p>
+      <div className="technical-confirmation-step__grid">
+        <label className="technical-confirmation-step__field">
+          <span className="technical-confirmation-step__label">50-day MA</span>
+          <input
+            type="number"
+            step="0.01"
+            className="technical-confirmation-step__input"
+            value={data.fiftyDayMa}
+            onChange={(e) => set('fiftyDayMa', e.target.value)}
+            placeholder="0.00"
+          />
+        </label>
+        <div className="technical-confirmation-step__ma-distance">
+          <span className="technical-confirmation-step__label">From trading price</span>
+          <span className="technical-confirmation-step__ma-distance-value">
+            {maDistance === null ? '—' : formatSignedPercent(maDistance)}
+          </span>
+        </div>
+      </div>
     </div>
   )
 }

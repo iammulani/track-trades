@@ -35,7 +35,9 @@ checklist, then a review before it's final.
 - **Indicators — derived, live, never stored** (`utils/indicatorCalc.ts`):
   - `aboveLowPercent` = `(entry − week52Low) / week52Low × 100`
   - `belowHighPercent` = `(week52High − entry) / week52High × 100`
-  - `rsiTone(value)` — grades a single RSI reading `good` (≥80) / `caution`
+  - `computeMaDistancePercent` = `(entry − fiftyDayMa) / fiftyDayMa × 100` —
+    signed, positive when entry is above the 50-day MA.
+  - `rsiTone(value)` — grades the RSI reading `good` (≥80) / `caution`
     (70–79) / `bad` (<70), per the guideline that RSI shouldn't be below 70.
 - **Writes, on submit**:
   1. `addTrade` (from `modules/trades`) — `POST /trades` with `symbol`, `side`
@@ -74,13 +76,15 @@ a small pill button, `send` icon, next to Remove). Route:
    - **Technical Confirmation** (`TechnicalConfirmationStep`) — a 3-item MA
      checklist (`INDICATOR_CHECKLIST_ITEMS`, reuses `ChecklistStep`) — MA
      uptrend, MA stack order, 200-day MA duration — followed by a divider,
-     then Weekly RSI + Daily RSI number inputs, each field color-coded by
-     `rsiTone` (good ≥80, caution 70–79, bad <70), with the "RSI shouldn't be
-     below 70" guideline note underneath.
-   - **52-Week Range** (`WeekRangeStep`) — 52-week low/high inputs, plus two
-     live hero stats — "Above 52-week low" (good at ≥30%) and "Below 52-week
-     high" (good at ≤25%) — each colored good/bad and paired with its
-     guideline note.
+     then an RSI slider (range 50–90, step 1, defaults to 70) with a live
+     numeric readout colored by `rsiTone` (good ≥80, caution 70–79, bad <70)
+     and the "RSI shouldn't be below 70" guideline note underneath, then a
+     50-day MA price input paired with a live "from trading price" signed %
+     (via `computeMaDistancePercent`).
+   - **52-Week Range** (`WeekRangeStep`) — 52-week low/high inputs (both
+     required to proceed), plus two live hero stats — "Above 52-week low"
+     (good at ≥30%) and "Below 52-week high" (good at ≤25%) — each colored
+     good/bad and paired with its guideline note.
    - **Confirm Your Edge** (`EdgeStep`) — a thesis textarea ("what's your
      edge, why does this setup work") and a Yes/No "aligned with your
      trading plan" toggle.
@@ -99,10 +103,10 @@ a small pill button, `send` icon, next to Remove). Route:
 
 - **Step validation**: Next is disabled until the current step's required
   fields are filled — Setup needs `entryPrice` + `quantity`; Stage & Base
-  needs both a `stage` and a `base` selected; Edge needs a non-empty thesis.
-  Technical Confirmation, 52-Week Range, Checklist and Review have no hard
-  requirement (they're prompts, not gates — the indicator steps are
-  supporting data/confirmation, Checklist is a placeholder).
+  needs both a `stage` and a `base` selected; 52-Week Range needs both
+  `week52Low` and `week52High`; Edge needs a non-empty thesis. Technical
+  Confirmation, Checklist and Review have no hard requirement (they're
+  prompts, not gates — Checklist is a placeholder).
 - Risk numbers recompute on every keystroke; any missing/invalid input shows
   `—` rather than `NaN` or throwing.
 - On **Place Trade**: creates the trade, removes the watchlist item, then

@@ -1,6 +1,6 @@
 import { SideBadge } from '../../../shared/components/SideBadge'
 import { avatarColor } from '../../../shared/utils/avatarColor'
-import { formatPercent, formatPrice } from '../../../shared/utils/format'
+import { formatPercent, formatPrice, formatSignedPercent } from '../../../shared/utils/format'
 import type { WatchlistItemWithMetrics } from '../../watchlist'
 import type {
   ChecklistChecked,
@@ -10,7 +10,7 @@ import type {
   TradeParams,
 } from '../types/placeTrade'
 import { CHECKLIST_ITEMS } from '../utils/checklistItems'
-import { computeIndicatorRange } from '../utils/indicatorCalc'
+import { computeIndicatorRange, computeMaDistancePercent } from '../utils/indicatorCalc'
 import { INDICATOR_CHECKLIST_ITEMS } from '../utils/indicatorChecklistItems'
 import { BASE_OPTIONS, STAGE_OPTIONS } from '../utils/stageBaseOptions'
 import { RiskSummary } from './RiskSummary'
@@ -46,6 +46,7 @@ export function ReviewStep({
     indicatorData.week52Low,
     indicatorData.week52High,
   )
+  const maDistance = computeMaDistancePercent(tradeParams.entryPrice, indicatorData.fiftyDayMa)
 
   return (
     <div className="review-step">
@@ -114,12 +115,20 @@ export function ReviewStep({
         </span>
         <div className="review-step__grid">
           <div className="review-step__stat">
-            <span className="review-step__stat-label">Weekly RSI</span>
-            <span className="review-step__stat-value">{indicatorData.weeklyRsi || '—'}</span>
+            <span className="review-step__stat-label">RSI</span>
+            <span className="review-step__stat-value">{indicatorData.rsi || '—'}</span>
           </div>
           <div className="review-step__stat">
-            <span className="review-step__stat-label">Daily RSI</span>
-            <span className="review-step__stat-value">{indicatorData.dailyRsi || '—'}</span>
+            <span className="review-step__stat-label">50-day MA</span>
+            <span className="review-step__stat-value">
+              {indicatorData.fiftyDayMa ? formatPrice(Number(indicatorData.fiftyDayMa)) : '—'}
+            </span>
+          </div>
+          <div className="review-step__stat">
+            <span className="review-step__stat-label">From 50-day MA</span>
+            <span className="review-step__stat-value">
+              {maDistance === null ? '—' : formatSignedPercent(maDistance)}
+            </span>
           </div>
           <div className="review-step__stat">
             <span className="review-step__stat-label">Above 52-wk low</span>

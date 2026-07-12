@@ -25,6 +25,13 @@ export function computeIndicatorRange(
   return { aboveLowPercent, belowHighPercent }
 }
 
+/** How far the entry price sits from the 50-day MA — positive means above it, negative below. */
+export function computeMaDistancePercent(entryPrice: string, fiftyDayMa: string): number | null {
+  const entry = toNumber(entryPrice)
+  const ma = toNumber(fiftyDayMa)
+  return entry !== null && ma !== null && ma !== 0 ? ((entry - ma) / ma) * 100 : null
+}
+
 export type RsiTone = 'good' | 'caution' | 'bad' | 'none'
 
 /** Guideline: RSI should be no less than 70, ideally in the 80s/90s. */
