@@ -3,11 +3,12 @@ import { Icon } from '../../shared/components/Icon'
 import { PageHeader } from '../../shared/components/PageHeader'
 import { ChecklistStep } from './components/ChecklistStep'
 import { EdgeStep } from './components/EdgeStep'
-import { IndicatorsStep } from './components/IndicatorsStep'
 import { ReviewStep } from './components/ReviewStep'
 import { StageBaseStep } from './components/StageBaseStep'
 import { StepIndicator } from './components/StepIndicator'
+import { TechnicalConfirmationStep } from './components/TechnicalConfirmationStep'
 import { TradeParamsStep } from './components/TradeParamsStep'
+import { WeekRangeStep } from './components/WeekRangeStep'
 import { usePlaceTrade } from './hooks/usePlaceTrade'
 import { CHECKLIST_ITEMS } from './utils/checklistItems'
 import './PlaceTradePage.css'
@@ -83,13 +84,19 @@ export function PlaceTradePage() {
             {steps[stepIndex].id === 'stage-base' && (
               <StageBaseStep answers={stageBaseAnswers} onChange={setStageBaseAnswers} />
             )}
-            {steps[stepIndex].id === 'indicators' && (
-              <IndicatorsStep
-                entryPrice={tradeParams.entryPrice}
+            {steps[stepIndex].id === 'technical' && (
+              <TechnicalConfirmationStep
                 data={indicatorData}
                 onChange={setIndicatorData}
                 checklistChecked={indicatorChecklistChecked}
                 onToggleChecklist={toggleIndicatorChecklistItem}
+              />
+            )}
+            {steps[stepIndex].id === 'week-range' && (
+              <WeekRangeStep
+                entryPrice={tradeParams.entryPrice}
+                data={indicatorData}
+                onChange={setIndicatorData}
               />
             )}
             {steps[stepIndex].id === 'edge' && (

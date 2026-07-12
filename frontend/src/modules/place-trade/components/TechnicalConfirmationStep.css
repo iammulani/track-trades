@@ -1,0 +1,77 @@
+.technical-confirmation-step {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.technical-confirmation-step__intro {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.technical-confirmation-step__divider {
+  height: 1px;
+  background: var(--border);
+  margin: 6px 0;
+}
+
+.technical-confirmation-step__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 16px;
+}
+
+.technical-confirmation-step__field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.technical-confirmation-step__label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.technical-confirmation-step__input {
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-strong);
+  background: var(--page);
+  color: var(--text-primary);
+  font-size: 15px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  transition: border-color 0.15s;
+}
+
+.technical-confirmation-step__input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 20%, transparent);
+}
+
+.technical-confirmation-step__field--good .technical-confirmation-step__input {
+  border-color: color-mix(in srgb, var(--good) 55%, var(--border-strong));
+  color: var(--good-text);
+}
+
+.technical-confirmation-step__field--caution .technical-confirmation-step__input {
+  border-color: color-mix(in srgb, var(--amber) 55%, var(--border-strong));
+  color: var(--amber-text);
+}
+
+.technical-confirmation-step__field--bad .technical-confirmation-step__input {
+  border-color: color-mix(in srgb, var(--critical) 55%, var(--border-strong));
+  color: var(--critical-text);
+}
+
+.technical-confirmation-step__note {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}

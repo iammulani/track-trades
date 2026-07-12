@@ -18,7 +18,8 @@ import { CHECKLIST_ITEMS } from '../utils/checklistItems'
 export const STEPS = [
   { id: 'setup', title: 'Trade Setup' },
   { id: 'stage-base', title: 'Stage & Base' },
-  { id: 'indicators', title: 'Indicators' },
+  { id: 'technical', title: 'Technical Confirmation' },
+  { id: 'week-range', title: '52-Week Range' },
   { id: 'edge', title: 'Confirm Your Edge' },
   { id: 'checklist', title: 'Pre-Trade Checklist' },
   { id: 'review', title: 'Review & Place' },

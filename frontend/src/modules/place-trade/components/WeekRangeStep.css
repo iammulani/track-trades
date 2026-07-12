@@ -1,0 +1,102 @@
+.week-range-step {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.week-range-step__intro {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.week-range-step__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 16px;
+}
+
+.week-range-step__field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.week-range-step__label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.week-range-step__input {
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-strong);
+  background: var(--page);
+  color: var(--text-primary);
+  font-size: 15px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.week-range-step__input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 20%, transparent);
+}
+
+.week-range-step__hero {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.week-range-step__hero-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 16px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+}
+
+.week-range-step__hero-cell--good {
+  background: color-mix(in srgb, var(--good) 12%, transparent);
+}
+
+.week-range-step__hero-cell--bad {
+  background: color-mix(in srgb, var(--critical) 12%, transparent);
+}
+
+.week-range-step__hero-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.week-range-step__hero-value {
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1.15;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-primary);
+}
+
+.week-range-step__hero-cell--good .week-range-step__hero-value {
+  color: var(--good-text);
+}
+
+.week-range-step__hero-cell--bad .week-range-step__hero-value {
+  color: var(--critical-text);
+}
+
+.week-range-step__hero-note {
+  margin: 4px 0 0;
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
