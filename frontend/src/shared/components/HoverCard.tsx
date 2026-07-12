@@ -77,14 +77,22 @@ export function HoverCard({ trigger, children, label = 'More information' }: Hov
 
   useEffect(() => {
     if (!open) return
-    function close() {
+    function handleScroll(e: Event) {
+      // Scrolling *inside* the panel (its own overflow) shouldn't close it —
+      // only scrolling the page behind it should.
+      if (panelRef.current && e.target instanceof Node && panelRef.current.contains(e.target)) {
+        return
+      }
       setOpen(false)
     }
-    window.addEventListener('scroll', close, true)
-    window.addEventListener('resize', close)
+    function handleResize() {
+      setOpen(false)
+    }
+    window.addEventListener('scroll', handleScroll, true)
+    window.addEventListener('resize', handleResize)
     return () => {
-      window.removeEventListener('scroll', close, true)
-      window.removeEventListener('resize', close)
+      window.removeEventListener('scroll', handleScroll, true)
+      window.removeEventListener('resize', handleResize)
     }
   }, [open])
 
