@@ -1,24 +1,25 @@
 import { Icon } from '../../../shared/components/Icon'
 import type { ChecklistChecked } from '../types/placeTrade'
-import { CHECKLIST_ITEMS } from '../utils/checklistItems'
+import type { ChecklistItem } from '../utils/checklistItems'
 import './ChecklistStep.css'
 
 interface ChecklistStepProps {
+  items: ChecklistItem[]
   checked: ChecklistChecked
   onToggle: (id: string) => void
 }
 
-export function ChecklistStep({ checked, onToggle }: ChecklistStepProps) {
-  const checkedCount = CHECKLIST_ITEMS.filter((item) => checked[item.id]).length
+export function ChecklistStep({ items, checked, onToggle }: ChecklistStepProps) {
+  const checkedCount = items.filter((item) => checked[item.id]).length
 
   return (
     <div className="checklist-step">
       <p className="checklist-step__count">
-        {checkedCount} of {CHECKLIST_ITEMS.length} confirmed
+        {checkedCount} of {items.length} confirmed
       </p>
 
       <ul className="checklist-step__list">
-        {CHECKLIST_ITEMS.map((item) => {
+        {items.map((item) => {
           const isChecked = !!checked[item.id]
           return (
             <li key={item.id}>

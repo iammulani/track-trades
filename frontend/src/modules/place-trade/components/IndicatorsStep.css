@@ -1,0 +1,137 @@
+.indicators-step {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.indicators-step__section-header {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-bottom: 12px;
+}
+
+.indicators-step__section-header h3 {
+  font-size: 15px;
+}
+
+.indicators-step__section-header p {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.indicators-step__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 16px;
+}
+
+.indicators-step__field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.indicators-step__label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.indicators-step__input {
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-strong);
+  background: var(--page);
+  color: var(--text-primary);
+  font-size: 15px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  transition: border-color 0.15s;
+}
+
+.indicators-step__input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 20%, transparent);
+}
+
+.indicators-step__field--good .indicators-step__input {
+  border-color: color-mix(in srgb, var(--good) 55%, var(--border-strong));
+  color: var(--good-text);
+}
+
+.indicators-step__field--caution .indicators-step__input {
+  border-color: color-mix(in srgb, var(--amber) 55%, var(--border-strong));
+  color: var(--amber-text);
+}
+
+.indicators-step__field--bad .indicators-step__input {
+  border-color: color-mix(in srgb, var(--critical) 55%, var(--border-strong));
+  color: var(--critical-text);
+}
+
+.indicators-step__note {
+  margin: 10px 0 0;
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.indicators-step__hero {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.indicators-step__hero-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 16px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+}
+
+.indicators-step__hero-cell--good {
+  background: color-mix(in srgb, var(--good) 12%, transparent);
+}
+
+.indicators-step__hero-cell--bad {
+  background: color-mix(in srgb, var(--critical) 12%, transparent);
+}
+
+.indicators-step__hero-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.indicators-step__hero-value {
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1.15;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-primary);
+}
+
+.indicators-step__hero-cell--good .indicators-step__hero-value {
+  color: var(--good-text);
+}
+
+.indicators-step__hero-cell--bad .indicators-step__hero-value {
+  color: var(--critical-text);
+}
+
+.indicators-step__hero-note {
+  margin: 4px 0 0;
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}

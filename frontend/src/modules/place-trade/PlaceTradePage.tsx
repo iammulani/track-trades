@@ -3,11 +3,13 @@ import { Icon } from '../../shared/components/Icon'
 import { PageHeader } from '../../shared/components/PageHeader'
 import { ChecklistStep } from './components/ChecklistStep'
 import { EdgeStep } from './components/EdgeStep'
+import { IndicatorsStep } from './components/IndicatorsStep'
 import { ReviewStep } from './components/ReviewStep'
 import { StageBaseStep } from './components/StageBaseStep'
 import { StepIndicator } from './components/StepIndicator'
 import { TradeParamsStep } from './components/TradeParamsStep'
 import { usePlaceTrade } from './hooks/usePlaceTrade'
+import { CHECKLIST_ITEMS } from './utils/checklistItems'
 import './PlaceTradePage.css'
 
 export function PlaceTradePage() {
@@ -25,6 +27,10 @@ export function PlaceTradePage() {
     setTradeParams,
     stageBaseAnswers,
     setStageBaseAnswers,
+    indicatorData,
+    setIndicatorData,
+    indicatorChecklistChecked,
+    toggleIndicatorChecklistItem,
     edgeAnswers,
     setEdgeAnswers,
     checklistChecked,
@@ -77,17 +83,28 @@ export function PlaceTradePage() {
             {steps[stepIndex].id === 'stage-base' && (
               <StageBaseStep answers={stageBaseAnswers} onChange={setStageBaseAnswers} />
             )}
+            {steps[stepIndex].id === 'indicators' && (
+              <IndicatorsStep
+                entryPrice={tradeParams.entryPrice}
+                data={indicatorData}
+                onChange={setIndicatorData}
+                checklistChecked={indicatorChecklistChecked}
+                onToggleChecklist={toggleIndicatorChecklistItem}
+              />
+            )}
             {steps[stepIndex].id === 'edge' && (
               <EdgeStep answers={edgeAnswers} onChange={setEdgeAnswers} />
             )}
             {steps[stepIndex].id === 'checklist' && (
-              <ChecklistStep checked={checklistChecked} onToggle={toggleChecklistItem} />
+              <ChecklistStep items={CHECKLIST_ITEMS} checked={checklistChecked} onToggle={toggleChecklistItem} />
             )}
             {steps[stepIndex].id === 'review' && (
               <ReviewStep
                 item={item}
                 tradeParams={tradeParams}
                 stageBaseAnswers={stageBaseAnswers}
+                indicatorData={indicatorData}
+                indicatorChecklistChecked={indicatorChecklistChecked}
                 edgeAnswers={edgeAnswers}
                 checklistChecked={checklistChecked}
               />

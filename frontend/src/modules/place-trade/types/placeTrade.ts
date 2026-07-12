@@ -40,3 +40,18 @@ export const EMPTY_STAGE_BASE_ANSWERS: StageBaseAnswers = {
   stage: null,
   base: null,
 }
+
+/** Values collected in the "Indicators" step — strings while editing, parsed for the live % calcs. */
+export interface IndicatorData {
+  weeklyRsi: string
+  dailyRsi: string
+  week52Low: string
+  week52High: string
+}
+
+export const EMPTY_INDICATOR_DATA: IndicatorData = {
+  weeklyRsi: '',
+  dailyRsi: '',
+  week52Low: '',
+  week52High: '',
+}

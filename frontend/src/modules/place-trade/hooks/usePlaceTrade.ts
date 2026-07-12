@@ -4,10 +4,12 @@ import { addTrade } from '../../trades'
 import { useWatchlist } from '../../watchlist'
 import {
   EMPTY_EDGE_ANSWERS,
+  EMPTY_INDICATOR_DATA,
   EMPTY_STAGE_BASE_ANSWERS,
   EMPTY_TRADE_PARAMS,
   type ChecklistChecked,
   type EdgeAnswers,
+  type IndicatorData,
   type StageBaseAnswers,
   type TradeParams,
 } from '../types/placeTrade'
@@ -16,6 +18,7 @@ import { CHECKLIST_ITEMS } from '../utils/checklistItems'
 export const STEPS = [
   { id: 'setup', title: 'Trade Setup' },
   { id: 'stage-base', title: 'Stage & Base' },
+  { id: 'indicators', title: 'Indicators' },
   { id: 'edge', title: 'Confirm Your Edge' },
   { id: 'checklist', title: 'Pre-Trade Checklist' },
   { id: 'review', title: 'Review & Place' },
@@ -31,12 +34,18 @@ export function usePlaceTrade(watchlistId: string) {
   const [stepIndex, setStepIndex] = useState(0)
   const [tradeParams, setTradeParams] = useState<TradeParams>(EMPTY_TRADE_PARAMS)
   const [stageBaseAnswers, setStageBaseAnswers] = useState<StageBaseAnswers>(EMPTY_STAGE_BASE_ANSWERS)
+  const [indicatorData, setIndicatorData] = useState<IndicatorData>(EMPTY_INDICATOR_DATA)
+  const [indicatorChecklistChecked, setIndicatorChecklistChecked] = useState<ChecklistChecked>({})
   const [edgeAnswers, setEdgeAnswers] = useState<EdgeAnswers>(EMPTY_EDGE_ANSWERS)
   const [checklistChecked, setChecklistChecked] = useState<ChecklistChecked>({})
   const [placing, setPlacing] = useState(false)
 
   function toggleChecklistItem(id: string) {
     setChecklistChecked((prev) => ({ ...prev, [id]: !prev[id] }))
+  }
+
+  function toggleIndicatorChecklistItem(id: string) {
+    setIndicatorChecklistChecked((prev) => ({ ...prev, [id]: !prev[id] }))
   }
 
   const canProceed = useMemo(() => {
@@ -99,6 +108,10 @@ export function usePlaceTrade(watchlistId: string) {
     setTradeParams,
     stageBaseAnswers,
     setStageBaseAnswers,
+    indicatorData,
+    setIndicatorData,
+    indicatorChecklistChecked,
+    toggleIndicatorChecklistItem,
     edgeAnswers,
     setEdgeAnswers,
     checklistChecked,

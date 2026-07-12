@@ -1,14 +1,17 @@
 import { SideBadge } from '../../../shared/components/SideBadge'
 import { avatarColor } from '../../../shared/utils/avatarColor'
-import { formatPrice } from '../../../shared/utils/format'
+import { formatPercent, formatPrice } from '../../../shared/utils/format'
 import type { WatchlistItemWithMetrics } from '../../watchlist'
 import type {
   ChecklistChecked,
   EdgeAnswers,
+  IndicatorData,
   StageBaseAnswers,
   TradeParams,
 } from '../types/placeTrade'
 import { CHECKLIST_ITEMS } from '../utils/checklistItems'
+import { computeIndicatorRange } from '../utils/indicatorCalc'
+import { INDICATOR_CHECKLIST_ITEMS } from '../utils/indicatorChecklistItems'
 import { BASE_OPTIONS, STAGE_OPTIONS } from '../utils/stageBaseOptions'
 import { RiskSummary } from './RiskSummary'
 import './ReviewStep.css'
@@ -17,6 +20,8 @@ interface ReviewStepProps {
   item: WatchlistItemWithMetrics
   tradeParams: TradeParams
   stageBaseAnswers: StageBaseAnswers
+  indicatorData: IndicatorData
+  indicatorChecklistChecked: ChecklistChecked
   edgeAnswers: EdgeAnswers
   checklistChecked: ChecklistChecked
 }
@@ -25,12 +30,22 @@ export function ReviewStep({
   item,
   tradeParams,
   stageBaseAnswers,
+  indicatorData,
+  indicatorChecklistChecked,
   edgeAnswers,
   checklistChecked,
 }: ReviewStepProps) {
   const checkedCount = CHECKLIST_ITEMS.filter((c) => checklistChecked[c.id]).length
   const stage = STAGE_OPTIONS.find((s) => s.id === stageBaseAnswers.stage)
   const base = BASE_OPTIONS.find((b) => b.id === stageBaseAnswers.base)
+  const indicatorCheckedCount = INDICATOR_CHECKLIST_ITEMS.filter(
+    (c) => indicatorChecklistChecked[c.id],
+  ).length
+  const range = computeIndicatorRange(
+    tradeParams.entryPrice,
+    indicatorData.week52Low,
+    indicatorData.week52High,
+  )
 
   return (
     <div className="review-step">
@@ -88,6 +103,34 @@ export function ReviewStep({
             <span className="review-step__stage-base-label">Base</span>
             <span className={`review-step__stage-base-value review-step__stage-base-value--${base?.tone ?? 'none'}`}>
               {base ? `${base.label} — ${base.verdict}` : '—'}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div className="review-step__section">
+        <span className="review-step__section-title">
+          Indicators — {indicatorCheckedCount}/{INDICATOR_CHECKLIST_ITEMS.length} confirmed
+        </span>
+        <div className="review-step__grid">
+          <div className="review-step__stat">
+            <span className="review-step__stat-label">Weekly RSI</span>
+            <span className="review-step__stat-value">{indicatorData.weeklyRsi || '—'}</span>
+          </div>
+          <div className="review-step__stat">
+            <span className="review-step__stat-label">Daily RSI</span>
+            <span className="review-step__stat-value">{indicatorData.dailyRsi || '—'}</span>
+          </div>
+          <div className="review-step__stat">
+            <span className="review-step__stat-label">Above 52-wk low</span>
+            <span className="review-step__stat-value">
+              {range.aboveLowPercent === null ? '—' : formatPercent(range.aboveLowPercent)}
+            </span>
+          </div>
+          <div className="review-step__stat">
+            <span className="review-step__stat-label">Below 52-wk high</span>
+            <span className="review-step__stat-value">
+              {range.belowHighPercent === null ? '—' : formatPercent(range.belowHighPercent)}
             </span>
           </div>
         </div>
