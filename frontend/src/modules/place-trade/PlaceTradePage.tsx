@@ -7,6 +7,7 @@ import { StageBaseStep } from './components/StageBaseStep'
 import { StepIndicator } from './components/StepIndicator'
 import { TechnicalConfirmationStep } from './components/TechnicalConfirmationStep'
 import { TradeParamsStep } from './components/TradeParamsStep'
+import { VcpStructureStep } from './components/VcpStructureStep'
 import { WeekRangeStep } from './components/WeekRangeStep'
 import { usePlaceTrade } from './hooks/usePlaceTrade'
 import './PlaceTradePage.css'
@@ -98,13 +99,11 @@ export function PlaceTradePage() {
                 onChange={setIndicatorData}
               />
             )}
+            {steps[stepIndex].id === 'vcp-structure' && (
+              <VcpStructureStep data={vcpStructureData} onChange={setVcpStructureData} />
+            )}
             {steps[stepIndex].id === 'final-checks' && (
-              <FinalChecksStep
-                checked={finalChecksChecked}
-                onToggle={toggleFinalChecksItem}
-                vcpData={vcpStructureData}
-                onChangeVcpData={setVcpStructureData}
-              />
+              <FinalChecksStep checked={finalChecksChecked} onToggle={toggleFinalChecksItem} />
             )}
             {steps[stepIndex].id === 'review' && (
               <ReviewStep

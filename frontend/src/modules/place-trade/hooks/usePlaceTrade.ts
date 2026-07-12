@@ -19,6 +19,7 @@ export const STEPS = [
   { id: 'stage-base', title: 'Stage & Base' },
   { id: 'technical', title: 'Technical Confirmation' },
   { id: 'week-range', title: '52-Week Range' },
+  { id: 'vcp-structure', title: 'VCP Structure' },
   { id: 'final-checks', title: 'Final Checks' },
   { id: 'review', title: 'Review & Place' },
 ] as const

@@ -5,8 +5,8 @@
 The bridge from watching to trading: convert a watchlist item into a placed
 trade through a short stepper that forces a pause before pulling the
 trigger — trade parameters, then a stage/base read, then technical
-confirmation, then 52-week range, then a final overhead-supply check, then a
-review before it's final.
+confirmation, then 52-week range, then VCP structure, then a final
+overhead-supply check, then a review before it's final.
 
 ## Data
 
@@ -34,7 +34,8 @@ review before it's final.
     signed, positive when entry is above the 50-day MA.
   - `rsiTone(value)` — grades the RSI reading `good` (≥80) / `caution`
     (70–79) / `bad` (<70), per the guideline that RSI shouldn't be below 70.
-- **VCP Structure — tone only, no % calc** (`utils/finalChecksCalc.ts`), each
+- **VCP Structure — tone only, no % calc** (`utils/finalChecksCalc.ts`, used by
+  `VcpStructureStep`), each
   graded `good` / `caution` / `bad` from the captured value:
   - `weeksInBaseTone` — good 5–26 weeks, bad <5 (hasn't shaken out weak
     holders), caution >26 (losing its edge).
@@ -58,7 +59,7 @@ a small pill button, `send` icon, next to Remove). Route:
 `/watchlist/:id/place-trade`.
 
 1. **Header** (`shared/PageHeader`) — `send` icon + "Place Trade" + subtitle.
-2. **Step indicator** (`StepIndicator`) — 6 numbered steps, done ones get a
+2. **Step indicator** (`StepIndicator`) — 7 numbered steps, done ones get a
    checkmark, current is highlighted, connected by a line.
 3. **Step body** — one of:
    - **Trade Setup** (`TradeParamsStep`) — entry price, quantity, stop loss,
@@ -88,29 +89,30 @@ a small pill button, `send` icon, next to Remove). Route:
      required to proceed), plus two live hero stats — "Above 52-week low"
      (good at ≥30%) and "Below 52-week high" (good at ≤25%) — each colored
      good/bad and paired with its guideline note.
-   - **Final Checks** (`FinalChecksStep`) — two sections, built to hold more
-     as they're added:
-     - **Overhead Supply** — a 2-item checklist (`OVERHEAD_SUPPLY_CHECKLIST_ITEMS`,
-       reuses `ChecklistStep`) covering volume/price quieting down on the
-       right side of the base and enough time passing for weak holders to be
-       shaken out — plus an `i` trigger next to the heading (`shared/HoverCard`)
-       explaining the reasoning in theme-grouped sections (where supply comes
-       from, what a healthy VCP looks like, why to be patient, the warning
-       sign that supply hasn't cleared). The "contractions tightening"
-       checklist item moved out of here — see VCP Structure below.
-     - **VCP Structure** — an `i` trigger next to the heading opens a worked
-       example (Meridian Bioscience Inc. / VIVO, cited to p. 202) showing four
-       tightening contractions (31% → 17% → 8% → 3%) into the pivot. Below
-       that, three question-led capture blocks separated by dividers: *Time*
-       (weeks in base), *Price* (largest correction % and narrowest
-       right-side pullback %), and *Symmetry* (number of contractions/Ts) —
-       each block leads with the guiding question, then a number input
-       color-coded by its tone function (see Data) and a guideline note.
+   - **VCP Structure** (`VcpStructureStep`) — an `i` trigger next to the
+     heading opens a worked example (Meridian Bioscience Inc. / VIVO, cited
+     to p. 202) showing four tightening contractions (31% → 17% → 8% → 3%)
+     into the pivot. Below that, three question-led capture blocks separated
+     by dividers: *Time* (weeks in base), *Price* (largest correction % and
+     narrowest right-side pullback %), and *Symmetry* (number of
+     contractions/Ts) — each block leads with the guiding question, then a
+     number input color-coded by its tone function (see Data) and a
+     guideline note.
+   - **Final Checks** (`FinalChecksStep`) — one section so far, built to hold
+     more as they're added: **Overhead Supply** — a 2-item checklist
+     (`OVERHEAD_SUPPLY_CHECKLIST_ITEMS`, reuses `ChecklistStep`) covering
+     volume/price quieting down on the right side of the base and enough
+     time passing for weak holders to be shaken out — plus an `i` trigger
+     next to the heading (`shared/HoverCard`) explaining the reasoning in
+     theme-grouped sections (where supply comes from, what a healthy VCP
+     looks like, why to be patient, the warning sign that supply hasn't
+     cleared). The "contractions tightening" checklist item lives in VCP
+     Structure instead, as a quantitative count.
    - **Review & Place** (`ReviewStep`) — avatar + symbol + `SideBadge`,
      entry/qty/stop/target, the same live `RiskSummary`, the selected
      stage/base (colored to match their tone), the indicators summary
-     (checklist count, RSI, 50-day MA + distance, 52-week % stats), the
-     overhead-supply checklist, and the VCP Structure values — confirmed
+     (checklist count, RSI, 50-day MA + distance, 52-week % stats), the VCP
+     Structure values, and the overhead-supply checklist — confirmed
      checklist items styled distinctly from skipped ones.
 4. **Footer** — Cancel (link back to Watchlist) on the left; Back / Next on
    the right, Next replaced by **Place Trade** on the last step.
@@ -120,8 +122,8 @@ a small pill button, `send` icon, next to Remove). Route:
 - **Step validation**: Next is disabled until the current step's required
   fields are filled — Setup needs `entryPrice` + `quantity`; Stage & Base
   needs both a `stage` and a `base` selected; 52-Week Range needs both
-  `week52Low` and `week52High`. Technical Confirmation, Final Checks and
-  Review have no hard requirement (they're prompts, not gates).
+  `week52Low` and `week52High`. Technical Confirmation, VCP Structure, Final
+  Checks and Review have no hard requirement (they're prompts, not gates).
 - Risk numbers recompute on every keystroke; any missing/invalid input shows
   `—` rather than `NaN` or throwing.
 - On **Place Trade**: creates the trade, removes the watchlist item, then
@@ -154,20 +156,22 @@ frontend/src/modules/place-trade/
     ├── TechnicalConfirmationStep.tsx  # MA checklist + RSI slider + 50-day MA capture
     ├── WeekRangeStep.tsx              # 52-week low/high capture + live % stats
     ├── ChecklistStep.tsx              # renders a given `items` list as toggleable checkboxes
-    ├── FinalChecksStep.tsx            # overhead-supply checklist + hover-card reasoning + VCP Structure capture
+    ├── VcpStructureStep.tsx           # time/price/symmetry capture + hover-card worked example
+    ├── FinalChecksStep.tsx            # overhead-supply checklist + hover-card reasoning
     └── ReviewStep.tsx                 # final summary before submit
 ```
 
 Depends on `modules/trades` (`addTrade`, `NewTrade`) and `modules/watchlist`
 (`useWatchlist`, `WatchlistItemWithMetrics`, `WatchSide`) — both now export
 what's needed through their `index.ts` barrels. Also uses `shared/HoverCard`
-for the stage/base and overhead-supply info panels — it sizes itself to the
-content (up to 460px wide, scrolling internally past ~520px tall) and picks
-whichever side/direction has room, so it always stays fully on-screen.
-`ChecklistStep` takes its `items` as a prop so it's reused across Technical
-Confirmation's MA checks and Final Checks' overhead-supply checks.
+for the stage/base, VCP Structure, and overhead-supply info panels — it
+sizes itself to the content (up to 460px wide, scrolling internally past
+~520px tall) and picks whichever side/direction has room, so it always
+stays fully on-screen. `ChecklistStep` takes its `items` as a prop so it's
+reused across Technical Confirmation's MA checks and Final Checks'
+overhead-supply checks.
 
 **Not yet wired to the backend:** the selected `stage`/`base` and all
-Technical Confirmation / 52-Week Range / Final Checks data aren't included in
-the trade written on submit — UI-only for now. Follow-up work will decide how
-(or whether) they should be persisted on the trade.
+Technical Confirmation / 52-Week Range / VCP Structure / Final Checks data
+aren't included in the trade written on submit — UI-only for now. Follow-up
+work will decide how (or whether) they should be persisted on the trade.

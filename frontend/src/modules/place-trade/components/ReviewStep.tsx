@@ -148,20 +148,6 @@ export function ReviewStep({
       </div>
 
       <div className="review-step__section">
-        <span className="review-step__section-title">
-          Overhead Supply — {finalChecksCheckedCount}/{OVERHEAD_SUPPLY_CHECKLIST_ITEMS.length}{' '}
-          confirmed
-        </span>
-        <ul className="review-step__checklist">
-          {OVERHEAD_SUPPLY_CHECKLIST_ITEMS.map((c) => (
-            <li key={c.id} className={finalChecksChecked[c.id] ? 'is-checked' : 'is-unchecked'}>
-              {c.label}
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      <div className="review-step__section">
         <span className="review-step__section-title">VCP Structure</span>
         <div className="review-step__grid">
           <div className="review-step__stat">
@@ -191,6 +177,20 @@ export function ReviewStep({
             </span>
           </div>
         </div>
+      </div>
+
+      <div className="review-step__section">
+        <span className="review-step__section-title">
+          Overhead Supply — {finalChecksCheckedCount}/{OVERHEAD_SUPPLY_CHECKLIST_ITEMS.length}{' '}
+          confirmed
+        </span>
+        <ul className="review-step__checklist">
+          {OVERHEAD_SUPPLY_CHECKLIST_ITEMS.map((c) => (
+            <li key={c.id} className={finalChecksChecked[c.id] ? 'is-checked' : 'is-unchecked'}>
+              {c.label}
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   )
