@@ -28,6 +28,75 @@
   margin-bottom: 2px;
 }
 
+.review-step__rating {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 18px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+}
+
+.review-step__rating--good {
+  background: color-mix(in srgb, var(--good) 12%, transparent);
+}
+
+.review-step__rating--caution {
+  background: color-mix(in srgb, var(--amber) 12%, transparent);
+}
+
+.review-step__rating--bad {
+  background: color-mix(in srgb, var(--critical) 12%, transparent);
+}
+
+.review-step__rating-stars {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.review-step__rating-star {
+  color: var(--border-strong);
+  fill: none;
+}
+
+.review-step__rating-star.is-filled {
+  color: var(--amber);
+  fill: var(--amber);
+}
+
+.review-step__rating-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.review-step__rating-score {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.2;
+}
+
+.review-step__rating-verdict {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.review-step__rating--good .review-step__rating-verdict {
+  color: var(--good-text);
+}
+
+.review-step__rating--caution .review-step__rating-verdict {
+  color: var(--amber-text);
+}
+
+.review-step__rating--bad .review-step__rating-verdict {
+  color: var(--critical-text);
+}
+
 .review-step__grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);

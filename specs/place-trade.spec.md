@@ -44,6 +44,18 @@ overhead-supply check, then a review before it's final.
     right-most contraction should be tight going into the pivot).
   - `contractionCountTone` — good 2–4 (a proper VCP), bad <2 (no tightening
     shown yet), caution ≥5 (base getting choppy).
+- **Trade Rating — derived, live, never stored** (`utils/tradeRating.ts`):
+  `computeTradeRating()` scores 7 independent pass/fail criteria (1 star
+  each), one reusing each step's own tone/threshold logic:
+  1. Risk : Reward ≥ 2 (Trade Setup)
+  2. Stage tone is `good`/`best` (Stage & Base)
+  3. Base tone is `good`/`best` (Stage & Base)
+  4. MA checklist fully confirmed AND `rsiTone` is `good` (Technical Confirmation)
+  5. Both `aboveLowPercent` ≥30% and `belowHighPercent` ≤25% (52-Week Range)
+  6. All four VCP tone functions are `good` (VCP Structure)
+  7. Both Final Checks checklists fully confirmed
+  `ratingVerdict()` reads the score as a quick label: "Excellent setup" (≥85%),
+  "Good setup" (≥50%), or "Weak setup — reconsider" (below that).
 - **Writes, on submit**:
   1. `addTrade` (from `modules/trades`) — `POST /trades` with `symbol`, `side`
      (both carried over from the watchlist item), `quantity`, `entryPrice`,
@@ -59,9 +71,19 @@ a small pill button, `send` icon, next to Remove). Route:
 `/watchlist/:id/place-trade`.
 
 1. **Header** (`shared/PageHeader`) — `send` icon + "Place Trade" + subtitle.
-2. **Step indicator** (`StepIndicator`) — 7 numbered steps, done ones get a
-   checkmark, current is highlighted, connected by a line.
-3. **Step body** — one of:
+2. **Step indicator** (`StepIndicator`) — 7 numbered dots only (no text
+   labels — they no longer fit once there were 7 steps), done ones get a
+   checkmark, current is highlighted, connected by a line. Each dot carries
+   its step title as a native tooltip; the current step's full title is
+   shown separately as the page heading below.
+3. **Trade Rating** (`TradeRatingBadge`) — sits next to the symbol in the
+   step-title row on every step, and again (bigger, with a verdict label) at
+   the top of Review. Shows filled/empty star icons plus an "N/7" count from
+   `computeTradeRating()`, live across whatever's been entered so far. An `i`
+   hover-card (via `HoverCard`'s `triggerClassName="hover-card__trigger--plain"`
+   escape hatch, since the default trigger is a small fixed-size circle)
+   lists all 7 criteria with a check/x per one.
+4. **Step body** — one of:
    - **Trade Setup** (`TradeParamsStep`) — entry price, quantity, stop loss,
      target (optional), with a live `RiskSummary` panel underneath. The panel
      leads with two large hero figures — "If stopped out" / "If target hit"
@@ -121,7 +143,7 @@ a small pill button, `send` icon, next to Remove). Route:
      Structure values, the overhead-supply checklist, and the
      breakout-confirmation checklist — confirmed checklist items styled
      distinctly from skipped ones.
-4. **Footer** — Cancel (link back to Watchlist) on the left; Back / Next on
+5. **Footer** — Cancel (link back to Watchlist) on the left; Back / Next on
    the right, Next replaced by **Place Trade** on the last step.
 
 ## Behaviour
@@ -154,9 +176,11 @@ frontend/src/modules/place-trade/
 │   ├── finalChecksItems.ts           # OVERHEAD_SUPPLY_CHECKLIST_ITEMS, BREAKOUT_CONFIRMATION_CHECKLIST_ITEMS
 │   ├── finalChecksCalc.ts            # weeksInBaseTone(), largestCorrectionTone(), narrowestPullbackTone(), contractionCountTone()
 │   ├── riskCalc.ts                   # computeRisk(side, params) -> RiskCalc
-│   └── stageBaseOptions.ts           # STAGE_OPTIONS / BASE_OPTIONS static reference content
+│   ├── stageBaseOptions.ts           # STAGE_OPTIONS / BASE_OPTIONS static reference content
+│   └── tradeRating.ts                # computeTradeRating(), ratingVerdict()
 └── components/
-    ├── StepIndicator.tsx              # numbered progress row
+    ├── StepIndicator.tsx              # numbered progress row (dots only, no labels)
+    ├── TradeRatingBadge.tsx            # star row + N/7 count + hover-card breakdown
     ├── TradeParamsStep.tsx            # entry/qty/stop/target inputs
     ├── RiskSummary.tsx                # live risk/reward panel (used in Setup and Review)
     ├── StageBaseStep.tsx              # stage/base single-select option lists + hover-card info
@@ -165,7 +189,7 @@ frontend/src/modules/place-trade/
     ├── ChecklistStep.tsx              # renders a given `items` list as toggleable checkboxes
     ├── VcpStructureStep.tsx           # time/price/symmetry capture + hover-card worked example
     ├── FinalChecksStep.tsx            # overhead-supply checklist + hover-card reasoning
-    └── ReviewStep.tsx                 # final summary before submit
+    └── ReviewStep.tsx                 # final summary before submit, incl. the big rating banner
 ```
 
 Depends on `modules/trades` (`addTrade`, `NewTrade`) and `modules/watchlist`

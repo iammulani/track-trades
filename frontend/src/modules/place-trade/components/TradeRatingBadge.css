@@ -1,0 +1,86 @@
+.trade-rating-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+}
+
+.trade-rating-badge__stars {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.trade-rating-badge__star {
+  color: var(--border-strong);
+  fill: none;
+}
+
+.trade-rating-badge__star.is-filled {
+  color: var(--amber);
+  fill: var(--amber);
+}
+
+.trade-rating-badge__count {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- Hover-card panel content --- */
+
+.trade-rating-details {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.trade-rating-details__heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.trade-rating-details__score {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--amber-text);
+}
+
+.trade-rating-details ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+}
+
+.trade-rating-details li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-secondary);
+}
+
+.trade-rating-details li.is-met {
+  color: var(--text-primary);
+}
+
+.trade-rating-details li.is-met svg {
+  color: var(--good-text);
+  flex-shrink: 0;
+}
+
+.trade-rating-details li.is-unmet svg {
+  color: var(--text-muted);
+  flex-shrink: 0;
+}

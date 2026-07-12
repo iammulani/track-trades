@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { Icon } from '../../shared/components/Icon'
 import { PageHeader } from '../../shared/components/PageHeader'
@@ -7,9 +8,11 @@ import { StageBaseStep } from './components/StageBaseStep'
 import { StepIndicator } from './components/StepIndicator'
 import { TechnicalConfirmationStep } from './components/TechnicalConfirmationStep'
 import { TradeParamsStep } from './components/TradeParamsStep'
+import { TradeRatingBadge } from './components/TradeRatingBadge'
 import { VcpStructureStep } from './components/VcpStructureStep'
 import { WeekRangeStep } from './components/WeekRangeStep'
 import { usePlaceTrade } from './hooks/usePlaceTrade'
+import { computeTradeRating } from './utils/tradeRating'
 import './PlaceTradePage.css'
 
 export function PlaceTradePage() {
@@ -42,6 +45,28 @@ export function PlaceTradePage() {
   const isFirstStep = stepIndex === 0
   const isLastStep = stepIndex === steps.length - 1
 
+  const rating = useMemo(
+    () =>
+      computeTradeRating({
+        side: item?.side ?? 'long',
+        tradeParams,
+        stageBaseAnswers,
+        indicatorData,
+        indicatorChecklistChecked,
+        vcpStructureData,
+        finalChecksChecked,
+      }),
+    [
+      item,
+      tradeParams,
+      stageBaseAnswers,
+      indicatorData,
+      indicatorChecklistChecked,
+      vcpStructureData,
+      finalChecksChecked,
+    ],
+  )
+
   return (
     <section className="place-trade-page">
       <PageHeader
@@ -73,7 +98,10 @@ export function PlaceTradePage() {
 
           <div className="place-trade-page__step-title">
             <h2>{steps[stepIndex].title}</h2>
-            <span className="place-trade-page__step-symbol">{item.symbol}</span>
+            <div className="place-trade-page__step-meta">
+              <TradeRatingBadge rating={rating} />
+              <span className="place-trade-page__step-symbol">{item.symbol}</span>
+            </div>
           </div>
 
           <div className="place-trade-page__step-body">
@@ -114,6 +142,7 @@ export function PlaceTradePage() {
                 indicatorChecklistChecked={indicatorChecklistChecked}
                 finalChecksChecked={finalChecksChecked}
                 vcpStructureData={vcpStructureData}
+                rating={rating}
               />
             )}
           </div>

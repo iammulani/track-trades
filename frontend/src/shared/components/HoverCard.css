@@ -32,6 +32,22 @@
   background: color-mix(in srgb, var(--accent) 12%, transparent);
 }
 
+.hover-card__trigger--plain {
+  width: auto;
+  height: auto;
+  border-radius: var(--radius-sm);
+  border: none;
+  background: transparent;
+  color: inherit;
+}
+
+.hover-card__trigger--plain:hover,
+.hover-card__trigger--plain:focus-visible {
+  border-color: transparent;
+  color: inherit;
+  background: var(--surface-2);
+}
+
 .hover-card__panel {
   position: fixed;
   z-index: 60;

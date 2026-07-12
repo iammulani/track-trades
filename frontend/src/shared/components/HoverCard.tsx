@@ -7,6 +7,9 @@ interface HoverCardProps {
   /** Rich panel content — paragraphs, lists, icons, whatever the info needs. */
   children: ReactNode
   label?: string
+  /** Extra class on the trigger button — pass 'hover-card__trigger--plain' to
+   * drop the default small circular icon-button styling for bigger triggers. */
+  triggerClassName?: string
 }
 
 const VIEWPORT_MARGIN = 12
@@ -15,7 +18,12 @@ const CLOSE_DELAY = 120
 /** Reveals a rich content panel on hover/focus — not a native title tooltip,
  * so it can hold headings, paragraphs, icons and lists. Repositions itself
  * (flips above, clamps horizontally) so it always stays fully on-screen. */
-export function HoverCard({ trigger, children, label = 'More information' }: HoverCardProps) {
+export function HoverCard({
+  trigger,
+  children,
+  label = 'More information',
+  triggerClassName,
+}: HoverCardProps) {
   const triggerRef = useRef<HTMLButtonElement>(null)
   const panelRef = useRef<HTMLDivElement>(null)
   const closeTimer = useRef<ReturnType<typeof setTimeout>>()
@@ -103,7 +111,7 @@ export function HoverCard({ trigger, children, label = 'More information' }: Hov
       <button
         ref={triggerRef}
         type="button"
-        className="hover-card__trigger"
+        className={`hover-card__trigger${triggerClassName ? ` ${triggerClassName}` : ''}`}
         aria-label={label}
         onMouseEnter={openPanel}
         onMouseLeave={scheduleClose}

@@ -45,6 +45,12 @@
   font-size: 19px;
 }
 
+.place-trade-page__step-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
 .place-trade-page__step-symbol {
   font-size: 13px;
   font-weight: 700;

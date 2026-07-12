@@ -1,3 +1,4 @@
+import { Icon } from '../../../shared/components/Icon'
 import { SideBadge } from '../../../shared/components/SideBadge'
 import { avatarColor } from '../../../shared/utils/avatarColor'
 import { formatPercent, formatPrice, formatSignedPercent } from '../../../shared/utils/format'
@@ -16,6 +17,7 @@ import {
 import { computeIndicatorRange, computeMaDistancePercent } from '../utils/indicatorCalc'
 import { INDICATOR_CHECKLIST_ITEMS } from '../utils/indicatorChecklistItems'
 import { BASE_OPTIONS, STAGE_OPTIONS } from '../utils/stageBaseOptions'
+import { ratingVerdict, type TradeRating } from '../utils/tradeRating'
 import { RiskSummary } from './RiskSummary'
 import './ReviewStep.css'
 
@@ -27,6 +29,7 @@ interface ReviewStepProps {
   indicatorChecklistChecked: ChecklistChecked
   finalChecksChecked: ChecklistChecked
   vcpStructureData: VcpStructureData
+  rating: TradeRating
 }
 
 export function ReviewStep({
@@ -37,7 +40,9 @@ export function ReviewStep({
   indicatorChecklistChecked,
   finalChecksChecked,
   vcpStructureData,
+  rating,
 }: ReviewStepProps) {
+  const verdict = ratingVerdict(rating)
   const stage = STAGE_OPTIONS.find((s) => s.id === stageBaseAnswers.stage)
   const base = BASE_OPTIONS.find((b) => b.id === stageBaseAnswers.base)
   const indicatorCheckedCount = INDICATOR_CHECKLIST_ITEMS.filter(
@@ -69,6 +74,25 @@ export function ReviewStep({
         <div>
           <div className="review-step__symbol">{item.symbol}</div>
           <SideBadge side={item.side} />
+        </div>
+      </div>
+
+      <div className={`review-step__rating review-step__rating--${verdict.tone}`}>
+        <div className="review-step__rating-stars">
+          {Array.from({ length: rating.total }, (_, i) => (
+            <Icon
+              key={i}
+              name="star"
+              size={22}
+              className={`review-step__rating-star${i < rating.earned ? ' is-filled' : ''}`}
+            />
+          ))}
+        </div>
+        <div className="review-step__rating-text">
+          <span className="review-step__rating-score">
+            {rating.earned}/{rating.total}
+          </span>
+          <span className="review-step__rating-verdict">{verdict.label}</span>
         </div>
       </div>
 
