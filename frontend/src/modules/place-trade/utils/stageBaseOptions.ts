@@ -65,16 +65,15 @@ export const STAGE_OPTIONS: RiskOption<Stage>[] = [
   {
     id: 'transition-1-2',
     label: 'Transitioning 1 → 2',
-    verdict: 'Really good trade',
-    tone: 'best',
-    summary: 'There are more up weeks on volume than down on volumes.',
+    verdict: 'Wait & watch',
+    tone: 'caution',
+    summary:
+      'The stock price is above 150 day and 200 day MA. The 200 day MA has turned up. There are more up weeks on volume than down on volumes.',
     detailSections: [
       {
         icon: 'trending',
         heading: 'Transition criteria',
         points: [
-          'The stock price is above 150 day and 200 day MA.',
-          'The 200 day MA has turned up.',
           'A series of higher highs and higher lows has occurred.',
           'Large up weeks on volume spikes are contrasted by low volume on pullbacks.',
         ],
@@ -84,32 +83,39 @@ export const STAGE_OPTIONS: RiskOption<Stage>[] = [
   {
     id: 'stage-2',
     label: 'Stage 2',
-    verdict: 'Good trade',
-    tone: 'good',
-    summary: 'Established uptrend — higher highs and higher lows above a rising moving average.',
+    verdict: 'Should trade',
+    tone: 'best',
+    summary:
+      'A proper stage 2 will show significant volume. The share price may have doubled or even tripled at this point.',
     detailSections: [
       {
-        icon: 'info',
-        heading: 'Overview',
+        icon: 'layers',
+        heading: 'Moving averages',
         points: [
-          "The stock is in a confirmed markup phase. Price stays above a rising moving average, pulls back to support and holds, then continues higher. This is the 'buy the dip in an uptrend' phase — still favorable, just not as fresh as the breakout itself.",
+          'The stock price is above its 200 (40 week) day MA.',
+          'The 200 day MA itself is in an uptrend. The 150 day (30 week) MA is above the 200 day (40 week) MA. Short term MAs are above long term MAs (e.g. 50 day MA is above the 150 day MA).',
         ],
       },
       {
-        icon: 'check',
-        heading: 'What it looks like',
+        icon: 'trending',
+        heading: 'Price action',
         points: [
-          'Price consistently above a rising 30-week/150-day MA',
-          'Pullbacks are shallow and bought quickly',
-          'Volume expands on up days, contracts on down days',
+          'The stock price is in a clear uptrend, defined by higher highs & higher lows in a staircase pattern.',
         ],
       },
       {
-        icon: 'alert',
-        heading: 'Watch out for',
+        icon: 'bars',
+        heading: 'Volume',
         points: [
-          'Buying right into resistance on an extended run with no pullback',
-          'Ignoring signs the advance is decelerating (narrowing ranges, fading volume)',
+          'Volume spikes on big up days and big up weeks are contrasted by volume contractions during normal price pullbacks.',
+          'A proper stage 2 will show significant volume as the stock is in strong demand on big up days & up weeks, and volume will be relatively light during pullbacks.',
+        ],
+      },
+      {
+        icon: 'arrowUpRight',
+        heading: 'Magnitude',
+        points: [
+          'The share price may have doubled or even tripled at this point; however, this may be only the beginning.',
         ],
       },
     ],
