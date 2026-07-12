@@ -6,10 +6,12 @@ import {
   EMPTY_INDICATOR_DATA,
   EMPTY_STAGE_BASE_ANSWERS,
   EMPTY_TRADE_PARAMS,
+  EMPTY_VCP_STRUCTURE_DATA,
   type ChecklistChecked,
   type IndicatorData,
   type StageBaseAnswers,
   type TradeParams,
+  type VcpStructureData,
 } from '../types/placeTrade'
 
 export const STEPS = [
@@ -34,6 +36,7 @@ export function usePlaceTrade(watchlistId: string) {
   const [indicatorData, setIndicatorData] = useState<IndicatorData>(EMPTY_INDICATOR_DATA)
   const [indicatorChecklistChecked, setIndicatorChecklistChecked] = useState<ChecklistChecked>({})
   const [finalChecksChecked, setFinalChecksChecked] = useState<ChecklistChecked>({})
+  const [vcpStructureData, setVcpStructureData] = useState<VcpStructureData>(EMPTY_VCP_STRUCTURE_DATA)
   const [placing, setPlacing] = useState(false)
 
   function toggleIndicatorChecklistItem(id: string) {
@@ -101,6 +104,8 @@ export function usePlaceTrade(watchlistId: string) {
     toggleIndicatorChecklistItem,
     finalChecksChecked,
     toggleFinalChecksItem,
+    vcpStructureData,
+    setVcpStructureData,
     placing,
     placeTrade,
   }

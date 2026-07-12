@@ -1,6 +1,6 @@
 import { HoverCard } from '../../../shared/components/HoverCard'
 import { Icon } from '../../../shared/components/Icon'
-import type { ChecklistChecked } from '../types/placeTrade'
+import type { ChecklistChecked, VcpStructureData } from '../types/placeTrade'
 import { OVERHEAD_SUPPLY_CHECKLIST_ITEMS } from '../utils/finalChecksItems'
 import { ChecklistStep } from './ChecklistStep'
 import './FinalChecksStep.css'
@@ -8,9 +8,20 @@ import './FinalChecksStep.css'
 interface FinalChecksStepProps {
   checked: ChecklistChecked
   onToggle: (id: string) => void
+  vcpData: VcpStructureData
+  onChangeVcpData: (data: VcpStructureData) => void
 }
 
-export function FinalChecksStep({ checked, onToggle }: FinalChecksStepProps) {
+export function FinalChecksStep({
+  checked,
+  onToggle,
+  vcpData,
+  onChangeVcpData,
+}: FinalChecksStepProps) {
+  function set<K extends keyof VcpStructureData>(key: K, value: string) {
+    onChangeVcpData({ ...vcpData, [key]: value })
+  }
+
   return (
     <div className="final-checks-step">
       <section className="final-checks-step__section">
@@ -99,6 +110,89 @@ export function FinalChecksStep({ checked, onToggle }: FinalChecksStepProps) {
           checked={checked}
           onToggle={onToggle}
         />
+      </section>
+
+      <section className="final-checks-step__section">
+        <div className="final-checks-step__section-header">
+          <h3>VCP Structure</h3>
+          <p>Capture the shape of the base — time, price, and symmetry.</p>
+        </div>
+
+        <div className="final-checks-step__vcp-block">
+          <span className="final-checks-step__vcp-label">Time</span>
+          <p className="final-checks-step__vcp-question">
+            How many weeks have passed since the base started?
+          </p>
+          <label className="final-checks-step__field">
+            <span className="final-checks-step__input-label">Weeks in base</span>
+            <input
+              type="number"
+              min="0"
+              step="1"
+              className="final-checks-step__input"
+              value={vcpData.weeksInBase}
+              onChange={(e) => set('weeksInBase', e.target.value)}
+              placeholder="0"
+            />
+          </label>
+        </div>
+
+        <div className="final-checks-step__divider" />
+
+        <div className="final-checks-step__vcp-block">
+          <span className="final-checks-step__vcp-label">Price</span>
+          <p className="final-checks-step__vcp-question">
+            How deep was the largest correction, and how narrow was the smallest pullback at the
+            very right of the price base?
+          </p>
+          <div className="final-checks-step__grid">
+            <label className="final-checks-step__field">
+              <span className="final-checks-step__input-label">Largest correction (%)</span>
+              <input
+                type="number"
+                min="0"
+                step="1"
+                className="final-checks-step__input"
+                value={vcpData.largestCorrectionPercent}
+                onChange={(e) => set('largestCorrectionPercent', e.target.value)}
+                placeholder="0"
+              />
+            </label>
+            <label className="final-checks-step__field">
+              <span className="final-checks-step__input-label">Narrowest pullback (%)</span>
+              <input
+                type="number"
+                min="0"
+                step="1"
+                className="final-checks-step__input"
+                value={vcpData.narrowestPullbackPercent}
+                onChange={(e) => set('narrowestPullbackPercent', e.target.value)}
+                placeholder="0"
+              />
+            </label>
+          </div>
+        </div>
+
+        <div className="final-checks-step__divider" />
+
+        <div className="final-checks-step__vcp-block">
+          <span className="final-checks-step__vcp-label">Symmetry</span>
+          <p className="final-checks-step__vcp-question">
+            How many contractions (Ts) did the stock go through during the basing process?
+          </p>
+          <label className="final-checks-step__field">
+            <span className="final-checks-step__input-label">Number of contractions</span>
+            <input
+              type="number"
+              min="0"
+              step="1"
+              className="final-checks-step__input"
+              value={vcpData.contractionCount}
+              onChange={(e) => set('contractionCount', e.target.value)}
+              placeholder="0"
+            />
+          </label>
+        </div>
       </section>
     </div>
   )

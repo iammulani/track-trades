@@ -2,7 +2,13 @@ import { SideBadge } from '../../../shared/components/SideBadge'
 import { avatarColor } from '../../../shared/utils/avatarColor'
 import { formatPercent, formatPrice, formatSignedPercent } from '../../../shared/utils/format'
 import type { WatchlistItemWithMetrics } from '../../watchlist'
-import type { ChecklistChecked, IndicatorData, StageBaseAnswers, TradeParams } from '../types/placeTrade'
+import type {
+  ChecklistChecked,
+  IndicatorData,
+  StageBaseAnswers,
+  TradeParams,
+  VcpStructureData,
+} from '../types/placeTrade'
 import { OVERHEAD_SUPPLY_CHECKLIST_ITEMS } from '../utils/finalChecksItems'
 import { computeIndicatorRange, computeMaDistancePercent } from '../utils/indicatorCalc'
 import { INDICATOR_CHECKLIST_ITEMS } from '../utils/indicatorChecklistItems'
@@ -17,6 +23,7 @@ interface ReviewStepProps {
   indicatorData: IndicatorData
   indicatorChecklistChecked: ChecklistChecked
   finalChecksChecked: ChecklistChecked
+  vcpStructureData: VcpStructureData
 }
 
 export function ReviewStep({
@@ -26,6 +33,7 @@ export function ReviewStep({
   indicatorData,
   indicatorChecklistChecked,
   finalChecksChecked,
+  vcpStructureData,
 }: ReviewStepProps) {
   const stage = STAGE_OPTIONS.find((s) => s.id === stageBaseAnswers.stage)
   const base = BASE_OPTIONS.find((b) => b.id === stageBaseAnswers.base)
@@ -151,6 +159,38 @@ export function ReviewStep({
             </li>
           ))}
         </ul>
+      </div>
+
+      <div className="review-step__section">
+        <span className="review-step__section-title">VCP Structure</span>
+        <div className="review-step__grid">
+          <div className="review-step__stat">
+            <span className="review-step__stat-label">Weeks in base</span>
+            <span className="review-step__stat-value">{vcpStructureData.weeksInBase || '—'}</span>
+          </div>
+          <div className="review-step__stat">
+            <span className="review-step__stat-label">Largest correction</span>
+            <span className="review-step__stat-value">
+              {vcpStructureData.largestCorrectionPercent
+                ? `${vcpStructureData.largestCorrectionPercent}%`
+                : '—'}
+            </span>
+          </div>
+          <div className="review-step__stat">
+            <span className="review-step__stat-label">Narrowest pullback</span>
+            <span className="review-step__stat-value">
+              {vcpStructureData.narrowestPullbackPercent
+                ? `${vcpStructureData.narrowestPullbackPercent}%`
+                : '—'}
+            </span>
+          </div>
+          <div className="review-step__stat">
+            <span className="review-step__stat-label">Contractions</span>
+            <span className="review-step__stat-value">
+              {vcpStructureData.contractionCount || '—'}
+            </span>
+          </div>
+        </div>
       </div>
     </div>
   )

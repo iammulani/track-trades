@@ -34,6 +34,9 @@ review before it's final.
     signed, positive when entry is above the 50-day MA.
   - `rsiTone(value)` — grades the RSI reading `good` (≥80) / `caution`
     (70–79) / `bad` (<70), per the guideline that RSI shouldn't be below 70.
+- **VCP Structure data** — plain captured values (`weeksInBase`,
+  `largestCorrectionPercent`, `narrowestPullbackPercent`, `contractionCount`),
+  no derived calc; shown as-is on Review.
 - **Writes, on submit**:
   1. `addTrade` (from `modules/trades`) — `POST /trades` with `symbol`, `side`
      (both carried over from the watchlist item), `quantity`, `entryPrice`,
@@ -79,21 +82,27 @@ a small pill button, `send` icon, next to Remove). Route:
      required to proceed), plus two live hero stats — "Above 52-week low"
      (good at ≥30%) and "Below 52-week high" (good at ≤25%) — each colored
      good/bad and paired with its guideline note.
-   - **Final Checks** (`FinalChecksStep`) — one section so far, built to hold
-     more as they're added: **Overhead Supply** — a 3-item checklist
-     (`OVERHEAD_SUPPLY_CHECKLIST_ITEMS`, reuses `ChecklistStep`) covering VCP
-     contraction tightening, volume/price quieting down on the right side of
-     the base, and enough time passing for weak holders to be shaken out —
-     plus an `i` trigger next to the heading (`shared/HoverCard`) explaining
-     the reasoning in theme-grouped sections (where supply comes from, what a
-     healthy VCP looks like, why to be patient, the warning sign that supply
-     hasn't cleared).
+   - **Final Checks** (`FinalChecksStep`) — two sections, built to hold more
+     as they're added:
+     - **Overhead Supply** — a 2-item checklist (`OVERHEAD_SUPPLY_CHECKLIST_ITEMS`,
+       reuses `ChecklistStep`) covering volume/price quieting down on the
+       right side of the base and enough time passing for weak holders to be
+       shaken out — plus an `i` trigger next to the heading (`shared/HoverCard`)
+       explaining the reasoning in theme-grouped sections (where supply comes
+       from, what a healthy VCP looks like, why to be patient, the warning
+       sign that supply hasn't cleared). The "contractions tightening"
+       checklist item moved out of here — see VCP Structure below.
+     - **VCP Structure** — three question-led capture blocks separated by
+       dividers: *Time* (weeks in base), *Price* (largest correction % and
+       narrowest right-side pullback %), and *Symmetry* (number of
+       contractions/Ts) — each block leads with the guiding question, then a
+       plain number input.
    - **Review & Place** (`ReviewStep`) — avatar + symbol + `SideBadge`,
      entry/qty/stop/target, the same live `RiskSummary`, the selected
      stage/base (colored to match their tone), the indicators summary
-     (checklist count, RSI, 50-day MA + distance, 52-week % stats), and the
-     overhead-supply checklist — confirmed items styled distinctly from
-     skipped ones.
+     (checklist count, RSI, 50-day MA + distance, 52-week % stats), the
+     overhead-supply checklist, and the VCP Structure values — confirmed
+     checklist items styled distinctly from skipped ones.
 4. **Footer** — Cancel (link back to Watchlist) on the left; Back / Next on
    the right, Next replaced by **Place Trade** on the last step.
 
@@ -118,7 +127,7 @@ frontend/src/modules/place-trade/
 ├── PlaceTradePage.tsx           # loads the item, renders indicator + current step + footer nav
 ├── PlaceTradePage.css
 ├── index.ts                     # exports PlaceTradePage
-├── types/placeTrade.ts          # TradeParams, StageBaseAnswers, IndicatorData, ChecklistChecked
+├── types/placeTrade.ts          # TradeParams, StageBaseAnswers, IndicatorData, VcpStructureData, ChecklistChecked
 ├── hooks/usePlaceTrade.ts       # step state, form state, canProceed, placeTrade()
 ├── utils/
 │   ├── checklistItems.ts             # ChecklistItem — shared shape for every step's checklist
@@ -135,7 +144,7 @@ frontend/src/modules/place-trade/
     ├── TechnicalConfirmationStep.tsx  # MA checklist + RSI slider + 50-day MA capture
     ├── WeekRangeStep.tsx              # 52-week low/high capture + live % stats
     ├── ChecklistStep.tsx              # renders a given `items` list as toggleable checkboxes
-    ├── FinalChecksStep.tsx            # overhead-supply checklist + hover-card reasoning
+    ├── FinalChecksStep.tsx            # overhead-supply checklist + hover-card reasoning + VCP Structure capture
     └── ReviewStep.tsx                 # final summary before submit
 ```
 

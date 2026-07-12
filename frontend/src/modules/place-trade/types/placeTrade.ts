@@ -45,3 +45,19 @@ export const EMPTY_INDICATOR_DATA: IndicatorData = {
   week52Low: '',
   week52High: '',
 }
+
+/** Values collected in the "Final Checks" step's VCP Structure section —
+ * strings while editing. */
+export interface VcpStructureData {
+  weeksInBase: string
+  largestCorrectionPercent: string
+  narrowestPullbackPercent: string
+  contractionCount: string
+}
+
+export const EMPTY_VCP_STRUCTURE_DATA: VcpStructureData = {
+  weeksInBase: '',
+  largestCorrectionPercent: '',
+  narrowestPullbackPercent: '',
+  contractionCount: '',
+}

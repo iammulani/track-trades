@@ -32,6 +32,8 @@ export function PlaceTradePage() {
     toggleIndicatorChecklistItem,
     finalChecksChecked,
     toggleFinalChecksItem,
+    vcpStructureData,
+    setVcpStructureData,
     placing,
     placeTrade,
   } = usePlaceTrade(id ?? '')
@@ -97,7 +99,12 @@ export function PlaceTradePage() {
               />
             )}
             {steps[stepIndex].id === 'final-checks' && (
-              <FinalChecksStep checked={finalChecksChecked} onToggle={toggleFinalChecksItem} />
+              <FinalChecksStep
+                checked={finalChecksChecked}
+                onToggle={toggleFinalChecksItem}
+                vcpData={vcpStructureData}
+                onChangeVcpData={setVcpStructureData}
+              />
             )}
             {steps[stepIndex].id === 'review' && (
               <ReviewStep
@@ -107,6 +114,7 @@ export function PlaceTradePage() {
                 indicatorData={indicatorData}
                 indicatorChecklistChecked={indicatorChecklistChecked}
                 finalChecksChecked={finalChecksChecked}
+                vcpStructureData={vcpStructureData}
               />
             )}
           </div>
