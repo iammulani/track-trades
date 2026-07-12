@@ -34,16 +34,24 @@ overhead-supply check, then a review before it's final.
     signed, positive when entry is above the 50-day MA.
   - `rsiTone(value)` — grades the RSI reading `good` (≥80) / `caution`
     (70–79) / `bad` (<70), per the guideline that RSI shouldn't be below 70.
-- **VCP Structure — tone only, no % calc** (`utils/finalChecksCalc.ts`, used by
-  `VcpStructureStep`), each
-  graded `good` / `caution` / `bad` from the captured value:
+- **VCP Structure — derived, live, never stored** (`utils/finalChecksCalc.ts`,
+  used by `VcpStructureStep`). Each contraction (T) is a `{ high, low }` pair
+  (2–6 of them, `MIN_VCP_CONTRACTIONS` / `MAX_VCP_CONTRACTIONS`); nothing else
+  is entered directly:
+  - `computeContractionPercent({high, low})` = `(high − low) / high × 100`.
+  - `largestCorrectionPercent(contractions)` / `narrowestPullbackPercent(contractions)`
+    = the max / min of all filled contraction %s.
+  - `filledContractionCount(contractions)` = how many Ts have both sides filled.
+  - `contractionTightnessTone(contractions, index)` — per-row check: `good` if
+    that contraction's % is ≤ the previous one's (or it's T1, no baseline yet),
+    `bad` if it's wider than the previous one (the base isn't tightening).
   - `weeksInBaseTone` — good 5–26 weeks, bad <5 (hasn't shaken out weak
     holders), caution >26 (losing its edge).
-  - `largestCorrectionTone` — good ≤25%, caution 25–35%, bad >35%.
-  - `narrowestPullbackTone` — good ≤10%, caution 10–15%, bad >15% (the
-    right-most contraction should be tight going into the pivot).
-  - `contractionCountTone` — good 2–4 (a proper VCP), bad <2 (no tightening
-    shown yet), caution ≥5 (base getting choppy).
+  - `largestCorrectionTone(contractions)` — good ≤25%, caution 25–35%, bad >35%.
+  - `narrowestPullbackTone(contractions)` — good ≤10%, caution 10–15%, bad >15%
+    (the right-most contraction should be tight going into the pivot).
+  - `contractionCountTone(contractions)` — good 2–4 (a proper VCP), bad <2 (no
+    tightening shown yet), caution ≥5 (base getting choppy).
 - **Trade Rating — derived, live, never stored** (`utils/tradeRating.ts`):
   `computeTradeRating()` scores 7 independent pass/fail criteria (1 star
   each), one reusing each step's own tone/threshold logic:
@@ -114,12 +122,15 @@ a small pill button, `send` icon, next to Remove). Route:
    - **VCP Structure** (`VcpStructureStep`) — an `i` trigger next to the
      heading opens a worked example (Meridian Bioscience Inc. / VIVO, cited
      to p. 202) showing four tightening contractions (31% → 17% → 8% → 3%)
-     into the pivot. Below that, three question-led capture blocks separated
-     by dividers: *Time* (weeks in base), *Price* (largest correction % and
-     narrowest right-side pullback %), and *Symmetry* (number of
-     contractions/Ts) — each block leads with the guiding question, then a
-     number input color-coded by its tone function (see Data) and a
-     guideline note.
+     into the pivot. Below a divider, a *Time* block (weeks in base, color-coded
+     by `weeksInBaseTone`), then *Price & Symmetry*: a dynamic list of
+     contraction rows (T1, T2, ...; 2–6 of them, add/remove buttons respect
+     the min/max), each with a High and Low price input — the % pullback is
+     calculated and shown per row (no manual % entry), color-coded green/red
+     by `contractionTightnessTone` against the previous row so a contraction
+     that's wider than the last one stands out with a warning icon. Below the
+     list, a live summary (largest correction, narrowest pullback) derived
+     from all filled rows, plus the guideline note.
    - **Final Checks** (`FinalChecksStep`) — two sections separated by a
      divider, built to hold more as they're added:
      - **Overhead Supply** — a 2-item checklist (`OVERHEAD_SUPPLY_CHECKLIST_ITEMS`,
@@ -174,7 +185,7 @@ frontend/src/modules/place-trade/
 │   ├── indicatorChecklistItems.ts    # INDICATOR_CHECKLIST_ITEMS (trend-confirmation checks)
 │   ├── indicatorCalc.ts              # computeIndicatorRange(), computeMaDistancePercent(), rsiTone()
 │   ├── finalChecksItems.ts           # OVERHEAD_SUPPLY_CHECKLIST_ITEMS, BREAKOUT_CONFIRMATION_CHECKLIST_ITEMS
-│   ├── finalChecksCalc.ts            # weeksInBaseTone(), largestCorrectionTone(), narrowestPullbackTone(), contractionCountTone()
+│   ├── finalChecksCalc.ts            # computeContractionPercent(), largest/narrowestFromContractions, weeksInBaseTone(), largestCorrectionTone(), narrowestPullbackTone(), contractionCountTone(), contractionTightnessTone()
 │   ├── riskCalc.ts                   # computeRisk(side, params) -> RiskCalc
 │   ├── stageBaseOptions.ts           # STAGE_OPTIONS / BASE_OPTIONS static reference content
 │   └── tradeRating.ts                # computeTradeRating(), ratingVerdict()

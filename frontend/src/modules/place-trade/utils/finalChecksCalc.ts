@@ -1,8 +1,49 @@
+import type { VcpContraction } from '../types/placeTrade'
+
 export type VcpTone = 'good' | 'caution' | 'bad' | 'none'
 
 function toNumber(value: string): number | null {
   const n = Number(value)
   return value.trim() !== '' && Number.isFinite(n) ? n : null
+}
+
+/** % pullback for one contraction (high -> low) — null until both sides are filled. */
+export function computeContractionPercent(contraction: VcpContraction): number | null {
+  const high = toNumber(contraction.high)
+  const low = toNumber(contraction.low)
+  if (high === null || low === null || high === 0) return null
+  return ((high - low) / high) * 100
+}
+
+function isFilled(contraction: VcpContraction): boolean {
+  return contraction.high.trim() !== '' && contraction.low.trim() !== ''
+}
+
+export function filledContractionCount(contractions: VcpContraction[]): number {
+  return contractions.filter(isFilled).length
+}
+
+function filledPercents(contractions: VcpContraction[]): number[] {
+  return contractions
+    .map(computeContractionPercent)
+    .filter((p): p is number => p !== null)
+}
+
+export function largestCorrectionPercent(contractions: VcpContraction[]): number | null {
+  const percents = filledPercents(contractions)
+  return percents.length ? Math.max(...percents) : null
+}
+
+export function narrowestPullbackPercent(contractions: VcpContraction[]): number | null {
+  const percents = filledPercents(contractions)
+  return percents.length ? Math.min(...percents) : null
+}
+
+function toneFromRange(value: number | null, goodMax: number, cautionMax: number): VcpTone {
+  if (value === null) return 'none'
+  if (value <= goodMax) return 'good'
+  if (value <= cautionMax) return 'caution'
+  return 'bad'
 }
 
 /** A textbook base runs 5-26 weeks — shorter hasn't shaken out weak holders yet, longer may be losing its edge. */
@@ -15,28 +56,30 @@ export function weeksInBaseTone(value: string): VcpTone {
 }
 
 /** The best bases correct 15-25% off the high, in line with a Base 1/2 quality read. */
-export function largestCorrectionTone(value: string): VcpTone {
-  const n = toNumber(value)
-  if (n === null) return 'none'
-  if (n <= 25) return 'good'
-  if (n <= 35) return 'caution'
-  return 'bad'
+export function largestCorrectionTone(contractions: VcpContraction[]): VcpTone {
+  return toneFromRange(largestCorrectionPercent(contractions), 25, 35)
 }
 
 /** The final, right-most contraction should be tight — the narrower, the closer to a proper pivot. */
-export function narrowestPullbackTone(value: string): VcpTone {
-  const n = toNumber(value)
-  if (n === null) return 'none'
-  if (n <= 10) return 'good'
-  if (n <= 15) return 'caution'
-  return 'bad'
+export function narrowestPullbackTone(contractions: VcpContraction[]): VcpTone {
+  return toneFromRange(narrowestPullbackPercent(contractions), 10, 15)
 }
 
 /** A healthy VCP shows 2-4 contractions, each tighter than the last. */
-export function contractionCountTone(value: string): VcpTone {
-  const n = toNumber(value)
-  if (n === null) return 'none'
+export function contractionCountTone(contractions: VcpContraction[]): VcpTone {
+  const n = filledContractionCount(contractions)
   if (n < 2) return 'bad'
   if (n <= 4) return 'good'
   return 'caution'
+}
+
+/** Is this contraction tighter than (or equal to) the one before it? The first has no baseline to compare. */
+export function contractionTightnessTone(contractions: VcpContraction[], index: number): VcpTone {
+  const percents = contractions.map(computeContractionPercent)
+  const current = percents[index]
+  if (current === null) return 'none'
+  if (index === 0) return 'good'
+  const previous = percents[index - 1]
+  if (previous === null) return 'none'
+  return current <= previous ? 'good' : 'bad'
 }

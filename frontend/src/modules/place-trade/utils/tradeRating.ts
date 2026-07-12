@@ -106,9 +106,9 @@ export function computeTradeRating(input: {
       label: 'VCP structure (time, price, symmetry) is textbook',
       met:
         weeksInBaseTone(vcpStructureData.weeksInBase) === 'good' &&
-        largestCorrectionTone(vcpStructureData.largestCorrectionPercent) === 'good' &&
-        narrowestPullbackTone(vcpStructureData.narrowestPullbackPercent) === 'good' &&
-        contractionCountTone(vcpStructureData.contractionCount) === 'good',
+        largestCorrectionTone(vcpStructureData.contractions) === 'good' &&
+        narrowestPullbackTone(vcpStructureData.contractions) === 'good' &&
+        contractionCountTone(vcpStructureData.contractions) === 'good',
     },
     {
       id: 'final-checks',

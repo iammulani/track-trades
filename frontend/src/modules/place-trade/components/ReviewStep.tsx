@@ -11,6 +11,11 @@ import type {
   VcpStructureData,
 } from '../types/placeTrade'
 import {
+  filledContractionCount,
+  largestCorrectionPercent,
+  narrowestPullbackPercent,
+} from '../utils/finalChecksCalc'
+import {
   BREAKOUT_CONFIRMATION_CHECKLIST_ITEMS,
   OVERHEAD_SUPPLY_CHECKLIST_ITEMS,
 } from '../utils/finalChecksItems'
@@ -60,6 +65,9 @@ export function ReviewStep({
     indicatorData.week52High,
   )
   const maDistance = computeMaDistancePercent(tradeParams.entryPrice, indicatorData.fiftyDayMa)
+  const largest = largestCorrectionPercent(vcpStructureData.contractions)
+  const narrowest = narrowestPullbackPercent(vcpStructureData.contractions)
+  const contractionCount = filledContractionCount(vcpStructureData.contractions)
 
   return (
     <div className="review-step">
@@ -187,24 +195,18 @@ export function ReviewStep({
           <div className="review-step__stat">
             <span className="review-step__stat-label">Largest correction</span>
             <span className="review-step__stat-value">
-              {vcpStructureData.largestCorrectionPercent
-                ? `${vcpStructureData.largestCorrectionPercent}%`
-                : '—'}
+              {largest === null ? '—' : formatPercent(largest)}
             </span>
           </div>
           <div className="review-step__stat">
             <span className="review-step__stat-label">Narrowest pullback</span>
             <span className="review-step__stat-value">
-              {vcpStructureData.narrowestPullbackPercent
-                ? `${vcpStructureData.narrowestPullbackPercent}%`
-                : '—'}
+              {narrowest === null ? '—' : formatPercent(narrowest)}
             </span>
           </div>
           <div className="review-step__stat">
             <span className="review-step__stat-label">Contractions</span>
-            <span className="review-step__stat-value">
-              {vcpStructureData.contractionCount || '—'}
-            </span>
+            <span className="review-step__stat-value">{contractionCount || '—'}</span>
           </div>
         </div>
       </div>

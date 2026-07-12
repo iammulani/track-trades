@@ -1,10 +1,17 @@
 import { HoverCard } from '../../../shared/components/HoverCard'
 import { Icon } from '../../../shared/components/Icon'
-import type { VcpStructureData } from '../types/placeTrade'
+import { formatPercent } from '../../../shared/utils/format'
 import {
-  contractionCountTone,
-  largestCorrectionTone,
-  narrowestPullbackTone,
+  MAX_VCP_CONTRACTIONS,
+  MIN_VCP_CONTRACTIONS,
+  type VcpContraction,
+  type VcpStructureData,
+} from '../types/placeTrade'
+import {
+  computeContractionPercent,
+  contractionTightnessTone,
+  largestCorrectionPercent,
+  narrowestPullbackPercent,
   weeksInBaseTone,
 } from '../utils/finalChecksCalc'
 import './VcpStructureStep.css'
@@ -15,9 +22,29 @@ interface VcpStructureStepProps {
 }
 
 export function VcpStructureStep({ data, onChange }: VcpStructureStepProps) {
-  function set<K extends keyof VcpStructureData>(key: K, value: string) {
-    onChange({ ...data, [key]: value })
+  function setWeeksInBase(value: string) {
+    onChange({ ...data, weeksInBase: value })
   }
+
+  function updateContraction(index: number, field: keyof VcpContraction, value: string) {
+    const contractions = data.contractions.map((c, i) =>
+      i === index ? { ...c, [field]: value } : c,
+    )
+    onChange({ ...data, contractions })
+  }
+
+  function addContraction() {
+    if (data.contractions.length >= MAX_VCP_CONTRACTIONS) return
+    onChange({ ...data, contractions: [...data.contractions, { high: '', low: '' }] })
+  }
+
+  function removeContraction(index: number) {
+    if (data.contractions.length <= MIN_VCP_CONTRACTIONS) return
+    onChange({ ...data, contractions: data.contractions.filter((_, i) => i !== index) })
+  }
+
+  const largest = largestCorrectionPercent(data.contractions)
+  const narrowest = narrowestPullbackPercent(data.contractions)
 
   return (
     <div className="vcp-structure-step">
@@ -89,7 +116,7 @@ export function VcpStructureStep({ data, onChange }: VcpStructureStepProps) {
             step="1"
             className="vcp-structure-step__input"
             value={data.weeksInBase}
-            onChange={(e) => set('weeksInBase', e.target.value)}
+            onChange={(e) => setWeeksInBase(e.target.value)}
             placeholder="0"
           />
         </label>
@@ -102,72 +129,89 @@ export function VcpStructureStep({ data, onChange }: VcpStructureStepProps) {
       <div className="vcp-structure-step__divider" />
 
       <div className="vcp-structure-step__block">
-        <span className="vcp-structure-step__label">Price</span>
+        <span className="vcp-structure-step__label">Price &amp; Symmetry</span>
         <p className="vcp-structure-step__question">
-          How deep was the largest correction, and how narrow was the smallest pullback at the
-          very right of the price base?
+          Capture each contraction's high and low — at least {MIN_VCP_CONTRACTIONS}, up to{' '}
+          {MAX_VCP_CONTRACTIONS}. The % pullback is calculated for you; each one should generally
+          be tighter than the last.
         </p>
-        <div className="vcp-structure-step__grid">
-          <label
-            className={`vcp-structure-step__field vcp-structure-step__field--${largestCorrectionTone(data.largestCorrectionPercent)}`}
-          >
-            <span className="vcp-structure-step__input-label">Largest correction (%)</span>
-            <input
-              type="number"
-              min="0"
-              step="1"
-              className="vcp-structure-step__input"
-              value={data.largestCorrectionPercent}
-              onChange={(e) => set('largestCorrectionPercent', e.target.value)}
-              placeholder="0"
-            />
-          </label>
-          <label
-            className={`vcp-structure-step__field vcp-structure-step__field--${narrowestPullbackTone(data.narrowestPullbackPercent)}`}
-          >
-            <span className="vcp-structure-step__input-label">Narrowest pullback (%)</span>
-            <input
-              type="number"
-              min="0"
-              step="1"
-              className="vcp-structure-step__input"
-              value={data.narrowestPullbackPercent}
-              onChange={(e) => set('narrowestPullbackPercent', e.target.value)}
-              placeholder="0"
-            />
-          </label>
+
+        <div className="vcp-structure-step__contractions">
+          {data.contractions.map((contraction, index) => {
+            const percent = computeContractionPercent(contraction)
+            const tone = contractionTightnessTone(data.contractions, index)
+            return (
+              <div className="vcp-structure-step__contraction" key={index}>
+                <span className="vcp-structure-step__contraction-label">T{index + 1}</span>
+                <label className="vcp-structure-step__field vcp-structure-step__field--compact">
+                  <span className="vcp-structure-step__input-label">High</span>
+                  <input
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    className="vcp-structure-step__input"
+                    value={contraction.high}
+                    onChange={(e) => updateContraction(index, 'high', e.target.value)}
+                    placeholder="0.00"
+                  />
+                </label>
+                <label className="vcp-structure-step__field vcp-structure-step__field--compact">
+                  <span className="vcp-structure-step__input-label">Low</span>
+                  <input
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    className="vcp-structure-step__input"
+                    value={contraction.low}
+                    onChange={(e) => updateContraction(index, 'low', e.target.value)}
+                    placeholder="0.00"
+                  />
+                </label>
+                <span
+                  className={`vcp-structure-step__contraction-percent vcp-structure-step__contraction-percent--${tone}`}
+                >
+                  {percent === null ? '—' : formatPercent(percent)}
+                  {tone === 'bad' && <Icon name="alert" size={13} />}
+                </span>
+                {data.contractions.length > MIN_VCP_CONTRACTIONS && (
+                  <button
+                    type="button"
+                    className="vcp-structure-step__remove"
+                    onClick={() => removeContraction(index)}
+                    aria-label={`Remove T${index + 1}`}
+                  >
+                    <Icon name="x" size={13} />
+                  </button>
+                )}
+              </div>
+            )
+          })}
         </div>
+
+        {data.contractions.length < MAX_VCP_CONTRACTIONS && (
+          <button type="button" className="vcp-structure-step__add" onClick={addContraction}>
+            <Icon name="plus" size={13} /> Add contraction
+          </button>
+        )}
+
+        <div className="vcp-structure-step__summary">
+          <div className="vcp-structure-step__summary-stat">
+            <span className="vcp-structure-step__input-label">Largest correction</span>
+            <span className="vcp-structure-step__summary-value">
+              {largest === null ? '—' : formatPercent(largest)}
+            </span>
+          </div>
+          <div className="vcp-structure-step__summary-stat">
+            <span className="vcp-structure-step__input-label">Narrowest pullback</span>
+            <span className="vcp-structure-step__summary-value">
+              {narrowest === null ? '—' : formatPercent(narrowest)}
+            </span>
+          </div>
+        </div>
+
         <p className="vcp-structure-step__note">
           Look for a largest correction in the 15–25% range and a final, right-most pullback under
           about 10% — the tighter that last contraction, the closer to a proper pivot.
-        </p>
-      </div>
-
-      <div className="vcp-structure-step__divider" />
-
-      <div className="vcp-structure-step__block">
-        <span className="vcp-structure-step__label">Symmetry</span>
-        <p className="vcp-structure-step__question">
-          How many contractions (Ts) did the stock go through during the basing process?
-        </p>
-        <label
-          className={`vcp-structure-step__field vcp-structure-step__field--${contractionCountTone(data.contractionCount)}`}
-        >
-          <span className="vcp-structure-step__input-label">Number of contractions</span>
-          <input
-            type="number"
-            min="0"
-            step="1"
-            className="vcp-structure-step__input"
-            value={data.contractionCount}
-            onChange={(e) => set('contractionCount', e.target.value)}
-            placeholder="0"
-          />
-        </label>
-        <p className="vcp-structure-step__note">
-          A healthy VCP typically shows 2 to 4 contractions, each tighter than the last. A single
-          contraction hasn't really shown tightening yet, and 5 or more often means the base is
-          getting choppy.
         </p>
       </div>
     </div>

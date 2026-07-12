@@ -46,18 +46,25 @@ export const EMPTY_INDICATOR_DATA: IndicatorData = {
   week52High: '',
 }
 
-/** Values collected in the "Final Checks" step's VCP Structure section —
- * strings while editing. */
+/** One contraction (T) — a high and a low; the % pullback is derived, never entered directly. */
+export interface VcpContraction {
+  high: string
+  low: string
+}
+
+export const MIN_VCP_CONTRACTIONS = 2
+export const MAX_VCP_CONTRACTIONS = 6
+
+/** Values collected in the "VCP Structure" step — strings while editing. */
 export interface VcpStructureData {
   weeksInBase: string
-  largestCorrectionPercent: string
-  narrowestPullbackPercent: string
-  contractionCount: string
+  contractions: VcpContraction[]
 }
 
 export const EMPTY_VCP_STRUCTURE_DATA: VcpStructureData = {
   weeksInBase: '',
-  largestCorrectionPercent: '',
-  narrowestPullbackPercent: '',
-  contractionCount: '',
+  contractions: [
+    { high: '', low: '' },
+    { high: '', low: '' },
+  ],
 }
