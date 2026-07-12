@@ -2,20 +2,35 @@ import { SideBadge } from '../../../shared/components/SideBadge'
 import { avatarColor } from '../../../shared/utils/avatarColor'
 import { formatPrice } from '../../../shared/utils/format'
 import type { WatchlistItemWithMetrics } from '../../watchlist'
-import type { ChecklistChecked, EdgeAnswers, TradeParams } from '../types/placeTrade'
+import type {
+  ChecklistChecked,
+  EdgeAnswers,
+  StageBaseAnswers,
+  TradeParams,
+} from '../types/placeTrade'
 import { CHECKLIST_ITEMS } from '../utils/checklistItems'
+import { BASE_OPTIONS, STAGE_OPTIONS } from '../utils/stageBaseOptions'
 import { RiskSummary } from './RiskSummary'
 import './ReviewStep.css'
 
 interface ReviewStepProps {
   item: WatchlistItemWithMetrics
   tradeParams: TradeParams
+  stageBaseAnswers: StageBaseAnswers
   edgeAnswers: EdgeAnswers
   checklistChecked: ChecklistChecked
 }
 
-export function ReviewStep({ item, tradeParams, edgeAnswers, checklistChecked }: ReviewStepProps) {
+export function ReviewStep({
+  item,
+  tradeParams,
+  stageBaseAnswers,
+  edgeAnswers,
+  checklistChecked,
+}: ReviewStepProps) {
   const checkedCount = CHECKLIST_ITEMS.filter((c) => checklistChecked[c.id]).length
+  const stage = STAGE_OPTIONS.find((s) => s.id === stageBaseAnswers.stage)
+  const base = BASE_OPTIONS.find((b) => b.id === stageBaseAnswers.base)
 
   return (
     <div className="review-step">
@@ -59,6 +74,24 @@ export function ReviewStep({ item, tradeParams, edgeAnswers, checklistChecked }:
       </div>
 
       <RiskSummary side={item.side} params={tradeParams} />
+
+      <div className="review-step__section">
+        <span className="review-step__section-title">Stage & Base</span>
+        <div className="review-step__stage-base">
+          <div className="review-step__stage-base-item">
+            <span className="review-step__stage-base-label">Stage</span>
+            <span className={`review-step__stage-base-value review-step__stage-base-value--${stage?.tone ?? 'none'}`}>
+              {stage ? `${stage.label} — ${stage.verdict}` : '—'}
+            </span>
+          </div>
+          <div className="review-step__stage-base-item">
+            <span className="review-step__stage-base-label">Base</span>
+            <span className={`review-step__stage-base-value review-step__stage-base-value--${base?.tone ?? 'none'}`}>
+              {base ? `${base.label} — ${base.verdict}` : '—'}
+            </span>
+          </div>
+        </div>
+      </div>
 
       <div className="review-step__section">
         <span className="review-step__section-title">Thesis</span>

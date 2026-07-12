@@ -4,6 +4,7 @@ import { PageHeader } from '../../shared/components/PageHeader'
 import { ChecklistStep } from './components/ChecklistStep'
 import { EdgeStep } from './components/EdgeStep'
 import { ReviewStep } from './components/ReviewStep'
+import { StageBaseStep } from './components/StageBaseStep'
 import { StepIndicator } from './components/StepIndicator'
 import { TradeParamsStep } from './components/TradeParamsStep'
 import { usePlaceTrade } from './hooks/usePlaceTrade'
@@ -22,6 +23,8 @@ export function PlaceTradePage() {
     canProceed,
     tradeParams,
     setTradeParams,
+    stageBaseAnswers,
+    setStageBaseAnswers,
     edgeAnswers,
     setEdgeAnswers,
     checklistChecked,
@@ -71,6 +74,9 @@ export function PlaceTradePage() {
             {steps[stepIndex].id === 'setup' && (
               <TradeParamsStep side={item.side} params={tradeParams} onChange={setTradeParams} />
             )}
+            {steps[stepIndex].id === 'stage-base' && (
+              <StageBaseStep answers={stageBaseAnswers} onChange={setStageBaseAnswers} />
+            )}
             {steps[stepIndex].id === 'edge' && (
               <EdgeStep answers={edgeAnswers} onChange={setEdgeAnswers} />
             )}
@@ -81,6 +87,7 @@ export function PlaceTradePage() {
               <ReviewStep
                 item={item}
                 tradeParams={tradeParams}
+                stageBaseAnswers={stageBaseAnswers}
                 edgeAnswers={edgeAnswers}
                 checklistChecked={checklistChecked}
               />

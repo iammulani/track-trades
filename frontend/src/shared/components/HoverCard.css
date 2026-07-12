@@ -1,0 +1,61 @@
+.hover-card {
+  position: relative;
+  display: inline-flex;
+}
+
+.hover-card__trigger {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  margin: 0;
+  border-radius: 50%;
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  color: var(--text-muted);
+  font: inherit;
+  line-height: 0;
+  appearance: none;
+  cursor: help;
+  transition:
+    border-color 0.15s,
+    color 0.15s,
+    background 0.15s;
+}
+
+.hover-card__trigger:hover,
+.hover-card__trigger:focus-visible {
+  outline: none;
+  border-color: var(--accent);
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+}
+
+.hover-card__panel {
+  position: fixed;
+  z-index: 60;
+  width: 340px;
+  max-width: min(340px, calc(100vw - 24px));
+  padding: 18px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  opacity: 0;
+  transform: translateY(4px) scale(0.98);
+  transition:
+    opacity 0.16s ease,
+    transform 0.16s ease;
+  pointer-events: none;
+}
+
+.hover-card__panel[data-placement='top'] {
+  transform: translateY(-4px) scale(0.98);
+}
+
+.hover-card__panel.is-open {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}

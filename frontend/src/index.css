@@ -23,6 +23,7 @@
   --critical-text: #b42318;
   --violet: #7a5af8;
   --amber: #f79009;
+  --amber-text: #b54708;
 
   /* Gradients */
   --grad-accent: linear-gradient(135deg, #4f46e5 0%, #7c6cf6 100%);
@@ -68,6 +69,7 @@
     --critical-text: #fda29b;
     --violet: #9b8dfa;
     --amber: #fdb022;
+    --amber-text: #fec84b;
 
     --grad-accent: linear-gradient(135deg, #5b52e8 0%, #8b7cf8 100%);
     --grad-good: linear-gradient(135deg, #12b76a 0%, #32d583 100%);
@@ -102,6 +104,7 @@
   --critical-text: #b42318;
   --violet: #7a5af8;
   --amber: #f79009;
+  --amber-text: #b54708;
 
   --grad-accent: linear-gradient(135deg, #4f46e5 0%, #7c6cf6 100%);
   --grad-good: linear-gradient(135deg, #12b76a 0%, #3ccb7f 100%);
@@ -134,6 +137,7 @@
   --critical-text: #fda29b;
   --violet: #9b8dfa;
   --amber: #fdb022;
+  --amber-text: #fec84b;
 
   --grad-accent: linear-gradient(135deg, #5b52e8 0%, #8b7cf8 100%);
   --grad-good: linear-gradient(135deg, #12b76a 0%, #32d583 100%);

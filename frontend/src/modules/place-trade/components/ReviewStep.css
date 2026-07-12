@@ -72,6 +72,53 @@
   letter-spacing: 0.04em;
 }
 
+.review-step__stage-base {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.review-step__stage-base-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+}
+
+.review-step__stage-base-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.review-step__stage-base-value {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.review-step__stage-base-value--best {
+  color: var(--good-text);
+}
+
+.review-step__stage-base-value--good {
+  color: var(--good-text);
+}
+
+.review-step__stage-base-value--caution {
+  color: var(--amber-text);
+}
+
+.review-step__stage-base-value--bad,
+.review-step__stage-base-value--avoid {
+  color: var(--critical-text);
+}
+
+.review-step__stage-base-value--none {
+  color: var(--text-muted);
+}
+
 .review-step__thesis {
   margin: 0;
   font-size: 14px;

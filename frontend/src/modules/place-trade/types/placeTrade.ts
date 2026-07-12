@@ -26,3 +26,17 @@ export const EMPTY_EDGE_ANSWERS: EdgeAnswers = {
 
 /** Pre-trade checklist item id -> checked. */
 export type ChecklistChecked = Record<string, boolean>
+
+export type Stage = 'stage-1' | 'transition-1-2' | 'stage-2' | 'stage-3' | 'stage-4'
+export type Base = 'base-1' | 'base-2' | 'base-3' | 'base-4'
+
+/** Values collected in the "Stage & Base" step — one stage, one base, or neither yet. */
+export interface StageBaseAnswers {
+  stage: Stage | null
+  base: Base | null
+}
+
+export const EMPTY_STAGE_BASE_ANSWERS: StageBaseAnswers = {
+  stage: null,
+  base: null,
+}

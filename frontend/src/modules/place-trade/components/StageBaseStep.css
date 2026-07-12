@@ -1,0 +1,252 @@
+.stage-base-step {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.stage-base-step__section-header {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-bottom: 12px;
+}
+
+.stage-base-step__section-header h3 {
+  font-size: 15px;
+}
+
+.stage-base-step__section-header p {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.stage-base-step__options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.risk-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  cursor: pointer;
+  transition:
+    border-color 0.15s,
+    background 0.15s;
+}
+
+.risk-option:hover {
+  border-color: var(--border-strong);
+}
+
+.risk-option:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.risk-option.is-selected {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 6%, var(--surface));
+}
+
+.risk-option__badge {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  margin-top: 1px;
+}
+
+.risk-option--best .risk-option__badge {
+  background: var(--good);
+  color: #fff;
+}
+
+.risk-option--good .risk-option__badge {
+  background: color-mix(in srgb, var(--good) 18%, transparent);
+  color: var(--good-text);
+}
+
+.risk-option--caution .risk-option__badge {
+  background: color-mix(in srgb, var(--amber) 20%, transparent);
+  color: var(--amber-text);
+}
+
+.risk-option--bad .risk-option__badge {
+  background: color-mix(in srgb, var(--critical) 18%, transparent);
+  color: var(--critical-text);
+}
+
+.risk-option--avoid .risk-option__badge {
+  background: var(--critical);
+  color: #fff;
+}
+
+.risk-option__body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.risk-option__title-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.risk-option__label {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.risk-option__verdict {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.risk-option--best .risk-option__verdict {
+  color: var(--good-text);
+}
+
+.risk-option--good .risk-option__verdict {
+  color: var(--good-text);
+}
+
+.risk-option--caution .risk-option__verdict {
+  color: var(--amber-text);
+}
+
+.risk-option--bad .risk-option__verdict,
+.risk-option--avoid .risk-option__verdict {
+  color: var(--critical-text);
+}
+
+.risk-option__summary {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.risk-option__radio {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  border-radius: 50%;
+  border: 2px solid var(--border-strong);
+  transition: border-color 0.15s;
+}
+
+.risk-option.is-selected .risk-option__radio {
+  border-color: var(--accent);
+  border-width: 5px;
+}
+
+.risk-option__info {
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+/* --- Hover-card panel content --- */
+
+.risk-option-details {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.risk-option-details__heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.risk-option-details__verdict {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  padding: 3px 8px;
+  border-radius: 999px;
+}
+
+.risk-option-details__heading--best .risk-option-details__verdict {
+  background: var(--good);
+  color: #fff;
+}
+
+.risk-option-details__heading--good .risk-option-details__verdict {
+  background: color-mix(in srgb, var(--good) 18%, transparent);
+  color: var(--good-text);
+}
+
+.risk-option-details__heading--caution .risk-option-details__verdict {
+  background: color-mix(in srgb, var(--amber) 20%, transparent);
+  color: var(--amber-text);
+}
+
+.risk-option-details__heading--bad .risk-option-details__verdict {
+  background: color-mix(in srgb, var(--critical) 18%, transparent);
+  color: var(--critical-text);
+}
+
+.risk-option-details__heading--avoid .risk-option-details__verdict {
+  background: var(--critical);
+  color: #fff;
+}
+
+.risk-option-details__description {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+.risk-option-details__section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.risk-option-details__section-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--text-muted);
+}
+
+.risk-option-details__section ul {
+  margin: 0;
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}

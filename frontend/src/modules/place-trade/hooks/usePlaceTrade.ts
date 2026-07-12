@@ -4,15 +4,18 @@ import { addTrade } from '../../trades'
 import { useWatchlist } from '../../watchlist'
 import {
   EMPTY_EDGE_ANSWERS,
+  EMPTY_STAGE_BASE_ANSWERS,
   EMPTY_TRADE_PARAMS,
   type ChecklistChecked,
   type EdgeAnswers,
+  type StageBaseAnswers,
   type TradeParams,
 } from '../types/placeTrade'
 import { CHECKLIST_ITEMS } from '../utils/checklistItems'
 
 export const STEPS = [
   { id: 'setup', title: 'Trade Setup' },
+  { id: 'stage-base', title: 'Stage & Base' },
   { id: 'edge', title: 'Confirm Your Edge' },
   { id: 'checklist', title: 'Pre-Trade Checklist' },
   { id: 'review', title: 'Review & Place' },
@@ -27,6 +30,7 @@ export function usePlaceTrade(watchlistId: string) {
   const navigate = useNavigate()
   const [stepIndex, setStepIndex] = useState(0)
   const [tradeParams, setTradeParams] = useState<TradeParams>(EMPTY_TRADE_PARAMS)
+  const [stageBaseAnswers, setStageBaseAnswers] = useState<StageBaseAnswers>(EMPTY_STAGE_BASE_ANSWERS)
   const [edgeAnswers, setEdgeAnswers] = useState<EdgeAnswers>(EMPTY_EDGE_ANSWERS)
   const [checklistChecked, setChecklistChecked] = useState<ChecklistChecked>({})
   const [placing, setPlacing] = useState(false)
@@ -39,12 +43,14 @@ export function usePlaceTrade(watchlistId: string) {
     switch (STEPS[stepIndex].id) {
       case 'setup':
         return tradeParams.entryPrice.trim() !== '' && tradeParams.quantity.trim() !== ''
+      case 'stage-base':
+        return stageBaseAnswers.stage !== null && stageBaseAnswers.base !== null
       case 'edge':
         return edgeAnswers.thesis.trim() !== ''
       default:
         return true
     }
-  }, [stepIndex, tradeParams, edgeAnswers])
+  }, [stepIndex, tradeParams, stageBaseAnswers, edgeAnswers])
 
   function goNext() {
     setStepIndex((i) => Math.min(i + 1, STEPS.length - 1))
@@ -91,6 +97,8 @@ export function usePlaceTrade(watchlistId: string) {
     canProceed,
     tradeParams,
     setTradeParams,
+    stageBaseAnswers,
+    setStageBaseAnswers,
     edgeAnswers,
     setEdgeAnswers,
     checklistChecked,
