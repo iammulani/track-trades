@@ -30,7 +30,7 @@ export const STAGE_OPTIONS: RiskOption<Stage>[] = [
     label: 'Stage 1',
     verdict: 'Should not trade',
     tone: 'avoid',
-    summary: 'No buiying stage 1',
+    summary: 'No buying stage 1',
     detailSections: [
       {
         icon: 'clock',
@@ -41,23 +41,23 @@ export const STAGE_OPTIONS: RiskOption<Stage>[] = [
         icon: 'waves',
         heading: 'Price action',
         points: [
-          'During stage 1 the stock price will move in sideways fashion with a lack of any sustained price movment up or down',
-          'The stock price will oscilate around its 200 day MA (40 week).',
-          'During that osillation, it lacks a real trends upward or downward. This dead in the water phase can last for months or even years.',
+          'During stage 1 the stock price will move in sideways fashion with a lack of any sustained price movement up or down',
+          'The stock price will oscillate around its 200 day MA (40 week).',
+          'During that oscillation, it lacks a real trend upward or downward. This dead in the water phase can last for months or even years.',
         ],
       },
       {
         icon: 'arrowDownRight',
         heading: 'Context',
         points: [
-          'Often, this basing stage takes place after the stock price has decline during stage 4 for sevral months or more.',
+          'Often, this basing stage takes place after the stock price has declined during stage 4 for several months or more.',
         ],
       },
       {
         icon: 'bars',
         heading: 'Volume',
         points: [
-          'Volume will generally contract and be relatively light compared with the previous volumne during stage 4 decline.',
+          'Volume will generally contract and be relatively light compared with the previous volume during stage 4 decline.',
         ],
       },
     ],
@@ -67,31 +67,16 @@ export const STAGE_OPTIONS: RiskOption<Stage>[] = [
     label: 'Transitioning 1 → 2',
     verdict: 'Really good trade',
     tone: 'best',
-    summary: 'The breakout moment — price clears the base on rising volume as the trend turns up.',
+    summary: 'There are more up weeks on volume than down on volumes.',
     detailSections: [
       {
-        icon: 'info',
-        heading: 'Overview',
+        icon: 'trending',
+        heading: 'Transition criteria',
         points: [
-          "This is the highest-probability entry in the whole cycle: price breaks out of the Stage 1 base above resistance, the moving average starts curling up, and volume expands meaningfully versus the base. You're buying the first leg of a new uptrend, not chasing an extended move.",
-        ],
-      },
-      {
-        icon: 'check',
-        heading: 'What it looks like',
-        points: [
-          'Breakout above Stage 1 resistance on 1.5x+ average volume',
-          '30-week/150-day MA flattening and starting to turn up',
-          'A higher low forming just under the breakout point',
-          'Relative strength vs. the market turning positive',
-        ],
-      },
-      {
-        icon: 'alert',
-        heading: 'Watch out for',
-        points: [
-          'False breakouts that fail to hold above resistance',
-          "Chasing too far past the breakout — if you're late, wait for the next pullback",
+          'The stock price is above 150 day and 200 day MA.',
+          'The 200 day MA has turned up.',
+          'A series of higher highs and higher lows has occurred.',
+          'Large up weeks on volume spikes are contrasted by low volume on pullbacks.',
         ],
       },
     ],
