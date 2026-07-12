@@ -35,9 +35,11 @@
 .hover-card__panel {
   position: fixed;
   z-index: 60;
-  width: 340px;
-  max-width: min(340px, calc(100vw - 24px));
-  padding: 18px;
+  width: 460px;
+  max-width: min(460px, calc(100vw - 24px));
+  max-height: min(520px, calc(100vh - 24px));
+  overflow-y: auto;
+  padding: 20px;
   border-radius: var(--radius);
   border: 1px solid var(--border);
   background: var(--surface);

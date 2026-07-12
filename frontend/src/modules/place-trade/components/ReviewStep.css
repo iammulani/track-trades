@@ -119,18 +119,6 @@
   color: var(--text-muted);
 }
 
-.review-step__thesis {
-  margin: 0;
-  font-size: 14px;
-  color: var(--text-primary);
-  line-height: 1.5;
-}
-
-.review-step__aligned {
-  font-size: 13px;
-  color: var(--text-secondary);
-}
-
 .review-step__checklist {
   margin: 0;
   padding-left: 18px;

@@ -2,14 +2,7 @@ import { SideBadge } from '../../../shared/components/SideBadge'
 import { avatarColor } from '../../../shared/utils/avatarColor'
 import { formatPercent, formatPrice, formatSignedPercent } from '../../../shared/utils/format'
 import type { WatchlistItemWithMetrics } from '../../watchlist'
-import type {
-  ChecklistChecked,
-  EdgeAnswers,
-  IndicatorData,
-  StageBaseAnswers,
-  TradeParams,
-} from '../types/placeTrade'
-import { CHECKLIST_ITEMS } from '../utils/checklistItems'
+import type { ChecklistChecked, IndicatorData, StageBaseAnswers, TradeParams } from '../types/placeTrade'
 import { OVERHEAD_SUPPLY_CHECKLIST_ITEMS } from '../utils/finalChecksItems'
 import { computeIndicatorRange, computeMaDistancePercent } from '../utils/indicatorCalc'
 import { INDICATOR_CHECKLIST_ITEMS } from '../utils/indicatorChecklistItems'
@@ -23,8 +16,6 @@ interface ReviewStepProps {
   stageBaseAnswers: StageBaseAnswers
   indicatorData: IndicatorData
   indicatorChecklistChecked: ChecklistChecked
-  edgeAnswers: EdgeAnswers
-  checklistChecked: ChecklistChecked
   finalChecksChecked: ChecklistChecked
 }
 
@@ -34,11 +25,8 @@ export function ReviewStep({
   stageBaseAnswers,
   indicatorData,
   indicatorChecklistChecked,
-  edgeAnswers,
-  checklistChecked,
   finalChecksChecked,
 }: ReviewStepProps) {
-  const checkedCount = CHECKLIST_ITEMS.filter((c) => checklistChecked[c.id]).length
   const stage = STAGE_OPTIONS.find((s) => s.id === stageBaseAnswers.stage)
   const base = BASE_OPTIONS.find((b) => b.id === stageBaseAnswers.base)
   const indicatorCheckedCount = INDICATOR_CHECKLIST_ITEMS.filter(
@@ -149,34 +137,6 @@ export function ReviewStep({
             </span>
           </div>
         </div>
-      </div>
-
-      <div className="review-step__section">
-        <span className="review-step__section-title">Thesis</span>
-        <p className="review-step__thesis">{edgeAnswers.thesis || '—'}</p>
-        <span className="review-step__aligned">
-          Aligned with plan:{' '}
-          <strong>
-            {edgeAnswers.alignedWithPlan === null
-              ? '—'
-              : edgeAnswers.alignedWithPlan
-                ? 'Yes'
-                : 'No'}
-          </strong>
-        </span>
-      </div>
-
-      <div className="review-step__section">
-        <span className="review-step__section-title">
-          Checklist — {checkedCount}/{CHECKLIST_ITEMS.length} confirmed
-        </span>
-        <ul className="review-step__checklist">
-          {CHECKLIST_ITEMS.map((c) => (
-            <li key={c.id} className={checklistChecked[c.id] ? 'is-checked' : 'is-unchecked'}>
-              {c.label}
-            </li>
-          ))}
-        </ul>
       </div>
 
       <div className="review-step__section">

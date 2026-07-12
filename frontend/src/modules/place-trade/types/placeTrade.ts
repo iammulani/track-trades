@@ -13,18 +13,7 @@ export const EMPTY_TRADE_PARAMS: TradeParams = {
   quantity: '',
 }
 
-/** Values collected in the "Confirm Your Edge" step. */
-export interface EdgeAnswers {
-  thesis: string
-  alignedWithPlan: boolean | null
-}
-
-export const EMPTY_EDGE_ANSWERS: EdgeAnswers = {
-  thesis: '',
-  alignedWithPlan: null,
-}
-
-/** Pre-trade checklist item id -> checked. */
+/** Checklist item id -> checked, used by the various step checklists. */
 export type ChecklistChecked = Record<string, boolean>
 
 export type Stage = 'stage-1' | 'transition-1-2' | 'stage-2' | 'stage-3' | 'stage-4'

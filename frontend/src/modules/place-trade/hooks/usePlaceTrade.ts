@@ -3,25 +3,20 @@ import { useNavigate } from 'react-router-dom'
 import { addTrade } from '../../trades'
 import { useWatchlist } from '../../watchlist'
 import {
-  EMPTY_EDGE_ANSWERS,
   EMPTY_INDICATOR_DATA,
   EMPTY_STAGE_BASE_ANSWERS,
   EMPTY_TRADE_PARAMS,
   type ChecklistChecked,
-  type EdgeAnswers,
   type IndicatorData,
   type StageBaseAnswers,
   type TradeParams,
 } from '../types/placeTrade'
-import { CHECKLIST_ITEMS } from '../utils/checklistItems'
 
 export const STEPS = [
   { id: 'setup', title: 'Trade Setup' },
   { id: 'stage-base', title: 'Stage & Base' },
   { id: 'technical', title: 'Technical Confirmation' },
   { id: 'week-range', title: '52-Week Range' },
-  { id: 'edge', title: 'Confirm Your Edge' },
-  { id: 'checklist', title: 'Pre-Trade Checklist' },
   { id: 'final-checks', title: 'Final Checks' },
   { id: 'review', title: 'Review & Place' },
 ] as const
@@ -38,14 +33,8 @@ export function usePlaceTrade(watchlistId: string) {
   const [stageBaseAnswers, setStageBaseAnswers] = useState<StageBaseAnswers>(EMPTY_STAGE_BASE_ANSWERS)
   const [indicatorData, setIndicatorData] = useState<IndicatorData>(EMPTY_INDICATOR_DATA)
   const [indicatorChecklistChecked, setIndicatorChecklistChecked] = useState<ChecklistChecked>({})
-  const [edgeAnswers, setEdgeAnswers] = useState<EdgeAnswers>(EMPTY_EDGE_ANSWERS)
-  const [checklistChecked, setChecklistChecked] = useState<ChecklistChecked>({})
   const [finalChecksChecked, setFinalChecksChecked] = useState<ChecklistChecked>({})
   const [placing, setPlacing] = useState(false)
-
-  function toggleChecklistItem(id: string) {
-    setChecklistChecked((prev) => ({ ...prev, [id]: !prev[id] }))
-  }
 
   function toggleIndicatorChecklistItem(id: string) {
     setIndicatorChecklistChecked((prev) => ({ ...prev, [id]: !prev[id] }))
@@ -63,12 +52,10 @@ export function usePlaceTrade(watchlistId: string) {
         return stageBaseAnswers.stage !== null && stageBaseAnswers.base !== null
       case 'week-range':
         return indicatorData.week52Low.trim() !== '' && indicatorData.week52High.trim() !== ''
-      case 'edge':
-        return edgeAnswers.thesis.trim() !== ''
       default:
         return true
     }
-  }, [stepIndex, tradeParams, stageBaseAnswers, indicatorData, edgeAnswers])
+  }, [stepIndex, tradeParams, stageBaseAnswers, indicatorData])
 
   function goNext() {
     setStepIndex((i) => Math.min(i + 1, STEPS.length - 1))
@@ -81,21 +68,12 @@ export function usePlaceTrade(watchlistId: string) {
     if (!item) return
     setPlacing(true)
     try {
-      const checkedCount = CHECKLIST_ITEMS.filter((c) => checklistChecked[c.id]).length
-      const notes = [
-        edgeAnswers.thesis && `Thesis: ${edgeAnswers.thesis}`,
-        `Checklist: ${checkedCount}/${CHECKLIST_ITEMS.length} confirmed`,
-      ]
-        .filter(Boolean)
-        .join(' — ')
-
       await addTrade({
         symbol: item.symbol,
         side: item.side,
         quantity: Number(tradeParams.quantity),
         entryPrice: Number(tradeParams.entryPrice),
         entryTime: new Date().toISOString(),
-        notes,
       })
       await removeItem(item.id)
       navigate('/')
@@ -121,10 +99,6 @@ export function usePlaceTrade(watchlistId: string) {
     setIndicatorData,
     indicatorChecklistChecked,
     toggleIndicatorChecklistItem,
-    edgeAnswers,
-    setEdgeAnswers,
-    checklistChecked,
-    toggleChecklistItem,
     finalChecksChecked,
     toggleFinalChecksItem,
     placing,

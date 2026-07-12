@@ -1,8 +1,6 @@
 import { Link, useParams } from 'react-router-dom'
 import { Icon } from '../../shared/components/Icon'
 import { PageHeader } from '../../shared/components/PageHeader'
-import { ChecklistStep } from './components/ChecklistStep'
-import { EdgeStep } from './components/EdgeStep'
 import { FinalChecksStep } from './components/FinalChecksStep'
 import { ReviewStep } from './components/ReviewStep'
 import { StageBaseStep } from './components/StageBaseStep'
@@ -11,7 +9,6 @@ import { TechnicalConfirmationStep } from './components/TechnicalConfirmationSte
 import { TradeParamsStep } from './components/TradeParamsStep'
 import { WeekRangeStep } from './components/WeekRangeStep'
 import { usePlaceTrade } from './hooks/usePlaceTrade'
-import { CHECKLIST_ITEMS } from './utils/checklistItems'
 import './PlaceTradePage.css'
 
 export function PlaceTradePage() {
@@ -33,10 +30,6 @@ export function PlaceTradePage() {
     setIndicatorData,
     indicatorChecklistChecked,
     toggleIndicatorChecklistItem,
-    edgeAnswers,
-    setEdgeAnswers,
-    checklistChecked,
-    toggleChecklistItem,
     finalChecksChecked,
     toggleFinalChecksItem,
     placing,
@@ -103,12 +96,6 @@ export function PlaceTradePage() {
                 onChange={setIndicatorData}
               />
             )}
-            {steps[stepIndex].id === 'edge' && (
-              <EdgeStep answers={edgeAnswers} onChange={setEdgeAnswers} />
-            )}
-            {steps[stepIndex].id === 'checklist' && (
-              <ChecklistStep items={CHECKLIST_ITEMS} checked={checklistChecked} onToggle={toggleChecklistItem} />
-            )}
             {steps[stepIndex].id === 'final-checks' && (
               <FinalChecksStep checked={finalChecksChecked} onToggle={toggleFinalChecksItem} />
             )}
@@ -119,8 +106,6 @@ export function PlaceTradePage() {
                 stageBaseAnswers={stageBaseAnswers}
                 indicatorData={indicatorData}
                 indicatorChecklistChecked={indicatorChecklistChecked}
-                edgeAnswers={edgeAnswers}
-                checklistChecked={checklistChecked}
                 finalChecksChecked={finalChecksChecked}
               />
             )}
