@@ -6,7 +6,8 @@ The bridge from watching to trading: convert a watchlist item into a placed
 trade through a short stepper that forces a pause before pulling the
 trigger — trade parameters, then a stage/base read, then technical
 confirmation, then 52-week range, then a written thesis, then a pre-trade
-checklist, then a review before it's final.
+checklist, then a final overhead-supply check, then a review before it's
+final.
 
 > **The checklist content in step 3 is a mock.** `utils/checklistItems.ts`
 > holds a placeholder list to validate the flow end to end. It'll be replaced
@@ -55,7 +56,7 @@ a small pill button, `send` icon, next to Remove). Route:
 `/watchlist/:id/place-trade`.
 
 1. **Header** (`shared/PageHeader`) — `send` icon + "Place Trade" + subtitle.
-2. **Step indicator** (`StepIndicator`) — 7 numbered steps, done ones get a
+2. **Step indicator** (`StepIndicator`) — 8 numbered steps, done ones get a
    checkmark, current is highlighted, connected by a line.
 3. **Step body** — one of:
    - **Trade Setup** (`TradeParamsStep`) — entry price, quantity, stop loss,
@@ -90,12 +91,22 @@ a small pill button, `send` icon, next to Remove). Route:
      trading plan" toggle.
    - **Pre-Trade Checklist** (`ChecklistStep`) — MOCK checkbox list (see
      above), a "N of M confirmed" counter, nothing is required to proceed.
+   - **Final Checks** (`FinalChecksStep`) — one section so far, built to hold
+     more as they're added: **Overhead Supply** — a 3-item checklist
+     (`OVERHEAD_SUPPLY_CHECKLIST_ITEMS`, reuses `ChecklistStep`) covering VCP
+     contraction tightening, volume/price quieting down on the right side of
+     the base, and enough time passing for weak holders to be shaken out —
+     plus an `i` trigger next to the heading (`shared/HoverCard`) explaining
+     the reasoning in theme-grouped sections (where supply comes from, what a
+     healthy VCP looks like, why to be patient, the warning sign that supply
+     hasn't cleared).
    - **Review & Place** (`ReviewStep`) — avatar + symbol + `SideBadge`,
      entry/qty/stop/target, the same live `RiskSummary`, the selected
      stage/base (colored to match their tone), the indicators summary
-     (checklist count, RSI values, 52-week % stats), the thesis text, the
-     aligned-with-plan answer, and the checklist with confirmed items styled
-     distinctly from skipped ones.
+     (checklist count, RSI, 50-day MA + distance, 52-week % stats), the
+     thesis text, the aligned-with-plan answer, the pre-trade checklist, and
+     the overhead-supply checklist — confirmed items styled distinctly from
+     skipped ones.
 4. **Footer** — Cancel (link back to Watchlist) on the left; Back / Next on
    the right, Next replaced by **Place Trade** on the last step.
 
@@ -105,8 +116,8 @@ a small pill button, `send` icon, next to Remove). Route:
   fields are filled — Setup needs `entryPrice` + `quantity`; Stage & Base
   needs both a `stage` and a `base` selected; 52-Week Range needs both
   `week52Low` and `week52High`; Edge needs a non-empty thesis. Technical
-  Confirmation, Checklist and Review have no hard requirement (they're
-  prompts, not gates — Checklist is a placeholder).
+  Confirmation, Checklist, Final Checks and Review have no hard requirement
+  (they're prompts, not gates — Checklist is a placeholder).
 - Risk numbers recompute on every keystroke; any missing/invalid input shows
   `—` rather than `NaN` or throwing.
 - On **Place Trade**: creates the trade, removes the watchlist item, then
@@ -126,7 +137,8 @@ frontend/src/modules/place-trade/
 ├── utils/
 │   ├── checklistItems.ts             # MOCK checklist — replace freely, see note above
 │   ├── indicatorChecklistItems.ts    # INDICATOR_CHECKLIST_ITEMS (trend-confirmation checks)
-│   ├── indicatorCalc.ts              # computeIndicatorRange(), rsiTone()
+│   ├── indicatorCalc.ts              # computeIndicatorRange(), computeMaDistancePercent(), rsiTone()
+│   ├── finalChecksItems.ts           # OVERHEAD_SUPPLY_CHECKLIST_ITEMS
 │   ├── riskCalc.ts                   # computeRisk(side, params) -> RiskCalc
 │   └── stageBaseOptions.ts           # STAGE_OPTIONS / BASE_OPTIONS static reference content
 └── components/
@@ -134,22 +146,23 @@ frontend/src/modules/place-trade/
     ├── TradeParamsStep.tsx            # entry/qty/stop/target inputs
     ├── RiskSummary.tsx                # live risk/reward panel (used in Setup and Review)
     ├── StageBaseStep.tsx              # stage/base single-select option lists + hover-card info
-    ├── TechnicalConfirmationStep.tsx  # MA checklist + RSI data capture
+    ├── TechnicalConfirmationStep.tsx  # MA checklist + RSI slider + 50-day MA capture
     ├── WeekRangeStep.tsx              # 52-week low/high capture + live % stats
     ├── EdgeStep.tsx                   # thesis textarea + aligned-with-plan toggle
     ├── ChecklistStep.tsx              # renders a given `items` list as toggleable checkboxes
+    ├── FinalChecksStep.tsx            # overhead-supply checklist + hover-card reasoning
     └── ReviewStep.tsx                 # final summary before submit
 ```
 
 Depends on `modules/trades` (`addTrade`, `NewTrade`) and `modules/watchlist`
 (`useWatchlist`, `WatchlistItemWithMetrics`, `WatchSide`) — both now export
 what's needed through their `index.ts` barrels. Also uses `shared/HoverCard`
-for the stage/base info panel. `ChecklistStep` takes its `items` as a prop so
-it's reused for both the Pre-Trade Checklist and Technical Confirmation's MA
-checks.
+for the stage/base and overhead-supply info panels. `ChecklistStep` takes its
+`items` as a prop so it's reused for the Pre-Trade Checklist, Technical
+Confirmation's MA checks, and Final Checks' overhead-supply checks.
 
 **Not yet wired to the backend:** the selected `stage`/`base` and all
-Technical Confirmation / 52-Week Range data aren't included in the `notes`
-written on submit — UI-only for now, matches the current placeholder-
-checklist pattern. Follow-up work will decide how (or whether) they should
-be persisted on the trade.
+Technical Confirmation / 52-Week Range / Final Checks data aren't included in
+the `notes` written on submit — UI-only for now, matches the current
+placeholder-checklist pattern. Follow-up work will decide how (or whether)
+they should be persisted on the trade.

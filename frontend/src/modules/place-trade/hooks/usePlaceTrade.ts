@@ -22,6 +22,7 @@ export const STEPS = [
   { id: 'week-range', title: '52-Week Range' },
   { id: 'edge', title: 'Confirm Your Edge' },
   { id: 'checklist', title: 'Pre-Trade Checklist' },
+  { id: 'final-checks', title: 'Final Checks' },
   { id: 'review', title: 'Review & Place' },
 ] as const
 
@@ -39,6 +40,7 @@ export function usePlaceTrade(watchlistId: string) {
   const [indicatorChecklistChecked, setIndicatorChecklistChecked] = useState<ChecklistChecked>({})
   const [edgeAnswers, setEdgeAnswers] = useState<EdgeAnswers>(EMPTY_EDGE_ANSWERS)
   const [checklistChecked, setChecklistChecked] = useState<ChecklistChecked>({})
+  const [finalChecksChecked, setFinalChecksChecked] = useState<ChecklistChecked>({})
   const [placing, setPlacing] = useState(false)
 
   function toggleChecklistItem(id: string) {
@@ -47,6 +49,10 @@ export function usePlaceTrade(watchlistId: string) {
 
   function toggleIndicatorChecklistItem(id: string) {
     setIndicatorChecklistChecked((prev) => ({ ...prev, [id]: !prev[id] }))
+  }
+
+  function toggleFinalChecksItem(id: string) {
+    setFinalChecksChecked((prev) => ({ ...prev, [id]: !prev[id] }))
   }
 
   const canProceed = useMemo(() => {
@@ -119,6 +125,8 @@ export function usePlaceTrade(watchlistId: string) {
     setEdgeAnswers,
     checklistChecked,
     toggleChecklistItem,
+    finalChecksChecked,
+    toggleFinalChecksItem,
     placing,
     placeTrade,
   }

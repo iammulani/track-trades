@@ -3,6 +3,7 @@ import { Icon } from '../../shared/components/Icon'
 import { PageHeader } from '../../shared/components/PageHeader'
 import { ChecklistStep } from './components/ChecklistStep'
 import { EdgeStep } from './components/EdgeStep'
+import { FinalChecksStep } from './components/FinalChecksStep'
 import { ReviewStep } from './components/ReviewStep'
 import { StageBaseStep } from './components/StageBaseStep'
 import { StepIndicator } from './components/StepIndicator'
@@ -36,6 +37,8 @@ export function PlaceTradePage() {
     setEdgeAnswers,
     checklistChecked,
     toggleChecklistItem,
+    finalChecksChecked,
+    toggleFinalChecksItem,
     placing,
     placeTrade,
   } = usePlaceTrade(id ?? '')
@@ -106,6 +109,9 @@ export function PlaceTradePage() {
             {steps[stepIndex].id === 'checklist' && (
               <ChecklistStep items={CHECKLIST_ITEMS} checked={checklistChecked} onToggle={toggleChecklistItem} />
             )}
+            {steps[stepIndex].id === 'final-checks' && (
+              <FinalChecksStep checked={finalChecksChecked} onToggle={toggleFinalChecksItem} />
+            )}
             {steps[stepIndex].id === 'review' && (
               <ReviewStep
                 item={item}
@@ -115,6 +121,7 @@ export function PlaceTradePage() {
                 indicatorChecklistChecked={indicatorChecklistChecked}
                 edgeAnswers={edgeAnswers}
                 checklistChecked={checklistChecked}
+                finalChecksChecked={finalChecksChecked}
               />
             )}
           </div>

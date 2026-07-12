@@ -1,0 +1,72 @@
+.final-checks-step {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.final-checks-step__section-header {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-bottom: 12px;
+}
+
+.final-checks-step__heading-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.final-checks-step__heading-row h3 {
+  font-size: 15px;
+}
+
+.final-checks-step__section-header p {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+/* --- Hover-card panel content --- */
+
+.final-checks-details {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.final-checks-details__heading {
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.final-checks-details__section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.final-checks-details__section-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--text-muted);
+}
+
+.final-checks-details__section ul {
+  margin: 0;
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}

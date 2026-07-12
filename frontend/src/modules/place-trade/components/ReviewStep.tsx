@@ -10,6 +10,7 @@ import type {
   TradeParams,
 } from '../types/placeTrade'
 import { CHECKLIST_ITEMS } from '../utils/checklistItems'
+import { OVERHEAD_SUPPLY_CHECKLIST_ITEMS } from '../utils/finalChecksItems'
 import { computeIndicatorRange, computeMaDistancePercent } from '../utils/indicatorCalc'
 import { INDICATOR_CHECKLIST_ITEMS } from '../utils/indicatorChecklistItems'
 import { BASE_OPTIONS, STAGE_OPTIONS } from '../utils/stageBaseOptions'
@@ -24,6 +25,7 @@ interface ReviewStepProps {
   indicatorChecklistChecked: ChecklistChecked
   edgeAnswers: EdgeAnswers
   checklistChecked: ChecklistChecked
+  finalChecksChecked: ChecklistChecked
 }
 
 export function ReviewStep({
@@ -34,12 +36,16 @@ export function ReviewStep({
   indicatorChecklistChecked,
   edgeAnswers,
   checklistChecked,
+  finalChecksChecked,
 }: ReviewStepProps) {
   const checkedCount = CHECKLIST_ITEMS.filter((c) => checklistChecked[c.id]).length
   const stage = STAGE_OPTIONS.find((s) => s.id === stageBaseAnswers.stage)
   const base = BASE_OPTIONS.find((b) => b.id === stageBaseAnswers.base)
   const indicatorCheckedCount = INDICATOR_CHECKLIST_ITEMS.filter(
     (c) => indicatorChecklistChecked[c.id],
+  ).length
+  const finalChecksCheckedCount = OVERHEAD_SUPPLY_CHECKLIST_ITEMS.filter(
+    (c) => finalChecksChecked[c.id],
   ).length
   const range = computeIndicatorRange(
     tradeParams.entryPrice,
@@ -167,6 +173,20 @@ export function ReviewStep({
         <ul className="review-step__checklist">
           {CHECKLIST_ITEMS.map((c) => (
             <li key={c.id} className={checklistChecked[c.id] ? 'is-checked' : 'is-unchecked'}>
+              {c.label}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div className="review-step__section">
+        <span className="review-step__section-title">
+          Overhead Supply — {finalChecksCheckedCount}/{OVERHEAD_SUPPLY_CHECKLIST_ITEMS.length}{' '}
+          confirmed
+        </span>
+        <ul className="review-step__checklist">
+          {OVERHEAD_SUPPLY_CHECKLIST_ITEMS.map((c) => (
+            <li key={c.id} className={finalChecksChecked[c.id] ? 'is-checked' : 'is-unchecked'}>
               {c.label}
             </li>
           ))}

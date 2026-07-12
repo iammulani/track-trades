@@ -49,8 +49,15 @@ export function HoverCard({ trigger, children, label = 'More information' }: Hov
         ? Math.min(triggerRect.bottom + 10, viewportHeight - panelRect.height - VIEWPORT_MARGIN)
         : triggerRect.top - panelRect.height - 10
 
+    const spaceRight = viewportWidth - triggerRect.left
+    const spaceLeft = triggerRect.right
+    const preferredLeft =
+      spaceRight >= panelRect.width + VIEWPORT_MARGIN || spaceRight >= spaceLeft
+        ? triggerRect.left
+        : triggerRect.right - panelRect.width
+
     const left = Math.min(
-      Math.max(triggerRect.right - panelRect.width, VIEWPORT_MARGIN),
+      Math.max(preferredLeft, VIEWPORT_MARGIN),
       viewportWidth - panelRect.width - VIEWPORT_MARGIN,
     )
 
