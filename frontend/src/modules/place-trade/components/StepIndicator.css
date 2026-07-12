@@ -1,9 +1,10 @@
 .step-indicator {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   list-style: none;
   margin: 0;
   padding: 0;
+  width: 100%;
 }
 
 .step-indicator__item {
@@ -13,7 +14,7 @@
 }
 
 .step-indicator__item:last-child {
-  flex: 0;
+  flex: 0 0 auto;
 }
 
 .step-indicator__dot {
@@ -28,6 +29,7 @@
   background: var(--surface-2);
   color: var(--text-muted);
   border: 1px solid var(--border-strong);
+  cursor: default;
 }
 
 .step-indicator__item--current .step-indicator__dot {
@@ -43,23 +45,9 @@
   border-color: transparent;
 }
 
-.step-indicator__label {
-  margin-left: 10px;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-muted);
-  white-space: nowrap;
-}
-
-.step-indicator__item--current .step-indicator__label,
-.step-indicator__item--done .step-indicator__label {
-  color: var(--text-primary);
-}
-
 .step-indicator__line {
   flex: 1;
   height: 1px;
   background: var(--border-strong);
-  margin: 0 14px;
-  min-width: 24px;
+  margin: 0 8px;
 }
