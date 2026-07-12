@@ -1,7 +1,10 @@
 import { HoverCard } from '../../../shared/components/HoverCard'
 import { Icon } from '../../../shared/components/Icon'
 import type { ChecklistChecked } from '../types/placeTrade'
-import { OVERHEAD_SUPPLY_CHECKLIST_ITEMS } from '../utils/finalChecksItems'
+import {
+  BREAKOUT_CONFIRMATION_CHECKLIST_ITEMS,
+  OVERHEAD_SUPPLY_CHECKLIST_ITEMS,
+} from '../utils/finalChecksItems'
 import { ChecklistStep } from './ChecklistStep'
 import './FinalChecksStep.css'
 
@@ -94,6 +97,66 @@ export function FinalChecksStep({ checked, onToggle }: FinalChecksStepProps) {
         <p>Confirm supply has been absorbed before you buy into strength.</p>
       </div>
       <ChecklistStep items={OVERHEAD_SUPPLY_CHECKLIST_ITEMS} checked={checked} onToggle={onToggle} />
+
+      <div className="final-checks-step__divider" />
+
+      <div className="final-checks-step__section-header">
+        <div className="final-checks-step__heading-row">
+          <h3>Breakout Confirmation</h3>
+          <HoverCard
+            label="More about breakout confirmation"
+            trigger={<Icon name="info" size={12} />}
+          >
+            <div className="final-checks-details">
+              <div className="final-checks-details__heading">Breakout Confirmation</div>
+
+              <div className="final-checks-details__section">
+                <span className="final-checks-details__section-title">
+                  <Icon name="check" size={12} /> What to confirm
+                </span>
+                <ul>
+                  <li>The overall market trend should be bullish.</li>
+                  <li>The stock's industry group should also be acting positively.</li>
+                  <li>
+                    Volume must confirm the breakout — look for a noticeable increase over
+                    average.
+                  </li>
+                </ul>
+              </div>
+
+              <div className="final-checks-details__section">
+                <span className="final-checks-details__section-title">
+                  <Icon name="alert" size={12} /> Warning sign
+                </span>
+                <ul>
+                  <li>
+                    Never overlook poor volume on a breakout — it's a very important danger signal
+                    that the breakout lacks staying power.
+                  </li>
+                </ul>
+              </div>
+
+              <div className="final-checks-details__section">
+                <span className="final-checks-details__section-title">
+                  <Icon name="arrowUpRight" size={12} /> Overhead resistance
+                </span>
+                <ul>
+                  <li>
+                    The stock should have minimum resistance overhead — no big supply zone sitting
+                    on top that could cap the advance before it even gets going.
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </HoverCard>
+        </div>
+        <p>Confirm the market, group, and volume are lining up behind this breakout.</p>
+      </div>
+      <ChecklistStep
+        items={BREAKOUT_CONFIRMATION_CHECKLIST_ITEMS}
+        checked={checked}
+        onToggle={onToggle}
+      />
     </div>
   )
 }

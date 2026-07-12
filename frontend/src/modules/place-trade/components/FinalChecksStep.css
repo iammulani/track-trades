@@ -26,6 +26,11 @@
   color: var(--text-muted);
 }
 
+.final-checks-step__divider {
+  height: 1px;
+  background: var(--border);
+}
+
 /* --- Hover-card panel content --- */
 
 .final-checks-details {

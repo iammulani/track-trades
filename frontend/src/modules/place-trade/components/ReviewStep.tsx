@@ -9,7 +9,10 @@ import type {
   TradeParams,
   VcpStructureData,
 } from '../types/placeTrade'
-import { OVERHEAD_SUPPLY_CHECKLIST_ITEMS } from '../utils/finalChecksItems'
+import {
+  BREAKOUT_CONFIRMATION_CHECKLIST_ITEMS,
+  OVERHEAD_SUPPLY_CHECKLIST_ITEMS,
+} from '../utils/finalChecksItems'
 import { computeIndicatorRange, computeMaDistancePercent } from '../utils/indicatorCalc'
 import { INDICATOR_CHECKLIST_ITEMS } from '../utils/indicatorChecklistItems'
 import { BASE_OPTIONS, STAGE_OPTIONS } from '../utils/stageBaseOptions'
@@ -41,6 +44,9 @@ export function ReviewStep({
     (c) => indicatorChecklistChecked[c.id],
   ).length
   const finalChecksCheckedCount = OVERHEAD_SUPPLY_CHECKLIST_ITEMS.filter(
+    (c) => finalChecksChecked[c.id],
+  ).length
+  const breakoutConfirmationCheckedCount = BREAKOUT_CONFIRMATION_CHECKLIST_ITEMS.filter(
     (c) => finalChecksChecked[c.id],
   ).length
   const range = computeIndicatorRange(
@@ -186,6 +192,20 @@ export function ReviewStep({
         </span>
         <ul className="review-step__checklist">
           {OVERHEAD_SUPPLY_CHECKLIST_ITEMS.map((c) => (
+            <li key={c.id} className={finalChecksChecked[c.id] ? 'is-checked' : 'is-unchecked'}>
+              {c.label}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div className="review-step__section">
+        <span className="review-step__section-title">
+          Breakout Confirmation — {breakoutConfirmationCheckedCount}/
+          {BREAKOUT_CONFIRMATION_CHECKLIST_ITEMS.length} confirmed
+        </span>
+        <ul className="review-step__checklist">
+          {BREAKOUT_CONFIRMATION_CHECKLIST_ITEMS.map((c) => (
             <li key={c.id} className={finalChecksChecked[c.id] ? 'is-checked' : 'is-unchecked'}>
               {c.label}
             </li>

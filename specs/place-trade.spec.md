@@ -98,22 +98,29 @@ a small pill button, `send` icon, next to Remove). Route:
      contractions/Ts) — each block leads with the guiding question, then a
      number input color-coded by its tone function (see Data) and a
      guideline note.
-   - **Final Checks** (`FinalChecksStep`) — one section so far, built to hold
-     more as they're added: **Overhead Supply** — a 2-item checklist
-     (`OVERHEAD_SUPPLY_CHECKLIST_ITEMS`, reuses `ChecklistStep`) covering
-     volume/price quieting down on the right side of the base and enough
-     time passing for weak holders to be shaken out — plus an `i` trigger
-     next to the heading (`shared/HoverCard`) explaining the reasoning in
-     theme-grouped sections (where supply comes from, what a healthy VCP
-     looks like, why to be patient, the warning sign that supply hasn't
-     cleared). The "contractions tightening" checklist item lives in VCP
-     Structure instead, as a quantitative count.
+   - **Final Checks** (`FinalChecksStep`) — two sections separated by a
+     divider, built to hold more as they're added:
+     - **Overhead Supply** — a 2-item checklist (`OVERHEAD_SUPPLY_CHECKLIST_ITEMS`,
+       reuses `ChecklistStep`) covering volume/price quieting down on the
+       right side of the base and enough time passing for weak holders to be
+       shaken out — plus an `i` trigger next to the heading (`shared/HoverCard`)
+       explaining the reasoning in theme-grouped sections (where supply comes
+       from, what a healthy VCP looks like, why to be patient, the warning
+       sign that supply hasn't cleared). The "contractions tightening"
+       checklist item lives in VCP Structure instead, as a quantitative count.
+     - **Breakout Confirmation** — a 4-item checklist
+       (`BREAKOUT_CONFIRMATION_CHECKLIST_ITEMS`, reuses `ChecklistStep`)
+       covering market trend, industry group strength, volume confirming the
+       breakout, and minimal overhead resistance — plus an `i` trigger
+       explaining the reasoning (what to confirm, the "never overlook poor
+       volume" warning sign, and why overhead resistance matters).
    - **Review & Place** (`ReviewStep`) — avatar + symbol + `SideBadge`,
      entry/qty/stop/target, the same live `RiskSummary`, the selected
      stage/base (colored to match their tone), the indicators summary
      (checklist count, RSI, 50-day MA + distance, 52-week % stats), the VCP
-     Structure values, and the overhead-supply checklist — confirmed
-     checklist items styled distinctly from skipped ones.
+     Structure values, the overhead-supply checklist, and the
+     breakout-confirmation checklist — confirmed checklist items styled
+     distinctly from skipped ones.
 4. **Footer** — Cancel (link back to Watchlist) on the left; Back / Next on
    the right, Next replaced by **Place Trade** on the last step.
 
@@ -144,7 +151,7 @@ frontend/src/modules/place-trade/
 │   ├── checklistItems.ts             # ChecklistItem — shared shape for every step's checklist
 │   ├── indicatorChecklistItems.ts    # INDICATOR_CHECKLIST_ITEMS (trend-confirmation checks)
 │   ├── indicatorCalc.ts              # computeIndicatorRange(), computeMaDistancePercent(), rsiTone()
-│   ├── finalChecksItems.ts           # OVERHEAD_SUPPLY_CHECKLIST_ITEMS
+│   ├── finalChecksItems.ts           # OVERHEAD_SUPPLY_CHECKLIST_ITEMS, BREAKOUT_CONFIRMATION_CHECKLIST_ITEMS
 │   ├── finalChecksCalc.ts            # weeksInBaseTone(), largestCorrectionTone(), narrowestPullbackTone(), contractionCountTone()
 │   ├── riskCalc.ts                   # computeRisk(side, params) -> RiskCalc
 │   └── stageBaseOptions.ts           # STAGE_OPTIONS / BASE_OPTIONS static reference content
@@ -169,7 +176,7 @@ sizes itself to the content (up to 460px wide, scrolling internally past
 ~520px tall) and picks whichever side/direction has room, so it always
 stays fully on-screen. `ChecklistStep` takes its `items` as a prop so it's
 reused across Technical Confirmation's MA checks and Final Checks'
-overhead-supply checks.
+overhead-supply / breakout-confirmation checks.
 
 **Not yet wired to the backend:** the selected `stage`/`base` and all
 Technical Confirmation / 52-Week Range / VCP Structure / Final Checks data
