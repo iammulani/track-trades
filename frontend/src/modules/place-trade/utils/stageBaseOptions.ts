@@ -159,30 +159,31 @@ export const STAGE_OPTIONS: RiskOption<Stage>[] = [
     label: 'Stage 4',
     verdict: 'Too risky',
     tone: 'bad',
-    summary: 'Confirmed downtrend — lower highs and lower lows below a falling moving average.',
+    summary:
+      'The 200 day MA, which was flat or turning downward in stage 3, is now in a definite downtrend. The stock price is near or hitting 52 week new lows.',
     detailSections: [
       {
-        icon: 'info',
-        heading: 'Overview',
+        icon: 'layers',
+        heading: 'Moving average',
         points: [
-          'The stock has broken down and is in a markdown phase. Price stays below a declining moving average, and every bounce is sold into. Buying here means fighting the dominant trend — the odds are stacked against you.',
+          "The vast majority of the price action is below the 200 day MA. Short-term MAs are below long-term MAs.",
+          'The 200 day MA, which was flat or turning downward in stage 3, is now in a definite downtrend.',
         ],
       },
       {
-        icon: 'check',
-        heading: 'What it looks like',
+        icon: 'arrowDownRight',
+        heading: 'Price action',
         points: [
-          'Price below a falling 30-week/150-day MA',
-          'Lower highs and lower lows',
-          'Bounces fail at declining resistance',
+          'The stock price is near or hitting 52 week new lows.',
+          'The stock price pattern is characterized as a series of lower lows & lower highs, stair-stepping downward.',
         ],
       },
       {
-        icon: 'alert',
-        heading: 'Watch out for',
+        icon: 'bars',
+        heading: 'Volume',
         points: [
-          "Bottom-fishing 'because it's cheap now'",
-          'Confusing a dead-cat bounce for a real reversal',
+          'Volume spikes on big down days and down weeks are contrasted by low-volume rallies.',
+          'There are more down days and weeks on above-average volume than up days and up weeks on above-average volume.',
         ],
       },
     ],
