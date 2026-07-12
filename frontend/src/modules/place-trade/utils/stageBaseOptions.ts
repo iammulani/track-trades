@@ -28,7 +28,7 @@ export const STAGE_OPTIONS: RiskOption<Stage>[] = [
   {
     id: 'stage-1',
     label: 'Stage 1',
-    verdict: 'Should not trade',
+    verdict: 'Poor trading area',
     tone: 'avoid',
     summary: 'No buying stage 1',
     detailSections: [
@@ -83,7 +83,7 @@ export const STAGE_OPTIONS: RiskOption<Stage>[] = [
   {
     id: 'stage-2',
     label: 'Stage 2',
-    verdict: 'Should trade',
+    verdict: 'Good trading area',
     tone: 'best',
     summary:
       'A proper stage 2 will show significant volume. The share price may have doubled or even tripled at this point.',
