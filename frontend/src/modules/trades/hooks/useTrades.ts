@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react'
-import { fetchTrades } from '../api/tradesApi'
-import type { DashboardSummary, TradeWithMetrics } from '../types/trade'
+import { useCallback, useEffect, useState } from 'react'
+import { closeTrade as closeTradeApi, fetchTrades } from '../api/tradesApi'
+import type { CloseTradeInput, DashboardSummary, TradeWithMetrics } from '../types/trade'
 import { sortByEntryDesc, summarize, withMetrics } from '../utils/tradeMetrics'
 
 interface TradesState {
@@ -8,6 +8,8 @@ interface TradesState {
   summary: DashboardSummary | null
   loading: boolean
   error: string | null
+  closing: boolean
+  closeTrade: (id: string, input: CloseTradeInput) => Promise<void>
 }
 
 /**
@@ -15,32 +17,47 @@ interface TradesState {
  * feature module that needs trade data (dashboard, equity, …).
  */
 export function useTrades(): TradesState {
-  const [state, setState] = useState<TradesState>({
-    trades: [],
-    summary: null,
-    loading: true,
-    error: null,
-  })
+  const [trades, setTrades] = useState<TradeWithMetrics[]>([])
+  const [summary, setSummary] = useState<DashboardSummary | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const [closing, setClosing] = useState(false)
 
-  useEffect(() => {
-    let active = true
-
-    fetchTrades()
+  /** silent = true skips the loading flag, so closing a trade doesn't flash the
+   * whole table away while it reloads. */
+  const load = useCallback((silent = false) => {
+    if (!silent) setLoading(true)
+    return fetchTrades()
       .then((raw) => {
-        if (!active) return
-        const trades = sortByEntryDesc(raw.map(withMetrics))
-        setState({ trades, summary: summarize(trades), loading: false, error: null })
+        const next = sortByEntryDesc(raw.map(withMetrics))
+        setTrades(next)
+        setSummary(summarize(next))
+        setError(null)
       })
       .catch((err: unknown) => {
-        if (!active) return
-        const message = err instanceof Error ? err.message : 'Failed to load trades'
-        setState({ trades: [], summary: null, loading: false, error: message })
+        setError(err instanceof Error ? err.message : 'Failed to load trades')
       })
-
-    return () => {
-      active = false
-    }
+      .finally(() => {
+        if (!silent) setLoading(false)
+      })
   }, [])
 
-  return state
+  useEffect(() => {
+    load()
+  }, [load])
+
+  const closeTrade = useCallback(
+    async (id: string, input: CloseTradeInput) => {
+      setClosing(true)
+      try {
+        await closeTradeApi(id, input)
+        await load(true)
+      } finally {
+        setClosing(false)
+      }
+    },
+    [load],
+  )
+
+  return { trades, summary, loading, error, closing, closeTrade }
 }

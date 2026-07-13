@@ -27,7 +27,12 @@ import {
   ratingVerdict,
   STAGE_OPTIONS,
 } from '../place-trade'
-import { useTrades, type TradeVcpContraction } from '../trades'
+import {
+  computeExitPreview,
+  exitReasonLabel,
+  useTrades,
+  type TradeVcpContraction,
+} from '../trades'
 import './TradeDetailPage.css'
 
 const RATING_STAR_COUNT = 7
@@ -35,6 +40,10 @@ const RATING_STAR_COUNT = 7
 /** % pullback for one stored contraction — null only if `high` is 0 (shouldn't happen, but avoids a div/0). */
 function contractionPercent(c: TradeVcpContraction): number | null {
   return c.high === 0 ? null : ((c.high - c.low) / c.high) * 100
+}
+
+function formatRatio(ratio: number | null): string {
+  return ratio === null ? '—' : `${ratio.toFixed(1)}R`
 }
 
 function checklistCount(items: { id: string }[], checked: Record<string, boolean>): number {
@@ -93,6 +102,10 @@ export function TradeDetailPage() {
   const percents = contractions.map(contractionPercent).filter((p): p is number => p !== null)
   const largest = percents.length ? Math.max(...percents) : null
   const narrowest = percents.length ? Math.min(...percents) : null
+  const exitPreview =
+    trade && trade.exitPrice !== null
+      ? computeExitPreview(trade, String(trade.exitPrice), setup?.stopLoss ?? null)
+      : null
 
   return (
     <section className="trade-detail-page">
@@ -200,6 +213,34 @@ export function TradeDetailPage() {
           </div>
 
           {trade.notes && <p className="trade-detail__notes">{trade.notes}</p>}
+
+          {exitPreview && (
+            <div className="trade-detail__section">
+              <span className="trade-detail__section-title">Exit</span>
+              <div className="trade-detail__grid">
+                <div className="trade-detail__stat">
+                  <span className="trade-detail__stat-label">Realized R</span>
+                  <span className="trade-detail__stat-value">
+                    {formatRatio(exitPreview.riskRewardRatio)}
+                  </span>
+                </div>
+              </div>
+              {trade.exitLearnings && trade.exitLearnings.length > 0 && (
+                <ul className="trade-detail__learnings">
+                  {trade.exitLearnings.map((learning, i) => (
+                    <li key={i} className="trade-detail__learning">
+                      <span className="trade-detail__learning-reason">
+                        {exitReasonLabel(learning.reason)}
+                      </span>
+                      {learning.note && (
+                        <p className="trade-detail__learning-note">{learning.note}</p>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          )}
 
           {!setup && (
             <p className="trade-detail__no-setup">

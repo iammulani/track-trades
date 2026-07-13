@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Card } from '../../../shared/components/Card'
 import { Icon } from '../../../shared/components/Icon'
@@ -11,11 +12,14 @@ import {
   formatSignedCurrency,
   formatSignedPercent,
 } from '../../../shared/utils/format'
-import type { TradeWithMetrics } from '../../trades'
+import type { CloseTradeInput, TradeWithMetrics } from '../../trades'
+import { ExitTradeModal } from './ExitTradeModal'
 import './TradesTable.css'
 
 interface TradesTableProps {
   trades: TradeWithMetrics[]
+  closing: boolean
+  onExitTrade: (id: string, input: CloseTradeInput) => Promise<void>
 }
 
 function toneClass(value: number | null): string {
@@ -26,8 +30,11 @@ function toneClass(value: number | null): string {
 }
 
 /** The detail table: one row per trade, newest first. Each row links to a read-only
- * detail page (opens in a new tab) with the full setup captured when it was placed. */
-export function TradesTable({ trades }: TradesTableProps) {
+ * detail page (opens in a new tab) with the full setup captured when it was placed.
+ * Open trades also get an Exit action, which owns its own popup-open state here. */
+export function TradesTable({ trades, closing, onExitTrade }: TradesTableProps) {
+  const [exiting, setExiting] = useState<TradeWithMetrics | null>(null)
+
   return (
     <Card className="trades">
       <div className="trades__head">
@@ -95,22 +102,40 @@ export function TradesTable({ trades }: TradesTableProps) {
                   <ResultBadge outcome={t.metrics.outcome} status={t.metrics.status} />
                 </td>
                 <td className="ta-right">
-                  <Link
-                    to={`/trades/${t.id}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="trades__view-link"
-                    aria-label={`View setup for ${t.symbol}`}
-                    title="View trade setup"
-                  >
-                    <Icon name="link" size={14} />
-                  </Link>
+                  <div className="trades__actions">
+                    {t.metrics.status === 'open' && (
+                      <button
+                        type="button"
+                        className="trades__exit-btn"
+                        onClick={() => setExiting(t)}
+                      >
+                        Exit
+                      </button>
+                    )}
+                    <Link
+                      to={`/trades/${t.id}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="trades__view-link"
+                      aria-label={`View setup for ${t.symbol}`}
+                      title="View trade setup"
+                    >
+                      <Icon name="link" size={14} />
+                    </Link>
+                  </div>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
+
+      <ExitTradeModal
+        trade={exiting}
+        closing={closing}
+        onExit={onExitTrade}
+        onClose={() => setExiting(null)}
+      />
     </Card>
   )
 }

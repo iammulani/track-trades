@@ -69,6 +69,13 @@
   background: var(--surface-2);
 }
 
+.trades__actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
 .trades__view-link {
   display: inline-grid;
   place-items: center;
@@ -80,6 +87,23 @@
 
 .trades__view-link:hover {
   background: var(--surface-2);
+  color: var(--accent);
+}
+
+.trades__exit-btn {
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.trades__exit-btn:hover {
+  border-color: var(--accent);
   color: var(--accent);
 }
 

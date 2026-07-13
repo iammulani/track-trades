@@ -5,7 +5,7 @@ import { TradesTable } from './components/TradesTable'
 import './DashboardPage.css'
 
 export function DashboardPage() {
-  const { trades, summary, loading, error } = useTrades()
+  const { trades, summary, loading, error, closing, closeTrade } = useTrades()
 
   return (
     <section className="dashboard">
@@ -30,7 +30,7 @@ export function DashboardPage() {
           {trades.length === 0 ? (
             <p className="dashboard__state">No trades yet.</p>
           ) : (
-            <TradesTable trades={trades} />
+            <TradesTable trades={trades} closing={closing} onExitTrade={closeTrade} />
           )}
         </>
       )}

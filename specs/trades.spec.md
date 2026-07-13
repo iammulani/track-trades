@@ -24,6 +24,7 @@ persisted beyond the raw fields; everything else is computed on read.
   | `exitTime`   | string \| null (ISO) | when it was exited (`null` = still open) |
   | `notes`      | string?              | free text                                |
   | `setup`      | `TradeSetup \| null` | the place-trade stepper's answers, captured at placement (see below) — absent/`null` for trades not placed through the stepper |
+  | `exitLearnings` | `ExitLearning[]`  | 0 to `MAX_EXIT_REASONS` reason+note pairs captured at exit, set together with `exitPrice`/`exitTime` (see below) |
 
 - **`TradeSetup`** — everything the [place-trade](place-trade.spec.md) stepper
   collects beyond the fill data itself, written once at placement and never
@@ -44,12 +45,39 @@ persisted beyond the raw fields; everything else is computed on read.
   | `finalChecks`          | `TradeChecklist`              | overhead-supply + breakout-confirmation checklist        |
   | `ratingRatio`          | number \| null                | `computeTradeRating().ratio` (0..1) at the moment of placement |
 
+- **`ExitReason`** — a fixed, closed-ended taxonomy (`utils/exitReasons.ts` →
+  `EXIT_REASON_OPTIONS`, `exitReasonLabel()`) so exit reasons can be
+  grouped/counted in a future report instead of drifting as free text: Hit
+  Target, Stopped Out — As Planned, Stopped Out — Widened Stop, Trailing
+  Stop, Discretionary — Thesis Changed, Time-Based Exit, Mistake —
+  Emotional / Fear, Mistake — Broke Trading Rule, Mistake — Missed Exit
+  Signal, Market / News Event, Other.
+
+- **`ExitLearning`** (`{ reason: ExitReason; note: string }`) — one exit
+  takeaway: the reportable category paired with its *own* free-text note, not
+  one shared note for the whole exit. A trade can have several, independent
+  of each other — e.g. `{ reason: 'hit-target', note: 'sold into strength
+  right at resistance' }` **and**, separately, `{ reason:
+  'mistake-broke-rule', note: 'moved my stop up too early out of fear' }` —
+  capped at `MAX_EXIT_REASONS` (5) so it stays a handful of deliberate
+  entries, not a dumping ground. Rows left with no reason picked are dropped
+  on submit.
+
 - **Derived — per trade** (`utils/tradeMetrics.ts`):
   - `status`: `closed` if `exitPrice` and `exitTime` are set, else `open`.
   - `pnl`: long → `(exit − entry) × qty`; short → `(entry − exit) × qty`. `null` if open.
   - `pnlPercent`: long → `(exit − entry) / entry × 100`; short → `(entry − exit) / entry × 100`.
   - `outcome`: `win` if `pnl > 0`, `loss` if `pnl < 0`, `breakeven` if `0`, `null` if open.
   - `durationMs`: `exitTime − entryTime` (for open trades, `now − entryTime`).
+
+- **`computeExitPreview(trade, exitPriceInput, stopLoss)`** (`utils/tradeMetrics.ts`)
+  — live preview of closing at a given price: `pnl`, `pnlPercent` (same
+  formulas as above, from a still-being-typed string price) plus
+  `riskRewardRatio` — the realized R-multiple, `pnlPerShare / riskPerShare`
+  where `riskPerShare = (entry − stopLoss) × direction`; `null` with no
+  captured `stopLoss` or a non-risk-reducing one. Used both live (Exit
+  Trade popup, string input) and after the fact (Trade Detail page, feeding
+  the stored `exitPrice` back in) — one function, so the two can't diverge.
 
 - **Derived — summary across all trades** (`utils/tradeMetrics.ts`):
   - `totalTrades`, `openTrades`, `closedTrades`
@@ -67,26 +95,36 @@ persisted beyond the raw fields; everything else is computed on read.
 ## Public API (via `index.ts`)
 
 - `useTrades()` — fetches trades, derives per-trade metrics + summary. Returns
-  `{ trades, summary, loading, error }`. This is the one hook feature pages use;
-  they never call `fetchTrades` or the metrics utils directly.
+  `{ trades, summary, loading, error, closing, closeTrade }`. This is the one
+  hook feature pages use; they never call `fetchTrades`/`closeTradeApi` or
+  the metrics utils directly. `closeTrade(id, input: CloseTradeInput)` -
+  `PATCH /trades/:id` with `exitPrice`, `exitTime`, `exitLearnings`, then a
+  silent refetch (`closing` is true mid-request, no loading flash — same
+  pattern as `useWatchlist`).
 - `addTrade(input: NewTrade)` — `POST /trades`, always opens with `exitPrice`/
   `exitTime: null`. Used by `modules/place-trade` to convert a watched symbol
   into a live trade.
+- `closeTrade(id, input)` — the raw API call `useTrades()` wraps; exported
+  for completeness but feature pages should use the hook's version.
 - `buildEquitySeries(trades)` + `EquityPoint` type.
+- `computeExitPreview`, `EXIT_REASON_OPTIONS`, `MAX_EXIT_REASONS`,
+  `exitReasonLabel`.
 - Types: `Trade`, `TradeSide`, `TradeStatus`, `TradeOutcome`, `TradeStage`,
   `TradeBase`, `TradeChecklist`, `TradeVcpContraction`, `TradeSetup`,
-  `TradeMetrics`, `TradeWithMetrics`, `DashboardSummary`, `NewTrade`.
+  `TradeMetrics`, `TradeWithMetrics`, `DashboardSummary`, `NewTrade`,
+  `ExitReason`, `ExitLearning`, `CloseTradeInput`, `ExitPreview`.
 
 ## Module map
 
 ```
 frontend/src/modules/trades/
 ├── index.ts                   # the ONLY import path other modules should use
-├── types/trade.ts             # Trade, TradeSide, derived types, DashboardSummary
-├── api/tradesApi.ts           # fetchTrades()
-├── hooks/useTrades.ts         # fetch + derive metrics + summary; {loading,error,…}
+├── types/trade.ts             # Trade, TradeSide, derived types, DashboardSummary, ExitReason, ExitLearning, CloseTradeInput
+├── api/tradesApi.ts           # fetchTrades(), addTrade(), closeTrade()
+├── hooks/useTrades.ts         # fetch + derive metrics + summary; {loading,error,closing,closeTrade,…}
 └── utils/
-    ├── tradeMetrics.ts        # computeTradeMetrics, summarize, sortByEntryDesc
+    ├── tradeMetrics.ts        # computeTradeMetrics, summarize, sortByEntryDesc, computeExitPreview
+    ├── exitReasons.ts         # EXIT_REASON_OPTIONS/MAX_EXIT_REASONS (fixed taxonomy + labels), exitReasonLabel()
     └── equitySeries.ts        # buildEquitySeries (cumulative P&L points)
 ```
 

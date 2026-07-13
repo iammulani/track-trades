@@ -36,6 +36,41 @@ export function withMetrics(trade: Trade): TradeWithMetrics {
   return { ...trade, metrics: computeTradeMetrics(trade) }
 }
 
+export interface ExitPreview {
+  pnl: number | null
+  pnlPercent: number | null
+  /** Realized R-multiple: gain/loss per share versus the planned risk per share
+   * (entry − stop, direction-adjusted). null with no stop, or a non-risk-reducing one. */
+  riskRewardRatio: number | null
+}
+
+/** What closing at `exitPriceInput` would realize — live while typing (a string, may be
+ * incomplete) and reused as-is once saved, by passing the stored exit price back in.
+ * Never stored itself. `stopLoss` comes from the trade's `setup`, if any. */
+export function computeExitPreview(
+  trade: Pick<Trade, 'side' | 'entryPrice' | 'quantity'>,
+  exitPriceInput: string,
+  stopLoss: number | null,
+): ExitPreview {
+  const exit = Number(exitPriceInput)
+  if (exitPriceInput.trim() === '' || !Number.isFinite(exit)) {
+    return { pnl: null, pnlPercent: null, riskRewardRatio: null }
+  }
+
+  const direction = trade.side === 'long' ? 1 : -1
+  const pnlPerShare = (exit - trade.entryPrice) * direction
+  const pnl = pnlPerShare * trade.quantity
+  const pnlPercent = (pnlPerShare / trade.entryPrice) * 100
+
+  let riskRewardRatio: number | null = null
+  if (stopLoss !== null) {
+    const riskPerShare = (trade.entryPrice - stopLoss) * direction
+    if (riskPerShare > 0) riskRewardRatio = pnlPerShare / riskPerShare
+  }
+
+  return { pnl, pnlPercent, riskRewardRatio }
+}
+
 /** Aggregate summary metrics across all trades. */
 export function summarize(trades: TradeWithMetrics[]): DashboardSummary {
   const closed = trades.filter((t) => t.metrics.status === 'closed')

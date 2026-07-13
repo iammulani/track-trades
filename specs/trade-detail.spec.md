@@ -29,6 +29,9 @@ Beyond what `modules/trades` already derives, this page also:
   [place-trade.spec.md](place-trade.spec.md)'s VCP Structure step, since
   those apply to the *stored* numeric `vcpContractions`, not the live
   string-typed editing form.
+- For closed trades, `computeExitPreview()` (`modules/trades`) fed the
+  stored `exitPrice` back in — the same function the Exit popup uses live —
+  to get the realized Risk : Reward without duplicating that math.
 
 ## UI
 
@@ -48,6 +51,12 @@ column.
      open"), quantity, hold duration, return %, P&L (green/red by sign,
      matching the dashboard table's convention).
    - Notes, if any.
+   - **Exit** (only when the trade is closed) — the realized **Risk : Reward**
+     (`N.NR`, `—` with no captured stop loss), then, if any were captured, a
+     list of **exit learnings** — one card per `ExitLearning`, its reason
+     label (`exitReasonLabel()`) followed by its own note underneath (not a
+     single shared note). Set once, when the trade was closed via the
+     Dashboard's Exit popup — see [dashboard.spec.md](dashboard.spec.md).
    - If the trade has no `setup` (placed before this was captured, or
      entered outside the stepper): a plain fallback note instead of the
      sections below.
@@ -91,7 +100,8 @@ frontend/src/modules/trade-detail/
 └── index.ts              # exports TradeDetailPage
 ```
 
-Depends on `modules/trades` (`useTrades`, `TradeVcpContraction`) and
+Depends on `modules/trades` (`useTrades`, `TradeVcpContraction`,
+`computeExitPreview`, `exitReasonLabel`) and
 `modules/place-trade` (`STAGE_OPTIONS`, `BASE_OPTIONS`,
 `INDICATOR_CHECKLIST_ITEMS`, `OVERHEAD_SUPPLY_CHECKLIST_ITEMS`,
 `BREAKOUT_CONFIRMATION_CHECKLIST_ITEMS`, `computeTradeRating`,

@@ -276,6 +276,34 @@
   color: var(--critical-text);
 }
 
+.trade-detail__learnings {
+  margin: 4px 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.trade-detail__learning {
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+}
+
+.trade-detail__learning-reason {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.trade-detail__learning-note {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
 .trade-detail__stage-base {
   display: flex;
   gap: 12px;
