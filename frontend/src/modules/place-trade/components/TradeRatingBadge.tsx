@@ -1,7 +1,14 @@
-import type { CSSProperties } from 'react'
 import { HoverCard } from '../../../shared/components/HoverCard'
 import { Icon } from '../../../shared/components/Icon'
-import { CRITERION_STATE_ICON, criterionState, type TradeRating } from '../utils/tradeRating'
+import {
+  CRITERION_STATE_ICON,
+  criterionState,
+  formatStars,
+  RATING_STARS,
+  type RatingGate,
+  type TradeRating,
+} from '../utils/tradeRating'
+import { RatingStars } from './RatingStars'
 import './TradeRatingBadge.css'
 
 interface TradeRatingBadgeProps {
@@ -9,45 +16,48 @@ interface TradeRatingBadgeProps {
   size?: number
 }
 
-const STAR_COUNT = 7
-
-/** A row of outline stars with an identical filled row clipped to the score — smooth
- * partial fill without needing a half-star glyph. */
-function Stars({ ratio, size }: { ratio: number; size: number }) {
-  const stars = Array.from({ length: STAR_COUNT }, (_, i) => (
-    <Icon key={i} name="star" size={size} className="trade-rating-badge__star" />
-  ))
-  return (
-    <span
-      className="trade-rating-badge__stars"
-      style={{ '--fill': `${ratio * 100}%` } as CSSProperties}
-    >
-      <span className="trade-rating-badge__stars-track">{stars}</span>
-      <span className="trade-rating-badge__stars-fill" aria-hidden="true">
-        {stars}
-      </span>
-    </span>
-  )
+/** A pending gate reads as neutral, not as a failure — nothing has been entered to judge yet. */
+const GATE_ICON: Record<RatingGate['state'], 'check' | 'x' | 'alert'> = {
+  pass: 'check',
+  fail: 'x',
+  pending: 'alert',
 }
 
 export function TradeRatingBadge({ rating, size = 15 }: TradeRatingBadgeProps) {
   const percent = Math.round(rating.ratio * 100)
+  const stars = formatStars(rating.stars)
   return (
     <HoverCard
-      label={`Trade rating: ${percent}%`}
+      label={`Trade rating: ${stars} out of ${RATING_STARS} stars`}
       triggerClassName="hover-card__trigger--plain"
       trigger={
         <span className="trade-rating-badge">
-          <Stars ratio={rating.ratio} size={size} />
-          <span className="trade-rating-badge__count">{percent}%</span>
+          <RatingStars ratio={rating.ratio} size={size} />
+          <span className="trade-rating-badge__count">
+            {stars} / {RATING_STARS} · {percent}%
+          </span>
         </span>
       }
     >
       <div className="trade-rating-details">
         <div className="trade-rating-details__heading">
           Trade Rating
-          <span className="trade-rating-details__score">{percent}%</span>
+          <span className="trade-rating-details__score">
+            {stars} / {RATING_STARS}
+          </span>
         </div>
+
+        <div className="trade-rating-details__group">Non-negotiables</div>
+        <ul>
+          {rating.gates.map((g) => (
+            <li key={g.id} className={`is-gate-${g.state}`}>
+              <Icon name={GATE_ICON[g.state]} size={13} />
+              {g.label}
+            </li>
+          ))}
+        </ul>
+
+        <div className="trade-rating-details__group">Scored criteria</div>
         <ul>
           {rating.criteria.map((c) => {
             const state = criterionState(c)

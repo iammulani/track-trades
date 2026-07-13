@@ -62,19 +62,19 @@
   line-height: 1.5;
 }
 
-.technical-confirmation-step__rsi {
+.technical-confirmation-step__rs {
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
 
-.technical-confirmation-step__rsi-header {
+.technical-confirmation-step__rs-header {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
 }
 
-.technical-confirmation-step__rsi-value {
+.technical-confirmation-step__rs-value {
   font-size: 28px;
   font-weight: 800;
   line-height: 1;
@@ -82,15 +82,15 @@
   color: var(--text-primary);
 }
 
-.technical-confirmation-step__rsi-value--good {
+.technical-confirmation-step__rs-value--good {
   color: var(--good-text);
 }
 
-.technical-confirmation-step__rsi-value--caution {
+.technical-confirmation-step__rs-value--caution {
   color: var(--amber-text);
 }
 
-.technical-confirmation-step__rsi-value--bad {
+.technical-confirmation-step__rs-value--bad {
   color: var(--critical-text);
 }
 
@@ -130,7 +130,7 @@
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
 }
 
-.technical-confirmation-step__rsi-scale {
+.technical-confirmation-step__rs-scale {
   display: flex;
   justify-content: space-between;
   font-size: 11px;

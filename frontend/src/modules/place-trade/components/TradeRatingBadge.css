@@ -5,38 +5,6 @@
   padding: 6px 10px;
 }
 
-.trade-rating-badge__stars {
-  position: relative;
-  display: inline-flex;
-}
-
-.trade-rating-badge__stars-track,
-.trade-rating-badge__stars-fill {
-  display: inline-flex;
-  align-items: center;
-  gap: 3px;
-  white-space: nowrap;
-}
-
-/* Filled layer sits over the outline layer, revealed left-to-right by --fill. */
-.trade-rating-badge__stars-fill {
-  position: absolute;
-  inset: 0;
-  width: var(--fill, 0%);
-  overflow: hidden;
-}
-
-.trade-rating-badge__star {
-  flex-shrink: 0;
-  color: var(--border-strong);
-  fill: none;
-}
-
-.trade-rating-badge__stars-fill .trade-rating-badge__star {
-  color: var(--amber);
-  fill: var(--amber);
-}
-
 .trade-rating-badge__count {
   font-size: 16px;
   font-weight: 700;
@@ -68,6 +36,14 @@
   font-size: 13px;
   font-weight: 700;
   color: var(--amber-text);
+}
+
+.trade-rating-details__group {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
 }
 
 .trade-rating-details ul {
@@ -106,6 +82,31 @@
 }
 
 .trade-rating-details li.is-unmet svg {
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+/* A failed gate caps the whole score, so it outranks anything in the criteria list. */
+.trade-rating-details li.is-gate-fail {
+  color: var(--critical-text);
+  font-weight: 600;
+}
+
+.trade-rating-details li.is-gate-fail svg {
+  color: var(--critical-text);
+  flex-shrink: 0;
+}
+
+.trade-rating-details li.is-gate-pass {
+  color: var(--text-primary);
+}
+
+.trade-rating-details li.is-gate-pass svg {
+  color: var(--good-text);
+  flex-shrink: 0;
+}
+
+.trade-rating-details li.is-gate-pending svg {
   color: var(--text-muted);
   flex-shrink: 0;
 }

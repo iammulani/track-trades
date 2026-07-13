@@ -40,10 +40,41 @@ export interface TradeVcpContraction {
   low: number
 }
 
+/** One criterion exactly as it scored at placement. Only the numbers are kept — the
+ * label is looked up from code by `id` when rendering, so wording can be reworded later
+ * without rewriting history. */
+export interface TradeRatingCriterionSnapshot {
+  id: string
+  weight: number
+  score: number
+}
+
+/** One non-negotiable exactly as it stood at placement, including the `cap` in force at
+ * the time — so re-tuning a cap later can't retroactively move an old trade's score. */
+export interface TradeRatingGateSnapshot {
+  id: string
+  state: 'pass' | 'fail' | 'pending'
+  cap: number
+}
+
+/** The rating **as judged at the moment the trade was placed**, frozen. This is the one
+ * thing in the app that is deliberately stored rather than derived (see convention 4 in
+ * CLAUDE.md): a rating is a point-in-time judgement, not a fact about the raw numbers, so
+ * re-tuning the formula must not silently re-grade trades you already took. Everything the
+ * Trade Detail page shows — stars, verdict, cap banner, per-criterion points — is rendered
+ * from this, never recomputed. */
+export interface TradeRatingSnapshot {
+  /** The score that counted, after any failed gate's cap, 0..1. */
+  ratio: number
+  /** The weighted criteria score before caps, 0..1 — what the points breakdown sums to. */
+  rawRatio: number
+  criteria: TradeRatingCriterionSnapshot[]
+  gates: TradeRatingGateSnapshot[]
+}
+
 /** Everything the place-trade stepper collects beyond the core fill data — a
  * point-in-time record of the setup that justified the trade, kept for later
- * analysis (e.g. "do tight VCPs actually outperform?"). Never recomputed —
- * `ratingRatio` is the score as it stood at placement, not a live value. */
+ * analysis (e.g. "do tight VCPs actually outperform?"). */
 export interface TradeSetup {
   /** From the watchlist item's `watchedSince` — how long it was watched before being traded. */
   watchedSince: string | null
@@ -51,7 +82,8 @@ export interface TradeSetup {
   target: number | null
   stage: TradeStage | null
   base: TradeBase | null
-  rsi: number | null
+  /** IBD-style RS Rating — a 1-99 percentile vs the market, not RSI(14). */
+  rsRating: number | null
   fiftyDayMa: number | null
   technicalChecklist: TradeChecklist
   week52Low: number | null
@@ -59,8 +91,9 @@ export interface TradeSetup {
   weeksInBase: number | null
   vcpContractions: TradeVcpContraction[]
   finalChecks: TradeChecklist
-  /** computeTradeRating().ratio at the moment the trade was placed, 0..1. */
-  ratingRatio: number | null
+  /** The frozen rating (see `TradeRatingSnapshot`). `null` only for trades placed before
+   * the rating existed, or entered outside the stepper. */
+  rating: TradeRatingSnapshot | null
 }
 
 /** Raw trade as stored in db.json. */

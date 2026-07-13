@@ -1,4 +1,3 @@
-import type { CSSProperties } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { Card } from '../../shared/components/Card'
 import { Icon } from '../../shared/components/Icon'
@@ -17,13 +16,17 @@ import {
 import {
   BASE_OPTIONS,
   BREAKOUT_CONFIRMATION_CHECKLIST_ITEMS,
-  computeTradeRating,
   criterionPoints,
   criterionState,
   CRITERION_STATE_ICON,
   formatPoints,
+  formatStars,
+  fromRatingSnapshot,
   INDICATOR_CHECKLIST_ITEMS,
   OVERHEAD_SUPPLY_CHECKLIST_ITEMS,
+  RatingGateBanner,
+  RATING_STARS,
+  RatingStars,
   ratingVerdict,
   STAGE_OPTIONS,
 } from '../place-trade'
@@ -34,8 +37,6 @@ import {
   type TradeVcpContraction,
 } from '../trades'
 import './TradeDetailPage.css'
-
-const RATING_STAR_COUNT = 7
 
 /** % pullback for one stored contraction — null only if `high` is 0 (shouldn't happen, but avoids a div/0). */
 function contractionPercent(c: TradeVcpContraction): number | null {
@@ -50,13 +51,6 @@ function checklistCount(items: { id: string }[], checked: Record<string, boolean
   return items.filter((item) => checked[item.id]).length
 }
 
-/** `computeTradeRating` was built for the live, string-typed stepper form — this
- * feeds it the same shape from the persisted, numeric `TradeSetup` so the Review
- * step's "why this score" breakdown can be reconstructed after the fact too. */
-function numberToInputString(value: number | null): string {
-  return value === null ? '' : String(value)
-}
-
 /** Read-only record of a past trade: the core fill data plus, when present, the full
  * setup captured by the place-trade stepper at the moment it was placed. Reached by
  * opening a trade's link from the Dashboard's trades table (in a new tab). */
@@ -68,35 +62,9 @@ export function TradeDetailPage() {
   const setup = trade?.setup
   const stage = setup?.stage ? STAGE_OPTIONS.find((s) => s.id === setup.stage) : undefined
   const base = setup?.base ? BASE_OPTIONS.find((b) => b.id === setup.base) : undefined
-  const rating =
-    trade && setup
-      ? computeTradeRating({
-          side: trade.side,
-          tradeParams: {
-            entryPrice: String(trade.entryPrice),
-            stopLoss: numberToInputString(setup.stopLoss),
-            target: numberToInputString(setup.target),
-            quantity: String(trade.quantity),
-            entryDate: '',
-          },
-          stageBaseAnswers: { stage: setup.stage, base: setup.base },
-          indicatorData: {
-            rsi: numberToInputString(setup.rsi),
-            fiftyDayMa: numberToInputString(setup.fiftyDayMa),
-            week52Low: numberToInputString(setup.week52Low),
-            week52High: numberToInputString(setup.week52High),
-          },
-          indicatorChecklistChecked: setup.technicalChecklist,
-          vcpStructureData: {
-            weeksInBase: numberToInputString(setup.weeksInBase),
-            contractions: setup.vcpContractions.map((c) => ({
-              high: String(c.high),
-              low: String(c.low),
-            })),
-          },
-          finalChecksChecked: setup.finalChecks,
-        })
-      : null
+  // Read back, never re-judged: this is the grade the setup earned on the day it was
+  // taken. Re-tuning the formula changes what *new* trades score, not what past ones did.
+  const rating = setup?.rating ? fromRatingSnapshot(setup.rating) : null
   const verdict = rating ? ratingVerdict(rating.ratio) : null
   const contractions = setup?.vcpContractions ?? []
   const percents = contractions.map(contractionPercent).filter((p): p is number => p !== null)
@@ -252,31 +220,19 @@ export function TradeDetailPage() {
           {setup && rating && verdict && (
             <>
               <div className={`trade-detail__rating trade-detail__rating--${verdict.tone}`}>
-                <span
-                  className="trade-detail__rating-stars"
-                  style={{ '--fill': `${rating.ratio * 100}%` } as CSSProperties}
-                >
-                  <span className="trade-detail__rating-stars-track">
-                    {Array.from({ length: RATING_STAR_COUNT }, (_, i) => (
-                      <Icon key={i} name="star" size={20} />
-                    ))}
-                  </span>
-                  <span className="trade-detail__rating-stars-fill" aria-hidden="true">
-                    {Array.from({ length: RATING_STAR_COUNT }, (_, i) => (
-                      <Icon key={i} name="star" size={20} />
-                    ))}
-                  </span>
-                </span>
+                <RatingStars ratio={rating.ratio} size={20} />
                 <span className="trade-detail__rating-score">
-                  {Math.round(rating.ratio * 100)}%
+                  {formatStars(rating.stars)} / {RATING_STARS}
                 </span>
                 <span className="trade-detail__rating-verdict">{verdict.label}</span>
               </div>
 
+              <RatingGateBanner rating={rating} />
+
               <div className="trade-detail__section">
                 <span className="trade-detail__section-title">
-                  Why {Math.round(rating.ratio * 100)}%? — {formatPoints(rating.earnedWeight)} of{' '}
-                  {formatPoints(rating.totalWeight)} points
+                  Why {Math.round(rating.rawRatio * 100)}% on points? —{' '}
+                  {formatPoints(rating.earnedWeight)} of {formatPoints(rating.totalWeight)}
                 </span>
                 <ul className="trade-detail__breakdown">
                   {rating.criteria.map((c) => {
@@ -352,8 +308,8 @@ export function TradeDetailPage() {
                 </span>
                 <div className="trade-detail__grid">
                   <div className="trade-detail__stat">
-                    <span className="trade-detail__stat-label">RSI</span>
-                    <span className="trade-detail__stat-value">{setup.rsi ?? '—'}</span>
+                    <span className="trade-detail__stat-label">RS Rating</span>
+                    <span className="trade-detail__stat-value">{setup.rsRating ?? '—'}</span>
                   </div>
                   <div className="trade-detail__stat">
                     <span className="trade-detail__stat-label">50-day MA</span>

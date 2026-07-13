@@ -37,13 +37,36 @@ persisted beyond the raw fields; everything else is computed on read.
   | `watchedSince`         | string \| null (ISO)          | the watchlist item's `watchedSince` — how long it was watched before being traded |
   | `stopLoss` / `target`  | number \| null                | risk-management levels entered in Trade Setup          |
   | `stage` / `base`       | `TradeStage \| null` / `TradeBase \| null` | the selected Stage & Base options            |
-  | `rsi` / `fiftyDayMa`   | number \| null                | Technical Confirmation readings                        |
+  | `rsRating` / `fiftyDayMa` | number \| null             | Technical Confirmation readings — `rsRating` is the IBD-style RS Rating (1–99 percentile vs the market), not RSI(14) |
   | `technicalChecklist`   | `TradeChecklist`              | the MA checklist, ticked item ids -> `true`             |
   | `week52Low` / `week52High` | number \| null            | 52-Week Range inputs                                    |
   | `weeksInBase`          | number \| null                | VCP Structure's time-in-base                            |
   | `vcpContractions`      | `TradeVcpContraction[]`       | each filled contraction's `{ high, low }`               |
   | `finalChecks`          | `TradeChecklist`              | overhead-supply + breakout-confirmation checklist        |
-  | `ratingRatio`          | number \| null                | `computeTradeRating().ratio` (0..1) at the moment of placement |
+  | `rating`               | `TradeRatingSnapshot` \| null | The rating **frozen at placement** — `ratio`, `rawRatio`, and every criterion's `{id, weight, score}` + every gate's `{id, state, cap}`. See below. |
+
+- **`TradeRatingSnapshot`** — the rating **as judged on the day the trade was
+  taken**, written once and read back forever. This is the app's one deliberate
+  exception to *"derive, don't store"* (convention 4 in `CLAUDE.md`), and the
+  reason is worth stating: P&L is a *fact* about the numbers, so recomputing it
+  always gives the same answer — but a rating is a *judgement*, and the formula
+  is expected to be re-tuned as the strategy sharpens. If the Trade Detail page
+  recomputed, every past trade would be silently re-graded by today's rules and
+  the journal would lose the record of what you actually believed when you
+  clicked buy. So the score is frozen instead:
+  - `ratio` (the capped score that counted) and `rawRatio` (criteria only), 0..1.
+  - `criteria` — `{ id, weight, score }` per criterion. **Ids and numbers only:**
+    the label is looked up from code by `id` at render time
+    (`CRITERION_LABELS` in `place-trade/utils/tradeRating.ts`), so copy can be
+    reworded later without rewriting history.
+  - `gates` — `{ id, state, cap }` per non-negotiable, **including the cap that
+    was in force at the time**, so re-tuning a cap can't retroactively move an
+    old trade's score. Label/reason likewise come from code (`GATE_META`).
+
+  Written by `toRatingSnapshot()` at placement; read by `fromRatingSnapshot()`,
+  which rebuilds a full `TradeRating` for the UI taking `ratio`/`rawRatio`
+  **verbatim** rather than re-deriving them. Both live in
+  `modules/place-trade` — see [place-trade.spec.md](place-trade.spec.md).
 
 - **`ExitReason`** — a fixed, closed-ended taxonomy (`utils/exitReasons.ts` →
   `EXIT_REASON_OPTIONS`, `exitReasonLabel()`) so exit reasons can be
