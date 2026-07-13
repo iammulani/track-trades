@@ -1,4 +1,3 @@
-import { useMemo } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { Icon } from '../../shared/components/Icon'
 import { PageHeader } from '../../shared/components/PageHeader'
@@ -12,7 +11,6 @@ import { TradeRatingBadge } from './components/TradeRatingBadge'
 import { VcpStructureStep } from './components/VcpStructureStep'
 import { WeekRangeStep } from './components/WeekRangeStep'
 import { usePlaceTrade } from './hooks/usePlaceTrade'
-import { computeTradeRating } from './utils/tradeRating'
 import './PlaceTradePage.css'
 
 export function PlaceTradePage() {
@@ -38,34 +36,13 @@ export function PlaceTradePage() {
     toggleFinalChecksItem,
     vcpStructureData,
     setVcpStructureData,
+    rating,
     placing,
     placeTrade,
   } = usePlaceTrade(id ?? '')
 
   const isFirstStep = stepIndex === 0
   const isLastStep = stepIndex === steps.length - 1
-
-  const rating = useMemo(
-    () =>
-      computeTradeRating({
-        side: item?.side ?? 'long',
-        tradeParams,
-        stageBaseAnswers,
-        indicatorData,
-        indicatorChecklistChecked,
-        vcpStructureData,
-        finalChecksChecked,
-      }),
-    [
-      item,
-      tradeParams,
-      stageBaseAnswers,
-      indicatorData,
-      indicatorChecklistChecked,
-      vcpStructureData,
-      finalChecksChecked,
-    ],
-  )
 
   return (
     <section className="place-trade-page">

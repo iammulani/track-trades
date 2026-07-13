@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Card } from '../../../shared/components/Card'
 import { SideBadge } from '../../../shared/components/SideBadge'
 import { avatarColor } from '../../../shared/utils/avatarColor'
@@ -10,6 +11,7 @@ import {
 } from '../../../shared/utils/format'
 import type { TradeWithMetrics } from '../../trades'
 import { ResultBadge } from './ResultBadge'
+import { TradeDetailModal } from './TradeDetailModal'
 import './TradesTable.css'
 
 interface TradesTableProps {
@@ -23,8 +25,10 @@ function toneClass(value: number | null): string {
   return ''
 }
 
-/** The detail table: one row per trade, newest first. */
+/** The detail table: one row per trade, newest first. Click a row for its full setup detail. */
 export function TradesTable({ trades }: TradesTableProps) {
+  const [selected, setSelected] = useState<TradeWithMetrics | null>(null)
+
   return (
     <Card className="trades">
       <div className="trades__head">
@@ -49,7 +53,20 @@ export function TradesTable({ trades }: TradesTableProps) {
           </thead>
           <tbody>
             {trades.map((t) => (
-              <tr key={t.id}>
+              <tr
+                key={t.id}
+                className="trades__row"
+                tabIndex={0}
+                role="button"
+                aria-label={`View details for ${t.symbol}`}
+                onClick={() => setSelected(t)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault()
+                    setSelected(t)
+                  }
+                }}
+              >
                 <td className="ta-left">
                   <div className="trades__stock">
                     <span
@@ -95,6 +112,8 @@ export function TradesTable({ trades }: TradesTableProps) {
           </tbody>
         </table>
       </div>
+
+      <TradeDetailModal trade={selected} onClose={() => setSelected(null)} />
     </Card>
   )
 }

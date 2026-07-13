@@ -1,3 +1,5 @@
+import type { TradeBase, TradeStage } from '../../trades'
+
 /** Values collected in the "Trade Setup" step — strings while editing, parsed on submit. */
 export interface TradeParams {
   entryPrice: string
@@ -19,8 +21,10 @@ export const EMPTY_TRADE_PARAMS: TradeParams = {
 /** Checklist item id -> checked, used by the various step checklists. */
 export type ChecklistChecked = Record<string, boolean>
 
-export type Stage = 'stage-1' | 'transition-1-2' | 'stage-2' | 'stage-3' | 'stage-4'
-export type Base = 'base-1' | 'base-2' | 'base-3' | 'base-4'
+/** Re-exported from `modules/trades` — it's the canonical definition since the
+ * chosen stage/base is now persisted as part of the trade's `setup`. */
+export type Stage = TradeStage
+export type Base = TradeBase
 
 /** Values collected in the "Stage & Base" step — one stage, one base, or neither yet. */
 export interface StageBaseAnswers {

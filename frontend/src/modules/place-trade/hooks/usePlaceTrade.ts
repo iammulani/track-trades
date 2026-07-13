@@ -14,6 +14,12 @@ import {
   type TradeParams,
   type VcpStructureData,
 } from '../types/placeTrade'
+import { computeTradeRating } from '../utils/tradeRating'
+
+/** "" -> null, else the parsed number — for optional numeric fields on submit. */
+function numberOrNull(value: string): number | null {
+  return value.trim() === '' ? null : Number(value)
+}
 
 export const STEPS = [
   { id: 'setup', title: 'Trade Setup' },
@@ -43,6 +49,28 @@ export function usePlaceTrade(watchlistId: string) {
   const [finalChecksChecked, setFinalChecksChecked] = useState<ChecklistChecked>({})
   const [vcpStructureData, setVcpStructureData] = useState<VcpStructureData>(EMPTY_VCP_STRUCTURE_DATA)
   const [placing, setPlacing] = useState(false)
+
+  const rating = useMemo(
+    () =>
+      computeTradeRating({
+        side: item?.side ?? 'long',
+        tradeParams,
+        stageBaseAnswers,
+        indicatorData,
+        indicatorChecklistChecked,
+        vcpStructureData,
+        finalChecksChecked,
+      }),
+    [
+      item,
+      tradeParams,
+      stageBaseAnswers,
+      indicatorData,
+      indicatorChecklistChecked,
+      vcpStructureData,
+      finalChecksChecked,
+    ],
+  )
 
   function toggleIndicatorChecklistItem(id: string) {
     setIndicatorChecklistChecked((prev) => ({ ...prev, [id]: !prev[id] }))
@@ -86,6 +114,24 @@ export function usePlaceTrade(watchlistId: string) {
         quantity: Number(tradeParams.quantity),
         entryPrice: Number(tradeParams.entryPrice),
         entryTime: dateValueToIso(tradeParams.entryDate),
+        setup: {
+          watchedSince: item.watchedSince,
+          stopLoss: numberOrNull(tradeParams.stopLoss),
+          target: numberOrNull(tradeParams.target),
+          stage: stageBaseAnswers.stage,
+          base: stageBaseAnswers.base,
+          rsi: numberOrNull(indicatorData.rsi),
+          fiftyDayMa: numberOrNull(indicatorData.fiftyDayMa),
+          technicalChecklist: indicatorChecklistChecked,
+          week52Low: numberOrNull(indicatorData.week52Low),
+          week52High: numberOrNull(indicatorData.week52High),
+          weeksInBase: numberOrNull(vcpStructureData.weeksInBase),
+          vcpContractions: vcpStructureData.contractions
+            .filter((c) => c.high.trim() !== '' && c.low.trim() !== '')
+            .map((c) => ({ high: Number(c.high), low: Number(c.low) })),
+          finalChecks: finalChecksChecked,
+          ratingRatio: rating.ratio,
+        },
       })
       await removeItem(item.id)
       navigate('/')
@@ -115,6 +161,7 @@ export function usePlaceTrade(watchlistId: string) {
     toggleFinalChecksItem,
     vcpStructureData,
     setVcpStructureData,
+    rating,
     placing,
     placeTrade,
   }

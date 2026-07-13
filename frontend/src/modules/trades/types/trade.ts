@@ -2,6 +2,41 @@ export type TradeSide = 'long' | 'short'
 export type TradeStatus = 'open' | 'closed'
 export type TradeOutcome = 'win' | 'loss' | 'breakeven'
 
+export type TradeStage = 'stage-1' | 'transition-1-2' | 'stage-2' | 'stage-3' | 'stage-4'
+export type TradeBase = 'base-1' | 'base-2' | 'base-3' | 'base-4'
+
+/** Checklist item id -> checked, captured verbatim from whichever checklist collected it. */
+export type TradeChecklist = Record<string, boolean>
+
+/** One VCP contraction (T) as placed — high/low already resolved to numbers. */
+export interface TradeVcpContraction {
+  high: number
+  low: number
+}
+
+/** Everything the place-trade stepper collects beyond the core fill data — a
+ * point-in-time record of the setup that justified the trade, kept for later
+ * analysis (e.g. "do tight VCPs actually outperform?"). Never recomputed —
+ * `ratingRatio` is the score as it stood at placement, not a live value. */
+export interface TradeSetup {
+  /** From the watchlist item's `watchedSince` — how long it was watched before being traded. */
+  watchedSince: string | null
+  stopLoss: number | null
+  target: number | null
+  stage: TradeStage | null
+  base: TradeBase | null
+  rsi: number | null
+  fiftyDayMa: number | null
+  technicalChecklist: TradeChecklist
+  week52Low: number | null
+  week52High: number | null
+  weeksInBase: number | null
+  vcpContractions: TradeVcpContraction[]
+  finalChecks: TradeChecklist
+  /** computeTradeRating().ratio at the moment the trade was placed, 0..1. */
+  ratingRatio: number | null
+}
+
 /** Raw trade as stored in db.json. */
 export interface Trade {
   id: string
@@ -13,6 +48,8 @@ export interface Trade {
   entryTime: string
   exitTime: string | null
   notes?: string
+  /** Absent for trades placed before this was captured, or entered outside the stepper. */
+  setup?: TradeSetup | null
 }
 
 /** Values derived from a single trade (see tradeMetrics.ts). */
@@ -52,4 +89,5 @@ export interface NewTrade {
   entryPrice: number
   entryTime: string
   notes?: string
+  setup?: TradeSetup | null
 }

@@ -61,7 +61,7 @@ export function ReviewStep({
   vcpStructureData,
   rating,
 }: ReviewStepProps) {
-  const verdict = ratingVerdict(rating)
+  const verdict = ratingVerdict(rating.ratio)
   const stage = STAGE_OPTIONS.find((s) => s.id === stageBaseAnswers.stage)
   const base = BASE_OPTIONS.find((b) => b.id === stageBaseAnswers.base)
   const indicatorCheckedCount = INDICATOR_CHECKLIST_ITEMS.filter(

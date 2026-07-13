@@ -198,9 +198,11 @@ export interface RatingVerdict {
   tone: 'good' | 'caution' | 'bad'
 }
 
-/** A quick read on the overall score — good at 85%+, caution at 50%+, bad below. */
-export function ratingVerdict(rating: TradeRating): RatingVerdict {
-  if (rating.ratio >= 0.85) return { label: 'Excellent setup', tone: 'good' }
-  if (rating.ratio >= 0.5) return { label: 'Good setup', tone: 'caution' }
+/** A quick read on a 0..1 score — good at 85%+, caution at 50%+, bad below. Takes a bare
+ * ratio (not the full `TradeRating`) so it also works for a stored `ratingRatio` snapshot,
+ * where the per-criterion breakdown that produced it is long gone. */
+export function ratingVerdict(ratio: number): RatingVerdict {
+  if (ratio >= 0.85) return { label: 'Excellent setup', tone: 'good' }
+  if (ratio >= 0.5) return { label: 'Good setup', tone: 'caution' }
   return { label: 'Weak setup — reconsider', tone: 'bad' }
 }

@@ -23,6 +23,26 @@ persisted beyond the raw fields; everything else is computed on read.
   | `entryTime`  | string (ISO)         | when the trade was entered               |
   | `exitTime`   | string \| null (ISO) | when it was exited (`null` = still open) |
   | `notes`      | string?              | free text                                |
+  | `setup`      | `TradeSetup \| null` | the place-trade stepper's answers, captured at placement (see below) — absent/`null` for trades not placed through the stepper |
+
+- **`TradeSetup`** — everything the [place-trade](place-trade.spec.md) stepper
+  collects beyond the fill data itself, written once at placement and never
+  recomputed (a point-in-time record, not a live derivation — kept so the
+  original setup can be analyzed later, e.g. "do tight VCPs actually
+  outperform?"):
+
+  | field                | type                          | meaning                                              |
+  | --------------------- | ----------------------------- | ----------------------------------------------------- |
+  | `watchedSince`         | string \| null (ISO)          | the watchlist item's `watchedSince` — how long it was watched before being traded |
+  | `stopLoss` / `target`  | number \| null                | risk-management levels entered in Trade Setup          |
+  | `stage` / `base`       | `TradeStage \| null` / `TradeBase \| null` | the selected Stage & Base options            |
+  | `rsi` / `fiftyDayMa`   | number \| null                | Technical Confirmation readings                        |
+  | `technicalChecklist`   | `TradeChecklist`              | the MA checklist, ticked item ids -> `true`             |
+  | `week52Low` / `week52High` | number \| null            | 52-Week Range inputs                                    |
+  | `weeksInBase`          | number \| null                | VCP Structure's time-in-base                            |
+  | `vcpContractions`      | `TradeVcpContraction[]`       | each filled contraction's `{ high, low }`               |
+  | `finalChecks`          | `TradeChecklist`              | overhead-supply + breakout-confirmation checklist        |
+  | `ratingRatio`          | number \| null                | `computeTradeRating().ratio` (0..1) at the moment of placement |
 
 - **Derived — per trade** (`utils/tradeMetrics.ts`):
   - `status`: `closed` if `exitPrice` and `exitTime` are set, else `open`.
@@ -53,8 +73,9 @@ persisted beyond the raw fields; everything else is computed on read.
   `exitTime: null`. Used by `modules/place-trade` to convert a watched symbol
   into a live trade.
 - `buildEquitySeries(trades)` + `EquityPoint` type.
-- Types: `Trade`, `TradeSide`, `TradeStatus`, `TradeOutcome`, `TradeMetrics`,
-  `TradeWithMetrics`, `DashboardSummary`, `NewTrade`.
+- Types: `Trade`, `TradeSide`, `TradeStatus`, `TradeOutcome`, `TradeStage`,
+  `TradeBase`, `TradeChecklist`, `TradeVcpContraction`, `TradeSetup`,
+  `TradeMetrics`, `TradeWithMetrics`, `DashboardSummary`, `NewTrade`.
 
 ## Module map
 

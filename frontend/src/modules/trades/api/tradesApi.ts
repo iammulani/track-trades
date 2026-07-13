@@ -17,6 +17,7 @@ export async function addTrade(input: NewTrade): Promise<Trade> {
     entryTime: input.entryTime,
     exitTime: null,
     notes: input.notes ?? '',
+    setup: input.setup ?? null,
   })
   return data
 }

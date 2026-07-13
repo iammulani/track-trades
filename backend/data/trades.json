@@ -130,5 +130,58 @@
     "entryTime": "2026-07-06T09:45:00",
     "exitTime": "2026-07-09T15:30:00",
     "notes": "Momentum swing, added on strength"
+  },
+  {
+    "symbol": "VTL",
+    "side": "long",
+    "quantity": 80,
+    "entryPrice": 658.7,
+    "exitPrice": null,
+    "entryTime": "2026-06-19T07:04:50.001Z",
+    "exitTime": null,
+    "notes": "",
+    "setup": {
+      "watchedSince": "2026-07-13T06:25:47.134Z",
+      "stopLoss": 610,
+      "target": null,
+      "stage": "stage-2",
+      "base": "base-1",
+      "rsi": 66,
+      "fiftyDayMa": 600,
+      "technicalChecklist": {
+        "ma-uptrend": true,
+        "ma-stacked": true,
+        "ma200-duration": true
+      },
+      "week52Low": 390,
+      "week52High": 666,
+      "weeksInBase": 6,
+      "vcpContractions": [
+        {
+          "high": 636,
+          "low": 581
+        },
+        {
+          "high": 619,
+          "low": 576
+        },
+        {
+          "high": 631,
+          "low": 614
+        },
+        {
+          "high": 637,
+          "low": 626
+        }
+      ],
+      "finalChecks": {
+        "volume-price-quiet": true,
+        "weak-holders-shaken-out": true,
+        "volume-confirms-breakout": true,
+        "minimal-overhead-resistance": true
+      },
+      "ratingRatio": 0.6515151515151515
+    },
+    "id": "l0yKsO-C7nk"
   }
 ]
