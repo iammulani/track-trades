@@ -27,6 +27,7 @@ import {
   CRITERION_STATE_ICON,
   criterionPoints,
   criterionState,
+  formatPoints,
   ratingVerdict,
   type TradeRating,
 } from '../utils/tradeRating'
@@ -34,11 +35,6 @@ import { RiskSummary } from './RiskSummary'
 import './ReviewStep.css'
 
 const RATING_STAR_COUNT = 7
-
-/** 2 → "2", 1.6 → "1.6" — keeps whole points clean. */
-function formatPoints(value: number): string {
-  return Number.isInteger(value) ? String(value) : value.toFixed(1)
-}
 
 interface ReviewStepProps {
   item: WatchlistItemWithMetrics

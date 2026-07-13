@@ -28,20 +28,9 @@ a content area. Content, top to bottom:
 3. **Trades table** (`TradesTable`) — one row per trade, most recent first, in a
    card with a per-symbol avatar chip. Columns: `Stock` · `Side` · `Qty` · `Entry`
    (price + time) · `Exit` (price + time) · `Hold` (duration) · `Return %` · `P&L` ·
-   `Result` (win/loss badge). Rows are clickable (and keyboard-focusable — Enter/Space
-   also opens it) and open the **trade detail popup**.
-4. **Trade detail popup** (`TradeDetailModal`, shared `Modal`) — avatar + symbol +
-   side/result badges, the core fill stats (entry, exit, quantity, hold, return,
-   P&L), notes if any, then, when the trade carries a `setup` (see
-   [trades.spec.md](trades.spec.md) / [place-trade.spec.md](place-trade.spec.md)):
-   the rating (stars + % + verdict, as it stood at placement — not recomputed),
-   how long the symbol was watched before being traded, stop loss/target, the
-   selected Stage & Base (colour-coded to match their tone, reusing
-   `STAGE_OPTIONS`/`BASE_OPTIONS` from `modules/place-trade`), the technical
-   checklist + RSI/50-day MA/52-week range, VCP structure (weeks in base, each
-   contraction's high/low and derived %, largest/narrowest), and the overhead-supply
-   / breakout-confirmation checklists. Trades placed before this was captured (or
-   entered outside the stepper) show a plain "No setup captured" note instead.
+   `Result` (win/loss badge), plus a trailing **link icon** per row that opens
+   that trade's full detail — including the setup captured when it was placed —
+   in a **new tab**, read-only. See [trade-detail.spec.md](trade-detail.spec.md).
 
 The equity curve is its own page — see [equity.spec.md](equity.spec.md).
 
@@ -66,23 +55,17 @@ frontend/src/modules/dashboard/
     ├── StatsGrid.tsx          # lays out the KPI tiles
     ├── StatTile.tsx           # one KPI tile (icon chip · label · value · sub)
     ├── WinLossBar.tsx         # win/loss proportion bar (has onHero variant)
-    ├── TradesTable.tsx        # the detail table; owns the detail-popup open/close state
-    ├── TradeDetailModal.tsx   # read-only trade + setup detail, opened from a table row
-    └── ResultBadge.tsx        # win/loss pill
+    └── TradesTable.tsx        # the detail table, incl. the per-row detail link
 
 frontend/src/shared/
 ├── components/Card.tsx        # surface container used across modules
 ├── components/Layout.tsx      # sidebar + content shell
 ├── components/Icon.tsx        # inline SVG icon set
-├── components/Modal.tsx       # backdrop + card shell — also used by the watchlist's popups
 ├── components/SideBadge.tsx   # long/short pill — also used by the watchlist table
+├── components/ResultBadge.tsx # win/loss pill — also used by trade-detail
 └── utils/format.ts            # currency / percent / duration / datetime
 ```
 
 Data types and metrics come from `modules/trades` — see
-[trades.spec.md](trades.spec.md). `TradeDetailModal` also reuses
-`STAGE_OPTIONS`, `BASE_OPTIONS`, `INDICATOR_CHECKLIST_ITEMS`,
-`OVERHEAD_SUPPLY_CHECKLIST_ITEMS`, `BREAKOUT_CONFIRMATION_CHECKLIST_ITEMS`, and
-`ratingVerdict` from `modules/place-trade`'s barrel, so the stage/base labels,
-checklist copy, and rating thresholds can't drift from the stepper that
-originally captured them.
+[trades.spec.md](trades.spec.md). The per-row detail link opens
+`modules/trade-detail` — see [trade-detail.spec.md](trade-detail.spec.md).

@@ -94,8 +94,9 @@ overhead-supply check, then a review before it's final.
      rating's `ratio` at the moment of placing), plus the watchlist item's
      `watchedSince` so how long it was watched before being traded isn't
      lost. Written once, never updated afterward — see `TradeSetup` in
-     [trades.spec.md](trades.spec.md). Viewable afterward via the Dashboard's
-     trade detail popup — see [dashboard.spec.md](dashboard.spec.md).
+     [trades.spec.md](trades.spec.md). Viewable afterward via the read-only
+     Trade Detail page, linked from the Dashboard — see
+     [trade-detail.spec.md](trade-detail.spec.md).
   2. `removeItem` (from `useWatchlist`) — `DELETE /watchlist/:id`. Once placed,
      it's a trade, not something still being watched.
 
@@ -227,7 +228,7 @@ frontend/src/modules/place-trade/
 │   ├── finalChecksCalc.ts            # computeContractionPercent(), largest/narrowestFromContractions, weeksInBaseTone(), largestCorrectionTone(), narrowestPullbackTone(), contractionCountTone(), contractionTightnessTone()
 │   ├── riskCalc.ts                   # computeRisk(side, params) -> RiskCalc
 │   ├── stageBaseOptions.ts           # STAGE_OPTIONS / BASE_OPTIONS static reference content
-│   └── tradeRating.ts                # computeTradeRating(), ratingVerdict(), criterionState()/criterionPoints()/CRITERION_STATE_ICON (shared by the badge hover-card and the Review breakdown)
+│   └── tradeRating.ts                # computeTradeRating(), ratingVerdict(), criterionState()/criterionPoints()/formatPoints()/CRITERION_STATE_ICON — shared by the badge hover-card, the Review breakdown, and (via the barrel) modules/trade-detail's reconstructed breakdown
 └── components/
     ├── StepIndicator.tsx              # numbered progress row (dots only, no labels)
     ├── TradeRatingBadge.tsx            # star row + N/7 count + hover-card breakdown

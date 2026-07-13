@@ -53,3 +53,4 @@ The files this feature owns under `modules/<feature>/`.
 | Equity Curve  | [equity.spec.md](equity.spec.md)           | `frontend/src/modules/equity`      |
 | Watchlist     | [watchlist.spec.md](watchlist.spec.md)     | `frontend/src/modules/watchlist`   |
 | Place Trade   | [place-trade.spec.md](place-trade.spec.md) | `frontend/src/modules/place-trade` |
+| Trade Detail  | [trade-detail.spec.md](trade-detail.spec.md) | `frontend/src/modules/trade-detail` |

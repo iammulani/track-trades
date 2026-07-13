@@ -7,5 +7,17 @@ export {
   BREAKOUT_CONFIRMATION_CHECKLIST_ITEMS,
 } from './utils/finalChecksItems'
 export type { ChecklistItem } from './utils/checklistItems'
-export { ratingVerdict } from './utils/tradeRating'
-export type { RatingVerdict } from './utils/tradeRating'
+export {
+  computeTradeRating,
+  criterionPoints,
+  criterionState,
+  formatPoints,
+  ratingVerdict,
+  CRITERION_STATE_ICON,
+} from './utils/tradeRating'
+export type {
+  CriterionState,
+  RatingCriterion,
+  RatingVerdict,
+  TradeRating,
+} from './utils/tradeRating'

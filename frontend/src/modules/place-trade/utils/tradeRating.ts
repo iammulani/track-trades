@@ -59,6 +59,12 @@ export function criterionPoints(criterion: RatingCriterion): number {
   return criterion.weight * criterion.score
 }
 
+/** 2 → "2", 1.6 → "1.6" — keeps whole points clean. Shared by the Review step's
+ * breakdown and the read-only Trade Detail page's. */
+export function formatPoints(value: number): string {
+  return Number.isInteger(value) ? String(value) : value.toFixed(1)
+}
+
 /** best/good → full, caution → half, anything else (bad/none) → nothing. */
 function toneScore(tone: string | undefined): number {
   if (tone === 'best' || tone === 'good') return 1
@@ -199,8 +205,7 @@ export interface RatingVerdict {
 }
 
 /** A quick read on a 0..1 score — good at 85%+, caution at 50%+, bad below. Takes a bare
- * ratio (not the full `TradeRating`) so it also works for a stored `ratingRatio` snapshot,
- * where the per-criterion breakdown that produced it is long gone. */
+ * ratio (not the full `TradeRating`) so it also works wherever only a ratio is on hand. */
 export function ratingVerdict(ratio: number): RatingVerdict {
   if (ratio >= 0.85) return { label: 'Excellent setup', tone: 'good' }
   if (ratio >= 0.5) return { label: 'Good setup', tone: 'caution' }

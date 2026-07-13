@@ -1,12 +1,11 @@
-import type { TradeOutcome, TradeStatus } from '../../trades'
 import './ResultBadge.css'
 
 interface ResultBadgeProps {
-  outcome: TradeOutcome | null
-  status: TradeStatus
+  outcome: 'win' | 'loss' | 'breakeven' | null
+  status: 'open' | 'closed'
 }
 
-const LABEL: Record<TradeOutcome, string> = {
+const LABEL: Record<'win' | 'loss' | 'breakeven', string> = {
   win: 'Win',
   loss: 'Loss',
   breakeven: 'Flat',

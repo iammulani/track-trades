@@ -1,8 +1,11 @@
 import type { CSSProperties } from 'react'
-import { Icon } from '../../../shared/components/Icon'
-import { Modal } from '../../../shared/components/Modal'
-import { SideBadge } from '../../../shared/components/SideBadge'
-import { avatarColor } from '../../../shared/utils/avatarColor'
+import { Link, useParams } from 'react-router-dom'
+import { Card } from '../../shared/components/Card'
+import { Icon } from '../../shared/components/Icon'
+import { PageHeader } from '../../shared/components/PageHeader'
+import { ResultBadge } from '../../shared/components/ResultBadge'
+import { SideBadge } from '../../shared/components/SideBadge'
+import { avatarColor } from '../../shared/utils/avatarColor'
 import {
   formatDateTime,
   formatDuration,
@@ -10,25 +13,24 @@ import {
   formatPrice,
   formatSignedCurrency,
   formatSignedPercent,
-} from '../../../shared/utils/format'
+} from '../../shared/utils/format'
 import {
   BASE_OPTIONS,
   BREAKOUT_CONFIRMATION_CHECKLIST_ITEMS,
+  computeTradeRating,
+  criterionPoints,
+  criterionState,
+  CRITERION_STATE_ICON,
+  formatPoints,
   INDICATOR_CHECKLIST_ITEMS,
   OVERHEAD_SUPPLY_CHECKLIST_ITEMS,
   ratingVerdict,
   STAGE_OPTIONS,
-} from '../../place-trade'
-import type { TradeVcpContraction, TradeWithMetrics } from '../../trades'
-import { ResultBadge } from './ResultBadge'
-import './TradeDetailModal.css'
+} from '../place-trade'
+import { useTrades, type TradeVcpContraction } from '../trades'
+import './TradeDetailPage.css'
 
 const RATING_STAR_COUNT = 7
-
-interface TradeDetailModalProps {
-  trade: TradeWithMetrics | null
-  onClose: () => void
-}
 
 /** % pullback for one stored contraction — null only if `high` is 0 (shouldn't happen, but avoids a div/0). */
 function contractionPercent(c: TradeVcpContraction): number | null {
@@ -39,28 +41,86 @@ function checklistCount(items: { id: string }[], checked: Record<string, boolean
   return items.filter((item) => checked[item.id]).length
 }
 
-/** Read-only detail popup for a past trade — shows the core fill data plus, when present,
- * the full setup captured by the place-trade stepper (stage/base, technicals, VCP, checklists,
- * and the rating as it stood at placement). Opened by clicking a row in `TradesTable`. */
-export function TradeDetailModal({ trade, onClose }: TradeDetailModalProps) {
+/** `computeTradeRating` was built for the live, string-typed stepper form — this
+ * feeds it the same shape from the persisted, numeric `TradeSetup` so the Review
+ * step's "why this score" breakdown can be reconstructed after the fact too. */
+function numberToInputString(value: number | null): string {
+  return value === null ? '' : String(value)
+}
+
+/** Read-only record of a past trade: the core fill data plus, when present, the full
+ * setup captured by the place-trade stepper at the moment it was placed. Reached by
+ * opening a trade's link from the Dashboard's trades table (in a new tab). */
+export function TradeDetailPage() {
+  const { id } = useParams<{ id: string }>()
+  const { trades, loading, error } = useTrades()
+  const trade = trades.find((t) => t.id === id) ?? null
+
   const setup = trade?.setup
   const stage = setup?.stage ? STAGE_OPTIONS.find((s) => s.id === setup.stage) : undefined
   const base = setup?.base ? BASE_OPTIONS.find((b) => b.id === setup.base) : undefined
-  const verdict =
-    setup?.ratingRatio !== null && setup?.ratingRatio !== undefined
-      ? ratingVerdict(setup.ratingRatio)
+  const rating =
+    trade && setup
+      ? computeTradeRating({
+          side: trade.side,
+          tradeParams: {
+            entryPrice: String(trade.entryPrice),
+            stopLoss: numberToInputString(setup.stopLoss),
+            target: numberToInputString(setup.target),
+            quantity: String(trade.quantity),
+            entryDate: '',
+          },
+          stageBaseAnswers: { stage: setup.stage, base: setup.base },
+          indicatorData: {
+            rsi: numberToInputString(setup.rsi),
+            fiftyDayMa: numberToInputString(setup.fiftyDayMa),
+            week52Low: numberToInputString(setup.week52Low),
+            week52High: numberToInputString(setup.week52High),
+          },
+          indicatorChecklistChecked: setup.technicalChecklist,
+          vcpStructureData: {
+            weeksInBase: numberToInputString(setup.weeksInBase),
+            contractions: setup.vcpContractions.map((c) => ({
+              high: String(c.high),
+              low: String(c.low),
+            })),
+          },
+          finalChecksChecked: setup.finalChecks,
+        })
       : null
+  const verdict = rating ? ratingVerdict(rating.ratio) : null
   const contractions = setup?.vcpContractions ?? []
-  const percents = contractions
-    .map(contractionPercent)
-    .filter((p): p is number => p !== null)
+  const percents = contractions.map(contractionPercent).filter((p): p is number => p !== null)
   const largest = percents.length ? Math.max(...percents) : null
   const narrowest = percents.length ? Math.min(...percents) : null
 
   return (
-    <Modal open={trade !== null} onClose={onClose} width={560} labelledBy="trade-detail-title">
+    <section className="trade-detail-page">
+      <PageHeader
+        icon="info"
+        title="Trade Detail"
+        subtitle="A read-only record of the trade and the setup that justified it."
+        actions={
+          <Link to="/" className="trade-detail-page__back-link">
+            ← Back to Dashboard
+          </Link>
+        }
+      />
+
+      {loading && <p className="trade-detail-page__state">Loading…</p>}
+
+      {error && (
+        <p className="trade-detail-page__state trade-detail-page__state--error">
+          Couldn’t load trades: {error}.
+        </p>
+      )}
+
+      {!loading && !error && !trade && (
+        <p className="trade-detail-page__state">That trade doesn't exist (maybe it was removed).</p>
+      )}
+
       {trade && (
-        <div className="trade-detail">
+        <Card className="trade-detail-page__card">
           <div className="trade-detail__header">
             <span
               className="trade-detail__avatar"
@@ -70,9 +130,7 @@ export function TradeDetailModal({ trade, onClose }: TradeDetailModalProps) {
               {trade.symbol.slice(0, 2)}
             </span>
             <div className="trade-detail__heading">
-              <span id="trade-detail-title" className="trade-detail__symbol">
-                {trade.symbol}
-              </span>
+              <span className="trade-detail__symbol">{trade.symbol}</span>
               <div className="trade-detail__badges">
                 <SideBadge side={trade.side} />
                 <ResultBadge outcome={trade.metrics.outcome} status={trade.metrics.status} />
@@ -127,7 +185,13 @@ export function TradeDetailModal({ trade, onClose }: TradeDetailModalProps) {
               <span className="trade-detail__stat-label">P&amp;L</span>
               <span
                 className={`trade-detail__stat-value ${
-                  trade.metrics.pnl === null ? '' : trade.metrics.pnl > 0 ? 'is-good' : trade.metrics.pnl < 0 ? 'is-critical' : ''
+                  trade.metrics.pnl === null
+                    ? ''
+                    : trade.metrics.pnl > 0
+                      ? 'is-good'
+                      : trade.metrics.pnl < 0
+                        ? 'is-critical'
+                        : ''
                 }`}
               >
                 {trade.metrics.pnl === null ? '—' : formatSignedCurrency(trade.metrics.pnl)}
@@ -144,31 +208,50 @@ export function TradeDetailModal({ trade, onClose }: TradeDetailModalProps) {
             </p>
           )}
 
-          {setup && (
+          {setup && rating && verdict && (
             <>
-              {verdict && (
-                <div className={`trade-detail__rating trade-detail__rating--${verdict.tone}`}>
-                  <span
-                    className="trade-detail__rating-stars"
-                    style={{ '--fill': `${(setup.ratingRatio ?? 0) * 100}%` } as CSSProperties}
-                  >
-                    <span className="trade-detail__rating-stars-track">
-                      {Array.from({ length: RATING_STAR_COUNT }, (_, i) => (
-                        <Icon key={i} name="star" size={18} />
-                      ))}
-                    </span>
-                    <span className="trade-detail__rating-stars-fill" aria-hidden="true">
-                      {Array.from({ length: RATING_STAR_COUNT }, (_, i) => (
-                        <Icon key={i} name="star" size={18} />
-                      ))}
-                    </span>
+              <div className={`trade-detail__rating trade-detail__rating--${verdict.tone}`}>
+                <span
+                  className="trade-detail__rating-stars"
+                  style={{ '--fill': `${rating.ratio * 100}%` } as CSSProperties}
+                >
+                  <span className="trade-detail__rating-stars-track">
+                    {Array.from({ length: RATING_STAR_COUNT }, (_, i) => (
+                      <Icon key={i} name="star" size={20} />
+                    ))}
                   </span>
-                  <span className="trade-detail__rating-score">
-                    {Math.round((setup.ratingRatio ?? 0) * 100)}%
+                  <span className="trade-detail__rating-stars-fill" aria-hidden="true">
+                    {Array.from({ length: RATING_STAR_COUNT }, (_, i) => (
+                      <Icon key={i} name="star" size={20} />
+                    ))}
                   </span>
-                  <span className="trade-detail__rating-verdict">{verdict.label}</span>
-                </div>
-              )}
+                </span>
+                <span className="trade-detail__rating-score">
+                  {Math.round(rating.ratio * 100)}%
+                </span>
+                <span className="trade-detail__rating-verdict">{verdict.label}</span>
+              </div>
+
+              <div className="trade-detail__section">
+                <span className="trade-detail__section-title">
+                  Why {Math.round(rating.ratio * 100)}%? — {formatPoints(rating.earnedWeight)} of{' '}
+                  {formatPoints(rating.totalWeight)} points
+                </span>
+                <ul className="trade-detail__breakdown">
+                  {rating.criteria.map((c) => {
+                    const state = criterionState(c)
+                    return (
+                      <li key={c.id} className={`trade-detail__breakdown-row is-${state}`}>
+                        <Icon name={CRITERION_STATE_ICON[state]} size={14} />
+                        <span className="trade-detail__breakdown-label">{c.label}</span>
+                        <span className="trade-detail__breakdown-points">
+                          {formatPoints(criterionPoints(c))}/{formatPoints(c.weight)}
+                        </span>
+                      </li>
+                    )
+                  })}
+                </ul>
+              </div>
 
               <div className="trade-detail__section">
                 <span className="trade-detail__section-title">Setup</span>
@@ -178,7 +261,8 @@ export function TradeDetailModal({ trade, onClose }: TradeDetailModalProps) {
                     <span className="trade-detail__stat-value">
                       {setup.watchedSince
                         ? formatDuration(
-                            new Date(trade.entryTime).getTime() - new Date(setup.watchedSince).getTime(),
+                            new Date(trade.entryTime).getTime() -
+                              new Date(setup.watchedSince).getTime(),
                           )
                         : '—'}
                     </span>
@@ -253,7 +337,8 @@ export function TradeDetailModal({ trade, onClose }: TradeDetailModalProps) {
 
               <div className="trade-detail__section">
                 <span className="trade-detail__section-title">
-                  VCP Structure — {contractions.length} contraction{contractions.length === 1 ? '' : 's'}
+                  VCP Structure — {contractions.length} contraction
+                  {contractions.length === 1 ? '' : 's'}
                 </span>
                 <div className="trade-detail__grid">
                   <div className="trade-detail__stat">
@@ -295,7 +380,8 @@ export function TradeDetailModal({ trade, onClose }: TradeDetailModalProps) {
 
               <div className="trade-detail__section">
                 <span className="trade-detail__section-title">
-                  Overhead Supply — {checklistCount(OVERHEAD_SUPPLY_CHECKLIST_ITEMS, setup.finalChecks)}/
+                  Overhead Supply —{' '}
+                  {checklistCount(OVERHEAD_SUPPLY_CHECKLIST_ITEMS, setup.finalChecks)}/
                   {OVERHEAD_SUPPLY_CHECKLIST_ITEMS.length} confirmed
                 </span>
                 <ul className="trade-detail__checklist">
@@ -323,8 +409,8 @@ export function TradeDetailModal({ trade, onClose }: TradeDetailModalProps) {
               </div>
             </>
           )}
-        </div>
+        </Card>
       )}
-    </Modal>
+    </section>
   )
 }

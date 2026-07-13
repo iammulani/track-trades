@@ -1,5 +1,7 @@
-import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { Card } from '../../../shared/components/Card'
+import { Icon } from '../../../shared/components/Icon'
+import { ResultBadge } from '../../../shared/components/ResultBadge'
 import { SideBadge } from '../../../shared/components/SideBadge'
 import { avatarColor } from '../../../shared/utils/avatarColor'
 import {
@@ -10,8 +12,6 @@ import {
   formatSignedPercent,
 } from '../../../shared/utils/format'
 import type { TradeWithMetrics } from '../../trades'
-import { ResultBadge } from './ResultBadge'
-import { TradeDetailModal } from './TradeDetailModal'
 import './TradesTable.css'
 
 interface TradesTableProps {
@@ -25,10 +25,9 @@ function toneClass(value: number | null): string {
   return ''
 }
 
-/** The detail table: one row per trade, newest first. Click a row for its full setup detail. */
+/** The detail table: one row per trade, newest first. Each row links to a read-only
+ * detail page (opens in a new tab) with the full setup captured when it was placed. */
 export function TradesTable({ trades }: TradesTableProps) {
-  const [selected, setSelected] = useState<TradeWithMetrics | null>(null)
-
   return (
     <Card className="trades">
       <div className="trades__head">
@@ -49,24 +48,12 @@ export function TradesTable({ trades }: TradesTableProps) {
               <th className="ta-right">Return</th>
               <th className="ta-right">P&amp;L</th>
               <th className="ta-left">Result</th>
+              <th className="ta-right"></th>
             </tr>
           </thead>
           <tbody>
             {trades.map((t) => (
-              <tr
-                key={t.id}
-                className="trades__row"
-                tabIndex={0}
-                role="button"
-                aria-label={`View details for ${t.symbol}`}
-                onClick={() => setSelected(t)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault()
-                    setSelected(t)
-                  }
-                }}
-              >
+              <tr key={t.id}>
                 <td className="ta-left">
                   <div className="trades__stock">
                     <span
@@ -107,13 +94,23 @@ export function TradesTable({ trades }: TradesTableProps) {
                 <td className="ta-left">
                   <ResultBadge outcome={t.metrics.outcome} status={t.metrics.status} />
                 </td>
+                <td className="ta-right">
+                  <Link
+                    to={`/trades/${t.id}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="trades__view-link"
+                    aria-label={`View setup for ${t.symbol}`}
+                    title="View trade setup"
+                  >
+                    <Icon name="link" size={14} />
+                  </Link>
+                </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-
-      <TradeDetailModal trade={selected} onClose={() => setSelected(null)} />
     </Card>
   )
 }

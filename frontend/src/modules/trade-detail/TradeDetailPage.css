@@ -1,9 +1,31 @@
-.trade-detail {
+.trade-detail-page {
   display: flex;
   flex-direction: column;
-  gap: 18px;
-  max-height: 78vh;
-  overflow-y: auto;
+  gap: 20px;
+  max-width: 1240px;
+  margin: 0 auto;
+}
+
+.trade-detail-page__back-link {
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.trade-detail-page__state {
+  color: var(--text-secondary);
+  padding: 8px 0;
+}
+
+.trade-detail-page__state--error {
+  color: var(--critical-text);
+}
+
+.trade-detail-page__card {
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .trade-detail__header {
@@ -15,11 +37,11 @@
 .trade-detail__avatar {
   display: grid;
   place-items: center;
-  width: 42px;
-  height: 42px;
+  width: 46px;
+  height: 46px;
   border-radius: 10px;
   color: #fff;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 700;
   flex-shrink: 0;
 }
@@ -31,7 +53,7 @@
 }
 
 .trade-detail__symbol {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 700;
   color: var(--text-primary);
 }
@@ -44,7 +66,7 @@
 
 .trade-detail__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
   gap: 12px;
 }
 
@@ -66,7 +88,7 @@
 }
 
 .trade-detail__stat-value {
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 700;
   color: var(--text-primary);
   font-variant-numeric: tabular-nums;
@@ -87,7 +109,7 @@
 
 .trade-detail__notes {
   margin: 0;
-  padding: 10px 12px;
+  padding: 12px 14px;
   border-radius: var(--radius-sm);
   background: var(--surface-2);
   color: var(--text-secondary);
@@ -97,7 +119,7 @@
 
 .trade-detail__no-setup {
   margin: 0;
-  padding: 10px 12px;
+  padding: 12px 14px;
   border-radius: var(--radius-sm);
   background: var(--surface-2);
   color: var(--text-muted);
@@ -108,8 +130,8 @@
 .trade-detail__rating {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px 14px;
+  gap: 16px;
+  padding: 16px 18px;
   border-radius: var(--radius-sm);
   background: var(--surface-2);
 }
@@ -135,7 +157,7 @@
 .trade-detail__rating-stars-fill {
   display: inline-flex;
   align-items: center;
-  gap: 2px;
+  gap: 3px;
   white-space: nowrap;
 }
 
@@ -157,7 +179,7 @@
 }
 
 .trade-detail__rating-score {
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 800;
   color: var(--text-primary);
   font-variant-numeric: tabular-nums;
@@ -184,7 +206,7 @@
 .trade-detail__section {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
 }
 
 .trade-detail__section-title {
@@ -193,6 +215,65 @@
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.04em;
+}
+
+.trade-detail__breakdown {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.trade-detail__breakdown-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.trade-detail__breakdown-row svg {
+  flex-shrink: 0;
+}
+
+.trade-detail__breakdown-label {
+  flex: 1;
+  min-width: 0;
+}
+
+.trade-detail__breakdown-points {
+  flex-shrink: 0;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-primary);
+}
+
+.trade-detail__breakdown-row.is-met svg {
+  color: var(--good-text);
+}
+
+.trade-detail__breakdown-row.is-partial {
+  color: var(--text-primary);
+  background: color-mix(in srgb, var(--amber) 10%, transparent);
+}
+
+.trade-detail__breakdown-row.is-partial svg,
+.trade-detail__breakdown-row.is-partial .trade-detail__breakdown-points {
+  color: var(--amber-text);
+}
+
+.trade-detail__breakdown-row.is-unmet {
+  color: var(--text-primary);
+  background: color-mix(in srgb, var(--critical) 10%, transparent);
+}
+
+.trade-detail__breakdown-row.is-unmet svg,
+.trade-detail__breakdown-row.is-unmet .trade-detail__breakdown-points {
+  color: var(--critical-text);
 }
 
 .trade-detail__stage-base {
@@ -205,7 +286,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 8px 12px;
+  padding: 10px 14px;
   border-radius: var(--radius-sm);
   border: 1px solid var(--border);
 }
