@@ -4,9 +4,9 @@
     "side": "long",
     "quantity": 80,
     "entryPrice": 658.7,
-    "exitPrice": null,
+    "exitPrice": 634,
     "entryTime": "2026-06-19T07:04:50.001Z",
-    "exitTime": null,
+    "exitTime": "2026-07-09T04:13:00.000Z",
     "notes": "",
     "setup": {
       "watchedSince": "2026-07-13T06:25:47.134Z",
@@ -50,6 +50,16 @@
       },
       "ratingRatio": 0.6515151515151515
     },
-    "id": "l0yKsO-C7nk"
+    "id": "l0yKsO-C7nk",
+    "exitLearnings": [
+      {
+        "reason": "stopped-as-planned",
+        "note": "It broke 20 MA & falling since last three days."
+      },
+      {
+        "reason": "mistake-missed-signal",
+        "note": "Yes, missed exit signal on July 06. Should I have existed on this day, it was clear sign with volume & shooting star candle. However, day before it was good progress & showing nice profits, so ignored the actual sign, in the hope 1st winner."
+      }
+    ]
   }
 ]
