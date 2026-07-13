@@ -51,7 +51,7 @@ persisted beyond the raw fields; everything else is computed on read.
   Target, Stopped Out — As Planned, Stopped Out — Widened Stop, Trailing
   Stop, Discretionary — Thesis Changed, Time-Based Exit, Mistake —
   Emotional / Fear, Mistake — Broke Trading Rule, Mistake — Missed Exit
-  Signal, Market / News Event, Other.
+  Signal, Mistake — Early Entry, Market / News Event, Other.
 
 - **`ExitLearning`** (`{ reason: ExitReason; note: string }`) — one exit
   takeaway: the reportable category paired with its *own* free-text note, not

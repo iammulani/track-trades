@@ -15,6 +15,7 @@ export type ExitReason =
   | 'mistake-emotional'
   | 'mistake-broke-rule'
   | 'mistake-missed-signal'
+  | 'mistake-early-entry'
   | 'market-news-event'
   | 'other'
 

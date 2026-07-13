@@ -157,5 +157,55 @@
         "note": "Entry driven by emotion, not logic — was compensating for the losing NHPC trade that same morning and convinced myself a late-day entry meant patience when it was really FOMO."
       }
     ]
+  },
+  {
+    "symbol": "TORNTPHARM",
+    "side": "long",
+    "quantity": 12,
+    "entryPrice": 4687,
+    "exitPrice": 4362.5,
+    "entryTime": "2026-05-25T10:28:25.327Z",
+    "exitTime": "2026-06-01T08:35:00.000Z",
+    "notes": "",
+    "setup": {
+      "watchedSince": "2026-04-01T10:17:35.042Z",
+      "stopLoss": 4200,
+      "target": null,
+      "stage": "transition-1-2",
+      "base": "base-4",
+      "rsi": 66,
+      "fiftyDayMa": 4265,
+      "technicalChecklist": {
+        "ma-stacked": true,
+        "ma-uptrend": true,
+        "ma200-duration": true
+      },
+      "week52Low": 3404,
+      "week52High": 4712,
+      "weeksInBase": 2,
+      "vcpContractions": [
+        {
+          "high": 4560,
+          "low": 4262
+        }
+      ],
+      "finalChecks": {
+        "group-positive": true,
+        "volume-confirms-breakout": true,
+        "minimal-overhead-resistance": true
+      },
+      "ratingRatio": 0.3909090909090909
+    },
+    "id": "DEl1oi8NQhE",
+    "exitLearnings": [
+      {
+        "reason": "stopped-as-planned",
+        "note": "Stop closed below 20 Day MA. With sharp decline in the price, since I bought. Huge red bar a day before with heavy volume"
+      },
+      {
+        "reason": "mistake-early-entry",
+        "note": "Jumped in before the base was actually ready. After getting stopped out, the stock stabilized, carved out a clean 3-T VCP, and gave a proper breakout signal on June 29 around ₹4,617. Price kept climbing from there — trading around ₹4,951 as of July 13, up ~7.2% from that signal. The real trade was the one I exited before it even started."
+      }
+    ]
   }
 ]

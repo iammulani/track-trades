@@ -22,6 +22,7 @@ export const EXIT_REASON_OPTIONS: ExitReasonOption[] = [
   { value: 'mistake-emotional', label: 'Mistake — Emotional / Fear' },
   { value: 'mistake-broke-rule', label: 'Mistake — Broke Trading Rule' },
   { value: 'mistake-missed-signal', label: 'Mistake — Missed Exit Signal' },
+  { value: 'mistake-early-entry', label: 'Mistake — Early Entry' },
   { value: 'market-news-event', label: 'Market / News Event' },
   { value: 'other', label: 'Other' },
 ]
