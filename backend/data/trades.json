@@ -61,5 +61,101 @@
         "note": "Yes, missed exit signal on July 06. Should I have existed on this day, it was clear sign with volume & shooting star candle. However, day before it was good progress & showing nice profits, so ignored the actual sign, in the hope 1st winner."
       }
     ]
+  },
+  {
+    "symbol": "NHPC",
+    "side": "long",
+    "quantity": 400,
+    "entryPrice": 87.09,
+    "exitPrice": 85.8,
+    "entryTime": "2025-10-06T03:45:15.000Z",
+    "exitTime": "2025-10-10T04:45:00.000Z",
+    "notes": "",
+    "setup": {
+      "watchedSince": "2025-09-01T09:46:54.830Z",
+      "stopLoss": 86.34,
+      "target": 91.03,
+      "stage": "stage-1",
+      "base": "base-4",
+      "rsi": 59,
+      "fiftyDayMa": 83,
+      "technicalChecklist": {},
+      "week52Low": 72,
+      "week52High": 88,
+      "weeksInBase": 2,
+      "vcpContractions": [
+        {
+          "high": 88,
+          "low": 83
+        },
+        {
+          "high": 87,
+          "low": 85
+        }
+      ],
+      "finalChecks": {},
+      "ratingRatio": 0.4636363636363636
+    },
+    "id": "aARvVPxy8EY",
+    "exitLearnings": [
+      {
+        "reason": "stopped-as-planned",
+        "note": "Honored the ₹86.34 stop when the first hourly candle closed below it on Day 3 — no second-guessing, no waiting for a miracle."
+      },
+      {
+        "reason": "mistake-emotional",
+        "note": "15-second FOMO entry right at market open — excitement over strategy, no time to see if the breakout was real before jumping in."
+      }
+    ]
+  },
+  {
+    "symbol": "BEL",
+    "side": "long",
+    "quantity": 80,
+    "entryPrice": 413.6,
+    "exitPrice": 408.65,
+    "entryTime": "2025-10-06T08:31:28.000Z",
+    "exitTime": "2025-10-08T04:45:47.000Z",
+    "notes": "",
+    "setup": {
+      "watchedSince": "2025-09-25T10:03:11.156Z",
+      "stopLoss": 409,
+      "target": 432,
+      "stage": "transition-1-2",
+      "base": "base-1",
+      "rsi": 60,
+      "fiftyDayMa": 390,
+      "technicalChecklist": {
+        "ma-uptrend": true,
+        "ma-stacked": true,
+        "ma200-duration": true
+      },
+      "week52Low": 363,
+      "week52High": 432,
+      "weeksInBase": 3,
+      "vcpContractions": [
+        {
+          "high": 417,
+          "low": 393
+        },
+        {
+          "high": 415,
+          "low": 403
+        }
+      ],
+      "finalChecks": {},
+      "ratingRatio": 0.6454545454545454
+    },
+    "id": "yT8cmCmyv80",
+    "exitLearnings": [
+      {
+        "reason": "stopped-as-planned",
+        "note": "Honored the ₹409 stop the moment the hourly candle closed below it — no second-guessing, no waiting for a miracle."
+      },
+      {
+        "reason": "mistake-emotional",
+        "note": "Entry driven by emotion, not logic — was compensating for the losing NHPC trade that same morning and convinced myself a late-day entry meant patience when it was really FOMO."
+      }
+    ]
   }
 ]
