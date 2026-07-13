@@ -1,7 +1,7 @@
 import { Icon } from '../../../shared/components/Icon'
 import { formatSignedPercent } from '../../../shared/utils/format'
 import type { ChecklistChecked, IndicatorData } from '../types/placeTrade'
-import { computeMaDistancePercent, maDistanceTone, rsiTone } from '../utils/indicatorCalc'
+import { computeMaDistancePercent, maDistanceTone, rsRatingTone } from '../utils/indicatorCalc'
 import { INDICATOR_CHECKLIST_ITEMS } from '../utils/indicatorChecklistItems'
 import { ChecklistStep } from './ChecklistStep'
 import './TechnicalConfirmationStep.css'
@@ -14,11 +14,13 @@ interface TechnicalConfirmationStepProps {
   onToggleChecklist: (id: string) => void
 }
 
-const RSI_NOTE =
-  'The RSI is no less than 70, and preferably in the 80s & 90s, which will generally be the case with the better selections.'
+const RS_RATING_NOTE =
+  'The RS Rating is no less than 70, and preferably in the 80s & 90s, which will generally be the case with the better selections.'
 
-const RSI_MIN = 50
-const RSI_MAX = 90
+/** The RS Rating is a percentile against the whole market, so the scale is the full 1-99 —
+ * a laggard genuinely sits down at 30, and the slider has to be able to say so. */
+const RS_RATING_MIN = 1
+const RS_RATING_MAX = 99
 
 export function TechnicalConfirmationStep({
   entryPrice,
@@ -31,7 +33,7 @@ export function TechnicalConfirmationStep({
     onChange({ ...data, [key]: value })
   }
 
-  const tone = rsiTone(data.rsi)
+  const tone = rsRatingTone(data.rsRating)
   const maDistance = computeMaDistancePercent(entryPrice, data.fiftyDayMa)
   const maTone = maDistanceTone(maDistance)
   const maAlert =
@@ -54,29 +56,29 @@ export function TechnicalConfirmationStep({
 
       <div className="technical-confirmation-step__divider" />
 
-      <p className="technical-confirmation-step__intro">Capture the RSI reading.</p>
-      <div className="technical-confirmation-step__rsi">
-        <div className="technical-confirmation-step__rsi-header">
-          <span className="technical-confirmation-step__label">RSI</span>
-          <span className={`technical-confirmation-step__rsi-value technical-confirmation-step__rsi-value--${tone}`}>
-            {data.rsi}
+      <p className="technical-confirmation-step__intro">Capture the RS Rating.</p>
+      <div className="technical-confirmation-step__rs">
+        <div className="technical-confirmation-step__rs-header">
+          <span className="technical-confirmation-step__label">RS Rating</span>
+          <span className={`technical-confirmation-step__rs-value technical-confirmation-step__rs-value--${tone}`}>
+            {data.rsRating}
           </span>
         </div>
         <input
           type="range"
-          min={RSI_MIN}
-          max={RSI_MAX}
+          min={RS_RATING_MIN}
+          max={RS_RATING_MAX}
           step={1}
           className={`technical-confirmation-step__slider technical-confirmation-step__slider--${tone}`}
-          value={data.rsi}
-          onChange={(e) => set('rsi', e.target.value)}
+          value={data.rsRating}
+          onChange={(e) => set('rsRating', e.target.value)}
         />
-        <div className="technical-confirmation-step__rsi-scale">
-          <span>{RSI_MIN}</span>
-          <span>{RSI_MAX}</span>
+        <div className="technical-confirmation-step__rs-scale">
+          <span>{RS_RATING_MIN}</span>
+          <span>{RS_RATING_MAX}</span>
         </div>
       </div>
-      <p className="technical-confirmation-step__note">{RSI_NOTE}</p>
+      <p className="technical-confirmation-step__note">{RS_RATING_NOTE}</p>
 
       <div className="technical-confirmation-step__divider" />
 

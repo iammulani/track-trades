@@ -148,38 +148,6 @@
   background: color-mix(in srgb, var(--critical) 12%, transparent);
 }
 
-.trade-detail__rating-stars {
-  position: relative;
-  display: inline-flex;
-}
-
-.trade-detail__rating-stars-track,
-.trade-detail__rating-stars-fill {
-  display: inline-flex;
-  align-items: center;
-  gap: 3px;
-  white-space: nowrap;
-}
-
-.trade-detail__rating-stars-track svg {
-  flex-shrink: 0;
-  color: var(--border-strong);
-  fill: none;
-}
-
-.trade-detail__rating-stars-fill {
-  position: absolute;
-  inset: 0;
-  width: var(--fill, 0%);
-  overflow: hidden;
-}
-
-.trade-detail__rating-stars-fill svg {
-  flex-shrink: 0;
-  color: var(--amber);
-  fill: var(--amber);
-}
-
 .trade-detail__rating-score {
   font-size: 18px;
   font-weight: 800;

@@ -32,8 +32,10 @@ overhead-supply check, then a review before it's final.
   - `belowHighPercent` = `(week52High − entry) / week52High × 100`
   - `computeMaDistancePercent` = `(entry − fiftyDayMa) / fiftyDayMa × 100` —
     signed, positive when entry is above the 50-day MA.
-  - `rsiTone(value)` — grades the RSI reading `good` (≥80) / `caution`
-    (70–79) / `bad` (<70), per the guideline that RSI shouldn't be below 70.
+  - `rsRatingTone(value)` — grades the **RS Rating** `good` (≥80) / `caution`
+    (70–79) / `bad` (<70), per the guideline that it shouldn't be below 70. This
+    is the IBD-style RS Rating — a 1–99 percentile of the stock's strength against
+    the whole market — *not* RSI(14), which is why the slider spans the full 1–99.
   - `maDistanceTone(distancePercent)` — reads the entry's distance above the
     50-day MA as *extension*: `good` 0–5% (near support, not extended),
     `caution` 5–20% or up to 5% below the MA, `bad` >20% (extended — price has
@@ -61,27 +63,69 @@ overhead-supply check, then a review before it's final.
     (the right-most contraction should be tight going into the pivot).
   - `contractionCountTone(contractions)` — good 2–4 (a proper VCP), bad <2 (no
     tightening shown yet), caution ≥5 (base getting choppy).
-- **Trade Rating — derived, live, never stored** (`utils/tradeRating.ts`):
-  `computeTradeRating()` scores 9 **weighted** criteria, each with a `score` of
-  0..1 (partial credit — a `caution` tone reads as half, a checklist scores the
-  fraction ticked) rather than a binary star. Each reuses its own step's
-  tone/threshold logic. The overall `ratio` = Σ(weight·score) / Σ(weight):
-  1. Risk : Reward (weight 2) — 1 if ≥2, ½ if 1–2, else 0 (Trade Setup)
-  2. Stage tone (weight 1) — `toneScore` of the stage tone (Stage & Base)
-  3. Base tone (weight 1) — `toneScore` of the base tone (Stage & Base)
-  4. MA structure (weight 1) — fraction of the 3 MA checks ticked (Technical Confirmation)
-  5. Relative strength (weight 1) — `toneScore(rsiTone)`, so 70–79 earns half (Technical Confirmation)
-  6. MA proximity (weight 1) — `toneScore(maDistanceTone)`; extended entries lose it (Technical Confirmation)
-  7. 52-week range (weight 1) — ½ for `aboveLowPercent` ≥30 + ½ for `belowHighPercent` ≤25 (52-Week Range)
-  8. VCP structure (weight 2) — fraction of 5 sub-conditions met: weeks-in-base,
+- **Stop placement — derived, live, never stored** (`utils/stopPlacement.ts`):
+  `checkStopPlacement(side, entryPrice, stopLoss, contractions)` judges *where* the stop
+  sits, not just the ratio it produces. Two independent reads, each `null` until its
+  inputs exist (which the gate treats as pending, never as a failure):
+  - `beyondBase` — is the stop past the **last filled contraction's** low (long) / high
+    (short)? That's the level the thesis has to break to reach. A stop inside the base
+    flatters the risk:reward on paper while guaranteeing a shake-out on ordinary noise.
+  - `sizeOk` — is `riskPercent` within `MIN_RISK_PERCENT` (2) … `MAX_RISK_PERCENT` (10)?
+    Tighter than 2% is inside daily noise; wider than 10% is simply oversized.
+
+  `stopPlacementScore()` gives each condition half, so a stop that clears the base but is
+  sized wrong shows partial credit rather than reading as a total miss.
+- **Trade Rating — live in the stepper, then frozen on placement**
+  (`utils/tradeRating.ts`). Unlike everything else here it is *not* re-derived later:
+  `computeTradeRating()` runs live while you fill the stepper, and
+  `toRatingSnapshot()` freezes the result into the trade on submit, because a rating
+  is a judgement whose formula will be re-tuned — see `TradeRatingSnapshot` in
+  [trades.spec.md](trades.spec.md).
+  `computeTradeRating()` scores the setup out of **`RATING_STARS` = 5**. It has two
+  layers — **gates cap, criteria score** — because a flat weighted average lets a
+  setup that breaks a Minervini non-negotiable average its way back to a passing
+  grade off its other criteria.
+
+  **Gates (`RatingGate[]`) — the non-negotiables.** Each has a `state` of `pass` /
+  `fail` / **`pending`** (the inputs it reads aren't entered yet, so it can't judge —
+  a pending gate must *never* cap, or the badge would read red on step 1). A failed
+  gate imposes a hard ceiling: `ratio = min(rawRatio, ...every failed gate's cap)`.
+  | gate | passes when | cap |
+  |---|---|---|
+  | `stage-2` | the stage is Stage 2 | **0.40** (2.0★) |
+  | `trend-template` | all 3 MA checks ticked, `aboveLowPercent` ≥30, `belowHighPercent` ≤25 | 0.60 |
+  | `logical-stop` | `checkStopPlacement` says the stop is beyond the base **and** sized 2–10% | 0.60 |
+  | `real-base` | ≥5 weeks in base, ≥2 filled contractions, and `contractionsTightening` | 0.60 |
+
+  **Criteria (`RatingCriterion[]`) — the weighted score.** Each has a `score` of 0..1
+  (partial credit — a `caution` tone reads as **0.3**, a checklist scores the fraction
+  ticked) and reuses its own step's tone/threshold logic. `rawRatio` = Σ(weight·score)
+  / Σ(weight):
+  1. Risk : Reward (weight 2) — 1 if ≥2, ½ if 1–2, else 0. **Omitted from the criteria
+     list entirely when no target is set** (there's no reward to measure — it's
+     unmeasurable, not bad — so `totalWeight` is 13 rather than 15), and **scored 0
+     whenever the `logical-stop` gate fails**: a great ratio measured off a stop parked
+     inside the base isn't a real ratio, it's the artefact of a stop too tight to survive.
+  2. Stop placement (weight 1) — ½ for a stop beyond the base + ½ for risk sized 2–10%
+  3. Stage tone (weight 2) — `toneScore` of the stage tone (Stage & Base)
+  4. Base tone (weight 1) — `toneScore` of the base tone (Stage & Base)
+  5. MA structure (weight 1) — fraction of the 3 MA checks ticked (Technical Confirmation)
+  6. Relative strength (weight 1) — `toneScore(rsRatingTone)`, so 70–79 earns 0.3
+  7. MA proximity (weight 1) — `toneScore(maDistanceTone)`; extended entries lose it
+  8. 52-week range (weight 2) — ½ for `aboveLowPercent` ≥30 + ½ for `belowHighPercent` ≤25
+  9. VCP structure (weight 3) — fraction of 5 sub-conditions met: weeks-in-base,
      largest-correction, narrowest-pullback and contraction-count tones all `good`,
      plus `contractionsTightening` (VCP Structure)
-  9. Final Checks (weight 1) — fraction of all 6 overhead-supply + breakout boxes ticked
-  Weights lift the decisive-but-underrepresented reads (Risk:Reward, VCP) and
-  keep the three correlated "in an uptrend" criteria (stage, MA, 52-week range) at
-  weight 1 each so trend isn't triple-counted. `ratingVerdict()` reads `ratio` as a
-  quick label: "Excellent setup" (≥85%), "Good setup" (≥50%), or "Weak setup —
-  reconsider" (below that).
+  10. Final Checks (weight 1) — fraction of all 6 overhead-supply + breakout boxes ticked
+
+  Weights lift the reads that carry the thesis (VCP, stage, the 52-week range) over the
+  ones that merely corroborate it. `TradeRating` exposes `ratio` (capped — the score that
+  counts), `rawRatio` (criteria only, what the points breakdown reconciles to), `stars`
+  (`ratio × RATING_STARS`), `criteria` and `gates`; `bindingGates()` returns the failed
+  ones, tightest cap first. `ratingVerdict()` reads `ratio` as a label — "Excellent setup"
+  (≥85%), "Good setup" (≥70%), "Marginal — tighten up" (≥55%), "Weak setup — don't trade"
+  (below that). The bands are deliberately unforgiving: a setup that half-meets everything
+  is a no-trade, not a good one.
 - **Writes, on submit**:
   1. `addTrade` (from `modules/trades`) — `POST /trades` with `symbol`, `side`
      (both carried over from the watchlist item), `quantity`, `entryPrice`,
@@ -90,12 +134,15 @@ overhead-supply check, then a review before it's final.
      `exitPrice: null`, `exitTime: null` (opens the trade — it shows as
      "open" on the Dashboard until later closed), and `setup` — every answer
      collected by the stepper (stop/target, stage/base, technical readings +
-     checklist, 52-week range, VCP structure, final-checks checklist, and the
-     rating's `ratio` at the moment of placing), plus the watchlist item's
-     `watchedSince` so how long it was watched before being traded isn't
-     lost. Written once, never updated afterward — see `TradeSetup` in
-     [trades.spec.md](trades.spec.md). Viewable afterward via the read-only
-     Trade Detail page, linked from the Dashboard — see
+     checklist, 52-week range, VCP structure, final-checks checklist), plus
+     `rating: toRatingSnapshot(rating)` — the **whole** rating frozen as it stood at
+     the moment of placing (score, every criterion's points, every gate's
+     pass/fail and its cap), and the watchlist item's `watchedSince` so how long
+     it was watched before being traded isn't lost. Written once, never updated
+     and **never recomputed** — see `TradeRatingSnapshot` in
+     [trades.spec.md](trades.spec.md) for why the rating is stored rather than
+     derived. Viewable afterward via the read-only Trade Detail page, which reads
+     the snapshot back with `fromRatingSnapshot()` — see
      [trade-detail.spec.md](trade-detail.spec.md).
   2. `removeItem` (from `useWatchlist`) — `DELETE /watchlist/:id`. Once placed,
      it's a trade, not something still being watched.
@@ -114,14 +161,16 @@ a small pill button, `send` icon, next to Remove). Route:
    shown separately as the page heading below.
 3. **Trade Rating** (`TradeRatingBadge`) — sits next to the symbol in the
    step-title row on every step, and again (bigger, with a verdict label) at
-   the top of Review. Shows a row of 7 stars filled **proportionally** to the
-   score (an outline row with an identical filled row clipped to `ratio`, so
-   partial credit shows as a partly-filled star — no half-star glyph needed)
-   plus a percentage from `computeTradeRating()`, live across whatever's been
-   entered so far. An `i` hover-card (via `HoverCard`'s
+   the top of Review. Renders `RatingStars` — a row of **5** stars filled
+   **proportionally** to the score (an outline row with an identical filled row
+   clipped to `ratio`, so partial credit shows as a partly-filled star — no
+   half-star glyph needed) — labelled `3.7 / 5 · 73%`, live across whatever's been
+   entered so far. The percentage stays alongside the stars so it still reconciles
+   with the points breakdown. An `i` hover-card (via `HoverCard`'s
    `triggerClassName="hover-card__trigger--plain"` escape hatch, since the
-   default trigger is a small fixed-size circle) lists all 9 criteria, each with
-   a check (fully met), an amber alert (partial), or an x (unmet).
+   default trigger is a small fixed-size circle) lists the 4 **non-negotiables**
+   first — pass / fail / pending — then the scored criteria, each with a check
+   (fully met), an amber alert (partial), or an x (unmet).
 4. **Step body** — one of:
    - **Trade Setup** (`TradeParamsStep`) — a required **entry date** (defaults
      to today, can be backdated but not set in the future — lets a trade
@@ -144,9 +193,10 @@ a small pill button, `send` icon, next to Remove). Route:
    - **Technical Confirmation** (`TechnicalConfirmationStep`) — a 3-item MA
      checklist (`INDICATOR_CHECKLIST_ITEMS`, reuses `ChecklistStep`) — MA
      uptrend, MA stack order, 200-day MA duration — followed by a divider,
-     then an RSI slider (range 50–90, step 1, defaults to 70) with a live
-     numeric readout colored by `rsiTone` (good ≥80, caution 70–79, bad <70)
-     and the "RSI shouldn't be below 70" guideline note underneath, then a
+     then an **RS Rating** slider (range 1–99, step 1, defaults to 70 — it's a
+     market-wide percentile, so the scale has to be able to say "30") with a live
+     numeric readout colored by `rsRatingTone` (good ≥80, caution 70–79, bad <70)
+     and the "RS Rating shouldn't be below 70" guideline note underneath, then a
      50-day MA price input paired with a live "from trading price" signed %
      (via `computeMaDistancePercent`).
    - **52-Week Range** (`WeekRangeStep`) — 52-week low/high inputs (both
@@ -182,11 +232,14 @@ a small pill button, `send` icon, next to Remove). Route:
        explaining the reasoning (what to confirm, the "never overlook poor
        volume" warning sign, and why overhead resistance matters).
    - **Review & Place** (`ReviewStep`) — avatar + symbol + `SideBadge`, the big
-     rating banner, then a **"Why N%?" breakdown** — every criterion listed with
-     its state icon and the points it contributed out of its weight
-     (`criterionPoints` / `weight`), headed by the running
+     rating banner (`RatingStars` + `N / 5` + verdict), then — when any gate failed
+     — a red **`RatingGateBanner`**, then a **"Why N% on points?" breakdown** — every
+     criterion listed with its state icon and the points it contributed out of its
+     weight (`criterionPoints` / `weight`), headed by the running
      `earnedWeight` / `totalWeight` total, so the score always reconciles on
-     screen. Dropped points are what the reader is scanning for, so partial rows
+     screen. The heading quotes `rawRatio`, not `ratio` — the criteria sum to the
+     *uncapped* score, and the gate banner above accounts for the difference.
+     Dropped points are what the reader is scanning for, so partial rows
      get an amber background and unmet rows a red one. Then
      entry/qty/stop/target, the same live `RiskSummary`, the selected
      stage/base (colored to match their tone), the indicators summary
@@ -227,11 +280,14 @@ frontend/src/modules/place-trade/
 │   ├── finalChecksItems.ts           # OVERHEAD_SUPPLY_CHECKLIST_ITEMS, BREAKOUT_CONFIRMATION_CHECKLIST_ITEMS
 │   ├── finalChecksCalc.ts            # computeContractionPercent(), largest/narrowestFromContractions, weeksInBaseTone(), largestCorrectionTone(), narrowestPullbackTone(), contractionCountTone(), contractionTightnessTone()
 │   ├── riskCalc.ts                   # computeRisk(side, params) -> RiskCalc
+│   ├── stopPlacement.ts              # checkStopPlacement() / stopPlacementScore() — is the stop beyond the base, and sized 2-10%?
 │   ├── stageBaseOptions.ts           # STAGE_OPTIONS / BASE_OPTIONS static reference content
-│   └── tradeRating.ts                # computeTradeRating(), ratingVerdict(), criterionState()/criterionPoints()/formatPoints()/CRITERION_STATE_ICON — shared by the badge hover-card, the Review breakdown, and (via the barrel) modules/trade-detail's reconstructed breakdown
+│   └── tradeRating.ts                # computeTradeRating() (live, in the stepper), toRatingSnapshot()/fromRatingSnapshot() (freeze at placement / read back on Trade Detail — never re-judge), GATE_META + CRITERION_LABELS (the prose, keyed by the persisted ids), ratingVerdict(), bindingGates(), RATING_STARS, criterionState()/criterionPoints()/formatPoints()/formatStars()/CRITERION_STATE_ICON
 └── components/
     ├── StepIndicator.tsx              # numbered progress row (dots only, no labels)
-    ├── TradeRatingBadge.tsx            # star row + N/7 count + hover-card breakdown
+    ├── RatingStars.tsx                # the 5-star row (outline + clipped fill) — shared by the badge, Review and Trade Detail
+    ├── RatingGateBanner.tsx           # the failed non-negotiables + the ceiling they impose; renders nothing when all pass
+    ├── TradeRatingBadge.tsx            # RatingStars + "N / 5 · P%" + hover-card breakdown (gates, then criteria)
     ├── TradeParamsStep.tsx            # entry/qty/stop/target inputs
     ├── RiskSummary.tsx                # live risk/reward panel (used in Setup and Review)
     ├── StageBaseStep.tsx              # stage/base single-select option lists + hover-card info
@@ -240,7 +296,7 @@ frontend/src/modules/place-trade/
     ├── ChecklistStep.tsx              # renders a given `items` list as toggleable checkboxes
     ├── VcpStructureStep.tsx           # time/price/symmetry capture + hover-card worked example
     ├── FinalChecksStep.tsx            # overhead-supply checklist + hover-card reasoning
-    └── ReviewStep.tsx                 # final summary before submit, incl. the rating banner + "Why N%?" breakdown
+    └── ReviewStep.tsx                 # final summary before submit, incl. the rating banner, gate banner + "Why N%?" breakdown
 ```
 
 Depends on `modules/trades` (`addTrade`, `NewTrade`, `TradeStage`, `TradeBase`)

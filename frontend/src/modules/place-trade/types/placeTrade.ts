@@ -40,14 +40,15 @@ export const EMPTY_STAGE_BASE_ANSWERS: StageBaseAnswers = {
 /** Values collected in the Technical Confirmation / 52-Week Range steps —
  * strings while editing, parsed for the live % calcs. */
 export interface IndicatorData {
-  rsi: string
+  /** IBD-style RS Rating — a 1-99 percentile vs the market, not RSI(14). */
+  rsRating: string
   fiftyDayMa: string
   week52Low: string
   week52High: string
 }
 
 export const EMPTY_INDICATOR_DATA: IndicatorData = {
-  rsi: '70',
+  rsRating: '70',
   fiftyDayMa: '',
   week52Low: '',
   week52High: '',

@@ -14,7 +14,7 @@ import {
   type TradeParams,
   type VcpStructureData,
 } from '../types/placeTrade'
-import { computeTradeRating } from '../utils/tradeRating'
+import { computeTradeRating, toRatingSnapshot } from '../utils/tradeRating'
 
 /** "" -> null, else the parsed number — for optional numeric fields on submit. */
 function numberOrNull(value: string): number | null {
@@ -120,7 +120,7 @@ export function usePlaceTrade(watchlistId: string) {
           target: numberOrNull(tradeParams.target),
           stage: stageBaseAnswers.stage,
           base: stageBaseAnswers.base,
-          rsi: numberOrNull(indicatorData.rsi),
+          rsRating: numberOrNull(indicatorData.rsRating),
           fiftyDayMa: numberOrNull(indicatorData.fiftyDayMa),
           technicalChecklist: indicatorChecklistChecked,
           week52Low: numberOrNull(indicatorData.week52Low),
@@ -130,7 +130,9 @@ export function usePlaceTrade(watchlistId: string) {
             .filter((c) => c.high.trim() !== '' && c.low.trim() !== '')
             .map((c) => ({ high: Number(c.high), low: Number(c.low) })),
           finalChecks: finalChecksChecked,
-          ratingRatio: rating.ratio,
+          // Frozen here and never recomputed — the grade this setup earned on the day it
+          // was taken, not what today's formula would say about it.
+          rating: toRatingSnapshot(rating),
         },
       })
       await removeItem(item.id)

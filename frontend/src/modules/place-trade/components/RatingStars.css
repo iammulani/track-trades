@@ -1,0 +1,31 @@
+.rating-stars {
+  position: relative;
+  display: inline-flex;
+}
+
+.rating-stars__track,
+.rating-stars__fill {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  white-space: nowrap;
+}
+
+/* Filled layer sits over the outline layer, revealed left-to-right by --fill. */
+.rating-stars__fill {
+  position: absolute;
+  inset: 0;
+  width: var(--fill, 0%);
+  overflow: hidden;
+}
+
+.rating-stars__star {
+  flex-shrink: 0;
+  color: var(--border-strong);
+  fill: none;
+}
+
+.rating-stars__fill .rating-stars__star {
+  color: var(--amber);
+  fill: var(--amber);
+}

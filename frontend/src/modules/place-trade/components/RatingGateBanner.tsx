@@ -1,0 +1,39 @@
+import { Icon } from '../../../shared/components/Icon'
+import { bindingGates, formatStars, RATING_STARS, type TradeRating } from '../utils/tradeRating'
+import './RatingGateBanner.css'
+
+interface RatingGateBannerProps {
+  rating: TradeRating
+}
+
+/** The broken non-negotiables that are holding the score down. A failed gate is the most
+ * important thing on the page — it can't hide in a hover-card — so it's called out above the
+ * points breakdown, with the ceiling it imposes. Renders nothing when every gate passes.
+ * Shared by the Review step and the read-only Trade Detail page. */
+export function RatingGateBanner({ rating }: RatingGateBannerProps) {
+  const failed = bindingGates(rating)
+  if (failed.length === 0) return null
+
+  return (
+    <div className="rating-gate-banner">
+      <div className="rating-gate-banner__heading">
+        <Icon name="alert" size={16} />
+        Capped at {formatStars(rating.ratio * RATING_STARS)} / {RATING_STARS} — it scored{' '}
+        {Math.round(rating.rawRatio * 100)}% on points, but broke a rule that isn’t negotiable.
+      </div>
+      <ul className="rating-gate-banner__list">
+        {failed.map((gate) => (
+          <li key={gate.id}>
+            <span className="rating-gate-banner__label">
+              {gate.label}
+              <span className="rating-gate-banner__cap">
+                caps at {formatStars(gate.cap * RATING_STARS)}★
+              </span>
+            </span>
+            <span className="rating-gate-banner__reason">{gate.reason}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}

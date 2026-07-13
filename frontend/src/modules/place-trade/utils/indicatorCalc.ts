@@ -46,10 +46,11 @@ export function maDistanceTone(distancePercent: number | null): MaDistanceTone {
   return 'bad'
 }
 
-export type RsiTone = 'good' | 'caution' | 'bad' | 'none'
+export type RsRatingTone = 'good' | 'caution' | 'bad' | 'none'
 
-/** Guideline: RSI should be no less than 70, ideally in the 80s/90s. */
-export function rsiTone(value: string): RsiTone {
+/** The RS Rating is a 1-99 percentile of the stock's relative strength against the whole
+ * market — not RSI(14). Guideline: it should be no less than 70, ideally in the 80s/90s. */
+export function rsRatingTone(value: string): RsRatingTone {
   const n = Number(value)
   if (value.trim() === '' || !Number.isFinite(n)) return 'none'
   if (n >= 80) return 'good'

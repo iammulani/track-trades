@@ -1,4 +1,3 @@
-import type { CSSProperties } from 'react'
 import { Icon } from '../../../shared/components/Icon'
 import { SideBadge } from '../../../shared/components/SideBadge'
 import { avatarColor } from '../../../shared/utils/avatarColor'
@@ -28,13 +27,15 @@ import {
   criterionPoints,
   criterionState,
   formatPoints,
+  formatStars,
+  RATING_STARS,
   ratingVerdict,
   type TradeRating,
 } from '../utils/tradeRating'
+import { RatingGateBanner } from './RatingGateBanner'
+import { RatingStars } from './RatingStars'
 import { RiskSummary } from './RiskSummary'
 import './ReviewStep.css'
-
-const RATING_STAR_COUNT = 7
 
 interface ReviewStepProps {
   item: WatchlistItemWithMetrics
@@ -96,31 +97,21 @@ export function ReviewStep({
       </div>
 
       <div className={`review-step__rating review-step__rating--${verdict.tone}`}>
-        <div
-          className="review-step__rating-stars"
-          style={{ '--fill': `${rating.ratio * 100}%` } as CSSProperties}
-        >
-          <div className="review-step__rating-stars-track">
-            {Array.from({ length: RATING_STAR_COUNT }, (_, i) => (
-              <Icon key={i} name="star" size={22} className="review-step__rating-star" />
-            ))}
-          </div>
-          <div className="review-step__rating-stars-fill" aria-hidden="true">
-            {Array.from({ length: RATING_STAR_COUNT }, (_, i) => (
-              <Icon key={i} name="star" size={22} className="review-step__rating-star" />
-            ))}
-          </div>
-        </div>
+        <RatingStars ratio={rating.ratio} size={22} />
         <div className="review-step__rating-text">
-          <span className="review-step__rating-score">{Math.round(rating.ratio * 100)}%</span>
+          <span className="review-step__rating-score">
+            {formatStars(rating.stars)} / {RATING_STARS}
+          </span>
           <span className="review-step__rating-verdict">{verdict.label}</span>
         </div>
       </div>
 
+      <RatingGateBanner rating={rating} />
+
       <div className="review-step__section">
         <span className="review-step__section-title">
-          Why {Math.round(rating.ratio * 100)}%? — {formatPoints(rating.earnedWeight)} of{' '}
-          {formatPoints(rating.totalWeight)} points
+          Why {Math.round(rating.rawRatio * 100)}% on points? — {formatPoints(rating.earnedWeight)} of{' '}
+          {formatPoints(rating.totalWeight)}
         </span>
         <ul className="review-step__breakdown">
           {rating.criteria.map((c) => {
@@ -189,8 +180,8 @@ export function ReviewStep({
         </span>
         <div className="review-step__grid">
           <div className="review-step__stat">
-            <span className="review-step__stat-label">RSI</span>
-            <span className="review-step__stat-value">{indicatorData.rsi || '—'}</span>
+            <span className="review-step__stat-label">RS Rating</span>
+            <span className="review-step__stat-value">{indicatorData.rsRating || '—'}</span>
           </div>
           <div className="review-step__stat">
             <span className="review-step__stat-label">50-day MA</span>

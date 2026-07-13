@@ -8,16 +8,25 @@ export {
 } from './utils/finalChecksItems'
 export type { ChecklistItem } from './utils/checklistItems'
 export {
+  bindingGates,
   computeTradeRating,
   criterionPoints,
   criterionState,
   formatPoints,
+  formatStars,
+  fromRatingSnapshot,
   ratingVerdict,
+  toRatingSnapshot,
   CRITERION_STATE_ICON,
+  RATING_STARS,
 } from './utils/tradeRating'
 export type {
   CriterionState,
+  GateState,
   RatingCriterion,
+  RatingGate,
   RatingVerdict,
   TradeRating,
 } from './utils/tradeRating'
+export { RatingStars } from './components/RatingStars'
+export { RatingGateBanner } from './components/RatingGateBanner'

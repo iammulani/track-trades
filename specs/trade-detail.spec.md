@@ -14,16 +14,17 @@ the raw `Trade`/`TradeSetup` shape and every derived metric. This page uses
 the `:id` route param client-side (no dedicated single-trade endpoint).
 Beyond what `modules/trades` already derives, this page also:
 
-- Recomputes the full `TradeRating` (score, weights, and the per-criterion
-  breakdown) via `computeTradeRating()` from `modules/place-trade`, fed from
-  the trade's persisted `setup` fields (converted back to the
-  string-typed shape that function expects, since it was built for the live
-  stepper form). This reconstructs the Review step's "Why N%?" breakdown
-  after the fact — it isn't itself stored, only the raw inputs are (see
-  `TradeSetup` in [trades.spec.md](trades.spec.md)). In practice this
-  matches the stored `setup.ratingRatio` snapshot exactly, since nothing
-  about the scoring logic has changed since placement; the two would only
-  diverge if the rating formula is retuned later.
+- **Reads back** the rating frozen at placement — `fromRatingSnapshot(setup.rating)`
+  from `modules/place-trade` — and **never recomputes it**. That one call rebuilds
+  the whole display (stars, verdict, cap banner, per-criterion points) out of the
+  stored `TradeRatingSnapshot`; `ratio` and `rawRatio` are taken verbatim, and only
+  the labels/reasons come from code. **Re-tuning the rating formula therefore changes
+  what *new* trades score, not what past ones did** — a trade keeps the grade it
+  earned on the day it was taken, which is the whole point of a journal. Do *not*
+  reintroduce `computeTradeRating()` here. See `TradeRatingSnapshot` in
+  [trades.spec.md](trades.spec.md) for why this is stored rather than derived.
+  A trade with no `setup.rating` (placed before the rating existed, or entered
+  outside the stepper) simply shows no rating section.
 - A couple of presentational-only calculations (per-contraction % pullback,
   largest/narrowest of a trade's VCP contractions) mirrored from
   [place-trade.spec.md](place-trade.spec.md)'s VCP Structure step, since
@@ -61,9 +62,12 @@ column.
      entered outside the stepper): a plain fallback note instead of the
      sections below.
    - If it has a `setup`:
-     - **Rating** — stars + % + verdict (`ratingVerdict()` from
-       `modules/place-trade`), from the recomputed `TradeRating` (see Data).
-     - **"Why N%?" breakdown** — every criterion listed with its state icon
+     - **Rating** — `RatingStars` (5 stars) + `N / 5` + verdict (`ratingVerdict()`
+       from `modules/place-trade`), from the recomputed `TradeRating` (see Data).
+     - **`RatingGateBanner`** — when the setup broke a non-negotiable, the failed
+       gates and the ceiling they impose, above the breakdown. Renders nothing when
+       all four pass. Same component the Review step uses.
+     - **"Why N% on points?" breakdown** — every criterion listed with its state icon
        (met/partial/unmet) and the points it contributed out of its weight,
        headed by the running earned/total weight — identical in spirit to
        the Review step's breakdown in [place-trade.spec.md](place-trade.spec.md),
@@ -73,7 +77,7 @@ column.
        (`entryTime − watchedSince`), stop loss, target.
      - **Stage & Base** — labels + verdict, colour-coded by tone, from
        `STAGE_OPTIONS`/`BASE_OPTIONS` (`modules/place-trade`).
-     - **Technicals** — MA checklist confirmed-count, RSI, 50-day MA,
+     - **Technicals** — MA checklist confirmed-count, RS Rating, 50-day MA,
        52-week low/high.
      - **VCP Structure** — weeks in base, largest correction, narrowest
        pullback, and each contraction (T1, T2, …) with its high → low and
@@ -104,10 +108,11 @@ Depends on `modules/trades` (`useTrades`, `TradeVcpContraction`,
 `computeExitPreview`, `exitReasonLabel`) and
 `modules/place-trade` (`STAGE_OPTIONS`, `BASE_OPTIONS`,
 `INDICATOR_CHECKLIST_ITEMS`, `OVERHEAD_SUPPLY_CHECKLIST_ITEMS`,
-`BREAKOUT_CONFIRMATION_CHECKLIST_ITEMS`, `computeTradeRating`,
+`BREAKOUT_CONFIRMATION_CHECKLIST_ITEMS`, `fromRatingSnapshot`,
 `criterionState`, `criterionPoints`, `CRITERION_STATE_ICON`, `formatPoints`,
+`formatStars`, `RATING_STARS`, `RatingStars`, `RatingGateBanner`,
 `ratingVerdict`) through their `index.ts` barrels, so the stage/base labels,
-checklist copy, and rating/breakdown logic can't drift from the stepper that
-originally captured them. Also uses
+checklist copy, star row, gate banner, and rating/breakdown logic can't drift from
+the stepper that originally captured them. Also uses
 `shared/components/{Card,PageHeader,SideBadge,ResultBadge}` and
 `shared/utils/{avatarColor,format}`.
