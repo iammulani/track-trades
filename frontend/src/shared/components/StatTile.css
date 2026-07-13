@@ -53,6 +53,8 @@
   color: var(--text-primary);
   line-height: 1.05;
   letter-spacing: -0.02em;
+  /* A signed amount is one token — without this, "-₹6,782.00" wraps after the minus sign. */
+  white-space: nowrap;
 }
 
 .stat--good .stat__value {

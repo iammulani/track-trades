@@ -1,0 +1,19 @@
+.settings__card {
+  padding: 22px;
+  max-width: 720px;
+}
+
+.settings__state {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}
+
+.settings__state--error {
+  color: var(--critical-text);
+}
+
+.settings__saving {
+  margin: 14px 0 0;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}

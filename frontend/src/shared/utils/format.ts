@@ -1,15 +1,21 @@
-/** Cross-cutting formatting helpers. Pure functions, no domain knowledge. */
+import { getCurrencyConfig } from './currency'
 
+/** Cross-cutting formatting helpers. No domain knowledge. */
+
+/** Formats in whatever currency is configured under Settings — "₹1,234.50", "$1,234.50".
+ * Reads the active choice from `shared/utils/currency.ts` rather than taking it as an
+ * argument, so the hundreds of existing call sites don't each have to pass it. */
 export function formatCurrency(value: number): string {
-  return value.toLocaleString('en-US', {
+  const { currency, locale } = getCurrencyConfig()
+  return value.toLocaleString(locale, {
     style: 'currency',
-    currency: 'USD',
+    currency,
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   })
 }
 
-/** Signed currency, e.g. "+$1,234.50" / "-$980.00". */
+/** Signed currency, e.g. "+₹1,234.50" / "-₹980.00". */
 export function formatSignedCurrency(value: number): string {
   const sign = value > 0 ? '+' : value < 0 ? '-' : ''
   return `${sign}${formatCurrency(Math.abs(value))}`

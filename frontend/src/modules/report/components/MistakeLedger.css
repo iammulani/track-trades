@@ -1,0 +1,129 @@
+.ledger {
+  padding: 20px 22px;
+}
+
+.ledger__head {
+  margin-bottom: 16px;
+}
+
+.ledger__title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 650;
+  color: var(--text-primary);
+}
+
+.ledger__sub {
+  margin: 4px 0 0;
+  font-size: 0.84rem;
+  color: var(--text-secondary);
+  max-width: 70ch;
+}
+
+.ledger__headline {
+  color: var(--critical-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.ledger__empty {
+  margin: 10px 0 0;
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+}
+
+.ledger__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.ledger__group {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+  padding: 12px 14px;
+}
+
+.ledger__group-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ledger__chip {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 7px;
+  flex-shrink: 0;
+}
+
+.ledger__chip--good {
+  background: color-mix(in srgb, var(--good) 16%, transparent);
+  color: var(--good-text);
+}
+
+.ledger__chip--critical {
+  background: color-mix(in srgb, var(--critical) 16%, transparent);
+  color: var(--critical-text);
+}
+
+.ledger__label {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  flex: 1;
+}
+
+.ledger__count {
+  font-size: 0.8rem;
+  font-weight: 650;
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.ledger__notes {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ledger__note {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.ledger__note-symbol {
+  flex-shrink: 0;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--text-secondary);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 3px 7px;
+  margin-top: 1px;
+}
+
+.ledger__note-text {
+  margin: 0;
+  padding-left: 12px;
+  border-left: 2px solid var(--border-strong);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.ledger__group.is-mistake .ledger__note-text {
+  border-left-color: var(--critical);
+}

@@ -1,0 +1,167 @@
+.scatter {
+  padding: 20px 22px 12px;
+}
+
+.scatter__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 6px;
+}
+
+.scatter__title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 650;
+  color: var(--text-primary);
+}
+
+.scatter__sub {
+  margin: 4px 0 0;
+  font-size: 0.84rem;
+  color: var(--text-secondary);
+  max-width: 62ch;
+}
+
+.scatter__empty {
+  margin: 10px 0 8px;
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+}
+
+.scatter__legend {
+  display: flex;
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  flex-shrink: 0;
+}
+
+.scatter__legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.scatter__swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.scatter__swatch--win {
+  background: var(--good);
+}
+
+.scatter__swatch--loss {
+  background: var(--critical);
+}
+
+.scatter__plot {
+  position: relative;
+}
+
+.scatter__svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  overflow: visible;
+}
+
+.scatter__weak-zone {
+  fill: var(--critical);
+  opacity: 0.05;
+}
+
+.scatter__zone-label {
+  fill: var(--text-muted);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.scatter__grid {
+  stroke: var(--border);
+  stroke-width: 1;
+}
+
+.scatter__baseline {
+  stroke: var(--border-strong);
+  stroke-width: 1.5;
+}
+
+.scatter__leak-line {
+  stroke: var(--amber);
+  stroke-width: 2;
+  stroke-dasharray: 5 4;
+}
+
+.scatter__tick {
+  fill: var(--text-muted);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+
+.scatter__axis-label {
+  fill: var(--text-secondary);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.scatter__point-label {
+  fill: var(--text-secondary);
+  font-size: 11px;
+  font-weight: 600;
+  pointer-events: none;
+}
+
+.scatter__hit {
+  fill: transparent;
+}
+
+.scatter__dot {
+  stroke: var(--surface);
+  stroke-width: 2;
+  transition: r 0.12s ease;
+}
+
+.scatter__dot.is-win {
+  fill: var(--good);
+}
+
+.scatter__dot.is-loss {
+  fill: var(--critical);
+}
+
+.scatter__dot.is-active {
+  r: 8;
+}
+
+.scatter__tooltip {
+  position: absolute;
+  transform: translate(-50%, calc(-100% - 14px));
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow);
+  padding: 8px 10px;
+  pointer-events: none;
+  white-space: nowrap;
+  z-index: 2;
+}
+
+.scatter__tt-value {
+  font-size: 0.85rem;
+  font-weight: 650;
+  color: var(--text-primary);
+}
+
+.scatter__tt-meta {
+  margin-top: 2px;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}

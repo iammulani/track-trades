@@ -1,0 +1,37 @@
+.sample-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+}
+
+.sample-banner.is-thin {
+  border-color: color-mix(in srgb, var(--amber) 40%, var(--border));
+  background: color-mix(in srgb, var(--amber) 7%, var(--surface-2));
+}
+
+.sample-banner__chip {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 7px;
+  flex-shrink: 0;
+  background: color-mix(in srgb, var(--amber) 18%, transparent);
+  color: var(--amber-text);
+}
+
+.sample-banner__text {
+  margin: 0;
+  font-size: 0.84rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  max-width: 92ch;
+}
+
+.sample-banner__text strong {
+  color: var(--text-primary);
+}

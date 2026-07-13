@@ -50,7 +50,9 @@ The files this feature owns under `modules/<feature>/`.
 | ------------- | ------------------------------------------ | ---------------------------------- |
 | Trades domain | [trades.spec.md](trades.spec.md)           | `frontend/src/modules/trades`      |
 | Dashboard     | [dashboard.spec.md](dashboard.spec.md)     | `frontend/src/modules/dashboard`   |
+| Report        | [report.spec.md](report.spec.md)           | `frontend/src/modules/report`      |
 | Equity Curve  | [equity.spec.md](equity.spec.md)           | `frontend/src/modules/equity`      |
 | Watchlist     | [watchlist.spec.md](watchlist.spec.md)     | `frontend/src/modules/watchlist`   |
 | Place Trade   | [place-trade.spec.md](place-trade.spec.md) | `frontend/src/modules/place-trade` |
 | Trade Detail  | [trade-detail.spec.md](trade-detail.spec.md) | `frontend/src/modules/trade-detail` |
+| Settings      | [settings.spec.md](settings.spec.md)       | `frontend/src/modules/settings`    |

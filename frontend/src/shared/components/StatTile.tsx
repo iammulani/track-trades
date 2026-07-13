@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
-import { Card } from '../../../shared/components/Card'
-import { Icon, type IconName } from '../../../shared/components/Icon'
+import { Card } from './Card'
+import { Icon, type IconName } from './Icon'
 import './StatTile.css'
 
 type Tone = 'default' | 'good' | 'critical' | 'violet' | 'amber'

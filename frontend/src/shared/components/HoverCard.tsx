@@ -15,6 +15,14 @@ interface HoverCardProps {
 const VIEWPORT_MARGIN = 12
 const CLOSE_DELAY = 120
 
+/** The panel flips above the trigger when there isn't room below it, so `placement` has to
+ * hold either value — not just the 'bottom' it happens to start on. */
+interface Coords {
+  top: number
+  left: number
+  placement: 'top' | 'bottom'
+}
+
 /** Reveals a rich content panel on hover/focus — not a native title tooltip,
  * so it can hold headings, paragraphs, icons and lists. Repositions itself
  * (flips above, clamps horizontally) so it always stays fully on-screen. */
@@ -26,9 +34,9 @@ export function HoverCard({
 }: HoverCardProps) {
   const triggerRef = useRef<HTMLButtonElement>(null)
   const panelRef = useRef<HTMLDivElement>(null)
-  const closeTimer = useRef<ReturnType<typeof setTimeout>>()
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
   const [open, setOpen] = useState(false)
-  const [coords, setCoords] = useState({ top: -9999, left: -9999, placement: 'bottom' as const })
+  const [coords, setCoords] = useState<Coords>({ top: -9999, left: -9999, placement: 'bottom' })
 
   function clearCloseTimer() {
     if (closeTimer.current) {

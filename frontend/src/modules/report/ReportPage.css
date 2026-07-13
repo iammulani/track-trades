@@ -1,0 +1,29 @@
+.report__body {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+}
+
+.report__block {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.report__heading {
+  margin: 0;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+
+.report__state {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}
+
+.report__state--error {
+  color: var(--critical-text);
+}

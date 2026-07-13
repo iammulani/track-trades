@@ -5,7 +5,7 @@ import {
   formatSignedPercent,
 } from '../../../shared/utils/format'
 import type { DashboardSummary } from '../../trades'
-import { StatTile } from './StatTile'
+import { StatTile } from '../../../shared/components/StatTile'
 import { WinLossBar } from './WinLossBar'
 import './StatsGrid.css'
 
