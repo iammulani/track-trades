@@ -7,5 +7,14 @@
     "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/SUNPHARMA/857857",
     "watchedSince": "2026-07-13T06:24:36.117Z",
     "id": "ktkSf8I-K_A"
+  },
+  {
+    "symbol": "VIJAYA",
+    "category": "active",
+    "side": "long",
+    "notes": "",
+    "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/VIJAYA/1429761",
+    "watchedSince": "2026-06-29T12:01:07.556Z",
+    "id": "esvWIi7HCHw"
   }
 ]
