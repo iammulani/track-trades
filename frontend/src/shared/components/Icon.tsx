@@ -27,6 +27,7 @@ export type IconName =
   | 'info'
   | 'waves'
   | 'bars'
+  | 'link'
 
 const PATHS: Record<IconName, string> = {
   dashboard: 'M3 3h7v7H3zM14 3h7v4h-7zM14 10h7v11h-7zM3 13h7v8H3z',
@@ -58,6 +59,7 @@ const PATHS: Record<IconName, string> = {
   info: 'M12 3a9 9 0 100 18 9 9 0 000-18zm0 7v6m0-9.5v.01',
   waves: 'M2 12c1.5-3 3.5-3 5 0s3.5 3 5 0 3.5-3 5 0 3.5 3 5 0',
   bars: 'M5 21V13M12 21V7M19 21V15',
+  link: 'M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3',
 }
 
 interface IconProps {

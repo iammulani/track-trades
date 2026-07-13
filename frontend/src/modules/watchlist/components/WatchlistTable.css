@@ -80,6 +80,20 @@
   color: var(--text-primary);
 }
 
+.watch-table__link {
+  display: inline-grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  color: var(--text-muted);
+}
+
+.watch-table__link:hover {
+  background: var(--surface-2);
+  color: var(--accent);
+}
+
 .watch-table__duration {
   font-weight: 600;
   color: var(--text-primary);

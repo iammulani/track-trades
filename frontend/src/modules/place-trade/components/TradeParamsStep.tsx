@@ -1,3 +1,4 @@
+import { todayDateValue } from '../../../shared/utils/dateInput'
 import type { WatchSide } from '../../watchlist'
 import type { TradeParams } from '../types/placeTrade'
 import { RiskSummary } from './RiskSummary'
@@ -17,6 +18,17 @@ export function TradeParamsStep({ side, params, onChange }: TradeParamsStepProps
   return (
     <div className="trade-params-step">
       <div className="trade-params-step__grid">
+        <label className="trade-params-step__field">
+          <span className="trade-params-step__label">Entry date</span>
+          <input
+            type="date"
+            className="trade-params-step__input"
+            value={params.entryDate}
+            max={todayDateValue()}
+            onChange={(e) => set('entryDate', e.target.value)}
+          />
+        </label>
+
         <label className="trade-params-step__field">
           <span className="trade-params-step__label">Entry price</span>
           <input

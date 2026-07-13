@@ -1,42 +1,20 @@
 [
   {
-    "id": "1",
-    "symbol": "SOFI",
+    "symbol": "SUNPHARMA",
     "category": "active",
     "side": "long",
-    "watchedSince": "2026-07-10T09:15:00",
-    "notes": "Coiling right under resistance"
+    "notes": "",
+    "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/SUNPHARMA/857857",
+    "watchedSince": "2026-07-13T06:24:36.117Z",
+    "id": "ktkSf8I-K_A"
   },
   {
-    "id": "2",
-    "symbol": "SHOP",
+    "symbol": "VTL",
     "category": "active",
     "side": "long",
-    "watchedSince": "2026-07-09T14:00:00",
-    "notes": "Watching for a break of the range high"
-  },
-  {
-    "id": "3",
-    "symbol": "UBER",
-    "category": "daily",
-    "side": "long",
-    "watchedSince": "2026-07-01T10:30:00",
-    "notes": "Checking daily for a pullback entry"
-  },
-  {
-    "id": "4",
-    "symbol": "ARM",
-    "category": "daily",
-    "side": "short",
-    "watchedSince": "2026-06-20T11:00:00",
-    "notes": "Stretched above trend, watching for a rollover"
-  },
-  {
-    "id": "5",
-    "symbol": "RIVN",
-    "category": "long-term",
-    "side": "long",
-    "watchedSince": "2026-05-15T09:00:00",
-    "notes": "Basing for months, needs volume to confirm"
+    "notes": "",
+    "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/VTL/530689",
+    "watchedSince": "2026-07-13T06:25:47.134Z",
+    "id": "_6w9PSoJIvo"
   }
 ]

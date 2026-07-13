@@ -11,6 +11,8 @@ export interface WatchlistItem {
   /** ISO timestamp of when the symbol was added to the watchlist. */
   watchedSince: string
   notes?: string
+  /** Optional external URL — a chart, news article, or writeup for the setup. */
+  link?: string
 }
 
 /** A watchlist item paired with how long it's been watched. */
@@ -26,4 +28,7 @@ export interface NewWatchlistItem {
   category: WatchCategory
   side: WatchSide
   notes?: string
+  link?: string
+  /** ISO timestamp — lets a symbol be backdated onto the list. Defaults to now if omitted. */
+  watchedSince?: string
 }

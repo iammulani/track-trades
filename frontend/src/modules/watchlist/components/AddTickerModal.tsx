@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import type { FormEvent } from 'react'
 import { Icon } from '../../../shared/components/Icon'
 import { Modal } from '../../../shared/components/Modal'
+import { dateValueToIso, todayDateValue } from '../../../shared/utils/dateInput'
 import type {
   NewWatchlistItem,
   WatchCategory,
@@ -33,6 +34,8 @@ export function AddTickerModal({
   const [side, setSide] = useState<WatchSide>('long')
   const [category, setCategory] = useState<WatchCategory>(defaultCategory ?? 'daily')
   const [notes, setNotes] = useState('')
+  const [link, setLink] = useState('')
+  const [watchedDate, setWatchedDate] = useState(todayDateValue)
   const inputRef = useRef<HTMLInputElement>(null)
 
   // Reset the form fresh each time the popup opens, and focus the ticker input.
@@ -42,6 +45,8 @@ export function AddTickerModal({
       setSide('long')
       setCategory(defaultCategory ?? 'daily')
       setNotes('')
+      setLink('')
+      setWatchedDate(todayDateValue())
       requestAnimationFrame(() => inputRef.current?.focus())
     }
   }, [open, defaultCategory])
@@ -54,7 +59,14 @@ export function AddTickerModal({
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
     if (!trimmed || duplicate || adding) return
-    await onAdd({ symbol: trimmed, category, side, notes: notes.trim() })
+    await onAdd({
+      symbol: trimmed,
+      category,
+      side,
+      notes: notes.trim(),
+      link: link.trim(),
+      watchedSince: dateValueToIso(watchedDate),
+    })
     onClose()
   }
 
@@ -126,6 +138,18 @@ export function AddTickerModal({
           ))}
         </div>
 
+        <label className="add-modal__label" htmlFor="add-ticker-date">
+          Watching since
+        </label>
+        <input
+          id="add-ticker-date"
+          type="date"
+          className="add-modal__input add-modal__input--date"
+          value={watchedDate}
+          max={todayDateValue()}
+          onChange={(e) => setWatchedDate(e.target.value)}
+        />
+
         <label className="add-modal__label" htmlFor="add-ticker-notes">
           Note <span className="add-modal__optional">(optional)</span>
         </label>
@@ -137,6 +161,18 @@ export function AddTickerModal({
           placeholder="What's the setup? What are you waiting for?"
           rows={3}
           maxLength={280}
+        />
+
+        <label className="add-modal__label" htmlFor="add-ticker-link">
+          Link <span className="add-modal__optional">(optional)</span>
+        </label>
+        <input
+          id="add-ticker-link"
+          type="url"
+          className="add-modal__input add-modal__input--link"
+          value={link}
+          onChange={(e) => setLink(e.target.value)}
+          placeholder="https://…"
         />
 
         <div className="add-modal__actions">

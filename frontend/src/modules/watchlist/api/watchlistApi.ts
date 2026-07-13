@@ -12,7 +12,8 @@ export async function addWatchlistItem(input: NewWatchlistItem): Promise<Watchli
     category: input.category,
     side: input.side,
     notes: input.notes?.trim() || '',
-    watchedSince: new Date().toISOString(),
+    link: input.link?.trim() || '',
+    watchedSince: input.watchedSince ?? new Date().toISOString(),
   })
   return data
 }

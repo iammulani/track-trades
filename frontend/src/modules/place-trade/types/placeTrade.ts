@@ -4,6 +4,8 @@ export interface TradeParams {
   stopLoss: string
   target: string
   quantity: string
+  /** yyyy-mm-dd — defaults to today, can be backdated to log a trade placed earlier. */
+  entryDate: string
 }
 
 export const EMPTY_TRADE_PARAMS: TradeParams = {
@@ -11,6 +13,7 @@ export const EMPTY_TRADE_PARAMS: TradeParams = {
   stopLoss: '',
   target: '',
   quantity: '',
+  entryDate: '',
 }
 
 /** Checklist item id -> checked, used by the various step checklists. */

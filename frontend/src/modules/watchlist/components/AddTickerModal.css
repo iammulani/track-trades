@@ -29,6 +29,17 @@
   letter-spacing: 0.02em;
 }
 
+.add-modal__input--link,
+.add-modal__input--date {
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: normal;
+}
+
+.add-modal__input--date {
+  color-scheme: light dark;
+}
+
 .add-modal__input:focus {
   outline: none;
   border-color: var(--accent);

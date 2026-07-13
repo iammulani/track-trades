@@ -85,8 +85,10 @@ overhead-supply check, then a review before it's final.
 - **Writes, on submit**:
   1. `addTrade` (from `modules/trades`) — `POST /trades` with `symbol`, `side`
      (both carried over from the watchlist item), `quantity`, `entryPrice`,
-     `entryTime` (now), `exitPrice: null`, `exitTime: null` (opens the trade —
-     it shows as "open" on the Dashboard until later closed).
+     `entryTime` (from the Trade Setup step's entry date, combined with the
+     current time-of-day — defaults to today but can be backdated),
+     `exitPrice: null`, `exitTime: null` (opens the trade — it shows as
+     "open" on the Dashboard until later closed).
   2. `removeItem` (from `useWatchlist`) — `DELETE /watchlist/:id`. Once placed,
      it's a trade, not something still being watched.
 
@@ -113,8 +115,11 @@ a small pill button, `send` icon, next to Remove). Route:
    default trigger is a small fixed-size circle) lists all 9 criteria, each with
    a check (fully met), an amber alert (partial), or an x (unmet).
 4. **Step body** — one of:
-   - **Trade Setup** (`TradeParamsStep`) — entry price, quantity, stop loss,
-     target (optional), with a live `RiskSummary` panel underneath. The panel
+   - **Trade Setup** (`TradeParamsStep`) — a required **entry date** (defaults
+     to today, can be backdated but not set in the future — lets a trade
+     placed earlier be logged with its real date instead of today's), entry
+     price, quantity, stop loss, target (optional), with a live `RiskSummary`
+     panel underneath. The panel
      leads with two large hero figures — "If stopped out" / "If target hit"
      as a signed % of entry, colored critical/good — with the $ amount, R:R
      ratio and per-share numbers as smaller supporting detail.
@@ -187,7 +192,7 @@ a small pill button, `send` icon, next to Remove). Route:
 ## Behaviour
 
 - **Step validation**: Next is disabled until the current step's required
-  fields are filled — Setup needs `entryPrice` + `quantity`; Stage & Base
+  fields are filled — Setup needs `entryDate` + `entryPrice` + `quantity`; Stage & Base
   needs both a `stage` and a `base` selected; 52-Week Range needs both
   `week52Low` and `week52High`. Technical Confirmation, VCP Structure, Final
   Checks and Review have no hard requirement (they're prompts, not gates).
@@ -238,7 +243,10 @@ sizes itself to the content (up to 460px wide, scrolling internally past
 ~520px tall) and picks whichever side/direction has room, so it always
 stays fully on-screen. `ChecklistStep` takes its `items` as a prop so it's
 reused across Technical Confirmation's MA checks and Final Checks'
-overhead-supply / breakout-confirmation checks.
+overhead-supply / breakout-confirmation checks. `shared/utils/dateInput.ts`
+(`todayDateValue`, `dateValueToIso`) backs the entry-date field — the same
+helper the watchlist's "watching since" date uses (see
+[watchlist.spec.md](watchlist.spec.md)).
 
 **Not yet wired to the backend:** the selected `stage`/`base` and all
 Technical Confirmation / 52-Week Range / VCP Structure / Final Checks data

@@ -47,6 +47,18 @@ export function WatchlistTable({ items, onRemove, onUpdateCategory }: WatchlistT
                       {item.symbol.slice(0, 2)}
                     </span>
                     <span className="watch-table__symbol">{item.symbol}</span>
+                    {item.link && (
+                      <a
+                        href={item.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="watch-table__link"
+                        aria-label={`Open link for ${item.symbol}`}
+                        title={item.link}
+                      >
+                        <Icon name="link" size={13} />
+                      </a>
+                    )}
                   </div>
                 </td>
                 <td className="ta-left">

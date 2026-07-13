@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { dateValueToIso, todayDateValue } from '../../../shared/utils/dateInput'
 import { addTrade } from '../../trades'
 import { useWatchlist } from '../../watchlist'
 import {
@@ -32,7 +33,10 @@ export function usePlaceTrade(watchlistId: string) {
 
   const navigate = useNavigate()
   const [stepIndex, setStepIndex] = useState(0)
-  const [tradeParams, setTradeParams] = useState<TradeParams>(EMPTY_TRADE_PARAMS)
+  const [tradeParams, setTradeParams] = useState<TradeParams>(() => ({
+    ...EMPTY_TRADE_PARAMS,
+    entryDate: todayDateValue(),
+  }))
   const [stageBaseAnswers, setStageBaseAnswers] = useState<StageBaseAnswers>(EMPTY_STAGE_BASE_ANSWERS)
   const [indicatorData, setIndicatorData] = useState<IndicatorData>(EMPTY_INDICATOR_DATA)
   const [indicatorChecklistChecked, setIndicatorChecklistChecked] = useState<ChecklistChecked>({})
@@ -51,7 +55,11 @@ export function usePlaceTrade(watchlistId: string) {
   const canProceed = useMemo(() => {
     switch (STEPS[stepIndex].id) {
       case 'setup':
-        return tradeParams.entryPrice.trim() !== '' && tradeParams.quantity.trim() !== ''
+        return (
+          tradeParams.entryPrice.trim() !== '' &&
+          tradeParams.quantity.trim() !== '' &&
+          tradeParams.entryDate.trim() !== ''
+        )
       case 'stage-base':
         return stageBaseAnswers.stage !== null && stageBaseAnswers.base !== null
       case 'week-range':
@@ -77,7 +85,7 @@ export function usePlaceTrade(watchlistId: string) {
         side: item.side,
         quantity: Number(tradeParams.quantity),
         entryPrice: Number(tradeParams.entryPrice),
-        entryTime: new Date().toISOString(),
+        entryTime: dateValueToIso(tradeParams.entryDate),
       })
       await removeItem(item.id)
       navigate('/')
