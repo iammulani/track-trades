@@ -1,6 +1,9 @@
+import { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
+import { ConfirmDialog } from '../../shared/components/ConfirmDialog'
 import { Icon } from '../../shared/components/Icon'
 import { PageHeader } from '../../shared/components/PageHeader'
+import { formatDateTime } from '../../shared/utils/format'
 import { FinalChecksStep } from './components/FinalChecksStep'
 import { ReviewStep } from './components/ReviewStep'
 import { StageBaseStep } from './components/StageBaseStep'
@@ -39,7 +42,14 @@ export function PlaceTradePage() {
     rating,
     placing,
     placeTrade,
+    hasDraft,
+    draftStatus,
+    draftSavedAt,
+    saveDraftAndExit,
+    discardDraft,
   } = usePlaceTrade(id ?? '')
+
+  const [confirmingDiscard, setConfirmingDiscard] = useState(false)
 
   const isFirstStep = stepIndex === 0
   const isLastStep = stepIndex === steps.length - 1
@@ -76,6 +86,7 @@ export function PlaceTradePage() {
           <div className="place-trade-page__step-title">
             <h2>{steps[stepIndex].title}</h2>
             <div className="place-trade-page__step-meta">
+              {hasDraft && <span className="place-trade-page__draft-pill">Draft</span>}
               <TradeRatingBadge rating={rating} size={20} />
               <span className="place-trade-page__step-symbol">{item.symbol}</span>
             </div>
@@ -129,6 +140,24 @@ export function PlaceTradePage() {
               Cancel
             </Link>
 
+            {hasDraft && (
+              <button
+                type="button"
+                className="place-trade-page__discard-draft"
+                onClick={() => setConfirmingDiscard(true)}
+              >
+                Discard draft
+              </button>
+            )}
+
+            {draftStatus !== 'idle' && (
+              <span className="place-trade-page__draft-status">
+                {draftStatus === 'saving' || !draftSavedAt
+                  ? 'Saving draft…'
+                  : `Draft saved · ${formatDateTime(draftSavedAt)}`}
+              </span>
+            )}
+
             <div className="place-trade-page__nav">
               {!isFirstStep && (
                 <button type="button" className="place-trade-page__back" onClick={goBack}>
@@ -148,20 +177,49 @@ export function PlaceTradePage() {
                   <Icon name="chevronRight" size={16} />
                 </button>
               ) : (
-                <button
-                  type="button"
-                  className="place-trade-page__submit"
-                  onClick={placeTrade}
-                  disabled={placing}
-                >
-                  <Icon name="send" size={15} />
-                  {placing ? 'Placing…' : 'Place Trade'}
-                </button>
+                <>
+                  <button
+                    type="button"
+                    className="place-trade-page__keep-draft"
+                    onClick={saveDraftAndExit}
+                    disabled={placing}
+                  >
+                    <Icon name="clock" size={15} />
+                    Keep as Draft
+                  </button>
+                  <button
+                    type="button"
+                    className="place-trade-page__submit"
+                    onClick={placeTrade}
+                    disabled={placing}
+                  >
+                    <Icon name="send" size={15} />
+                    {placing ? 'Placing…' : 'Place Trade'}
+                  </button>
+                </>
               )}
             </div>
           </div>
         </div>
       )}
+
+      <ConfirmDialog
+        open={confirmingDiscard}
+        title="Discard this draft?"
+        message={
+          <p className="place-trade-page__discard-note">
+            Everything you entered for {item?.symbol} in this stepper will be lost. The symbol stays
+            on your watchlist.
+          </p>
+        }
+        confirmLabel="Discard"
+        cancelLabel="Keep it"
+        onCancel={() => setConfirmingDiscard(false)}
+        onConfirm={() => {
+          setConfirmingDiscard(false)
+          void discardDraft()
+        }}
+      />
     </section>
   )
 }

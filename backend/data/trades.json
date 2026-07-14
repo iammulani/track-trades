@@ -505,5 +505,132 @@
         "note": "Jumped in before the base was actually ready. After getting stopped out, the stock stabilized, carved out a clean 3-T VCP, and gave a proper breakout signal on June 29 around ₹4,617. Price kept climbing from there — trading around ₹4,951 as of July 13, up ~7.2% from that signal. The real trade was the one I exited before it even started."
       }
     ]
+  },
+  {
+    "symbol": "ONGC",
+    "side": "long",
+    "quantity": 200,
+    "entryPrice": 297,
+    "exitPrice": 283.25,
+    "entryTime": "2026-04-28T03:04:55.215Z",
+    "exitTime": "2026-05-06T08:26:00.000Z",
+    "notes": "",
+    "setup": {
+      "watchedSince": "2026-04-01T02:58:21.419Z",
+      "stopLoss": 280,
+      "target": null,
+      "stage": "transition-1-2",
+      "base": "base-1",
+      "rsRating": 72,
+      "fiftyDayMa": 277,
+      "technicalChecklist": {
+        "ma-uptrend": true,
+        "ma-stacked": true,
+        "ma200-duration": true
+      },
+      "week52Low": 220,
+      "week52High": 300,
+      "weeksInBase": 8,
+      "vcpContractions": [
+        {
+          "high": 292,
+          "low": 257
+        },
+        {
+          "high": 292,
+          "low": 274
+        }
+      ],
+      "finalChecks": {
+        "volume-price-quiet": false,
+        "weak-holders-shaken-out": false,
+        "volume-confirms-breakout": true,
+        "minimal-overhead-resistance": true
+      },
+      "rating": {
+        "ratio": 0.4,
+        "rawRatio": 0.6948717948717948,
+        "criteria": [
+          {
+            "id": "stop-placement",
+            "weight": 1,
+            "score": 0.5
+          },
+          {
+            "id": "stage-quality",
+            "weight": 2,
+            "score": 0.3
+          },
+          {
+            "id": "base-quality",
+            "weight": 1,
+            "score": 1
+          },
+          {
+            "id": "ma-trend",
+            "weight": 1,
+            "score": 1
+          },
+          {
+            "id": "relative-strength",
+            "weight": 1,
+            "score": 0.3
+          },
+          {
+            "id": "ma-proximity",
+            "weight": 1,
+            "score": 0.3
+          },
+          {
+            "id": "week-range",
+            "weight": 2,
+            "score": 1
+          },
+          {
+            "id": "vcp-structure",
+            "weight": 3,
+            "score": 1
+          },
+          {
+            "id": "final-checks",
+            "weight": 1,
+            "score": 0.3333333333333333
+          }
+        ],
+        "gates": [
+          {
+            "id": "stage-2",
+            "state": "fail",
+            "cap": 0.4
+          },
+          {
+            "id": "trend-template",
+            "state": "pass",
+            "cap": 0.6
+          },
+          {
+            "id": "logical-stop",
+            "state": "fail",
+            "cap": 0.6
+          },
+          {
+            "id": "real-base",
+            "state": "pass",
+            "cap": 0.6
+          }
+        ]
+      }
+    },
+    "id": "b-8RmSVTZcA",
+    "exitLearnings": [
+      {
+        "reason": "stopped-as-planned",
+        "note": "stock went up & crashed below 20 DAY MA. closed the stock as planned."
+      },
+      {
+        "reason": "mistake-broke-rule",
+        "note": "need to understand more on the good setups, it seems it was good, but when i looked overall after a trade. it seems i missed few pointer, need to very careful with making good selection"
+      }
+    ]
   }
 ]

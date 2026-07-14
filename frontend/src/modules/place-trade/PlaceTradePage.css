@@ -129,3 +129,64 @@
   background: var(--grad-good, var(--good));
   box-shadow: 0 4px 14px rgba(18, 183, 106, 0.3);
 }
+
+.place-trade-page__keep-draft {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 18px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-strong);
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.place-trade-page__keep-draft:hover {
+  color: var(--text-primary);
+  border-color: var(--text-muted);
+}
+
+.place-trade-page__keep-draft:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.place-trade-page__draft-status {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.place-trade-page__discard-draft {
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.place-trade-page__discard-draft:hover {
+  color: var(--critical);
+}
+
+.place-trade-page__discard-note {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.place-trade-page__draft-pill {
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  background: var(--surface-2, transparent);
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}

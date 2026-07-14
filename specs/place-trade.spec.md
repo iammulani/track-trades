@@ -8,6 +8,11 @@ trigger — trade parameters, then a stage/base read, then technical
 confirmation, then 52-week range, then VCP structure, then a final
 overhead-supply check, then a review before it's final.
 
+It's a long walk, so it doesn't have to be done in one sitting: the run is saved
+as a **draft** as you fill it and can be resumed later, and Review offers **Keep
+as Draft** alongside Place Trade — so a finished setup can be parked and re-read
+before capital goes behind it. See [drafts.spec.md](drafts.spec.md).
+
 ## Data
 
 - **Reads**: the watchlist item being traded, via `useWatchlist()` from
@@ -146,6 +151,12 @@ overhead-supply check, then a review before it's final.
      [trade-detail.spec.md](trade-detail.spec.md).
   2. `removeItem` (from `useWatchlist`) — `DELETE /watchlist/:id`. Once placed,
      it's a trade, not something still being watched.
+  3. `removeDraft` (from `modules/drafts`) — `DELETE /drafts/:id`, if this run was
+     resumed from or auto-saved into a draft. It's a trade now, not a run in progress.
+- **Writes, continuously** — the draft (`hooks/useDraftAutosave.ts`). See
+  [drafts.spec.md](drafts.spec.md) for the record; the stepper's whole form state plus
+  its `stepIndex`, debounced, `POST` on the first write and `PATCH` after. The rating is
+  *not* part of it — it's re-derived live on resume, and only frozen at placement.
 
 ## UI
 
@@ -247,8 +258,16 @@ a small pill button, `send` icon, next to Remove). Route:
      Structure values, the overhead-supply checklist, and the
      breakout-confirmation checklist — confirmed checklist items styled
      distinctly from skipped ones.
-5. **Footer** — Cancel (link back to Watchlist) on the left; Back / Next on
-   the right, Next replaced by **Place Trade** on the last step.
+5. **Footer** — on the left: Cancel (link back to Watchlist), then — only once a
+   draft exists — a quiet **Discard draft** button (turns red on hover) and the live
+   draft status ("Saving draft…" / "Draft saved · Jun 2, 09:35"). On the right:
+   Back / Next, with Next replaced on the last step by **Keep as Draft**
+   (secondary, `clock` icon — saves and returns to the Watchlist) next to **Place
+   Trade**. A "Draft" pill sits next to the symbol in the step-title row whenever
+   the run is backed by a draft.
+6. **Discard confirmation** (`shared/ConfirmDialog`) — "Discard this draft?", naming
+   the symbol, noting the answers are lost but the symbol stays on the watchlist.
+   Confirm ("Discard") / cancel ("Keep it").
 
 ## Behaviour
 
@@ -259,10 +278,29 @@ a small pill button, `send` icon, next to Remove). Route:
   Checks and Review have no hard requirement (they're prompts, not gates).
 - Risk numbers recompute on every keystroke; any missing/invalid input shows
   `—` rather than `NaN` or throwing.
-- On **Place Trade**: creates the trade, removes the watchlist item, then
-  navigates to the Dashboard (`/`) where the new open trade appears.
-- **States**: loading → "Loading…"; error → message; watchlist item not
-  found (already placed or removed) → message + a link back to Watchlist.
+- On **Place Trade**: creates the trade, removes the watchlist item, deletes the
+  draft, then navigates to the Dashboard (`/`) where the new open trade appears.
+- **Drafts** (`hooks/useDraftAutosave.ts`):
+  - **Hydrate first.** On mount the parked draft is looked up by the `:id` route param;
+    the stepper renders "Loading…" until that resolves, then seeds every step's state
+    from it — **including `stepIndex`, so you resume on the step you left**. No draft
+    → a fresh run.
+  - **Auto-save.** Every change (any step's answers, or moving between steps) is written
+    back, debounced 800ms — closing the tab or reloading mid-stepper loses nothing.
+    Leaving the page flushes whatever is still pending.
+  - **No junk drafts.** Nothing is written until the state differs from an untouched run,
+    so opening the stepper and hitting Cancel doesn't park an empty draft.
+  - **Keep as Draft** (Review step) flushes the save and returns to the Watchlist — the
+    point being that you can come back and re-read the Review page's rating, gate banner
+    and points breakdown before committing.
+  - **Discard draft** deletes it (after confirming) and returns to the Watchlist, leaving
+    the symbol on the list. It is offered **only from inside the stepper**, never as a
+    second button on the watchlist row: throwing away a setup you spent seven steps on
+    should mean looking at it first.
+  - A failed draft lookup or save never blocks the stepper: the run continues unsaved.
+- **States**: loading → "Loading…" (covers both the watchlist fetch and the draft
+  lookup); error → message; watchlist item not found (already placed or removed) →
+  message + a link back to Watchlist.
 
 ## Module map
 
@@ -271,8 +309,11 @@ frontend/src/modules/place-trade/
 ├── PlaceTradePage.tsx           # loads the item, renders indicator + current step + footer nav
 ├── PlaceTradePage.css
 ├── index.ts                     # exports PlaceTradePage
-├── types/placeTrade.ts          # TradeParams, StageBaseAnswers, IndicatorData, VcpStructureData, ChecklistChecked
-├── hooks/usePlaceTrade.ts       # step state, form state, canProceed, placeTrade()
+├── types/placeTrade.ts          # EMPTY_* seeds, MIN/MAX_VCP_CONTRACTIONS, Stage/Base; re-exports the
+│                                #   form-state types (TradeParams, StageBaseAnswers, IndicatorData,
+│                                #   VcpStructureData, ChecklistChecked) from modules/drafts
+├── hooks/usePlaceTrade.ts       # step state, form state, canProceed, placeTrade(), saveDraftAndExit(), discardDraft()
+├── hooks/useDraftAutosave.ts    # hydrate from /drafts, debounce-write back, discard on placement
 ├── utils/
 │   ├── checklistItems.ts             # ChecklistItem — shared shape for every step's checklist
 │   ├── indicatorChecklistItems.ts    # INDICATOR_CHECKLIST_ITEMS (trend-confirmation checks)
@@ -299,12 +340,14 @@ frontend/src/modules/place-trade/
     └── ReviewStep.tsx                 # final summary before submit, incl. the rating banner, gate banner + "Why N%?" breakdown
 ```
 
-Depends on `modules/trades` (`addTrade`, `NewTrade`, `TradeStage`, `TradeBase`)
-and `modules/watchlist` (`useWatchlist`, `WatchlistItemWithMetrics`,
-`WatchSide`) — both now export what's needed through their `index.ts`
-barrels. `place-trade`'s own `Stage`/`Base` types are re-exports of
-`TradeStage`/`TradeBase` — `modules/trades` is the canonical definition since
-the choice is now persisted as part of the trade's `setup`. Also uses
+Depends on `modules/trades` (`addTrade`, `NewTrade`, `TradeStage`, `TradeBase`),
+`modules/watchlist` (`useWatchlist`, `WatchlistItemWithMetrics`, `WatchSide`)
+and `modules/drafts` (the draft API + the form-state types) — all export what's
+needed through their `index.ts` barrels. `place-trade`'s own `Stage`/`Base` types
+are re-exports of `TradeStage`/`TradeBase` — `modules/trades` is the canonical
+definition since the choice is now persisted as part of the trade's `setup` —
+and the form-state types are re-exports from `modules/drafts` for the same
+reason: they're what a draft stores (see [drafts.spec.md](drafts.spec.md)). Also uses
 `shared/HoverCard` for the stage/base, VCP Structure, and overhead-supply
 info panels — it sizes itself to the content (up to 460px wide, scrolling
 internally past ~520px tall) and picks whichever side/direction has room, so

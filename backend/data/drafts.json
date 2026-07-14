@@ -1,0 +1,58 @@
+[
+  {
+    "watchlistId": "esvWIi7HCHw",
+    "stepIndex": 6,
+    "tradeParams": {
+      "entryPrice": "1390",
+      "stopLoss": "1320",
+      "target": "",
+      "quantity": "80",
+      "entryDate": "2026-07-14"
+    },
+    "stageBaseAnswers": {
+      "stage": "stage-2",
+      "base": "base-1"
+    },
+    "indicatorData": {
+      "rsRating": "59",
+      "fiftyDayMa": "1297",
+      "week52Low": "862",
+      "week52High": "1400"
+    },
+    "indicatorChecklistChecked": {
+      "ma200-duration": true,
+      "ma-stacked": true,
+      "ma-uptrend": true
+    },
+    "vcpStructureData": {
+      "weeksInBase": "8",
+      "contractions": [
+        {
+          "high": "1380",
+          "low": "1213"
+        },
+        {
+          "high": "1430",
+          "low": "1261"
+        },
+        {
+          "high": "1391",
+          "low": "1283"
+        },
+        {
+          "high": "1410",
+          "low": "1304"
+        }
+      ]
+    },
+    "finalChecksChecked": {
+      "volume-price-quiet": true,
+      "weak-holders-shaken-out": true,
+      "minimal-overhead-resistance": true,
+      "volume-confirms-breakout": true
+    },
+    "createdAt": "2026-07-14T03:44:48.746168Z",
+    "updatedAt": "2026-07-14T03:54:53.389Z",
+    "id": "vijaya-draft"
+  }
+]

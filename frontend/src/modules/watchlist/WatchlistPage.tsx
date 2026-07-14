@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { Icon } from '../../shared/components/Icon'
 import { PageHeader } from '../../shared/components/PageHeader'
+import { useDrafts } from '../drafts'
 import { AddTickerModal } from './components/AddTickerModal'
 import { CategoryFilterTabs, type CategoryFilter } from './components/CategoryFilterTabs'
 import { TickerSearch } from './components/TickerSearch'
@@ -18,6 +19,7 @@ export function WatchlistPage() {
   const [search, setSearch] = useState('')
   const [modalOpen, setModalOpen] = useState(false)
   const { items, loading, error, adding, addItem, removeItem, updateCategory } = useWatchlist()
+  const { byWatchlistId: draftsByItem, discard: discardDraft } = useDrafts()
 
   const filterParam = searchParams.get('category')
   const filter: CategoryFilter = VALID_FILTERS.includes(filterParam as CategoryFilter)
@@ -59,6 +61,13 @@ export function WatchlistPage() {
   async function handleAdd(input: NewWatchlistItem) {
     await addItem(input)
     setSearchParams({})
+  }
+
+  // Drop the parked stepper run along with the symbol — a draft with no watchlist item
+  // behind it can never be resumed.
+  async function handleRemove(id: string) {
+    await removeItem(id)
+    await discardDraft(id)
   }
 
   return (
@@ -105,7 +114,8 @@ export function WatchlistPage() {
           ) : (
             <WatchlistTable
               items={filtered}
-              onRemove={removeItem}
+              drafts={draftsByItem}
+              onRemove={handleRemove}
               onUpdateCategory={updateCategory}
             />
           )}

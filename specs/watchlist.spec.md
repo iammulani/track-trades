@@ -59,6 +59,13 @@ Reached via the **Watchlist** sidebar item. Top to bottom:
    to that category** immediately), `Notes`, a **Place Trade** action (pill
    button, links to `/watchlist/:id/place-trade` — see
    [place-trade.spec.md](place-trade.spec.md)), and a remove (×) action.
+   A row whose place-trade run was parked as a **draft** (see
+   [drafts.spec.md](drafts.spec.md)) shows a **Draft** pill next to the symbol
+   (its `title` = when it was last saved), and its action pill reads **Resume
+   Draft** instead of Place Trade (same link — the stepper hydrates itself back
+   to the step it was left on). The row gains **no** second action: discarding a
+   draft is only offered from inside the stepper, where you can see what you're
+   about to throw away — see [place-trade.spec.md](place-trade.spec.md).
 4. **Add popup** (`AddTickerModal`, shared `Modal`) — ticker input (autofocused,
    auto-uppercased), a required **long/short toggle** (defaults to "Long"),
    a required category picker (segmented pills, defaults to whatever filter
@@ -90,7 +97,10 @@ Reached via the **Watchlist** sidebar item. Top to bottom:
 - **Moving categories** calls `PATCH /watchlist/:id` with the new `category`
   and refetches.
 - **Removing requires confirmation** — clicking × opens `ConfirmDialog`; only
-  confirming calls `DELETE /watchlist/:id`.
+  confirming calls `DELETE /watchlist/:id`. It **also discards that item's draft**,
+  if it has one — a draft with no watchlist item behind it can never be resumed.
+  This is the only place the Watchlist deletes a draft; discarding one on its own
+  belongs to the stepper.
 - Refetches after add/remove/move are silent (no loading flash) — only the
   first load shows the loading state.
 - **States:** loading → "Loading…"; error → message; empty list → prompt to add

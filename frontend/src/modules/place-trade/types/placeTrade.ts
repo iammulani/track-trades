@@ -1,14 +1,17 @@
+import type { IndicatorData, StageBaseAnswers, TradeParams, VcpStructureData } from '../../drafts'
 import type { TradeBase, TradeStage } from '../../trades'
 
-/** Values collected in the "Trade Setup" step — strings while editing, parsed on submit. */
-export interface TradeParams {
-  entryPrice: string
-  stopLoss: string
-  target: string
-  quantity: string
-  /** yyyy-mm-dd — defaults to today, can be backdated to log a trade placed earlier. */
-  entryDate: string
-}
+/** The stepper's form state is exactly what a draft persists, so `modules/drafts` is its
+ * canonical home — re-exported here so every step component keeps importing it from its
+ * own module. Same arrangement as `Stage`/`Base` below. */
+export type {
+  ChecklistChecked,
+  IndicatorData,
+  StageBaseAnswers,
+  TradeParams,
+  VcpContraction,
+  VcpStructureData,
+} from '../../drafts'
 
 export const EMPTY_TRADE_PARAMS: TradeParams = {
   entryPrice: '',
@@ -18,33 +21,14 @@ export const EMPTY_TRADE_PARAMS: TradeParams = {
   entryDate: '',
 }
 
-/** Checklist item id -> checked, used by the various step checklists. */
-export type ChecklistChecked = Record<string, boolean>
-
 /** Re-exported from `modules/trades` — it's the canonical definition since the
  * chosen stage/base is now persisted as part of the trade's `setup`. */
 export type Stage = TradeStage
 export type Base = TradeBase
 
-/** Values collected in the "Stage & Base" step — one stage, one base, or neither yet. */
-export interface StageBaseAnswers {
-  stage: Stage | null
-  base: Base | null
-}
-
 export const EMPTY_STAGE_BASE_ANSWERS: StageBaseAnswers = {
   stage: null,
   base: null,
-}
-
-/** Values collected in the Technical Confirmation / 52-Week Range steps —
- * strings while editing, parsed for the live % calcs. */
-export interface IndicatorData {
-  /** IBD-style RS Rating — a 1-99 percentile vs the market, not RSI(14). */
-  rsRating: string
-  fiftyDayMa: string
-  week52Low: string
-  week52High: string
 }
 
 export const EMPTY_INDICATOR_DATA: IndicatorData = {
@@ -54,20 +38,8 @@ export const EMPTY_INDICATOR_DATA: IndicatorData = {
   week52High: '',
 }
 
-/** One contraction (T) — a high and a low; the % pullback is derived, never entered directly. */
-export interface VcpContraction {
-  high: string
-  low: string
-}
-
 export const MIN_VCP_CONTRACTIONS = 2
 export const MAX_VCP_CONTRACTIONS = 6
-
-/** Values collected in the "VCP Structure" step — strings while editing. */
-export interface VcpStructureData {
-  weeksInBase: string
-  contractions: VcpContraction[]
-}
 
 export const EMPTY_VCP_STRUCTURE_DATA: VcpStructureData = {
   weeksInBase: '',
