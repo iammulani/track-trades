@@ -180,8 +180,8 @@ export function ReviewStep({
         </span>
         <div className="review-step__grid">
           <div className="review-step__stat">
-            <span className="review-step__stat-label">RS Rating</span>
-            <span className="review-step__stat-value">{indicatorData.rsRating || '—'}</span>
+            <span className="review-step__stat-label">RSI</span>
+            <span className="review-step__stat-value">{indicatorData.rsi || '—'}</span>
           </div>
           <div className="review-step__stat">
             <span className="review-step__stat-label">50-day MA</span>

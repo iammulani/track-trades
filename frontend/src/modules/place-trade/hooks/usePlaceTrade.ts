@@ -175,7 +175,7 @@ export function usePlaceTrade(watchlistId: string) {
           target: numberOrNull(tradeParams.target),
           stage: stageBaseAnswers.stage,
           base: stageBaseAnswers.base,
-          rsRating: numberOrNull(indicatorData.rsRating),
+          rsi: numberOrNull(indicatorData.rsi),
           fiftyDayMa: numberOrNull(indicatorData.fiftyDayMa),
           technicalChecklist: indicatorChecklistChecked,
           week52Low: numberOrNull(indicatorData.week52Low),

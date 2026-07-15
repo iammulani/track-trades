@@ -22,8 +22,8 @@ export interface StageBaseAnswers {
 /** Values collected in the Technical Confirmation / 52-Week Range steps —
  * strings while editing, parsed for the live % calcs. */
 export interface IndicatorData {
-  /** IBD-style RS Rating — a 1-99 percentile vs the market, not RSI(14). */
-  rsRating: string
+  /** RSI — no less than 70, preferably in the 80s & 90s. */
+  rsi: string
   fiftyDayMa: string
   week52Low: string
   week52High: string

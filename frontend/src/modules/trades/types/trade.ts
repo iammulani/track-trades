@@ -82,8 +82,8 @@ export interface TradeSetup {
   target: number | null
   stage: TradeStage | null
   base: TradeBase | null
-  /** IBD-style RS Rating — a 1-99 percentile vs the market, not RSI(14). */
-  rsRating: number | null
+  /** RSI — no less than 70, preferably in the 80s & 90s. */
+  rsi: number | null
   fiftyDayMa: number | null
   technicalChecklist: TradeChecklist
   week52Low: number | null

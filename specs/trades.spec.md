@@ -37,7 +37,7 @@ persisted beyond the raw fields; everything else is computed on read.
   | `watchedSince`         | string \| null (ISO)          | the watchlist item's `watchedSince` — how long it was watched before being traded |
   | `stopLoss` / `target`  | number \| null                | risk-management levels entered in Trade Setup          |
   | `stage` / `base`       | `TradeStage \| null` / `TradeBase \| null` | the selected Stage & Base options            |
-  | `rsRating` / `fiftyDayMa` | number \| null             | Technical Confirmation readings — `rsRating` is the IBD-style RS Rating (1–99 percentile vs the market), not RSI(14) |
+  | `rsi` / `fiftyDayMa`   | number \| null                | Technical Confirmation readings — `rsi` is the RSI, on a 1–99 scale |
   | `technicalChecklist`   | `TradeChecklist`              | the MA checklist, ticked item ids -> `true`             |
   | `week52Low` / `week52High` | number \| null            | 52-Week Range inputs                                    |
   | `weeksInBase`          | number \| null                | VCP Structure's time-in-base                            |

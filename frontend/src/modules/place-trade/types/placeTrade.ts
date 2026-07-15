@@ -32,7 +32,7 @@ export const EMPTY_STAGE_BASE_ANSWERS: StageBaseAnswers = {
 }
 
 export const EMPTY_INDICATOR_DATA: IndicatorData = {
-  rsRating: '70',
+  rsi: '70',
   fiftyDayMa: '',
   week52Low: '',
   week52High: '',

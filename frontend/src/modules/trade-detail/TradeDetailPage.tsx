@@ -308,8 +308,8 @@ export function TradeDetailPage() {
                 </span>
                 <div className="trade-detail__grid">
                   <div className="trade-detail__stat">
-                    <span className="trade-detail__stat-label">RS Rating</span>
-                    <span className="trade-detail__stat-value">{setup.rsRating ?? '—'}</span>
+                    <span className="trade-detail__stat-label">RSI</span>
+                    <span className="trade-detail__stat-value">{setup.rsi ?? '—'}</span>
                   </div>
                   <div className="trade-detail__stat">
                     <span className="trade-detail__stat-label">50-day MA</span>

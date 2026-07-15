@@ -77,7 +77,7 @@ column.
        (`entryTime − watchedSince`), stop loss, target.
      - **Stage & Base** — labels + verdict, colour-coded by tone, from
        `STAGE_OPTIONS`/`BASE_OPTIONS` (`modules/place-trade`).
-     - **Technicals** — MA checklist confirmed-count, RS Rating, 50-day MA,
+     - **Technicals** — MA checklist confirmed-count, RSI, 50-day MA,
        52-week low/high.
      - **VCP Structure** — weeks in base, largest correction, narrowest
        pullback, and each contraction (T1, T2, …) with its high → low and

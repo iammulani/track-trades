@@ -1,7 +1,7 @@
 [
   {
     "watchlistId": "esvWIi7HCHw",
-    "stepIndex": 6,
+    "stepIndex": 2,
     "tradeParams": {
       "entryPrice": "1390",
       "stopLoss": "1320",
@@ -14,7 +14,7 @@
       "base": "base-1"
     },
     "indicatorData": {
-      "rsRating": "59",
+      "rsi": "59",
       "fiftyDayMa": "1297",
       "week52Low": "862",
       "week52High": "1400"
@@ -52,7 +52,7 @@
       "volume-confirms-breakout": true
     },
     "createdAt": "2026-07-14T03:44:48.746168Z",
-    "updatedAt": "2026-07-14T03:54:53.389Z",
+    "updatedAt": "2026-07-15T11:36:35.782Z",
     "id": "vijaya-draft"
   }
 ]

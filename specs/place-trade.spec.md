@@ -37,10 +37,9 @@ before capital goes behind it. See [drafts.spec.md](drafts.spec.md).
   - `belowHighPercent` = `(week52High − entry) / week52High × 100`
   - `computeMaDistancePercent` = `(entry − fiftyDayMa) / fiftyDayMa × 100` —
     signed, positive when entry is above the 50-day MA.
-  - `rsRatingTone(value)` — grades the **RS Rating** `good` (≥80) / `caution`
-    (70–79) / `bad` (<70), per the guideline that it shouldn't be below 70. This
-    is the IBD-style RS Rating — a 1–99 percentile of the stock's strength against
-    the whole market — *not* RSI(14), which is why the slider spans the full 1–99.
+  - `rsiTone(value)` — grades the **RSI** `good` (≥80) / `caution` (70–79) /
+    `bad` (<70), per the guideline that it shouldn't be below 70 — the slider
+    spans the full 1–99.
   - `maDistanceTone(distancePercent)` — reads the entry's distance above the
     50-day MA as *extension*: `good` 0–5% (near support, not extended),
     `caution` 5–20% or up to 5% below the MA, `bad` >20% (extended — price has
@@ -115,7 +114,7 @@ before capital goes behind it. See [drafts.spec.md](drafts.spec.md).
   3. Stage tone (weight 2) — `toneScore` of the stage tone (Stage & Base)
   4. Base tone (weight 1) — `toneScore` of the base tone (Stage & Base)
   5. MA structure (weight 1) — fraction of the 3 MA checks ticked (Technical Confirmation)
-  6. Relative strength (weight 1) — `toneScore(rsRatingTone)`, so 70–79 earns 0.3
+  6. RSI (weight 1) — `toneScore(rsiTone)`, so 70–79 earns 0.3
   7. 52-week range (weight 2) — ½ for `aboveLowPercent` ≥30 + ½ for `belowHighPercent` ≤25
   8. VCP structure (weight 3) — fraction of 5 sub-conditions met: weeks-in-base,
      largest-correction, narrowest-pullback and contraction-count tones all `good`,
@@ -211,10 +210,9 @@ a small pill button, `send` icon, next to Remove). Route:
    - **Technical Confirmation** (`TechnicalConfirmationStep`) — a 3-item MA
      checklist (`INDICATOR_CHECKLIST_ITEMS`, reuses `ChecklistStep`) — MA
      uptrend, MA stack order, 200-day MA duration — followed by a divider,
-     then an **RS Rating** slider (range 1–99, step 1, defaults to 70 — it's a
-     market-wide percentile, so the scale has to be able to say "30") with a live
-     numeric readout colored by `rsRatingTone` (good ≥80, caution 70–79, bad <70)
-     and the "RS Rating shouldn't be below 70" guideline note underneath, then a
+     then an **RSI** slider (range 1–99, step 1, defaults to 70) with a live
+     numeric readout colored by `rsiTone` (good ≥80, caution 70–79, bad <70)
+     and the "RSI shouldn't be below 70" guideline note underneath, then a
      50-day MA price input paired with a live "from trading price" signed %
      (via `computeMaDistancePercent`).
    - **52-Week Range** (`WeekRangeStep`) — 52-week low/high inputs (both

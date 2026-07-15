@@ -18,7 +18,7 @@ import {
   weeksInBaseTone,
 } from './finalChecksCalc'
 import { BREAKOUT_CONFIRMATION_CHECKLIST_ITEMS, OVERHEAD_SUPPLY_CHECKLIST_ITEMS } from './finalChecksItems'
-import { computeIndicatorRange, rsRatingTone } from './indicatorCalc'
+import { computeIndicatorRange, rsiTone } from './indicatorCalc'
 import { INDICATOR_CHECKLIST_ITEMS } from './indicatorChecklistItems'
 import { computeRisk } from './riskCalc'
 import { BASE_OPTIONS, STAGE_OPTIONS } from './stageBaseOptions'
@@ -172,7 +172,7 @@ const CRITERION_LABELS: Record<string, string> = {
   'stage-quality': 'Stage is a good trading area',
   'base-quality': 'Base quality is good',
   'ma-trend': 'Moving-average structure confirmed',
-  'relative-strength': 'RS Rating is strong (70+, ideally 80+)',
+  'relative-strength': 'RSI is strong (70+, ideally 80+)',
   // No longer produced by computeTradeRating — the 50-day MA is now a display-only warning
   // (TechnicalConfirmationStep), not a scored criterion. Kept here so trades rated before this
   // change still render their frozen 'ma-proximity' line correctly (see fromRatingSnapshot).
@@ -281,7 +281,7 @@ export function computeTradeRating(input: {
     criterion('stage-quality', 2, toneScore(stage?.tone)),
     criterion('base-quality', 1, toneScore(base?.tone)),
     criterion('ma-trend', 1, fractionChecked(INDICATOR_CHECKLIST_ITEMS, indicatorChecklistChecked)),
-    criterion('relative-strength', 1, toneScore(rsRatingTone(indicatorData.rsRating))),
+    criterion('relative-strength', 1, toneScore(rsiTone(indicatorData.rsi))),
     criterion('week-range', 2, weekRangeScore),
     criterion('vcp-structure', 3, vcpMet / 5),
     criterion(

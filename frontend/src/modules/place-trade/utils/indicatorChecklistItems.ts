@@ -1,6 +1,6 @@
 import type { ChecklistItem } from './checklistItems'
 
-/** Trend-confirmation checks shown in the "Indicators" step, above the RS Rating/52-week data capture. */
+/** Trend-confirmation checks shown in the "Indicators" step, above the RSI/52-week data capture. */
 export const INDICATOR_CHECKLIST_ITEMS: ChecklistItem[] = [
   {
     id: 'ma-uptrend',

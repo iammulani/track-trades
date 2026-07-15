@@ -14,7 +14,7 @@
       "target": null,
       "stage": "stage-2",
       "base": "base-1",
-      "rsRating": 66,
+      "rsi": 66,
       "fiftyDayMa": 600,
       "technicalChecklist": {
         "ma-uptrend": true,
@@ -149,7 +149,7 @@
       "target": 91.03,
       "stage": "stage-1",
       "base": "base-4",
-      "rsRating": 59,
+      "rsi": 59,
       "fiftyDayMa": 83,
       "technicalChecklist": {},
       "week52Low": 72,
@@ -272,7 +272,7 @@
       "target": 432,
       "stage": "transition-1-2",
       "base": "base-1",
-      "rsRating": 60,
+      "rsi": 60,
       "fiftyDayMa": 390,
       "technicalChecklist": {
         "ma-uptrend": true,
@@ -399,7 +399,7 @@
       "target": null,
       "stage": "transition-1-2",
       "base": "base-4",
-      "rsRating": 66,
+      "rsi": 66,
       "fiftyDayMa": 4265,
       "technicalChecklist": {
         "ma-stacked": true,
@@ -521,7 +521,7 @@
       "target": null,
       "stage": "transition-1-2",
       "base": "base-1",
-      "rsRating": 72,
+      "rsi": 72,
       "fiftyDayMa": 277,
       "technicalChecklist": {
         "ma-uptrend": true,
