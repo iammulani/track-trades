@@ -110,8 +110,8 @@ export function ReviewStep({
 
       <div className="review-step__section">
         <span className="review-step__section-title">
-          Why {Math.round(rating.rawRatio * 100)}% on points? — {formatPoints(rating.earnedWeight)} of{' '}
-          {formatPoints(rating.totalWeight)}
+          Why {Math.round(rating.rawRatio * 100)}%? — {formatPoints(rating.earnedWeight)} of{' '}
+          {formatPoints(rating.totalWeight)} points earned
         </span>
         <ul className="review-step__breakdown">
           {rating.criteria.map((c) => {

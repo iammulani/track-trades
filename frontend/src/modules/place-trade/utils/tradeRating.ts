@@ -167,19 +167,19 @@ const GATE_META: Record<string, { label: string; cap: number; reason: string }> 
 
 /** Each criterion's wording, keyed by the id that gets persisted — same deal as `GATE_META`. */
 const CRITERION_LABELS: Record<string, string> = {
-  'risk-reward': 'Risk : Reward is 2:1 or better',
-  'stop-placement': 'Stop sits below the base, risking 2–10%',
-  'stage-quality': 'Stage is a good trading area',
-  'base-quality': 'Base quality is good',
-  'ma-trend': 'Moving-average structure confirmed',
-  'relative-strength': 'RSI is strong (70+, ideally 80+)',
+  'risk-reward': "You'll make at least twice what you're risking (2:1 or better)",
+  'stop-placement': 'Stop sits safely below the base, risking a sensible 2–10%',
+  'stage-quality': "The stock's in a good stage to trade",
+  'base-quality': 'The base looks well-formed',
+  'ma-trend': "Moving averages are lined up in a healthy uptrend",
+  'relative-strength': 'RSI is strong — 70 or higher, ideally in the 80s or 90s',
   // No longer produced by computeTradeRating — the 50-day MA is now a display-only warning
   // (TechnicalConfirmationStep), not a scored criterion. Kept here so trades rated before this
   // change still render their frozen 'ma-proximity' line correctly (see fromRatingSnapshot).
-  'ma-proximity': 'Entry is close to the 50-day MA (not extended)',
-  'week-range': 'Well clear of the 52-week low and near the high',
-  'vcp-structure': 'VCP structure (time, price, symmetry, tightening) is textbook',
-  'final-checks': 'Overhead supply and breakout confirmation checked',
+  'ma-proximity': "Entry is close to the 50-day MA, not extended",
+  'week-range': "Price is well clear of its 52-week low and close to its high",
+  'vcp-structure': "The base's shape — time, price, and tightening — looks textbook",
+  'final-checks': 'Overhead supply looks clear and the breakout is confirmed',
 }
 
 function gate(id: string, state: GateState): RatingGate {

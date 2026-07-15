@@ -231,8 +231,8 @@ export function TradeDetailPage() {
 
               <div className="trade-detail__section">
                 <span className="trade-detail__section-title">
-                  Why {Math.round(rating.rawRatio * 100)}% on points? —{' '}
-                  {formatPoints(rating.earnedWeight)} of {formatPoints(rating.totalWeight)}
+                  Why {Math.round(rating.rawRatio * 100)}%? — {formatPoints(rating.earnedWeight)} of{' '}
+                  {formatPoints(rating.totalWeight)} points earned
                 </span>
                 <ul className="trade-detail__breakdown">
                   {rating.criteria.map((c) => {
