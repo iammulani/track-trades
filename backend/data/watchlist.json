@@ -16,5 +16,14 @@
     "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/VIJAYA/1429761",
     "watchedSince": "2026-06-29T12:01:07.556Z",
     "id": "esvWIi7HCHw"
+  },
+  {
+    "symbol": "SOLARINDS",
+    "category": "active",
+    "side": "long",
+    "notes": "",
+    "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/SOLARINDS/3412993",
+    "watchedSince": "2026-07-15T06:37:09.084Z",
+    "id": "zrCZKL7xErc"
   }
 ]

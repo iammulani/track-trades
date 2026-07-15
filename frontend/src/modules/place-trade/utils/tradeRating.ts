@@ -18,7 +18,7 @@ import {
   weeksInBaseTone,
 } from './finalChecksCalc'
 import { BREAKOUT_CONFIRMATION_CHECKLIST_ITEMS, OVERHEAD_SUPPLY_CHECKLIST_ITEMS } from './finalChecksItems'
-import { computeIndicatorRange, computeMaDistancePercent, maDistanceTone, rsRatingTone } from './indicatorCalc'
+import { computeIndicatorRange, rsRatingTone } from './indicatorCalc'
 import { INDICATOR_CHECKLIST_ITEMS } from './indicatorChecklistItems'
 import { computeRisk } from './riskCalc'
 import { BASE_OPTIONS, STAGE_OPTIONS } from './stageBaseOptions'
@@ -173,6 +173,9 @@ const CRITERION_LABELS: Record<string, string> = {
   'base-quality': 'Base quality is good',
   'ma-trend': 'Moving-average structure confirmed',
   'relative-strength': 'RS Rating is strong (70+, ideally 80+)',
+  // No longer produced by computeTradeRating — the 50-day MA is now a display-only warning
+  // (TechnicalConfirmationStep), not a scored criterion. Kept here so trades rated before this
+  // change still render their frozen 'ma-proximity' line correctly (see fromRatingSnapshot).
   'ma-proximity': 'Entry is close to the 50-day MA (not extended)',
   'week-range': 'Well clear of the 52-week low and near the high',
   'vcp-structure': 'VCP structure (time, price, symmetry, tightening) is textbook',
@@ -217,7 +220,6 @@ export function computeTradeRating(input: {
     indicatorData.week52Low,
     indicatorData.week52High,
   )
-  const maDistance = computeMaDistancePercent(tradeParams.entryPrice, indicatorData.fiftyDayMa)
   const stop = checkStopPlacement(
     side,
     tradeParams.entryPrice,
@@ -280,7 +282,6 @@ export function computeTradeRating(input: {
     criterion('base-quality', 1, toneScore(base?.tone)),
     criterion('ma-trend', 1, fractionChecked(INDICATOR_CHECKLIST_ITEMS, indicatorChecklistChecked)),
     criterion('relative-strength', 1, toneScore(rsRatingTone(indicatorData.rsRating))),
-    criterion('ma-proximity', 1, toneScore(maDistanceTone(maDistance))),
     criterion('week-range', 2, weekRangeScore),
     criterion('vcp-structure', 3, vcpMet / 5),
     criterion(

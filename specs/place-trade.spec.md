@@ -108,7 +108,7 @@ before capital goes behind it. See [drafts.spec.md](drafts.spec.md).
   / Σ(weight):
   1. Risk : Reward (weight 2) — 1 if ≥2, ½ if 1–2, else 0. **Omitted from the criteria
      list entirely when no target is set** (there's no reward to measure — it's
-     unmeasurable, not bad — so `totalWeight` is 13 rather than 15), and **scored 0
+     unmeasurable, not bad — so `totalWeight` is 12 rather than 14), and **scored 0
      whenever the `logical-stop` gate fails**: a great ratio measured off a stop parked
      inside the base isn't a real ratio, it's the artefact of a stop too tight to survive.
   2. Stop placement (weight 1) — ½ for a stop beyond the base + ½ for risk sized 2–10%
@@ -116,12 +116,19 @@ before capital goes behind it. See [drafts.spec.md](drafts.spec.md).
   4. Base tone (weight 1) — `toneScore` of the base tone (Stage & Base)
   5. MA structure (weight 1) — fraction of the 3 MA checks ticked (Technical Confirmation)
   6. Relative strength (weight 1) — `toneScore(rsRatingTone)`, so 70–79 earns 0.3
-  7. MA proximity (weight 1) — `toneScore(maDistanceTone)`; extended entries lose it
-  8. 52-week range (weight 2) — ½ for `aboveLowPercent` ≥30 + ½ for `belowHighPercent` ≤25
-  9. VCP structure (weight 3) — fraction of 5 sub-conditions met: weeks-in-base,
+  7. 52-week range (weight 2) — ½ for `aboveLowPercent` ≥30 + ½ for `belowHighPercent` ≤25
+  8. VCP structure (weight 3) — fraction of 5 sub-conditions met: weeks-in-base,
      largest-correction, narrowest-pullback and contraction-count tones all `good`,
      plus `contractionsTightening` (VCP Structure)
-  10. Final Checks (weight 1) — fraction of all 6 overhead-supply + breakout boxes ticked
+  9. Final Checks (weight 1) — fraction of all 6 overhead-supply + breakout boxes ticked
+
+  The 50-day MA itself is still captured in Technical Confirmation, and still shows a
+  color-coded good/caution/bad reading of how extended the entry is above/below it (plus
+  an alert message on caution/bad) — `computeMaDistancePercent`/`maDistanceTone` in
+  `utils/indicatorCalc.ts`. It's just no longer a scored criterion: it's a warning to the
+  trader, not a rating input. (Trades rated before this change keep their frozen
+  `ma-proximity` criterion in the snapshot — `fromRatingSnapshot` still has a label for it —
+  so old ratings don't change retroactively.)
 
   Weights lift the reads that carry the thesis (VCP, stage, the 52-week range) over the
   ones that merely corroborate it. `TradeRating` exposes `ratio` (capped — the score that
