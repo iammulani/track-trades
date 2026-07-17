@@ -66,7 +66,11 @@ column.
        from `modules/place-trade`), from the recomputed `TradeRating` (see Data).
      - **`RatingGateBanner`** — when the setup broke a non-negotiable, the failed
        gates and the ceiling they impose, above the breakdown. Renders nothing when
-       all four pass. Same component the Review step uses.
+       all five pass. Same component the Review step uses.
+     - **"Non-negotiables" list** — every gate (not just failed ones), each with a
+       `Met` / `Not met` / `Pending` badge and, on a failing one, `caps at N★` — so
+       a gate failure can't hide behind an otherwise-clean criteria breakdown.
+       Identical to the Review step's list in [place-trade.spec.md](place-trade.spec.md).
      - **"Why N% on points?" breakdown** — every criterion listed with its state icon
        (met/partial/unmet) and the points it contributed out of its weight,
        headed by the running earned/total weight — identical in spirit to
@@ -108,8 +112,9 @@ Depends on `modules/trades` (`useTrades`, `TradeVcpContraction`,
 `computeExitPreview`, `exitReasonLabel`) and
 `modules/place-trade` (`STAGE_OPTIONS`, `BASE_OPTIONS`,
 `INDICATOR_CHECKLIST_ITEMS`, `OVERHEAD_SUPPLY_CHECKLIST_ITEMS`,
-`BREAKOUT_CONFIRMATION_CHECKLIST_ITEMS`, `fromRatingSnapshot`,
-`criterionState`, `criterionPoints`, `CRITERION_STATE_ICON`, `formatPoints`,
+`BREAKOUT_CONFIRMATION_CHECKLIST_ITEMS`, `checklistItemClass`, `fromRatingSnapshot`,
+`criterionState`, `criterionPoints`, `CRITERION_STATE_ICON`, `CRITERION_STATE_LABEL`,
+`GATE_STATE_ICON`, `GATE_STATE_LABEL`, `formatPoints`,
 `formatStars`, `RATING_STARS`, `RatingStars`, `RatingGateBanner`,
 `ratingVerdict`) through their `index.ts` barrels, so the stage/base labels,
 checklist copy, star row, gate banner, and rating/breakdown logic can't drift from

@@ -268,16 +268,26 @@ a small pill button, `send` icon, next to Remove). Route:
        normal soft check.
    - **Review & Place** (`ReviewStep`) — avatar + symbol + `SideBadge`, the big
      rating banner (`RatingStars` + `N / 5` + verdict), then — when any gate failed
-     — a red **`RatingGateBanner`**, then a **"Why N% on points?" breakdown** — every
-     criterion listed with its state icon and the points it contributed out of its
-     weight (`criterionPoints` / `weight`), headed by the running
-     `earnedWeight` / `totalWeight` total, so the score always reconciles on
-     screen. The heading quotes `rawRatio`, not `ratio` — the criteria sum to the
-     *uncapped* score, and the gate banner above accounts for the difference.
-     Dropped points are what the reader is scanning for, so partial rows
-     get an amber background and unmet rows a red one. Then
-     entry/qty/stop/target, the same live `RiskSummary`, the selected
-     stage/base (colored to match their tone), the indicators summary
+     — a red **`RatingGateBanner`** naming the failed rule(s) and quoting each
+     one's live-computed `detail` (or the static `reason` on a replayed
+     snapshot). Below that, a **"Non-negotiables" list** — every gate
+     (`rating.gates`, not just the failed ones), each row showing its state icon,
+     label, and a `Met` / `Not met` / `Pending` badge (`GATE_STATE_ICON` /
+     `GATE_STATE_LABEL`), plus a `caps at N★` pill on the failing ones. This list
+     exists so a failed gate can't hide behind an otherwise-clean scored-criteria
+     breakdown — before it was added, a trade could show every scored criterion as
+     "Met" while two gates silently capped the score, with nothing on screen but
+     the banner above to explain why. Then a **"Why N% on points?" breakdown** —
+     every criterion listed with its state icon, a `Met` / `Partial` / `Missed`
+     badge (`CRITERION_STATE_ICON` / `CRITERION_STATE_LABEL`), and the points it
+     contributed out of its weight (`criterionPoints` / `weight`), headed by the
+     running `earnedWeight` / `totalWeight` total, so the score always
+     reconciles on screen. The heading quotes `rawRatio`, not `ratio` — the
+     criteria sum to the *uncapped* score, and the gate banner + non-negotiables
+     list above account for the difference. Dropped points are what the reader
+     is scanning for, so partial rows get an amber background and unmet rows a
+     red one. Then entry/qty/stop/target, the same live `RiskSummary`, the
+     selected stage/base (colored to match their tone), the indicators summary
      (checklist count, RSI, 50-day MA + distance, 52-week % stats), the VCP
      Structure values, the overhead-supply checklist, and the
      breakout-confirmation checklist — confirmed checklist items styled
@@ -342,16 +352,16 @@ frontend/src/modules/place-trade/
 │   ├── checklistItems.ts             # ChecklistItem — shared shape for every step's checklist
 │   ├── indicatorChecklistItems.ts    # INDICATOR_CHECKLIST_ITEMS (trend-confirmation checks)
 │   ├── indicatorCalc.ts              # computeIndicatorRange(), computeMaDistancePercent(), rsiTone()
-│   ├── finalChecksItems.ts           # OVERHEAD_SUPPLY_CHECKLIST_ITEMS, BREAKOUT_CONFIRMATION_CHECKLIST_ITEMS
+│   ├── finalChecksItems.ts           # OVERHEAD_SUPPLY_CHECKLIST_ITEMS, BREAKOUT_CONFIRMATION_CHECKLIST_ITEMS, GATED_BREAKOUT_IDS, checklistItemClass()
 │   ├── finalChecksCalc.ts            # computeContractionPercent(), largest/narrowestFromContractions, weeksInBaseTone(), largestCorrectionTone(), narrowestPullbackTone(), contractionCountTone(), contractionTightnessTone()
 │   ├── riskCalc.ts                   # computeRisk(side, params) -> RiskCalc
 │   ├── stopPlacement.ts              # checkStopPlacement() / stopPlacementScore() — is the stop beyond the base, and sized 2-10%?
 │   ├── stageBaseOptions.ts           # STAGE_OPTIONS / BASE_OPTIONS static reference content
-│   └── tradeRating.ts                # computeTradeRating() (live, in the stepper), toRatingSnapshot()/fromRatingSnapshot() (freeze at placement / read back on Trade Detail — never re-judge), GATE_META + CRITERION_LABELS (the prose, keyed by the persisted ids), ratingVerdict(), bindingGates(), RATING_STARS, criterionState()/criterionPoints()/formatPoints()/formatStars()/CRITERION_STATE_ICON
+│   └── tradeRating.ts                # computeTradeRating() (live, in the stepper), toRatingSnapshot()/fromRatingSnapshot() (freeze at placement / read back on Trade Detail — never re-judge), GATE_META + CRITERION_LABELS (the prose, keyed by the persisted ids), ratingVerdict(), bindingGates(), RATING_STARS, criterionState()/criterionPoints()/formatPoints()/formatStars()/CRITERION_STATE_ICON/CRITERION_STATE_LABEL/GATE_STATE_ICON/GATE_STATE_LABEL
 └── components/
     ├── StepIndicator.tsx              # numbered progress row (dots only, no labels)
     ├── RatingStars.tsx                # the 5-star row (outline + clipped fill) — shared by the badge, Review and Trade Detail
-    ├── RatingGateBanner.tsx           # the failed non-negotiables + the ceiling they impose; renders nothing when all pass
+    ├── RatingGateBanner.tsx           # the failed non-negotiables + the ceiling they impose, with this trade's real numbers plugged into the failure (`detail`); renders nothing when all pass
     ├── TradeRatingBadge.tsx            # RatingStars + "N / 5 · P%" + hover-card breakdown (gates, then criteria)
     ├── TradeParamsStep.tsx            # entry/qty/stop/target inputs
     ├── RiskSummary.tsx                # live risk/reward panel (used in Setup and Review)
