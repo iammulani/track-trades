@@ -357,6 +357,19 @@
   text-decoration: line-through;
 }
 
+/* Gated breakout-confirmation checks are non-negotiable, so they get an explicit
+   good/danger read instead of the plain muted strikethrough other checklists use. */
+.trade-detail__checklist .is-gated.is-checked {
+  color: var(--good-text);
+  font-weight: 600;
+}
+
+.trade-detail__checklist .is-danger {
+  color: var(--critical-text);
+  font-weight: 600;
+  text-decoration: none;
+}
+
 .trade-detail__contractions {
   margin: 4px 0 0;
   padding: 0;

@@ -18,7 +18,11 @@ import {
   narrowestPullbackTone,
   weeksInBaseTone,
 } from './finalChecksCalc'
-import { BREAKOUT_CONFIRMATION_CHECKLIST_ITEMS, OVERHEAD_SUPPLY_CHECKLIST_ITEMS } from './finalChecksItems'
+import {
+  BREAKOUT_CONFIRMATION_CHECKLIST_ITEMS,
+  GATED_BREAKOUT_IDS,
+  OVERHEAD_SUPPLY_CHECKLIST_ITEMS,
+} from './finalChecksItems'
 import { computeIndicatorRange, rsiTone } from './indicatorCalc'
 import { INDICATOR_CHECKLIST_ITEMS } from './indicatorChecklistItems'
 import { computeRisk } from './riskCalc'
@@ -190,6 +194,13 @@ const GATE_META: Record<string, { name: string; description: string; cap: number
     reason:
       "A real base needs 5+ weeks, at least 2 pullbacks, and each one tighter than the last. Without that, it's just a pause, not a base — there's no pivot to buy yet.",
   },
+  'breakout-confirmation': {
+    name: 'Breakout Confirmation',
+    description: 'market bullish, industry group positive, volume confirms the move',
+    cap: 0.6,
+    reason:
+      "A breakout without the market, the industry group, and volume behind it is a hopeful guess, not a confirmed move — any one of those being wrong meaningfully raises the odds it fails.",
+  },
 }
 
 function gateLabel(meta: { name: string; description: string }): string {
@@ -270,6 +281,14 @@ function realBaseDetail(
   return parts.length === 0 ? undefined : `${capitalize(parts.join('; '))}.`
 }
 
+function breakoutConfirmationDetail(checked: ChecklistChecked): string | undefined {
+  const parts: string[] = []
+  if (checked['market-bullish'] === false) parts.push("the market isn't bullish")
+  if (checked['group-positive'] === false) parts.push("the industry group isn't acting positively")
+  if (checked['volume-confirms-breakout'] === false) parts.push("volume doesn't confirm the breakout")
+  return parts.length === 0 ? undefined : `${capitalize(parts.join('; '))}.`
+}
+
 /** Each criterion's wording, keyed by the id that gets persisted — same deal as `GATE_META`. */
 const CRITERION_LABELS: Record<string, string> = {
   'risk-reward': "You'll make at least twice what you're risking (2:1 or better)",
@@ -284,7 +303,7 @@ const CRITERION_LABELS: Record<string, string> = {
   'ma-proximity': "Entry is close to the 50-day MA, not extended",
   'week-range': "Price is well clear of its 52-week low and close to its high",
   'vcp-structure': "The base's shape — time, price, and tightening — looks textbook",
-  'final-checks': 'Overhead supply looks clear and the breakout is confirmed',
+  'final-checks': "There's no overhead resistance sitting above the entry",
 }
 
 function gate(id: string, state: GateState, detail?: string): RatingGate {
@@ -392,6 +411,13 @@ export function computeTradeRating(input: {
       ]),
       realBaseDetail(hasWeeksInBase, weeksInBase, filledCount, tightening),
     ),
+    gate(
+      'breakout-confirmation',
+      gateState(
+        GATED_BREAKOUT_IDS.map((id) => (finalChecksChecked[id] === undefined ? null : finalChecksChecked[id])),
+      ),
+      breakoutConfirmationDetail(finalChecksChecked),
+    ),
   ]
 
   const stopGateFailed = gates.find((g) => g.id === 'logical-stop')?.state === 'fail'
@@ -423,11 +449,16 @@ export function computeTradeRating(input: {
     criterion('relative-strength', 1, toneScore(rsiTone(indicatorData.rsi))),
     criterion('week-range', 2, weekRangeScore),
     criterion('vcp-structure', 3, vcpMet / 5),
+    // The 3 breakout-momentum checks (market/group/volume) are gated above, not scored here —
+    // only the overhead-supply side (plus the remaining "minimal resistance" check) is soft.
     criterion(
       'final-checks',
       1,
       fractionChecked(
-        [...OVERHEAD_SUPPLY_CHECKLIST_ITEMS, ...BREAKOUT_CONFIRMATION_CHECKLIST_ITEMS],
+        [
+          ...OVERHEAD_SUPPLY_CHECKLIST_ITEMS,
+          ...BREAKOUT_CONFIRMATION_CHECKLIST_ITEMS.filter((item) => !GATED_BREAKOUT_IDS.includes(item.id)),
+        ],
         finalChecksChecked,
       ),
     ),

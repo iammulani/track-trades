@@ -100,6 +100,15 @@ before capital goes behind it. See [drafts.spec.md](drafts.spec.md).
   | `trend-template` | all 3 MA checks ticked, `aboveLowPercent` ≥30, `belowHighPercent` ≤25 | 0.60 |
   | `logical-stop` | `checkStopPlacement` says the stop is beyond the base **and** sized 2–10% | 0.60 |
   | `real-base` | ≥5 weeks in base, ≥2 filled contractions, and `contractionsTightening` | 0.60 |
+  | `breakout-confirmation` | all 3 of `market-bullish`, `group-positive`, `volume-confirms-breakout` checked (Final Checks) | 0.60 |
+
+  Every failed gate also carries a live-computed `detail` — this trade's actual numbers
+  plugged into the failure (e.g. "Your stop (1,320.00) is above the base's last low
+  (1,304.00) — it needs to sit at or below that"), so the banner doesn't just cite the
+  rule, it shows *why this trade* broke it. `detail` is only computed in
+  `computeTradeRating` (live); `fromRatingSnapshot` leaves it `undefined` and the banner
+  falls back to the static `reason` prose, since a replayed snapshot doesn't carry the raw
+  inputs needed to regenerate it.
 
   **Criteria (`RatingCriterion[]`) — the weighted score.** Each has a `score` of 0..1
   (partial credit — a `caution` tone reads as **0.3**, a checklist scores the fraction
@@ -119,7 +128,11 @@ before capital goes behind it. See [drafts.spec.md](drafts.spec.md).
   8. VCP structure (weight 3) — fraction of 5 sub-conditions met: weeks-in-base,
      largest-correction, narrowest-pullback and contraction-count tones all `good`,
      plus `contractionsTightening` (VCP Structure)
-  9. Final Checks (weight 1) — fraction of all 6 overhead-supply + breakout boxes ticked
+  9. Final Checks (weight 1) — fraction of the 2 overhead-supply boxes + the 1 remaining
+     breakout box (`minimal-overhead-resistance`) ticked, 3 in total. The other 3 Breakout
+     Confirmation boxes (`market-bullish`, `group-positive`, `volume-confirms-breakout`)
+     are gated above, not scored here — a breakout without the market, the group, and
+     volume behind it isn't a partial win, it's a hopeful guess.
 
   The 50-day MA itself is still captured in Technical Confirmation, and still shows a
   color-coded good/caution/bad reading of how extended the entry is above/below it (plus
@@ -246,7 +259,13 @@ a small pill button, `send` icon, next to Remove). Route:
        covering market trend, industry group strength, volume confirming the
        breakout, and minimal overhead resistance — plus an `i` trigger
        explaining the reasoning (what to confirm, the "never overlook poor
-       volume" warning sign, and why overhead resistance matters).
+       volume" warning sign, and why overhead resistance matters). The first
+       3 (`GATED_BREAKOUT_IDS` in `utils/finalChecksItems.ts`) are
+       non-negotiable — see the `breakout-confirmation` gate above — so on
+       Review/Trade Detail an explicit "no" on one of them renders in bold
+       red (`checklistItemClass`) rather than the plain muted strikethrough
+       every other unchecked box gets; `minimal-overhead-resistance` stays a
+       normal soft check.
    - **Review & Place** (`ReviewStep`) — avatar + symbol + `SideBadge`, the big
      rating banner (`RatingStars` + `N / 5` + verdict), then — when any gate failed
      — a red **`RatingGateBanner`**, then a **"Why N% on points?" breakdown** — every

@@ -17,6 +17,7 @@ import {
 } from '../utils/finalChecksCalc'
 import {
   BREAKOUT_CONFIRMATION_CHECKLIST_ITEMS,
+  checklistItemClass,
   OVERHEAD_SUPPLY_CHECKLIST_ITEMS,
 } from '../utils/finalChecksItems'
 import { computeIndicatorRange, computeMaDistancePercent } from '../utils/indicatorCalc'
@@ -247,7 +248,7 @@ export function ReviewStep({
         </span>
         <ul className="review-step__checklist">
           {OVERHEAD_SUPPLY_CHECKLIST_ITEMS.map((c) => (
-            <li key={c.id} className={finalChecksChecked[c.id] ? 'is-checked' : 'is-unchecked'}>
+            <li key={c.id} className={checklistItemClass(c.id, finalChecksChecked)}>
               {c.label}
             </li>
           ))}
@@ -261,7 +262,7 @@ export function ReviewStep({
         </span>
         <ul className="review-step__checklist">
           {BREAKOUT_CONFIRMATION_CHECKLIST_ITEMS.map((c) => (
-            <li key={c.id} className={finalChecksChecked[c.id] ? 'is-checked' : 'is-unchecked'}>
+            <li key={c.id} className={checklistItemClass(c.id, finalChecksChecked)}>
               {c.label}
             </li>
           ))}

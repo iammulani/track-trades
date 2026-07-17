@@ -16,6 +16,7 @@ import {
 import {
   BASE_OPTIONS,
   BREAKOUT_CONFIRMATION_CHECKLIST_ITEMS,
+  checklistItemClass,
   criterionPoints,
   criterionState,
   CRITERION_STATE_ICON,
@@ -387,7 +388,7 @@ export function TradeDetailPage() {
                 </span>
                 <ul className="trade-detail__checklist">
                   {OVERHEAD_SUPPLY_CHECKLIST_ITEMS.map((c) => (
-                    <li key={c.id} className={setup.finalChecks[c.id] ? 'is-checked' : 'is-unchecked'}>
+                    <li key={c.id} className={checklistItemClass(c.id, setup.finalChecks)}>
                       {c.label}
                     </li>
                   ))}
@@ -402,7 +403,7 @@ export function TradeDetailPage() {
                 </span>
                 <ul className="trade-detail__checklist">
                   {BREAKOUT_CONFIRMATION_CHECKLIST_ITEMS.map((c) => (
-                    <li key={c.id} className={setup.finalChecks[c.id] ? 'is-checked' : 'is-unchecked'}>
+                    <li key={c.id} className={checklistItemClass(c.id, setup.finalChecks)}>
                       {c.label}
                     </li>
                   ))}

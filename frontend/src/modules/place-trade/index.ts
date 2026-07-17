@@ -5,6 +5,7 @@ export { INDICATOR_CHECKLIST_ITEMS } from './utils/indicatorChecklistItems'
 export {
   OVERHEAD_SUPPLY_CHECKLIST_ITEMS,
   BREAKOUT_CONFIRMATION_CHECKLIST_ITEMS,
+  checklistItemClass,
 } from './utils/finalChecksItems'
 export type { ChecklistItem } from './utils/checklistItems'
 export {
