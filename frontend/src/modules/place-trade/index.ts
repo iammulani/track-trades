@@ -18,6 +18,7 @@ export {
   ratingVerdict,
   toRatingSnapshot,
   CRITERION_STATE_ICON,
+  CRITERION_STATE_LABEL,
   RATING_STARS,
 } from './utils/tradeRating'
 export type {

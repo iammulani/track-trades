@@ -45,6 +45,12 @@ export type GateState = 'pass' | 'fail' | 'pending'
  * a failed gate *caps* the whole score, so a setup can't average its way past a broken rule. */
 export interface RatingGate {
   id: string
+  /** Short rule name — "Logical Stop" — for contexts that need to name the rule on its own,
+   * e.g. the failed-gate banner's heading. */
+  name: string
+  /** What passing requires — "sits below the base, sized 2–10%". */
+  description: string
+  /** `name — description`, for contexts that just want one line (hover-card, non-negotiables list). */
   label: string
   state: GateState
   /** The highest ratio (0..1) the trade may score while this gate is failing. */
@@ -80,6 +86,13 @@ export const CRITERION_STATE_ICON: Record<CriterionState, IconName> = {
   met: 'check',
   partial: 'alert',
   unmet: 'x',
+}
+
+/** Spells out the icon/color in words — so the verdict doesn't rely on color alone. */
+export const CRITERION_STATE_LABEL: Record<CriterionState, string> = {
+  met: 'Met',
+  partial: 'Partial',
+  unmet: 'Missed',
 }
 
 /** Points a criterion actually contributed, out of its `weight`. */
@@ -138,37 +151,45 @@ function gateState(knowns: (boolean | null)[]): GateState {
  * persisted. Kept out of `computeTradeRating` so a stored snapshot can be rendered back
  * with the same copy (see `fromRatingSnapshot`) — the numbers are history, the prose isn't,
  * so reworded copy shows up on old trades while their scores stay put. */
-const GATE_META: Record<string, { label: string; cap: number; reason: string }> = {
+const GATE_META: Record<string, { name: string; description: string; cap: number; reason: string }> = {
   'stage-2': {
-    label: 'Stage 2 — the stock is in a confirmed advance',
+    name: 'Stage 2',
+    description: 'the stock is in a confirmed advance',
     cap: 0.4,
     reason:
-      'Only Stage 2 is tradable. Stage 1 has not turned yet, Stage 3 is topping, Stage 4 is falling — and a 1 → 2 transition has not proved itself. Buying outside Stage 2 is fighting the trend, however good the rest of the setup looks.',
+      "Only Stage 2 is worth trading — Stage 1, 3, and 4 (and an unproven 1→2 transition) all mean fighting the trend, no matter how good everything else looks.",
   },
   'trend-template': {
-    label: 'Trend Template — MA structure, ≥30% off the low, within 25% of the high',
+    name: 'Trend Template',
+    description: 'MA structure, ≥30% off the low, within 25% of the high',
     cap: 0.6,
     reason:
-      'The Trend Template is a filter, not a preference: the moving averages must be stacked and rising, price must be well clear of its 52-week low (≥30%) and pressing against its high (within 25%). A stock that fails it is not yet a leader.',
+      "The moving averages need to be stacked and rising, price well clear of its 52-week low (30%+), and close to its high (within 25%). Miss any of those and it's not a market leader yet.",
   },
   'logical-stop': {
-    label: 'Stop is below the base and sized 2–10%',
+    name: 'Logical Stop',
+    description: 'sits below the base, sized 2–10%',
     cap: 0.6,
     reason:
-      'The stop belongs below the last contraction’s low — a level the thesis has to break to reach. A stop parked inside the base flatters the risk:reward on paper while guaranteeing a shake-out on ordinary noise; one further than 10% away is simply oversized.',
+      "The stop should sit just below the base's last low. Any tighter and ordinary noise stops you out for no reason; any further than 10% away and the position is oversized.",
   },
   'real-base': {
-    label: 'A real base — 5+ weeks, 2+ contractions, tightening',
+    name: 'Real Base',
+    description: '5+ weeks, 2+ contractions, tightening',
     cap: 0.6,
     reason:
-      'Under 5 weeks, with fewer than two contractions or no tightening, nothing has been shaken out — that is a pause, not a base. There is no pivot to buy and no supply has been absorbed.',
+      "A real base needs 5+ weeks, at least 2 pullbacks, and each one tighter than the last. Without that, it's just a pause, not a base — there's no pivot to buy yet.",
   },
+}
+
+function gateLabel(meta: { name: string; description: string }): string {
+  return `${meta.name} — ${meta.description}`
 }
 
 /** Each criterion's wording, keyed by the id that gets persisted — same deal as `GATE_META`. */
 const CRITERION_LABELS: Record<string, string> = {
   'risk-reward': "You'll make at least twice what you're risking (2:1 or better)",
-  'stop-placement': 'Stop sits safely below the base, risking a sensible 2–10%',
+  'stop-placement': 'Stop is below the base (half credit) AND sized 2–10% risk (half credit)',
   'stage-quality': "The stock's in a good stage to trade",
   'base-quality': 'The base looks well-formed',
   'ma-trend': "Moving averages are lined up in a healthy uptrend",
@@ -183,8 +204,8 @@ const CRITERION_LABELS: Record<string, string> = {
 }
 
 function gate(id: string, state: GateState): RatingGate {
-  const { label, cap, reason } = GATE_META[id]
-  return { id, label, state, cap, reason }
+  const meta = GATE_META[id]
+  return { id, name: meta.name, description: meta.description, label: gateLabel(meta), state, cap: meta.cap, reason: meta.reason }
 }
 
 function criterion(id: string, weight: number, score: number): RatingCriterion {
@@ -335,13 +356,18 @@ export function fromRatingSnapshot(snapshot: TradeRatingSnapshot): TradeRating {
     weight: c.weight,
     score: c.score,
   }))
-  const gates: RatingGate[] = snapshot.gates.map((g) => ({
-    id: g.id,
-    label: GATE_META[g.id]?.label ?? g.id,
-    state: g.state,
-    cap: g.cap,
-    reason: GATE_META[g.id]?.reason ?? '',
-  }))
+  const gates: RatingGate[] = snapshot.gates.map((g) => {
+    const meta = GATE_META[g.id]
+    return {
+      id: g.id,
+      name: meta?.name ?? g.id,
+      description: meta?.description ?? '',
+      label: meta ? gateLabel(meta) : g.id,
+      state: g.state,
+      cap: g.cap,
+      reason: meta?.reason ?? '',
+    }
+  })
   return {
     ratio: snapshot.ratio,
     rawRatio: snapshot.rawRatio,

@@ -84,6 +84,27 @@
   color: var(--text-primary);
 }
 
+.review-step__breakdown-state {
+  flex-shrink: 0;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 1px 8px;
+  border-radius: 999px;
+  color: #fff;
+}
+
+.review-step__breakdown-state--met {
+  background: var(--good);
+}
+
+.review-step__breakdown-state--partial {
+  background: var(--amber);
+}
+
+.review-step__breakdown-state--unmet {
+  background: var(--critical);
+}
+
 .review-step__breakdown-row.is-met svg {
   color: var(--good-text);
 }

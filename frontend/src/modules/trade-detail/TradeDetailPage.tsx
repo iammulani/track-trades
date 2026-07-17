@@ -19,6 +19,7 @@ import {
   criterionPoints,
   criterionState,
   CRITERION_STATE_ICON,
+  CRITERION_STATE_LABEL,
   formatPoints,
   formatStars,
   fromRatingSnapshot,
@@ -241,6 +242,9 @@ export function TradeDetailPage() {
                       <li key={c.id} className={`trade-detail__breakdown-row is-${state}`}>
                         <Icon name={CRITERION_STATE_ICON[state]} size={14} />
                         <span className="trade-detail__breakdown-label">{c.label}</span>
+                        <span className={`trade-detail__breakdown-state trade-detail__breakdown-state--${state}`}>
+                          {CRITERION_STATE_LABEL[state]}
+                        </span>
                         <span className="trade-detail__breakdown-points">
                           {formatPoints(criterionPoints(c))}/{formatPoints(c.weight)}
                         </span>

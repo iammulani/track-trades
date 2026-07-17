@@ -24,6 +24,7 @@ import { INDICATOR_CHECKLIST_ITEMS } from '../utils/indicatorChecklistItems'
 import { BASE_OPTIONS, STAGE_OPTIONS } from '../utils/stageBaseOptions'
 import {
   CRITERION_STATE_ICON,
+  CRITERION_STATE_LABEL,
   criterionPoints,
   criterionState,
   formatPoints,
@@ -120,6 +121,9 @@ export function ReviewStep({
               <li key={c.id} className={`review-step__breakdown-row is-${state}`}>
                 <Icon name={CRITERION_STATE_ICON[state]} size={14} />
                 <span className="review-step__breakdown-label">{c.label}</span>
+                <span className={`review-step__breakdown-state review-step__breakdown-state--${state}`}>
+                  {CRITERION_STATE_LABEL[state]}
+                </span>
                 <span className="review-step__breakdown-points">
                   {formatPoints(criterionPoints(c))}/{formatPoints(c.weight)}
                 </span>
