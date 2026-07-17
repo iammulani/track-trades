@@ -49,8 +49,8 @@
         "minimal-overhead-resistance": true
       },
       "rating": {
-        "ratio": 0.8435897435897436,
-        "rawRatio": 0.8435897435897436,
+        "ratio": 0.9166666666666666,
+        "rawRatio": 0.9166666666666666,
         "criteria": [
           {
             "id": "stop-placement",
@@ -78,11 +78,6 @@
             "score": 0
           },
           {
-            "id": "ma-proximity",
-            "weight": 1,
-            "score": 0.3
-          },
-          {
             "id": "week-range",
             "weight": 2,
             "score": 1
@@ -95,7 +90,7 @@
           {
             "id": "final-checks",
             "weight": 1,
-            "score": 0.6666666666666666
+            "score": 1
           }
         ],
         "gates": [
@@ -117,6 +112,11 @@
           {
             "id": "real-base",
             "state": "pass",
+            "cap": 0.6
+          },
+          {
+            "id": "breakout-confirmation",
+            "state": "pending",
             "cap": 0.6
           }
         ]
@@ -167,8 +167,8 @@
       ],
       "finalChecks": {},
       "rating": {
-        "ratio": 0.29333333333333333,
-        "rawRatio": 0.29333333333333333,
+        "ratio": 0.24285714285714288,
+        "rawRatio": 0.24285714285714288,
         "criteria": [
           {
             "id": "risk-reward",
@@ -199,11 +199,6 @@
             "id": "relative-strength",
             "weight": 1,
             "score": 0
-          },
-          {
-            "id": "ma-proximity",
-            "weight": 1,
-            "score": 1
           },
           {
             "id": "week-range",
@@ -240,6 +235,11 @@
           {
             "id": "real-base",
             "state": "fail",
+            "cap": 0.6
+          },
+          {
+            "id": "breakout-confirmation",
+            "state": "pending",
             "cap": 0.6
           }
         ]
@@ -295,7 +295,7 @@
       "finalChecks": {},
       "rating": {
         "ratio": 0.4,
-        "rawRatio": 0.42000000000000004,
+        "rawRatio": 0.42857142857142855,
         "criteria": [
           {
             "id": "risk-reward",
@@ -326,11 +326,6 @@
             "id": "relative-strength",
             "weight": 1,
             "score": 0
-          },
-          {
-            "id": "ma-proximity",
-            "weight": 1,
-            "score": 0.3
           },
           {
             "id": "week-range",
@@ -367,6 +362,11 @@
           {
             "id": "real-base",
             "state": "fail",
+            "cap": 0.6
+          },
+          {
+            "id": "breakout-confirmation",
+            "state": "pending",
             "cap": 0.6
           }
         ]
@@ -422,7 +422,7 @@
       },
       "rating": {
         "ratio": 0.4,
-        "rawRatio": 0.4692307692307693,
+        "rawRatio": 0.4694444444444444,
         "criteria": [
           {
             "id": "stop-placement",
@@ -450,11 +450,6 @@
             "score": 0
           },
           {
-            "id": "ma-proximity",
-            "weight": 1,
-            "score": 0.3
-          },
-          {
             "id": "week-range",
             "weight": 2,
             "score": 1
@@ -467,7 +462,7 @@
           {
             "id": "final-checks",
             "weight": 1,
-            "score": 0.5
+            "score": 0.3333333333333333
           }
         ],
         "gates": [
@@ -489,6 +484,11 @@
           {
             "id": "real-base",
             "state": "fail",
+            "cap": 0.6
+          },
+          {
+            "id": "breakout-confirmation",
+            "state": "pending",
             "cap": 0.6
           }
         ]
@@ -549,7 +549,7 @@
       },
       "rating": {
         "ratio": 0.4,
-        "rawRatio": 0.6948717948717948,
+        "rawRatio": 0.7277777777777779,
         "criteria": [
           {
             "id": "stop-placement",
@@ -573,11 +573,6 @@
           },
           {
             "id": "relative-strength",
-            "weight": 1,
-            "score": 0.3
-          },
-          {
-            "id": "ma-proximity",
             "weight": 1,
             "score": 0.3
           },
@@ -616,6 +611,11 @@
           {
             "id": "real-base",
             "state": "pass",
+            "cap": 0.6
+          },
+          {
+            "id": "breakout-confirmation",
+            "state": "pending",
             "cap": 0.6
           }
         ]
