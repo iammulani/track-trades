@@ -130,6 +130,36 @@
   color: var(--critical-text);
 }
 
+.review-step__breakdown-state--gate-pass {
+  background: var(--good);
+}
+
+.review-step__breakdown-state--gate-fail {
+  background: var(--critical);
+}
+
+.review-step__breakdown-state--gate-pending {
+  background: var(--text-muted);
+}
+
+.review-step__breakdown-row.is-gate-pass svg {
+  color: var(--good-text);
+}
+
+.review-step__breakdown-row.is-gate-fail {
+  color: var(--text-primary);
+  background: color-mix(in srgb, var(--critical) 10%, transparent);
+}
+
+.review-step__breakdown-row.is-gate-fail svg,
+.review-step__breakdown-row.is-gate-fail .review-step__breakdown-points {
+  color: var(--critical-text);
+}
+
+.review-step__breakdown-row.is-gate-pending svg {
+  color: var(--text-muted);
+}
+
 .review-step__rating-text {
   display: flex;
   flex-direction: column;

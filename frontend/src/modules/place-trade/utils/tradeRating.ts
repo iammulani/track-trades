@@ -109,6 +109,20 @@ export const CRITERION_STATE_LABEL: Record<CriterionState, string> = {
   unmet: 'Missed',
 }
 
+/** A pending gate reads as neutral, not as a failure — nothing has been entered to judge yet.
+ * Shared by the badge hover-card and the Review/Trade Detail non-negotiables list. */
+export const GATE_STATE_ICON: Record<GateState, IconName> = {
+  pass: 'check',
+  fail: 'x',
+  pending: 'alert',
+}
+
+export const GATE_STATE_LABEL: Record<GateState, string> = {
+  pass: 'Met',
+  fail: 'Not met',
+  pending: 'Pending',
+}
+
 /** Points a criterion actually contributed, out of its `weight`. */
 export function criterionPoints(criterion: RatingCriterion): number {
   return criterion.weight * criterion.score

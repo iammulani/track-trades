@@ -267,6 +267,36 @@
   color: var(--critical-text);
 }
 
+.trade-detail__breakdown-state--gate-pass {
+  background: var(--good);
+}
+
+.trade-detail__breakdown-state--gate-fail {
+  background: var(--critical);
+}
+
+.trade-detail__breakdown-state--gate-pending {
+  background: var(--text-muted);
+}
+
+.trade-detail__breakdown-row.is-gate-pass svg {
+  color: var(--good-text);
+}
+
+.trade-detail__breakdown-row.is-gate-fail {
+  color: var(--text-primary);
+  background: color-mix(in srgb, var(--critical) 10%, transparent);
+}
+
+.trade-detail__breakdown-row.is-gate-fail svg,
+.trade-detail__breakdown-row.is-gate-fail .trade-detail__breakdown-points {
+  color: var(--critical-text);
+}
+
+.trade-detail__breakdown-row.is-gate-pending svg {
+  color: var(--text-muted);
+}
+
 .trade-detail__learnings {
   margin: 4px 0 0;
   padding: 0;

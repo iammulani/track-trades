@@ -4,8 +4,8 @@ import {
   CRITERION_STATE_ICON,
   criterionState,
   formatStars,
+  GATE_STATE_ICON,
   RATING_STARS,
-  type RatingGate,
   type TradeRating,
 } from '../utils/tradeRating'
 import { RatingStars } from './RatingStars'
@@ -14,13 +14,6 @@ import './TradeRatingBadge.css'
 interface TradeRatingBadgeProps {
   rating: TradeRating
   size?: number
-}
-
-/** A pending gate reads as neutral, not as a failure — nothing has been entered to judge yet. */
-const GATE_ICON: Record<RatingGate['state'], 'check' | 'x' | 'alert'> = {
-  pass: 'check',
-  fail: 'x',
-  pending: 'alert',
 }
 
 export function TradeRatingBadge({ rating, size = 15 }: TradeRatingBadgeProps) {
@@ -51,7 +44,7 @@ export function TradeRatingBadge({ rating, size = 15 }: TradeRatingBadgeProps) {
         <ul>
           {rating.gates.map((g) => (
             <li key={g.id} className={`is-gate-${g.state}`}>
-              <Icon name={GATE_ICON[g.state]} size={13} />
+              <Icon name={GATE_STATE_ICON[g.state]} size={13} />
               {g.label}
             </li>
           ))}

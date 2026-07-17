@@ -30,6 +30,8 @@ import {
   criterionState,
   formatPoints,
   formatStars,
+  GATE_STATE_ICON,
+  GATE_STATE_LABEL,
   RATING_STARS,
   ratingVerdict,
   type TradeRating,
@@ -109,6 +111,26 @@ export function ReviewStep({
       </div>
 
       <RatingGateBanner rating={rating} />
+
+      <div className="review-step__section">
+        <span className="review-step__section-title">Non-negotiables</span>
+        <ul className="review-step__breakdown">
+          {rating.gates.map((g) => (
+            <li key={g.id} className={`review-step__breakdown-row is-gate-${g.state}`}>
+              <Icon name={GATE_STATE_ICON[g.state]} size={14} />
+              <span className="review-step__breakdown-label">{g.label}</span>
+              <span className={`review-step__breakdown-state review-step__breakdown-state--gate-${g.state}`}>
+                {GATE_STATE_LABEL[g.state]}
+              </span>
+              {g.state === 'fail' && (
+                <span className="review-step__breakdown-points">
+                  caps at {formatStars(g.cap * RATING_STARS)}★
+                </span>
+              )}
+            </li>
+          ))}
+        </ul>
+      </div>
 
       <div className="review-step__section">
         <span className="review-step__section-title">

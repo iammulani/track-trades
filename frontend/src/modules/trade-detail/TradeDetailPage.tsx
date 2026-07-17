@@ -24,6 +24,8 @@ import {
   formatPoints,
   formatStars,
   fromRatingSnapshot,
+  GATE_STATE_ICON,
+  GATE_STATE_LABEL,
   INDICATOR_CHECKLIST_ITEMS,
   OVERHEAD_SUPPLY_CHECKLIST_ITEMS,
   RatingGateBanner,
@@ -230,6 +232,26 @@ export function TradeDetailPage() {
               </div>
 
               <RatingGateBanner rating={rating} />
+
+              <div className="trade-detail__section">
+                <span className="trade-detail__section-title">Non-negotiables</span>
+                <ul className="trade-detail__breakdown">
+                  {rating.gates.map((g) => (
+                    <li key={g.id} className={`trade-detail__breakdown-row is-gate-${g.state}`}>
+                      <Icon name={GATE_STATE_ICON[g.state]} size={14} />
+                      <span className="trade-detail__breakdown-label">{g.label}</span>
+                      <span className={`trade-detail__breakdown-state trade-detail__breakdown-state--gate-${g.state}`}>
+                        {GATE_STATE_LABEL[g.state]}
+                      </span>
+                      {g.state === 'fail' && (
+                        <span className="trade-detail__breakdown-points">
+                          caps at {formatStars(g.cap * RATING_STARS)}★
+                        </span>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </div>
 
               <div className="trade-detail__section">
                 <span className="trade-detail__section-title">

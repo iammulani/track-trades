@@ -20,6 +20,8 @@ export {
   toRatingSnapshot,
   CRITERION_STATE_ICON,
   CRITERION_STATE_LABEL,
+  GATE_STATE_ICON,
+  GATE_STATE_LABEL,
   RATING_STARS,
 } from './utils/tradeRating'
 export type {
