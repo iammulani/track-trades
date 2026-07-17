@@ -35,8 +35,14 @@ export function RatingGateBanner({ rating }: RatingGateBannerProps) {
                 caps at {formatStars(gate.cap * RATING_STARS)}★
               </span>
             </span>
-            <span className="rating-gate-banner__description">Needs: {gate.description}</span>
-            <span className="rating-gate-banner__reason">{gate.reason}</span>
+            {gate.detail ? (
+              <span className="rating-gate-banner__reason">{gate.detail}</span>
+            ) : (
+              <>
+                <span className="rating-gate-banner__description">Needs: {gate.description}</span>
+                <span className="rating-gate-banner__reason">{gate.reason}</span>
+              </>
+            )}
           </li>
         ))}
       </ul>

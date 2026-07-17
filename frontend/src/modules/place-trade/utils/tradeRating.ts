@@ -1,4 +1,5 @@
 import type { IconName } from '../../../shared/components/Icon'
+import { formatPercent, formatPrice } from '../../../shared/utils/format'
 import type { TradeRatingSnapshot } from '../../trades'
 import type { WatchSide } from '../../watchlist'
 import type {
@@ -22,7 +23,12 @@ import { computeIndicatorRange, rsiTone } from './indicatorCalc'
 import { INDICATOR_CHECKLIST_ITEMS } from './indicatorChecklistItems'
 import { computeRisk } from './riskCalc'
 import { BASE_OPTIONS, STAGE_OPTIONS } from './stageBaseOptions'
-import { checkStopPlacement, stopPlacementScore } from './stopPlacement'
+import {
+  checkStopPlacement,
+  MIN_RISK_PERCENT,
+  stopPlacementScore,
+  type StopPlacementCheck,
+} from './stopPlacement'
 
 /** The rating is shown out of 5 stars. Single source of truth — `RatingStars` renders this
  * many glyphs, and `TradeRating.stars` is scaled to it. */
@@ -57,6 +63,10 @@ export interface RatingGate {
   cap: number
   /** Why the rule is non-negotiable — shown when it fails. */
   reason: string
+  /** This trade's actual numbers plugged into the failure — "stop is 1,320, base low is
+   * 1,304". Only computed live (see `computeTradeRating`); absent on a replayed snapshot,
+   * which falls back to the generic `reason`. */
+  detail?: string
 }
 
 export interface TradeRating {
@@ -186,6 +196,80 @@ function gateLabel(meta: { name: string; description: string }): string {
   return `${meta.name} — ${meta.description}`
 }
 
+function toNumberOrNull(value: string): number | null {
+  const n = Number(value)
+  return value.trim() !== '' && Number.isFinite(n) ? n : null
+}
+
+function capitalize(text: string): string {
+  return text.charAt(0).toUpperCase() + text.slice(1)
+}
+
+function stageGateDetail(stage: { label: string; verdict: string } | undefined): string | undefined {
+  if (!stage) return undefined
+  return `You picked ${stage.label} (${stage.verdict}) — only Stage 2 passes.`
+}
+
+function trendTemplateDetail(
+  checklistOk: boolean,
+  checkedCount: number,
+  totalChecks: number,
+  aboveLowOk: boolean | null,
+  aboveLowPercent: number | null,
+  belowHighOk: boolean | null,
+  belowHighPercent: number | null,
+): string | undefined {
+  const parts: string[] = []
+  if (!checklistOk) parts.push(`only ${checkedCount} of ${totalChecks} MA checks ticked`)
+  if (aboveLowOk === false && aboveLowPercent !== null) {
+    parts.push(`${formatPercent(aboveLowPercent)} off its 52-week low (needs 30%+)`)
+  }
+  if (belowHighOk === false && belowHighPercent !== null) {
+    parts.push(`${formatPercent(belowHighPercent)} below its 52-week high (needs ≤25%)`)
+  }
+  return parts.length === 0 ? undefined : `${capitalize(parts.join('; '))}.`
+}
+
+function logicalStopDetail(
+  side: WatchSide,
+  stopLoss: number | null,
+  check: StopPlacementCheck,
+): string | undefined {
+  const parts: string[] = []
+  if (check.beyondBase === false && check.supportLevel !== null && stopLoss !== null) {
+    const relation = side === 'long' ? 'above' : 'below'
+    const need = side === 'long' ? 'at or below' : 'at or above'
+    const extreme = side === 'long' ? 'low' : 'high'
+    parts.push(
+      `your stop (${formatPrice(stopLoss)}) is ${relation} the base's last ${extreme} (${formatPrice(check.supportLevel)}) — it needs to sit ${need} that`,
+    )
+  }
+  if (check.sizeOk === false && check.riskPercent !== null) {
+    const sizing = check.riskPercent < MIN_RISK_PERCENT ? 'too tight' : 'too wide'
+    parts.push(`risking ${formatPercent(check.riskPercent)} is ${sizing} — needs 2–10%`)
+  }
+  return parts.length === 0 ? undefined : `${capitalize(parts.join('; '))}.`
+}
+
+function realBaseDetail(
+  hasWeeksInBase: boolean,
+  weeksInBase: number,
+  filledCount: number,
+  tightening: boolean,
+): string | undefined {
+  const parts: string[] = []
+  if (filledCount > 0 && hasWeeksInBase && weeksInBase < 5) {
+    parts.push(`only ${weeksInBase} week${weeksInBase === 1 ? '' : 's'} in base (needs 5+)`)
+  }
+  if (filledCount > 0 && filledCount < 2) {
+    parts.push(`only ${filledCount} contraction${filledCount === 1 ? '' : 's'} filled (needs 2+)`)
+  }
+  if (filledCount > 0 && !tightening) {
+    parts.push("contractions aren't tightening")
+  }
+  return parts.length === 0 ? undefined : `${capitalize(parts.join('; '))}.`
+}
+
 /** Each criterion's wording, keyed by the id that gets persisted — same deal as `GATE_META`. */
 const CRITERION_LABELS: Record<string, string> = {
   'risk-reward': "You'll make at least twice what you're risking (2:1 or better)",
@@ -203,9 +287,18 @@ const CRITERION_LABELS: Record<string, string> = {
   'final-checks': 'Overhead supply looks clear and the breakout is confirmed',
 }
 
-function gate(id: string, state: GateState): RatingGate {
+function gate(id: string, state: GateState, detail?: string): RatingGate {
   const meta = GATE_META[id]
-  return { id, name: meta.name, description: meta.description, label: gateLabel(meta), state, cap: meta.cap, reason: meta.reason }
+  return {
+    id,
+    name: meta.name,
+    description: meta.description,
+    label: gateLabel(meta),
+    state,
+    cap: meta.cap,
+    reason: meta.reason,
+    detail: state === 'fail' ? detail : undefined,
+  }
 }
 
 function criterion(id: string, weight: number, score: number): RatingCriterion {
@@ -256,24 +349,49 @@ export function computeTradeRating(input: {
 
   const aboveLowOk = range.aboveLowPercent === null ? null : range.aboveLowPercent >= 30
   const belowHighOk = range.belowHighPercent === null ? null : range.belowHighPercent <= 25
+  const trendChecklistOk = allChecked(INDICATOR_CHECKLIST_ITEMS, indicatorChecklistChecked)
+  const trendCheckedCount = INDICATOR_CHECKLIST_ITEMS.filter(
+    (item) => indicatorChecklistChecked[item.id],
+  ).length
+  const tightening = contractionsTightening(contractions)
 
   const gates: RatingGate[] = [
-    gate('stage-2', gateState([
-      stageBaseAnswers.stage === null ? null : stageBaseAnswers.stage === 'stage-2',
-    ])),
-    gate('trend-template', gateState([
-      range.aboveLowPercent === null || range.belowHighPercent === null
-        ? null
-        : allChecked(INDICATOR_CHECKLIST_ITEMS, indicatorChecklistChecked),
-      aboveLowOk,
-      belowHighOk,
-    ])),
-    gate('logical-stop', gateState([stop.beyondBase, stop.sizeOk])),
-    gate('real-base', gateState([
-      !hasWeeksInBase || filledCount === 0 ? null : weeksInBase >= 5,
-      filledCount === 0 ? null : filledCount >= 2,
-      filledCount === 0 ? null : contractionsTightening(contractions),
-    ])),
+    gate(
+      'stage-2',
+      gateState([stageBaseAnswers.stage === null ? null : stageBaseAnswers.stage === 'stage-2']),
+      stageGateDetail(stage),
+    ),
+    gate(
+      'trend-template',
+      gateState([
+        range.aboveLowPercent === null || range.belowHighPercent === null ? null : trendChecklistOk,
+        aboveLowOk,
+        belowHighOk,
+      ]),
+      trendTemplateDetail(
+        trendChecklistOk,
+        trendCheckedCount,
+        INDICATOR_CHECKLIST_ITEMS.length,
+        aboveLowOk,
+        range.aboveLowPercent,
+        belowHighOk,
+        range.belowHighPercent,
+      ),
+    ),
+    gate(
+      'logical-stop',
+      gateState([stop.beyondBase, stop.sizeOk]),
+      logicalStopDetail(side, toNumberOrNull(tradeParams.stopLoss), stop),
+    ),
+    gate(
+      'real-base',
+      gateState([
+        !hasWeeksInBase || filledCount === 0 ? null : weeksInBase >= 5,
+        filledCount === 0 ? null : filledCount >= 2,
+        filledCount === 0 ? null : tightening,
+      ]),
+      realBaseDetail(hasWeeksInBase, weeksInBase, filledCount, tightening),
+    ),
   ]
 
   const stopGateFailed = gates.find((g) => g.id === 'logical-stop')?.state === 'fail'
@@ -287,7 +405,7 @@ export function computeTradeRating(input: {
     largestCorrectionTone(contractions) === 'good',
     narrowestPullbackTone(contractions) === 'good',
     contractionCountTone(contractions) === 'good',
-    contractionsTightening(contractions),
+    tightening,
   ].filter(Boolean).length
 
   const weekRangeScore = 0.5 * boolScore(aboveLowOk === true) + 0.5 * boolScore(belowHighOk === true)
