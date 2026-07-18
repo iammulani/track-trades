@@ -133,11 +133,9 @@ export function VcpStructureStep({ data, onChange }: VcpStructureStepProps) {
               onChange={(e) => setBaseEndDate(e.target.value)}
             />
           </label>
-          <div
-            className={`vcp-structure-step__summary-stat vcp-structure-step__summary-stat--${weeksInBaseTone(weeks)}`}
-          >
+          <div className={`vcp-structure-step__weeks vcp-structure-step__weeks--${weeksInBaseTone(weeks)}`}>
             <span className="vcp-structure-step__input-label">Weeks in base</span>
-            <span className="vcp-structure-step__summary-value">{weeks === null ? '—' : weeks}</span>
+            <span className="vcp-structure-step__weeks-value">{weeks === null ? '—' : weeks}</span>
           </div>
         </div>
         <p className="vcp-structure-step__note">

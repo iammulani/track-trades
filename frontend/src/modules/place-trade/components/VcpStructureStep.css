@@ -221,15 +221,32 @@
   flex-wrap: wrap;
 }
 
-.vcp-structure-step__summary-stat--good .vcp-structure-step__summary-value {
+.vcp-structure-step__weeks {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px 18px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+}
+
+.vcp-structure-step__weeks-value {
+  font-size: 28px;
+  line-height: 1.1;
+  font-weight: 700;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.vcp-structure-step__weeks--good .vcp-structure-step__weeks-value {
   color: var(--good-text);
 }
 
-.vcp-structure-step__summary-stat--caution .vcp-structure-step__summary-value {
+.vcp-structure-step__weeks--caution .vcp-structure-step__weeks-value {
   color: var(--amber-text);
 }
 
-.vcp-structure-step__summary-stat--bad .vcp-structure-step__summary-value {
+.vcp-structure-step__weeks--bad .vcp-structure-step__weeks-value {
   color: var(--critical-text);
 }
 

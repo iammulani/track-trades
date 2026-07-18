@@ -34,5 +34,32 @@
     "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/LLOYDSME/4432129",
     "watchedSince": "2026-07-15T10:00:28.453Z",
     "id": "Sv9nwYYWPwk"
+  },
+  {
+    "symbol": "TIPSMUSIC",
+    "category": "active",
+    "side": "long",
+    "notes": "",
+    "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/TIPSMUSIC/2333953",
+    "watchedSince": "2026-07-17T08:46:08.099Z",
+    "id": "StfHLlgpa0U"
+  },
+  {
+    "symbol": "SYRMA",
+    "category": "active",
+    "side": "long",
+    "notes": "",
+    "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/SYRMA/2763009",
+    "watchedSince": "2026-07-18T08:55:47.397Z",
+    "id": "FKmnpSLuNxA"
+  },
+  {
+    "symbol": "SONACOMS",
+    "category": "active",
+    "side": "long",
+    "notes": "",
+    "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/SONACOMS/1199105",
+    "watchedSince": "2026-07-18T16:49:55.065Z",
+    "id": "j1uAQsf23QM"
   }
 ]
