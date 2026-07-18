@@ -61,5 +61,32 @@
     "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/SONACOMS/1199105",
     "watchedSince": "2026-07-18T16:49:55.065Z",
     "id": "j1uAQsf23QM"
+  },
+  {
+    "symbol": "RRKABEL",
+    "category": "daily",
+    "side": "long",
+    "notes": "",
+    "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/RRKABEL/4752897",
+    "watchedSince": "2026-07-18T18:53:24.110Z",
+    "id": "UJ-xXm69lEU"
+  },
+  {
+    "symbol": "PHOENIXLTD",
+    "category": "daily",
+    "side": "long",
+    "notes": "",
+    "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/BSE/PHOENIXLTD/128793604",
+    "watchedSince": "2026-07-18T19:33:50.708Z",
+    "id": "WAPRosbRDjw"
+  },
+  {
+    "symbol": "NYKAA",
+    "category": "active",
+    "side": "long",
+    "notes": "",
+    "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/NYKAA/1675521",
+    "watchedSince": "2026-07-18T19:42:50.679Z",
+    "id": "cFD2eGpji54"
   }
 ]
