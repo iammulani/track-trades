@@ -56,7 +56,10 @@ before capital goes behind it. See [drafts.spec.md](drafts.spec.md).
   - `contractionTightnessTone(contractions, index)` — per-row check: `good` if
     that contraction's % is ≤ the previous one's (or it's T1, no baseline yet),
     `bad` if it's wider than the previous one (the base isn't tightening).
-  - `weeksInBaseTone` — good 5–26 weeks, bad <5 (hasn't shaken out weak
+  - `computeWeeksInBase(baseStartDate, baseEndDate)` — whole weeks between the base's
+    start and end dates; `null` until both are entered or if end is before start. Replaces
+    hand-counting weeks: the trader picks the two dates, this does the arithmetic.
+  - `weeksInBaseTone(weeks)` — good 5–26 weeks, bad <5 (hasn't shaken out weak
     holders), caution >26 (losing its edge).
   - `largestCorrectionTone(contractions)` — good ≤35%, caution 35–50%, bad >50%
     (the deepest contraction of a proper VCP commonly runs 25–35%; it's the
@@ -237,8 +240,10 @@ a small pill button, `send` icon, next to Remove). Route:
    - **VCP Structure** (`VcpStructureStep`) — an `i` trigger next to the
      heading opens a worked example (Meridian Bioscience Inc. / VIVO, cited
      to p. 202) showing four tightening contractions (31% → 17% → 8% → 3%)
-     into the pivot. Below a divider, a *Time* block (weeks in base, color-coded
-     by `weeksInBaseTone`), then *Price & Symmetry*: a dynamic list of
+     into the pivot. Below a divider, a *Time* block: two date inputs, "Base
+     started" and "Base ended," plus a read-only "Weeks in base" stat computed
+     from them (`computeWeeksInBase`, color-coded by `weeksInBaseTone`) — no
+     manual counting. Then *Price & Symmetry*: a dynamic list of
      contraction rows (T1, T2, ...; 2–6 of them, add/remove buttons respect
      the min/max), each with a High and Low price input — the % pullback is
      calculated and shown per row (no manual % entry), color-coded green/red
@@ -355,7 +360,7 @@ frontend/src/modules/place-trade/
 │   ├── indicatorChecklistItems.ts    # INDICATOR_CHECKLIST_ITEMS (trend-confirmation checks)
 │   ├── indicatorCalc.ts              # computeIndicatorRange(), computeMaDistancePercent(), rsiTone()
 │   ├── finalChecksItems.ts           # OVERHEAD_SUPPLY_CHECKLIST_ITEMS, BREAKOUT_CONFIRMATION_CHECKLIST_ITEMS, GATED_BREAKOUT_IDS, checklistItemClass()
-│   ├── finalChecksCalc.ts            # computeContractionPercent(), largest/narrowestFromContractions, weeksInBaseTone(), largestCorrectionTone(), narrowestPullbackTone(), contractionCountTone(), contractionTightnessTone()
+│   ├── finalChecksCalc.ts            # computeContractionPercent(), computeWeeksInBase(), largest/narrowestFromContractions, weeksInBaseTone(), largestCorrectionTone(), narrowestPullbackTone(), contractionCountTone(), contractionTightnessTone()
 │   ├── riskCalc.ts                   # computeRisk(side, params) -> RiskCalc
 │   ├── stopPlacement.ts              # checkStopPlacement() / stopPlacementScore() — is the stop beyond the base, and sized 2-10%?
 │   ├── stageBaseOptions.ts           # STAGE_OPTIONS / BASE_OPTIONS static reference content

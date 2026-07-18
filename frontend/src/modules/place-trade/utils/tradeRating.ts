@@ -11,6 +11,7 @@ import type {
 } from '../types/placeTrade'
 import type { ChecklistItem } from './checklistItems'
 import {
+  computeWeeksInBase,
   contractionCountTone,
   contractionsTightening,
   filledContractionCount,
@@ -211,10 +212,24 @@ const GATE_META: Record<string, { name: string; description: string; cap: number
   'breakout-confirmation': {
     name: 'Breakout Confirmation',
     description: 'market bullish, industry group positive, volume confirms the move',
+    // Only the default shown in the sidebar hover-card before any of the 3 are known —
+    // the real, in-force cap is graduated by how many are checked (see
+    // BREAKOUT_CONFIRMATION_CAP_BY_COUNT) and passed to `gate()` as an override.
     cap: 0.6,
     reason:
-      "A breakout without the market, the industry group, and volume behind it is a hopeful guess, not a confirmed move — any one of those being wrong meaningfully raises the odds it fails.",
+      "A breakout with none of these confirmed is a hopeful guess, not a real move. Each one that holds lowers the odds it fails — but any missing piece still caps how high this can score.",
   },
+}
+
+/** Unlike every other gate's flat cap, this one scales with how many of the 3 checks are
+ * confirmed — 0 checked is as severe as failing Stage 2, each additional one raises the
+ * ceiling, and all 3 removes the cap entirely (the gate passes). Reason: a hard on/off cap
+ * meant the score could jump several stars from checking a single box, which reads as noise
+ * rather than signal once these trades land in aggregate reports. */
+const BREAKOUT_CONFIRMATION_CAP_BY_COUNT: Record<number, number> = { 0: 0.4, 1: 0.5, 2: 0.6 }
+
+function breakoutConfirmationCap(confirmedCount: number): number {
+  return BREAKOUT_CONFIRMATION_CAP_BY_COUNT[confirmedCount] ?? GATE_META['breakout-confirmation'].cap
 }
 
 function gateLabel(meta: { name: string; description: string }): string {
@@ -329,7 +344,7 @@ const CRITERION_LABELS: Record<string, string> = {
   'breakout-checklist': 'Breakout Confirmation — market, group, volume, and resistance all clear',
 }
 
-function gate(id: string, state: GateState, detail?: string): RatingGate {
+function gate(id: string, state: GateState, detail?: string, capOverride?: number): RatingGate {
   const meta = GATE_META[id]
   return {
     id,
@@ -337,7 +352,7 @@ function gate(id: string, state: GateState, detail?: string): RatingGate {
     description: meta.description,
     label: gateLabel(meta),
     state,
-    cap: meta.cap,
+    cap: capOverride ?? meta.cap,
     reason: meta.reason,
     detail: state === 'fail' ? detail : undefined,
   }
@@ -391,9 +406,8 @@ export function computeTradeRating(input: {
 
   const contractions = vcpStructureData.contractions
   const filledCount = filledContractionCount(contractions)
-  const weeksInBase = Number(vcpStructureData.weeksInBase)
-  const hasWeeksInBase =
-    vcpStructureData.weeksInBase.trim() !== '' && Number.isFinite(weeksInBase)
+  const weeksInBase = computeWeeksInBase(vcpStructureData.baseStartDate, vcpStructureData.baseEndDate)
+  const hasWeeksInBase = weeksInBase !== null
 
   const aboveLowOk = range.aboveLowPercent === null ? null : range.aboveLowPercent >= 30
   const belowHighOk = range.belowHighPercent === null ? null : range.belowHighPercent <= 25
@@ -434,11 +448,11 @@ export function computeTradeRating(input: {
     gate(
       'real-base',
       gateState([
-        !hasWeeksInBase || filledCount === 0 ? null : weeksInBase >= 5,
+        !hasWeeksInBase || filledCount === 0 ? null : (weeksInBase ?? 0) >= 5,
         filledCount === 0 ? null : filledCount >= 2,
         filledCount === 0 ? null : tightening,
       ]),
-      realBaseDetail(hasWeeksInBase, weeksInBase, filledCount, tightening),
+      realBaseDetail(hasWeeksInBase, weeksInBase ?? 0, filledCount, tightening),
     ),
     gate(
       'breakout-confirmation',
@@ -450,6 +464,7 @@ export function computeTradeRating(input: {
         }),
       ),
       breakoutConfirmationDetail(finalChecksChecked, hasReachedFinalChecks),
+      breakoutConfirmationCap(GATED_BREAKOUT_IDS.filter((id) => finalChecksChecked[id] === true).length),
     ),
   ]
 
@@ -460,7 +475,7 @@ export function computeTradeRating(input: {
   const riskRewardScore = stopGateFailed || rr === null ? 0 : rr >= 2 ? 1 : rr >= 1 ? 0.5 : 0
 
   const vcpMet = [
-    weeksInBaseTone(vcpStructureData.weeksInBase) === 'good',
+    weeksInBaseTone(weeksInBase) === 'good',
     largestCorrectionTone(contractions) === 'good',
     narrowestPullbackTone(contractions) === 'good',
     contractionCountTone(contractions) === 'good',

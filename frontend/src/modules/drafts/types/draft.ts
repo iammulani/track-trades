@@ -35,9 +35,12 @@ export interface VcpContraction {
   low: string
 }
 
-/** Values collected in the "VCP Structure" step — strings while editing. */
+/** Values collected in the "VCP Structure" step — strings while editing. Weeks in base is
+ * derived from the two dates (see `computeWeeksInBase`) rather than typed and counted by
+ * hand. */
 export interface VcpStructureData {
-  weeksInBase: string
+  baseStartDate: string
+  baseEndDate: string
   contractions: VcpContraction[]
 }
 

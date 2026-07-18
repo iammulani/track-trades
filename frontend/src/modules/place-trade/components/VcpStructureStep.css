@@ -214,6 +214,25 @@
   font-variant-numeric: tabular-nums;
 }
 
+.vcp-structure-step__dates {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.vcp-structure-step__summary-stat--good .vcp-structure-step__summary-value {
+  color: var(--good-text);
+}
+
+.vcp-structure-step__summary-stat--caution .vcp-structure-step__summary-value {
+  color: var(--amber-text);
+}
+
+.vcp-structure-step__summary-stat--bad .vcp-structure-step__summary-value {
+  color: var(--critical-text);
+}
+
 /* --- Hover-card panel content --- */
 
 .vcp-structure-details {

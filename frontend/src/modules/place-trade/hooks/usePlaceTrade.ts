@@ -15,6 +15,7 @@ import {
   type TradeParams,
   type VcpStructureData,
 } from '../types/placeTrade'
+import { computeWeeksInBase } from '../utils/finalChecksCalc'
 import { computeTradeRating, toRatingSnapshot } from '../utils/tradeRating'
 import { useDraftAutosave } from './useDraftAutosave'
 
@@ -186,7 +187,7 @@ export function usePlaceTrade(watchlistId: string) {
           technicalChecklist: indicatorChecklistChecked,
           week52Low: numberOrNull(indicatorData.week52Low),
           week52High: numberOrNull(indicatorData.week52High),
-          weeksInBase: numberOrNull(vcpStructureData.weeksInBase),
+          weeksInBase: computeWeeksInBase(vcpStructureData.baseStartDate, vcpStructureData.baseEndDate),
           vcpContractions: vcpStructureData.contractions
             .filter((c) => c.high.trim() !== '' && c.low.trim() !== '')
             .map((c) => ({ high: Number(c.high), low: Number(c.low) })),

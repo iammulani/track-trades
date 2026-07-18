@@ -11,6 +11,7 @@ import type {
   VcpStructureData,
 } from '../types/placeTrade'
 import {
+  computeWeeksInBase,
   filledContractionCount,
   largestCorrectionPercent,
   narrowestPullbackPercent,
@@ -83,6 +84,7 @@ export function ReviewStep({
   const largest = largestCorrectionPercent(vcpStructureData.contractions)
   const narrowest = narrowestPullbackPercent(vcpStructureData.contractions)
   const contractionCount = filledContractionCount(vcpStructureData.contractions)
+  const weeksInBase = computeWeeksInBase(vcpStructureData.baseStartDate, vcpStructureData.baseEndDate)
 
   return (
     <div className="review-step">
@@ -247,7 +249,7 @@ export function ReviewStep({
         <div className="review-step__grid">
           <div className="review-step__stat">
             <span className="review-step__stat-label">Weeks in base</span>
-            <span className="review-step__stat-value">{vcpStructureData.weeksInBase || '—'}</span>
+            <span className="review-step__stat-value">{weeksInBase === null ? '—' : weeksInBase}</span>
           </div>
           <div className="review-step__stat">
             <span className="review-step__stat-label">Largest correction</span>

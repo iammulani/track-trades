@@ -46,12 +46,24 @@ function toneFromRange(value: number | null, goodMax: number, cautionMax: number
   return 'bad'
 }
 
+/** Whole weeks between the base's start and end dates — null until both are entered, or if
+ * the base "ends" before it starts. Replaces hand-counting weeks: the trader picks the two
+ * dates, this does the arithmetic. */
+export function computeWeeksInBase(startDate: string, endDate: string): number | null {
+  if (!startDate || !endDate) return null
+  const start = new Date(startDate)
+  const end = new Date(endDate)
+  if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) return null
+  const diffMs = end.getTime() - start.getTime()
+  if (diffMs < 0) return null
+  return Math.round(diffMs / (7 * 24 * 60 * 60 * 1000))
+}
+
 /** A textbook base runs 5-26 weeks — shorter hasn't shaken out weak holders yet, longer may be losing its edge. */
-export function weeksInBaseTone(value: string): VcpTone {
-  const n = toNumber(value)
-  if (n === null) return 'none'
-  if (n < 5) return 'bad'
-  if (n <= 26) return 'good'
+export function weeksInBaseTone(weeks: number | null): VcpTone {
+  if (weeks === null) return 'none'
+  if (weeks < 5) return 'bad'
+  if (weeks <= 26) return 'good'
   return 'caution'
 }
 

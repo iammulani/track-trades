@@ -1,5 +1,6 @@
 import { HoverCard } from '../../../shared/components/HoverCard'
 import { Icon } from '../../../shared/components/Icon'
+import { todayDateValue } from '../../../shared/utils/dateInput'
 import { formatPercent } from '../../../shared/utils/format'
 import {
   MAX_VCP_CONTRACTIONS,
@@ -9,6 +10,7 @@ import {
 } from '../types/placeTrade'
 import {
   computeContractionPercent,
+  computeWeeksInBase,
   contractionTightnessTone,
   largestCorrectionPercent,
   narrowestPullbackPercent,
@@ -22,8 +24,12 @@ interface VcpStructureStepProps {
 }
 
 export function VcpStructureStep({ data, onChange }: VcpStructureStepProps) {
-  function setWeeksInBase(value: string) {
-    onChange({ ...data, weeksInBase: value })
+  function setBaseStartDate(value: string) {
+    onChange({ ...data, baseStartDate: value })
+  }
+
+  function setBaseEndDate(value: string) {
+    onChange({ ...data, baseEndDate: value })
   }
 
   function updateContraction(index: number, field: keyof VcpContraction, value: string) {
@@ -45,6 +51,7 @@ export function VcpStructureStep({ data, onChange }: VcpStructureStepProps) {
 
   const largest = largestCorrectionPercent(data.contractions)
   const narrowest = narrowestPullbackPercent(data.contractions)
+  const weeks = computeWeeksInBase(data.baseStartDate, data.baseEndDate)
 
   return (
     <div className="vcp-structure-step">
@@ -103,23 +110,36 @@ export function VcpStructureStep({ data, onChange }: VcpStructureStepProps) {
 
       <div className="vcp-structure-step__block">
         <span className="vcp-structure-step__label">Time</span>
-        <p className="vcp-structure-step__question">
-          How many weeks have passed since the base started?
-        </p>
-        <label
-          className={`vcp-structure-step__field vcp-structure-step__field--${weeksInBaseTone(data.weeksInBase)}`}
-        >
-          <span className="vcp-structure-step__input-label">Weeks in base</span>
-          <input
-            type="number"
-            min="0"
-            step="1"
-            className="vcp-structure-step__input"
-            value={data.weeksInBase}
-            onChange={(e) => setWeeksInBase(e.target.value)}
-            placeholder="0"
-          />
-        </label>
+        <p className="vcp-structure-step__question">When did the base start, and when did it end?</p>
+        <div className="vcp-structure-step__dates">
+          <label className="vcp-structure-step__field">
+            <span className="vcp-structure-step__input-label">Base started</span>
+            <input
+              type="date"
+              className="vcp-structure-step__input"
+              value={data.baseStartDate}
+              max={data.baseEndDate || todayDateValue()}
+              onChange={(e) => setBaseStartDate(e.target.value)}
+            />
+          </label>
+          <label className="vcp-structure-step__field">
+            <span className="vcp-structure-step__input-label">Base ended</span>
+            <input
+              type="date"
+              className="vcp-structure-step__input"
+              value={data.baseEndDate}
+              min={data.baseStartDate || undefined}
+              max={todayDateValue()}
+              onChange={(e) => setBaseEndDate(e.target.value)}
+            />
+          </label>
+          <div
+            className={`vcp-structure-step__summary-stat vcp-structure-step__summary-stat--${weeksInBaseTone(weeks)}`}
+          >
+            <span className="vcp-structure-step__input-label">Weeks in base</span>
+            <span className="vcp-structure-step__summary-value">{weeks === null ? '—' : weeks}</span>
+          </div>
+        </div>
         <p className="vcp-structure-step__note">
           A textbook base typically runs 5 to 26 weeks — much shorter and there hasn't been enough
           time to shake out weak holders; much longer and the setup may be losing its edge.

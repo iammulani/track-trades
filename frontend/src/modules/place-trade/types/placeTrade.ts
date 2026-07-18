@@ -42,7 +42,8 @@ export const MIN_VCP_CONTRACTIONS = 2
 export const MAX_VCP_CONTRACTIONS = 6
 
 export const EMPTY_VCP_STRUCTURE_DATA: VcpStructureData = {
-  weeksInBase: '',
+  baseStartDate: '',
+  baseEndDate: '',
   contractions: [
     { high: '', low: '' },
     { high: '', low: '' },

@@ -1,9 +1,9 @@
 [
   {
     "watchlistId": "esvWIi7HCHw",
-    "stepIndex": 2,
+    "stepIndex": 6,
     "tradeParams": {
-      "entryPrice": "1390",
+      "entryPrice": "1412",
       "stopLoss": "1320",
       "target": "",
       "quantity": "80",
@@ -14,10 +14,10 @@
       "base": "base-1"
     },
     "indicatorData": {
-      "rsi": "59",
-      "fiftyDayMa": "1297",
+      "rsi": "69",
+      "fiftyDayMa": "1312.23",
       "week52Low": "862",
-      "week52High": "1400"
+      "week52High": "1412"
     },
     "indicatorChecklistChecked": {
       "ma200-duration": true,
@@ -25,7 +25,8 @@
       "ma-uptrend": true
     },
     "vcpStructureData": {
-      "weeksInBase": "8",
+      "baseStartDate": "2026-05-19",
+      "baseEndDate": "2026-07-14",
       "contractions": [
         {
           "high": "1380",
@@ -49,10 +50,107 @@
       "volume-price-quiet": true,
       "weak-holders-shaken-out": true,
       "minimal-overhead-resistance": true,
-      "volume-confirms-breakout": true
+      "volume-confirms-breakout": false,
+      "market-bullish": false,
+      "group-positive": false
     },
     "createdAt": "2026-07-14T03:44:48.746168Z",
-    "updatedAt": "2026-07-15T11:36:35.782Z",
+    "updatedAt": "2026-07-17T06:40:07.296Z",
     "id": "vijaya-draft"
+  },
+  {
+    "watchlistId": "Sv9nwYYWPwk",
+    "stepIndex": 0,
+    "tradeParams": {
+      "entryPrice": "1838",
+      "stopLoss": "",
+      "target": "",
+      "quantity": "27",
+      "entryDate": "2026-07-16"
+    },
+    "stageBaseAnswers": {
+      "stage": null,
+      "base": null
+    },
+    "indicatorData": {
+      "rsi": "70",
+      "fiftyDayMa": "",
+      "week52Low": "",
+      "week52High": ""
+    },
+    "indicatorChecklistChecked": {},
+    "vcpStructureData": {
+      "baseStartDate": "",
+      "baseEndDate": "",
+      "contractions": [
+        {
+          "high": "",
+          "low": ""
+        },
+        {
+          "high": "",
+          "low": ""
+        }
+      ]
+    },
+    "finalChecksChecked": {},
+    "createdAt": "2026-07-16T04:26:20.102Z",
+    "updatedAt": "2026-07-16T04:27:01.983Z",
+    "id": "2KCShzw-sEE"
+  },
+  {
+    "watchlistId": "j1uAQsf23QM",
+    "stepIndex": 4,
+    "tradeParams": {
+      "entryPrice": "640",
+      "stopLoss": "600",
+      "target": "",
+      "quantity": "78",
+      "entryDate": "2026-07-18"
+    },
+    "stageBaseAnswers": {
+      "stage": "stage-2",
+      "base": "base-1"
+    },
+    "indicatorData": {
+      "rsi": "72",
+      "fiftyDayMa": "596",
+      "week52Low": "405",
+      "week52High": "640"
+    },
+    "indicatorChecklistChecked": {
+      "ma-uptrend": true,
+      "ma-stacked": true,
+      "ma200-duration": true
+    },
+    "vcpStructureData": {
+      "baseStartDate": "2026-05-23",
+      "baseEndDate": "2026-07-18",
+      "contractions": [
+        {
+          "high": "614",
+          "low": "554"
+        },
+        {
+          "high": "620",
+          "low": "581"
+        },
+        {
+          "high": "628",
+          "low": "606"
+        }
+      ]
+    },
+    "finalChecksChecked": {
+      "volume-price-quiet": true,
+      "weak-holders-shaken-out": true,
+      "group-positive": true,
+      "volume-confirms-breakout": true,
+      "minimal-overhead-resistance": true,
+      "market-bullish": false
+    },
+    "createdAt": "2026-07-18T16:50:11.294Z",
+    "updatedAt": "2026-07-18T17:49:50.140Z",
+    "id": "q6kDwoX0GjA"
   }
 ]
