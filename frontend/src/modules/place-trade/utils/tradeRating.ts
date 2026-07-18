@@ -322,7 +322,11 @@ const CRITERION_LABELS: Record<string, string> = {
   'ma-proximity': "Entry is close to the 50-day MA, not extended",
   'week-range': "Price is well clear of its 52-week low and close to its high",
   'vcp-structure': "The base's shape — time, price, and tightening — looks textbook",
-  'final-checks': "There's no overhead resistance sitting above the entry",
+  'final-checks': 'Overhead supply is clear',
+  // Same 3 checks as the breakout-confirmation gate, plus minimal-overhead-resistance — each
+  // of the 4 boxes is worth a flat 25% here. The gate above still hard-caps the score if the
+  // first 3 aren't *all* checked; this is the partial-credit view of the same checklist.
+  'breakout-checklist': 'Breakout Confirmation — market, group, volume, and resistance all clear',
 }
 
 function gate(id: string, state: GateState, detail?: string): RatingGate {
@@ -478,18 +482,14 @@ export function computeTradeRating(input: {
     criterion('relative-strength', 1, toneScore(rsiTone(indicatorData.rsi))),
     criterion('week-range', 2, weekRangeScore),
     criterion('vcp-structure', 3, vcpMet / 5),
-    // The 3 breakout-momentum checks (market/group/volume) are gated above, not scored here —
-    // only the overhead-supply side (plus the remaining "minimal resistance" check) is soft.
+    criterion('final-checks', 1, fractionChecked(OVERHEAD_SUPPLY_CHECKLIST_ITEMS, finalChecksChecked)),
+    // Partial credit alongside the hard gate above: the gate caps the score if the first 3
+    // boxes aren't *all* checked, but this still scores every checked box (all 4, 25% each)
+    // so a trade with 3 of 4 ticked reads as "mostly there" here, not zero.
     criterion(
-      'final-checks',
+      'breakout-checklist',
       1,
-      fractionChecked(
-        [
-          ...OVERHEAD_SUPPLY_CHECKLIST_ITEMS,
-          ...BREAKOUT_CONFIRMATION_CHECKLIST_ITEMS.filter((item) => !GATED_BREAKOUT_IDS.includes(item.id)),
-        ],
-        finalChecksChecked,
-      ),
+      fractionChecked(BREAKOUT_CONFIRMATION_CHECKLIST_ITEMS, finalChecksChecked),
     ),
   ]
 

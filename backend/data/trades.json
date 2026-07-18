@@ -50,7 +50,7 @@
       },
       "rating": {
         "ratio": 0.6,
-        "rawRatio": 0.9166666666666666,
+        "rawRatio": 0.8846153846153846,
         "criteria": [
           {
             "id": "stop-placement",
@@ -91,6 +91,11 @@
             "id": "final-checks",
             "weight": 1,
             "score": 1
+          },
+          {
+            "id": "breakout-checklist",
+            "weight": 1,
+            "score": 0.5
           }
         ],
         "gates": [
@@ -167,8 +172,8 @@
       ],
       "finalChecks": {},
       "rating": {
-        "ratio": 0.24285714285714288,
-        "rawRatio": 0.24285714285714288,
+        "ratio": 0.22666666666666668,
+        "rawRatio": 0.22666666666666668,
         "criteria": [
           {
             "id": "risk-reward",
@@ -212,6 +217,11 @@
           },
           {
             "id": "final-checks",
+            "weight": 1,
+            "score": 0
+          },
+          {
+            "id": "breakout-checklist",
             "weight": 1,
             "score": 0
           }
@@ -295,7 +305,7 @@
       "finalChecks": {},
       "rating": {
         "ratio": 0.4,
-        "rawRatio": 0.42857142857142855,
+        "rawRatio": 0.4,
         "criteria": [
           {
             "id": "risk-reward",
@@ -339,6 +349,11 @@
           },
           {
             "id": "final-checks",
+            "weight": 1,
+            "score": 0
+          },
+          {
+            "id": "breakout-checklist",
             "weight": 1,
             "score": 0
           }
@@ -422,7 +437,7 @@
       },
       "rating": {
         "ratio": 0.4,
-        "rawRatio": 0.4694444444444444,
+        "rawRatio": 0.4653846153846154,
         "criteria": [
           {
             "id": "stop-placement",
@@ -462,7 +477,12 @@
           {
             "id": "final-checks",
             "weight": 1,
-            "score": 0.3333333333333333
+            "score": 0
+          },
+          {
+            "id": "breakout-checklist",
+            "weight": 1,
+            "score": 0.75
           }
         ],
         "gates": [
@@ -549,7 +569,7 @@
       },
       "rating": {
         "ratio": 0.4,
-        "rawRatio": 0.7277777777777779,
+        "rawRatio": 0.6846153846153846,
         "criteria": [
           {
             "id": "stop-placement",
@@ -589,7 +609,12 @@
           {
             "id": "final-checks",
             "weight": 1,
-            "score": 0.3333333333333333
+            "score": 0
+          },
+          {
+            "id": "breakout-checklist",
+            "weight": 1,
+            "score": 0.5
           }
         ],
         "gates": [

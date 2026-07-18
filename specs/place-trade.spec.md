@@ -116,7 +116,7 @@ before capital goes behind it. See [drafts.spec.md](drafts.spec.md).
   / Σ(weight):
   1. Risk : Reward (weight 2) — 1 if ≥2, ½ if 1–2, else 0. **Omitted from the criteria
      list entirely when no target is set** (there's no reward to measure — it's
-     unmeasurable, not bad — so `totalWeight` is 12 rather than 14), and **scored 0
+     unmeasurable, not bad — so `totalWeight` is 13 rather than 15), and **scored 0
      whenever the `logical-stop` gate fails**: a great ratio measured off a stop parked
      inside the base isn't a real ratio, it's the artefact of a stop too tight to survive.
   2. Stop placement (weight 1) — ½ for a stop beyond the base + ½ for risk sized 2–10%
@@ -128,11 +128,13 @@ before capital goes behind it. See [drafts.spec.md](drafts.spec.md).
   8. VCP structure (weight 3) — fraction of 5 sub-conditions met: weeks-in-base,
      largest-correction, narrowest-pullback and contraction-count tones all `good`,
      plus `contractionsTightening` (VCP Structure)
-  9. Final Checks (weight 1) — fraction of the 2 overhead-supply boxes + the 1 remaining
-     breakout box (`minimal-overhead-resistance`) ticked, 3 in total. The other 3 Breakout
-     Confirmation boxes (`market-bullish`, `group-positive`, `volume-confirms-breakout`)
-     are gated above, not scored here — a breakout without the market, the group, and
-     volume behind it isn't a partial win, it's a hopeful guess.
+  9. Final Checks (weight 1) — fraction of the 2 Overhead Supply boxes ticked
+  10. Breakout Checklist (weight 1) — fraction of all 4 Breakout Confirmation boxes ticked,
+      25% each. Partial credit alongside the hard gate above: `market-bullish` /
+      `group-positive` / `volume-confirms-breakout` not *all* being checked still caps the
+      score via the `breakout-confirmation` gate, but this criterion keeps scoring every
+      box that is checked — 3 of 4 ticked reads as "mostly there" (0.75/1) here, not a
+      zero, even while the gate is capping the trade elsewhere.
 
   The 50-day MA itself is still captured in Technical Confirmation, and still shows a
   color-coded good/caution/bad reading of how extended the entry is above/below it (plus
