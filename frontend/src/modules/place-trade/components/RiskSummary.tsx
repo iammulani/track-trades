@@ -9,8 +9,13 @@ interface RiskSummaryProps {
   params: TradeParams
 }
 
+/** Normalized so the smaller side always reads "1" — "1:4.8" when the reward is bigger,
+ * "2:1" when the risk is (flip it around rather than a sub-1 ratio like "1:0.4", which
+ * reads as an afterthought instead of the warning it should be). */
 function formatRatio(ratio: number | null): string {
-  return ratio === null ? '—' : `${ratio.toFixed(1)}R`
+  if (ratio === null || ratio <= 0) return '—'
+  if (ratio >= 1) return `1:${ratio.toFixed(1)}`
+  return `${(1 / ratio).toFixed(1)}:1`
 }
 
 /** Live risk/reward, recomputed from entry/stop/target/size — nothing here is stored. */
