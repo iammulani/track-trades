@@ -239,7 +239,12 @@ export function TradeDetailPage() {
                   {rating.gates.map((g) => (
                     <li key={g.id} className={`trade-detail__breakdown-row is-gate-${g.state}`}>
                       <Icon name={GATE_STATE_ICON[g.state]} size={14} />
-                      <span className="trade-detail__breakdown-label">{g.label}</span>
+                      <span className="trade-detail__breakdown-label">
+                        {g.label}
+                        {g.state === 'fail' && g.detail && (
+                          <span className="trade-detail__breakdown-detail">{g.detail}</span>
+                        )}
+                      </span>
                       <span className={`trade-detail__breakdown-state trade-detail__breakdown-state--gate-${g.state}`}>
                         {GATE_STATE_LABEL[g.state]}
                       </span>

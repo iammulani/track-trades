@@ -49,7 +49,7 @@
         "minimal-overhead-resistance": true
       },
       "rating": {
-        "ratio": 0.9166666666666666,
+        "ratio": 0.6,
         "rawRatio": 0.9166666666666666,
         "criteria": [
           {
@@ -116,7 +116,7 @@
           },
           {
             "id": "breakout-confirmation",
-            "state": "pending",
+            "state": "fail",
             "cap": 0.6
           }
         ]
@@ -239,7 +239,7 @@
           },
           {
             "id": "breakout-confirmation",
-            "state": "pending",
+            "state": "fail",
             "cap": 0.6
           }
         ]
@@ -366,7 +366,7 @@
           },
           {
             "id": "breakout-confirmation",
-            "state": "pending",
+            "state": "fail",
             "cap": 0.6
           }
         ]
@@ -488,7 +488,7 @@
           },
           {
             "id": "breakout-confirmation",
-            "state": "pending",
+            "state": "fail",
             "cap": 0.6
           }
         ]
@@ -615,7 +615,7 @@
           },
           {
             "id": "breakout-confirmation",
-            "state": "pending",
+            "state": "fail",
             "cap": 0.6
           }
         ]

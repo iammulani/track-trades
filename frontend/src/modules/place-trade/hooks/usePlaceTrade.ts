@@ -33,6 +33,10 @@ export const STEPS = [
   { id: 'review', title: 'Review & Place' },
 ] as const
 
+/** Before this step, an unchecked breakout-confirmation box hasn't been seen yet, so the
+ * gate reads `pending`, not a failure — see `computeTradeRating`'s `hasReachedFinalChecks`. */
+const FINAL_CHECKS_STEP_INDEX = STEPS.findIndex((s) => s.id === 'final-checks')
+
 /** Orchestrates the place-trade stepper: loads the watchlist item, holds each step's
  * answers (auto-saved as a draft, and seeded back from one when resuming), and places
  * the trade (creates it, removes the watched item, drops the draft). */
@@ -102,6 +106,7 @@ export function usePlaceTrade(watchlistId: string) {
         indicatorChecklistChecked,
         vcpStructureData,
         finalChecksChecked,
+        hasReachedFinalChecks: stepIndex >= FINAL_CHECKS_STEP_INDEX,
       }),
     [
       item,
@@ -111,6 +116,7 @@ export function usePlaceTrade(watchlistId: string) {
       indicatorChecklistChecked,
       vcpStructureData,
       finalChecksChecked,
+      stepIndex,
     ],
   )
 

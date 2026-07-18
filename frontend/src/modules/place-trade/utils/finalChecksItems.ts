@@ -33,16 +33,19 @@ export const BREAKOUT_CONFIRMATION_CHECKLIST_ITEMS: ChecklistItem[] = [
 export const GATED_BREAKOUT_IDS = ['market-bullish', 'group-positive', 'volume-confirms-breakout']
 
 /** Most checklist rows just read checked/unchecked, but the 3 gated breakout-confirmation
- * checks are non-negotiable — an explicit "no" on one of them is a red flag, not a shrug,
- * so it gets its own danger styling instead of the plain muted strikethrough. Shared by the
- * Review step and the read-only Trade Detail page, so the two can't drift. */
+ * checks are non-negotiable — a checkbox only has two states, so "not checked" (whether
+ * never touched or explicitly toggled off) is a red flag, not a shrug, and gets its own
+ * danger styling instead of the plain muted strikethrough. Only ever rendered on the Review
+ * step and the read-only Trade Detail page — both strictly after Final Checks — so there's
+ * no "haven't gotten there yet" case to protect against here. Shared by the two so they
+ * can't drift. */
 export function checklistItemClass(id: string, checked: Record<string, boolean>): string {
   const value = checked[id]
   const isGated = GATED_BREAKOUT_IDS.includes(id)
   return [
     value ? 'is-checked' : 'is-unchecked',
     isGated ? 'is-gated' : '',
-    isGated && value === false ? 'is-danger' : '',
+    isGated && !value ? 'is-danger' : '',
   ]
     .filter(Boolean)
     .join(' ')

@@ -295,12 +295,17 @@ function realBaseDetail(
   return parts.length === 0 ? undefined : `${capitalize(parts.join('; '))}.`
 }
 
-function breakoutConfirmationDetail(checked: ChecklistChecked): string | undefined {
-  const parts: string[] = []
-  if (checked['market-bullish'] === false) parts.push("the market isn't bullish")
-  if (checked['group-positive'] === false) parts.push("the industry group isn't acting positively")
-  if (checked['volume-confirms-breakout'] === false) parts.push("volume doesn't confirm the breakout")
-  return parts.length === 0 ? undefined : `${capitalize(parts.join('; '))}.`
+/** A checkbox only has two states — checked or not — so once the Final Checks step has
+ * been reached, "not checked" (whether never touched or explicitly toggled off) reads as
+ * a plain no. Before that, `null` keeps the gate `pending` rather than failing on inputs
+ * the trader hasn't even seen yet. Quotes the checklist's own label verbatim rather than a
+ * paraphrase, so it's unambiguous which box is unchecked below. */
+function breakoutConfirmationDetail(checked: ChecklistChecked, hasReachedFinalChecks: boolean): string | undefined {
+  const isNo = (id: string) => (hasReachedFinalChecks ? checked[id] !== true : checked[id] === false)
+  const unmet = GATED_BREAKOUT_IDS.filter(isNo)
+    .map((id) => BREAKOUT_CONFIRMATION_CHECKLIST_ITEMS.find((item) => item.id === id)?.label)
+    .filter((label): label is string => Boolean(label))
+  return unmet.length === 0 ? undefined : `Not checked: ${unmet.join('; ')}`
 }
 
 /** Each criterion's wording, keyed by the id that gets persisted — same deal as `GATE_META`. */
@@ -348,6 +353,11 @@ export function computeTradeRating(input: {
   indicatorChecklistChecked: ChecklistChecked
   vcpStructureData: VcpStructureData
   finalChecksChecked: ChecklistChecked
+  /** Has the stepper reached the Final Checks step yet? Defaults to `true` — every caller
+   * except the live in-progress stepper (which passes `false` on earlier steps) wants an
+   * unchecked breakout-confirmation box to read as a plain no, not a "haven't gotten there
+   * yet". */
+  hasReachedFinalChecks?: boolean
 }): TradeRating {
   const {
     side,
@@ -357,6 +367,7 @@ export function computeTradeRating(input: {
     indicatorChecklistChecked,
     vcpStructureData,
     finalChecksChecked,
+    hasReachedFinalChecks = true,
   } = input
 
   const risk = computeRisk(side, tradeParams)
@@ -428,9 +439,13 @@ export function computeTradeRating(input: {
     gate(
       'breakout-confirmation',
       gateState(
-        GATED_BREAKOUT_IDS.map((id) => (finalChecksChecked[id] === undefined ? null : finalChecksChecked[id])),
+        GATED_BREAKOUT_IDS.map((id) => {
+          const value = finalChecksChecked[id]
+          if (hasReachedFinalChecks) return value === true
+          return value === undefined ? null : value
+        }),
       ),
-      breakoutConfirmationDetail(finalChecksChecked),
+      breakoutConfirmationDetail(finalChecksChecked, hasReachedFinalChecks),
     ),
   ]
 

@@ -118,7 +118,12 @@ export function ReviewStep({
           {rating.gates.map((g) => (
             <li key={g.id} className={`review-step__breakdown-row is-gate-${g.state}`}>
               <Icon name={GATE_STATE_ICON[g.state]} size={14} />
-              <span className="review-step__breakdown-label">{g.label}</span>
+              <span className="review-step__breakdown-label">
+                {g.label}
+                {g.state === 'fail' && g.detail && (
+                  <span className="review-step__breakdown-detail">{g.detail}</span>
+                )}
+              </span>
               <span className={`review-step__breakdown-state review-step__breakdown-state--gate-${g.state}`}>
                 {GATE_STATE_LABEL[g.state]}
               </span>
