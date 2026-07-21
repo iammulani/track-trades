@@ -88,5 +88,32 @@
     "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/NYKAA/1675521",
     "watchedSince": "2026-07-18T19:42:50.679Z",
     "id": "cFD2eGpji54"
+  },
+  {
+    "symbol": "NUVAMA",
+    "category": "daily",
+    "side": "long",
+    "notes": "",
+    "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/NUVAMA/4792577",
+    "watchedSince": "2026-07-19T20:02:53.993Z",
+    "id": "ZinjOonPyt8"
+  },
+  {
+    "symbol": "NIVABUPA",
+    "category": "daily",
+    "side": "long",
+    "notes": "",
+    "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/NIVABUPA/6936833",
+    "watchedSince": "2026-07-19T20:06:57.792Z",
+    "id": "qgkPYSf61Vo"
+  },
+  {
+    "symbol": "NH",
+    "category": "daily",
+    "side": "long",
+    "notes": "",
+    "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/NH/3031041",
+    "watchedSince": "2026-07-19T20:08:22.276Z",
+    "id": "weJJHqaYnIs"
   }
 ]
