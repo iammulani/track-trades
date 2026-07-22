@@ -115,5 +115,14 @@
     "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/NH/3031041",
     "watchedSince": "2026-07-19T20:08:22.276Z",
     "id": "weJJHqaYnIs"
+  },
+  {
+    "symbol": "GRASIM",
+    "category": "active",
+    "side": "long",
+    "notes": "",
+    "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/GRASIM/315393",
+    "watchedSince": "2026-07-22T07:47:18.241Z",
+    "id": "OvqMPl_ZypM"
   }
 ]
