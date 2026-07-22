@@ -1,0 +1,4965 @@
+{
+  "totalCount": 124,
+  "data": [
+    {
+      "s": "NSE:ZYDUSWELL",
+      "d": [
+        {
+          "description": "Zydus Wellness Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "zydus-wellness-limited",
+            "style": "single"
+          },
+          "name": "ZYDUSWELL",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        571.8,
+        "stock",
+        ["common"],
+        100,
+        5,
+        "false",
+        0,
+        "INR",
+        -3.45293372731111,
+        229506,
+        0.48684957165782267,
+        188382945998,
+        "INR",
+        92.25407786257078,
+        6.1981,
+        -43.153907532581876,
+        0.202668468164161,
+        "Consumer non-durables",
+        "india",
+        "Consumer Non-Durables",
+        "StrongBuy",
+        "Strong buy"
+      ]
+    },
+    {
+      "s": "NSE:ZYDUSLIFE",
+      "d": [
+        {
+          "description": "Zydus Lifesciences Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "cadila-healthcare",
+            "style": "single"
+          },
+          "name": "ZYDUSLIFE",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        1126.3,
+        "stock",
+        ["common"],
+        10,
+        1,
+        "false",
+        0,
+        "INR",
+        -1.469687691365581,
+        1619112,
+        1.271651131447744,
+        1140795227130,
+        "INR",
+        22.48651368197445,
+        50.0878,
+        11.369083882902792,
+        0.961832728544572,
+        "Health technology",
+        "india",
+        "Health Technology",
+        "Buy",
+        "Buy"
+      ]
+    },
+    {
+      "s": "NSE:ZENTEC",
+      "d": [
+        {
+          "description": "Zen Technologies Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "zen-technologies",
+            "style": "single"
+          },
+          "name": "ZENTEC",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        1814.7,
+        "stock",
+        ["common"],
+        10,
+        1,
+        "false",
+        0,
+        "INR",
+        -0.21993731786440862,
+        243520,
+        0.5579209563102436,
+        164301362768,
+        "INR",
+        84.338749256395,
+        21.5168,
+        -33.00557643388454,
+        0.109908226630763,
+        "Technology services",
+        "india",
+        "Technology Services",
+        "Buy",
+        "Buy"
+      ]
+    },
+    {
+      "s": "NSE:WOCKPHARMA",
+      "d": [
+        {
+          "description": "Wockhardt Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "wockhardt",
+            "style": "single"
+          },
+          "name": "WOCKPHARMA",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        1861.5,
+        "stock",
+        ["common"],
+        10,
+        1,
+        "false",
+        0,
+        "INR",
+        -1.8351526657174475,
+        801530,
+        1.2240539669241344,
+        307731415872,
+        "INR",
+        142.01142804830602,
+        13.1081,
+        null,
+        0,
+        "Health technology",
+        "india",
+        "Health Technology",
+        "NoRating",
+        "No rating"
+      ]
+    },
+    {
+      "s": "NSE:WELSPUNLIV",
+      "d": [
+        {
+          "description": "Welspun Living Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "welspun-india",
+            "style": "single"
+          },
+          "name": "WELSPUNLIV",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        164.99,
+        "stock",
+        ["common"],
+        100,
+        1,
+        "false",
+        0,
+        "INR",
+        -0.6323777403035311,
+        1180754,
+        0.5650731108568097,
+        156545486771,
+        "INR",
+        77.3076562646425,
+        2.1342,
+        -68.04850662474736,
+        1.02595051297526,
+        "Consumer non-durables",
+        "india",
+        "Consumer Non-Durables",
+        "StrongBuy",
+        "Strong buy"
+      ]
+    },
+    {
+      "s": "NSE:WELCORP",
+      "d": [
+        {
+          "description": "Welspun Corp Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "welspun",
+            "style": "single"
+          },
+          "name": "WELCORP",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        1611.8,
+        "stock",
+        ["common"],
+        10,
+        1,
+        "false",
+        0,
+        "INR",
+        -1.0497882006261978,
+        340689,
+        0.21450522743514028,
+        429833660807,
+        "INR",
+        26.347579465300083,
+        61.1745,
+        -15.621379310344825,
+        0.306852005277855,
+        "Producer manufacturing",
+        "india",
+        "Producer Manufacturing",
+        "StrongBuy",
+        "Strong buy"
+      ]
+    },
+    {
+      "s": "NSE:VTL",
+      "d": [
+        {
+          "description": "Vardhman Textiles Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "vardhman-textiles",
+            "style": "single"
+          },
+          "name": "VTL",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        626.55,
+        "stock",
+        ["common"],
+        100,
+        5,
+        "false",
+        0,
+        "INR",
+        0.23196288593823897,
+        174162,
+        1.1849520438759242,
+        180907904469,
+        "INR",
+        24.01347560134296,
+        26.0916,
+        -15.587936512044726,
+        0.80006400512041,
+        "Process industries",
+        "india",
+        "Process Industries",
+        "Neutral",
+        "Neutral"
+      ]
+    },
+    {
+      "s": "NSE:VIJAYA",
+      "d": [
+        {
+          "description": "Vijaya Diagnostic Centre Ltd.",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "vijaya-diagnostic",
+            "style": "single"
+          },
+          "name": "VIJAYA",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        1313.1,
+        "stock",
+        ["common"],
+        10,
+        1,
+        "false",
+        0,
+        "INR",
+        -1.3670848043266015,
+        165232,
+        0.6516395301374212,
+        136929821472.00002,
+        "INR",
+        78.2837315781943,
+        16.7736,
+        20.45154248290917,
+        0.150291189179034,
+        "Health services",
+        "india",
+        "Health Services",
+        "Buy",
+        "Buy"
+      ]
+    },
+    {
+      "s": "NSE:TRITURBINE",
+      "d": [
+        {
+          "description": "Triveni Turbine Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "triveni-turbine",
+            "style": "single"
+          },
+          "name": "TRITURBINE",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        613.6,
+        "stock",
+        ["common"],
+        100,
+        5,
+        "false",
+        0,
+        "INR",
+        -0.8002586694689083,
+        290222,
+        0.3108040669195462,
+        196983618793,
+        "INR",
+        55.75394121121258,
+        11.0055,
+        -2.0688734650293643,
+        0.685871056241427,
+        "Producer manufacturing",
+        "india",
+        "Producer Manufacturing",
+        "Buy",
+        "Buy"
+      ]
+    },
+    {
+      "s": "NSE:TORNTPHARM",
+      "d": [
+        {
+          "description": "Torrent Pharmaceuticals Ltd",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "torrent-pharmaceuticals",
+            "style": "single"
+          },
+          "name": "TORNTPHARM",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        5033.4,
+        "stock",
+        ["common"],
+        10,
+        5,
+        "false",
+        0,
+        "INR",
+        -0.14482115579185792,
+        290320,
+        0.23241599517107564,
+        1916578548965,
+        "INR",
+        78.75775114653598,
+        63.9099,
+        13.18698639841315,
+        0.754155296452493,
+        "Health technology",
+        "india",
+        "Health Technology",
+        "Buy",
+        "Buy"
+      ]
+    },
+    {
+      "s": "NSE:TITAN",
+      "d": [
+        {
+          "description": "Titan Company Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "titan-company",
+            "style": "single"
+          },
+          "name": "TITAN",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        4711.6,
+        "stock",
+        ["common"],
+        10,
+        1,
+        "false",
+        0,
+        "INR",
+        0.488408300808338,
+        996475,
+        1.229600490125037,
+        4161985892672,
+        "INR",
+        82.42928097439962,
+        57.1593,
+        51.99475616987671,
+        0.234639135674748,
+        "Consumer durables",
+        "india",
+        "Consumer Durables",
+        "Buy",
+        "Buy"
+      ]
+    },
+    {
+      "s": "NSE:TIPSMUSIC",
+      "d": [
+        {
+          "description": "Tips Music Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "tips-industries-ltd",
+            "style": "single"
+          },
+          "name": "TIPSMUSIC",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        622.85,
+        "stock",
+        ["common"],
+        100,
+        5,
+        "false",
+        0,
+        "INR",
+        -12.545633249087338,
+        2886455,
+        4.2226192555610265,
+        90990528739,
+        "INR",
+        36.73417631932813,
+        16.9556,
+        30.251352015732554,
+        0,
+        "Consumer services",
+        "india",
+        "Consumer Services",
+        "StrongBuy",
+        "Strong buy"
+      ]
+    },
+    {
+      "s": "NSE:THERMAX",
+      "d": [
+        {
+          "description": "Thermax Limited.",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "thermax",
+            "style": "single"
+          },
+          "name": "THERMAX",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        4718.5,
+        "stock",
+        ["common"],
+        10,
+        1,
+        "false",
+        0,
+        "INR",
+        -2.530468911381946,
+        129520,
+        0.5373003065664967,
+        576311388689,
+        "INR",
+        73.77832260445219,
+        63.9551,
+        13.552204991992497,
+        0.289459537691767,
+        "Producer manufacturing",
+        "india",
+        "Producer Manufacturing",
+        "Neutral",
+        "Neutral"
+      ]
+    },
+    {
+      "s": "NSE:THELEELA",
+      "d": [
+        {
+          "description": "Leela Palaces Hotels \u0026 Resorts Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "schloss-bangalore-ltd",
+            "style": "single"
+          },
+          "name": "THELEELA",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        491.05,
+        "stock",
+        ["common"],
+        100,
+        5,
+        "false",
+        0,
+        "INR",
+        0.6972213677842785,
+        411094,
+        1.5088172219814133,
+        162654184174,
+        "INR",
+        29.390288426433006,
+        16.7079,
+        null,
+        0,
+        "Consumer services",
+        "india",
+        "Consumer Services",
+        "StrongBuy",
+        "Strong buy"
+      ]
+    },
+    {
+      "s": "NSE:SYRMA",
+      "d": [
+        {
+          "description": "Syrma SGS Technology Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "syrma-sgs-technology-limited",
+            "style": "single"
+          },
+          "name": "SYRMA",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        1363.5,
+        "stock",
+        ["common"],
+        10,
+        1,
+        "false",
+        0,
+        "INR",
+        -0.7930733410943023,
+        479123,
+        0.468689869761143,
+        265055159599,
+        "INR",
+        80.98187930225514,
+        16.8371,
+        76.73962105705137,
+        0.109126623258521,
+        "Electronic technology",
+        "india",
+        "Electronic Technology",
+        "Buy",
+        "Buy"
+      ]
+    },
+    {
+      "s": "NSE:SUNPHARMA",
+      "d": [
+        {
+          "description": "Sun Pharmaceutical Industries Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "sun-pharmaceutical",
+            "style": "single"
+          },
+          "name": "SUNPHARMA",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        1943,
+        "stock",
+        ["common"],
+        10,
+        1,
+        "false",
+        0,
+        "INR",
+        -0.9633518527957639,
+        1718430,
+        0.7688876545617747,
+        4707744493818,
+        "INR",
+        40.61098314947266,
+        47.8442,
+        5.035971223021584,
+        0.84091430318783,
+        "Health technology",
+        "india",
+        "Health Technology",
+        "StrongBuy",
+        "Strong buy"
+      ]
+    },
+    {
+      "s": "NSE:STARHEALTH",
+      "d": [
+        {
+          "description": "Star Health \u0026 Allied Insurance Co. Ltd.",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "star-health-and-al-ins-co-l",
+            "style": "single"
+          },
+          "name": "STARHEALTH",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        579.95,
+        "stock",
+        ["common"],
+        100,
+        5,
+        "false",
+        0,
+        "INR",
+        -1.477958039582083,
+        120717,
+        0.21028476944398572,
+        346112677279,
+        "INR",
+        61.637138514842015,
+        9.4091,
+        -13.349664324458729,
+        0,
+        "Finance",
+        "india",
+        "Finance",
+        "Buy",
+        "Buy"
+      ]
+    },
+    {
+      "s": "NSE:SONACOMS",
+      "d": [
+        {
+          "description": "Sona BLW Precision Forgings Ltd.",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "sona-blw-precision",
+            "style": "single"
+          },
+          "name": "SONACOMS",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        726.5,
+        "stock",
+        ["common"],
+        100,
+        5,
+        "false",
+        0,
+        "INR",
+        -0.8529512111907198,
+        2080575,
+        0.8551650476865259,
+        456561553256,
+        "INR",
+        70.56001243177094,
+        10.2962,
+        3.860392394209913,
+        0.463720676486634,
+        "Producer manufacturing",
+        "india",
+        "Producer Manufacturing",
+        "Buy",
+        "Buy"
+      ]
+    },
+    {
+      "s": "NSE:SOLARINDS",
+      "d": [
+        {
+          "description": "Solar Industries India Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "solar-industries",
+            "style": "single"
+          },
+          "name": "SOLARINDS",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        18856,
+        "stock",
+        ["common"],
+        1,
+        1,
+        "false",
+        0,
+        "INR",
+        -0.9923864531373064,
+        80465,
+        0.5452832809836987,
+        1725382821214,
+        "INR",
+        101.71265204843974,
+        185.385,
+        38.70464518590842,
+        0.0524463604848142,
+        "Process industries",
+        "india",
+        "Process Industries",
+        "StrongBuy",
+        "Strong buy"
+      ]
+    },
+    {
+      "s": "NSE:SIEMENS",
+      "d": [
+        {
+          "description": "Siemens Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "siemens",
+            "style": "single"
+          },
+          "name": "SIEMENS",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        3649.4,
+        "stock",
+        ["common"],
+        10,
+        1,
+        "false",
+        0,
+        "INR",
+        -0.5016631223076529,
+        226832,
+        0.6018662119167025,
+        1306339075172,
+        "INR",
+        70.84714109052648,
+        51.5109,
+        -32.46668624499835,
+        0.327131465957882,
+        "Producer manufacturing",
+        "india",
+        "Producer Manufacturing",
+        "Neutral",
+        "Neutral"
+      ]
+    },
+    {
+      "s": "NSE:SHYAMMETL",
+      "d": [
+        {
+          "description": "Shyam Metalics \u0026 Energy Ltd.",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "shyam-metalics-and-energy",
+            "style": "single"
+          },
+          "name": "SHYAMMETL",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        1030.15,
+        "stock",
+        ["common"],
+        10,
+        1,
+        "false",
+        0,
+        "INR",
+        -3.0583917564579113,
+        276198,
+        0.2987559245935451,
+        297289375495,
+        "INR",
+        25.782368428956147,
+        39.9556,
+        20.812520409767647,
+        0.42251537486503,
+        "Producer manufacturing",
+        "india",
+        "Producer Manufacturing",
+        "StrongBuy",
+        "Strong buy"
+      ]
+    },
+    {
+      "s": "NSE:SCI",
+      "d": [
+        {
+          "description": "Shipping Corporation of India Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "shipping",
+            "style": "single"
+          },
+          "name": "SCI",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        268.8,
+        "stock",
+        ["common"],
+        100,
+        5,
+        "false",
+        0,
+        "INR",
+        -2.925243770314181,
+        1792928,
+        0.8485286641464413,
+        129049610375,
+        "INR",
+        9.253457997975806,
+        29.0486,
+        60.39734075448363,
+        0,
+        "Transportation",
+        "india",
+        "Transportation",
+        "NoRating",
+        "No rating"
+      ]
+    },
+    {
+      "s": "NSE:SCHNEIDER",
+      "d": [
+        {
+          "description": "Schneider Electric Infrastructure Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "schneider",
+            "style": "single"
+          },
+          "name": "SCHNEIDER",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        1342.3,
+        "stock",
+        ["common"],
+        10,
+        1,
+        "false",
+        0,
+        "INR",
+        -1.1779430170065524,
+        130001,
+        0.42074162584964886,
+        324488079279,
+        "INR",
+        150.9728939376898,
+        8.891,
+        -20.64370442435224,
+        0,
+        "Producer manufacturing",
+        "india",
+        "Producer Manufacturing",
+        "StrongBuy",
+        "Strong buy"
+      ]
+    },
+    {
+      "s": "NSE:SAILIFE",
+      "d": [
+        {
+          "description": "SAI Life Sciences Ltd.",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "sai-life-sciences-ltd",
+            "style": "single"
+          },
+          "name": "SAILIFE",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        1250.5,
+        "stock",
+        ["common"],
+        10,
+        1,
+        "false",
+        0,
+        "INR",
+        -2.964227516101501,
+        443025,
+        1.1288066409833057,
+        273657438853,
+        "INR",
+        76.52998776009792,
+        16.34,
+        null,
+        0,
+        "Commercial services",
+        "india",
+        "Commercial Services",
+        "StrongBuy",
+        "Strong buy"
+      ]
+    },
+    {
+      "s": "NSE:RRKABEL",
+      "d": [
+        {
+          "description": "RR Kabel Ltd.",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "r-r-kabel-ltd",
+            "style": "single"
+          },
+          "name": "RRKABEL",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        2432.4,
+        "stock",
+        ["common"],
+        10,
+        1,
+        "false",
+        0,
+        "INR",
+        3.709388590432335,
+        1392986,
+        3.215201384881708,
+        265402071934,
+        "INR",
+        55.90708813801632,
+        43.5079,
+        57.89590198440925,
+        0.404858299595142,
+        "Producer manufacturing",
+        "india",
+        "Producer Manufacturing",
+        "Buy",
+        "Buy"
+      ]
+    },
+    {
+      "s": "NSE:RKFORGE",
+      "d": [
+        {
+          "description": "Ramkrishna Forgings Ltd",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "ramkrishna-forgins",
+            "style": "single"
+          },
+          "name": "RKFORGE",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        575.7,
+        "stock",
+        ["common"],
+        100,
+        5,
+        "false",
+        0,
+        "INR",
+        -0.10411244143673593,
+        1008905,
+        0.4379446490018436,
+        104964266434,
+        "INR",
+        145.84283325733395,
+        3.9474,
+        -85.42017551635493,
+        0.173235166738848,
+        "Producer manufacturing",
+        "india",
+        "Producer Manufacturing",
+        "Neutral",
+        "Neutral"
+      ]
+    },
+    {
+      "s": "NSE:RBLBANK",
+      "d": [
+        {
+          "description": "RBL Bank Ltd.",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "rbl-bank",
+            "style": "single"
+          },
+          "name": "RBLBANK",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        355.5,
+        "stock",
+        ["common"],
+        100,
+        5,
+        "false",
+        0,
+        "INR",
+        -3.1862745098039187,
+        4420773,
+        0.5292107554123856,
+        567933640411,
+        "INR",
+        25.87336244541485,
+        13.74,
+        45.111209682529626,
+        0.27266530334015,
+        "Finance",
+        "india",
+        "Finance",
+        "Buy",
+        "Buy"
+      ]
+    },
+    {
+      "s": "NSE:RADICO",
+      "d": [
+        {
+          "description": "Radico Khaitan Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "radico-khaitan",
+            "style": "single"
+          },
+          "name": "RADICO",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        4147.5,
+        "stock",
+        ["common"],
+        10,
+        1,
+        "false",
+        0,
+        "INR",
+        1.4455532726739044,
+        252702,
+        0.8587583139516706,
+        547693225933,
+        "INR",
+        91.91522745556045,
+        45.1231,
+        74.77109348371704,
+        0.0978521454082881,
+        "Consumer non-durables",
+        "india",
+        "Consumer Non-Durables",
+        "StrongBuy",
+        "Strong buy"
+      ]
+    },
+    {
+      "s": "NSE:PTCIL",
+      "d": [
+        {
+          "description": "PTC Industries Ltd",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "ptc-industries-ltd",
+            "style": "single"
+          },
+          "name": "PTCIL",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        17777,
+        "stock",
+        ["common"],
+        1,
+        1,
+        "false",
+        0,
+        "INR",
+        -0.42569876211281016,
+        12435,
+        1.1057461452275517,
+        266999317320.99997,
+        "INR",
+        262.543438481658,
+        67.7107,
+        64.78632270625455,
+        0,
+        "Producer manufacturing",
+        "india",
+        "Producer Manufacturing",
+        "StrongBuy",
+        "Strong buy"
+      ]
+    },
+    {
+      "s": "NSE:POWERINDIA",
+      "d": [
+        {
+          "description": "Hitachi Energy India Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "abb-power-products",
+            "style": "single"
+          },
+          "name": "POWERINDIA",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        32055,
+        "stock",
+        ["common"],
+        1,
+        5,
+        "false",
+        0,
+        "INR",
+        -0.40391486717414943,
+        90595,
+        0.775822794349369,
+        1434577144234,
+        "INR",
+        144.6355571999675,
+        221.626,
+        150.51544061129448,
+        0.0186420219136968,
+        "Electronic technology",
+        "india",
+        "Electronic Technology",
+        "Neutral",
+        "Neutral"
+      ]
+    },
+    {
+      "s": "NSE:POWERGRID",
+      "d": [
+        {
+          "description": "Power Grid Corporation of India Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "power-grid",
+            "style": "single"
+          },
+          "name": "POWERGRID",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        289.3,
+        "stock",
+        ["common"],
+        100,
+        5,
+        "false",
+        0,
+        "INR",
+        0.9068712940355852,
+        4595987,
+        0.5502038094275368,
+        2666017940988,
+        "INR",
+        16.890964822653626,
+        17.1275,
+        2.9655769438867,
+        3.13971742543171,
+        "Utilities",
+        "india",
+        "Utilities",
+        "Buy",
+        "Buy"
+      ]
+    },
+    {
+      "s": "NSE:POLYCAB",
+      "d": [
+        {
+          "description": "Polycab India Ltd.",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "polycab",
+            "style": "single"
+          },
+          "name": "POLYCAB",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        9090.5,
+        "stock",
+        ["common"],
+        10,
+        5,
+        "false",
+        0,
+        "INR",
+        2.1002976357612178,
+        588610,
+        1.322044412840099,
+        1340790524165,
+        "INR",
+        47.90572839841882,
+        189.7581,
+        29.270672035740542,
+        0.528078020718635,
+        "Producer manufacturing",
+        "india",
+        "Producer Manufacturing",
+        "Buy",
+        "Buy"
+      ]
+    },
+    {
+      "s": "NSE:PNBHOUSING",
+      "d": [
+        {
+          "description": "PNB Housing Finance Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "pnb-housing-finance",
+            "style": "single"
+          },
+          "name": "PNBHOUSING",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        1082.3,
+        "stock",
+        ["common"],
+        10,
+        1,
+        "false",
+        0,
+        "INR",
+        -1.0694698354661833,
+        634275,
+        0.8081730758816879,
+        284863894138,
+        "INR",
+        12.329687856003645,
+        87.78,
+        18.206302181524368,
+        0.457393770296848,
+        "Finance",
+        "india",
+        "Finance",
+        "StrongBuy",
+        "Strong buy"
+      ]
+    },
+    {
+      "s": "NSE:PHOENIXLTD",
+      "d": [
+        {
+          "description": "Phoenix Mills Ltd.",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "phoenix-mills",
+            "style": "single"
+          },
+          "name": "PHOENIXLTD",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        2055.6,
+        "stock",
+        ["common"],
+        10,
+        1,
+        "false",
+        0,
+        "INR",
+        -1.7023718439173638,
+        470021,
+        0.6335670102648098,
+        747200356987,
+        "INR",
+        60.060481220142876,
+        34.2255,
+        15.669674541214635,
+        0.119660165131028,
+        "Finance",
+        "india",
+        "Finance",
+        "StrongBuy",
+        "Strong buy"
+      ]
+    },
+    {
+      "s": "NSE:PFC",
+      "d": [
+        {
+          "description": "Power Finance Corporation Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "power-finance",
+            "style": "single"
+          },
+          "name": "PFC",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        412.3,
+        "stock",
+        ["common"],
+        100,
+        5,
+        "false",
+        0,
+        "INR",
+        -0.6146800048210224,
+        2654166,
+        0.458474023716099,
+        1369542249756,
+        "INR",
+        5.25310593232756,
+        78.4869,
+        12.660082966110215,
+        4.01204819277108,
+        "Finance",
+        "india",
+        "Finance",
+        "StrongBuy",
+        "Strong buy"
+      ]
+    },
+    {
+      "s": "NSE:NYKAA",
+      "d": [
+        {
+          "description": "FSN E-Commerce Ventures Ltd.",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "fsn-e-commerce-ventures",
+            "style": "single"
+          },
+          "name": "NYKAA",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        326.6,
+        "stock",
+        ["common"],
+        100,
+        5,
+        "false",
+        0,
+        "INR",
+        -0.41164811709100957,
+        7608062,
+        1.1730365801106464,
+        939641570312,
+        "INR",
+        471.28427128427137,
+        0.693,
+        199.74048442906576,
+        0,
+        "Retail trade",
+        "india",
+        "Retail Trade",
+        "Buy",
+        "Buy"
+      ]
+    },
+    {
+      "s": "NSE:NUVAMA",
+      "d": [
+        {
+          "description": "Nuvama Wealth Management Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "nuvama-wealth-manage-ltd",
+            "style": "single"
+          },
+          "name": "NUVAMA",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        1882.4,
+        "stock",
+        ["common"],
+        10,
+        1,
+        "false",
+        0,
+        "INR",
+        -0.48636075280185126,
+        96363,
+        0.2646156026078489,
+        345207609253,
+        "INR",
+        33.74202337420234,
+        55.788,
+        3.826397677361716,
+        1.48050231328486,
+        "Finance",
+        "india",
+        "Finance",
+        "StrongBuy",
+        "Strong buy"
+      ]
+    },
+    {
+      "s": "NSE:NLCINDIA",
+      "d": [
+        {
+          "description": "NLC India Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "nlc-india",
+            "style": "single"
+          },
+          "name": "NLCINDIA",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        287.6,
+        "stock",
+        ["common"],
+        100,
+        5,
+        "false",
+        0,
+        "INR",
+        -2.558021345078758,
+        1776696,
+        0.7820542035607119,
+        409404455170,
+        "INR",
+        11.32203229692384,
+        25.4018,
+        34.371197934850464,
+        1.72734970364098,
+        "Utilities",
+        "india",
+        "Utilities",
+        "Buy",
+        "Buy"
+      ]
+    },
+    {
+      "s": "NSE:NIVABUPA",
+      "d": [
+        {
+          "description": "Niva Bupa Health Insurance Company Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "niva-bupa-health-ins-co-l",
+            "style": "single"
+          },
+          "name": "NIVABUPA",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        84.79,
+        "stock",
+        ["common"],
+        100,
+        1,
+        "false",
+        0,
+        "INR",
+        -1.4528126452812644,
+        1184154,
+        0.5217785805934451,
+        159052600048,
+        "INR",
+        122.59976865240024,
+        0.6916,
+        -39.29605898358641,
+        0,
+        "Finance",
+        "india",
+        "Finance",
+        "Buy",
+        "Buy"
+      ]
+    },
+    {
+      "s": "NSE:NH",
+      "d": [
+        {
+          "description": "Narayana Hrudayalaya Ltd.",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "narayana-hrudayalaya",
+            "style": "single"
+          },
+          "name": "NH",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        1968,
+        "stock",
+        ["common"],
+        10,
+        1,
+        "false",
+        0,
+        "INR",
+        -1.486709716173602,
+        289372,
+        1.6904130170891938,
+        408261776348,
+        "INR",
+        49.61915783581807,
+        39.6621,
+        2.099808476461138,
+        0.225253410086347,
+        "Health services",
+        "india",
+        "Health Services",
+        "Buy",
+        "Buy"
+      ]
+    },
+    {
+      "s": "NSE:NETWEB",
+      "d": [
+        {
+          "description": "Netweb Technologies India Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "netweb-tech-india-ltd",
+            "style": "single"
+          },
+          "name": "NETWEB",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        4288.7,
+        "stock",
+        ["common"],
+        10,
+        1,
+        "false",
+        0,
+        "INR",
+        0.7375566673713301,
+        835107,
+        1.0302109194533797,
+        242416448245,
+        "INR",
+        118.15186427977144,
+        36.2982,
+        79.06909055030712,
+        0.0587219749374611,
+        "Electronic technology",
+        "india",
+        "Electronic Technology",
+        "StrongBuy",
+        "Strong buy"
+      ]
+    },
+    {
+      "s": "NSE:NESTLEIND",
+      "d": [
+        {
+          "description": "Nestle India Ltd.",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "nestle",
+            "style": "single"
+          },
+          "name": "NESTLEIND",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        1493.6,
+        "stock",
+        ["common"],
+        10,
+        1,
+        "false",
+        0,
+        "INR",
+        2.8720986293821764,
+        6542494,
+        4.072429493218131,
+        2801840723022,
+        "INR",
+        82.31060459938608,
+        18.1459,
+        9.089214861127815,
+        0.825877494838266,
+        "Consumer non-durables",
+        "india",
+        "Consumer Non-Durables",
+        "Buy",
+        "Buy"
+      ]
+    },
+    {
+      "s": "NSE:NAZARA",
+      "d": [
+        {
+          "description": "Nazara Technologies Ltd.",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "nazara-technologies-ltd",
+            "style": "single"
+          },
+          "name": "NAZARA",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        304.65,
+        "stock",
+        ["common"],
+        100,
+        5,
+        "false",
+        0,
+        "INR",
+        -1.5033947623666453,
+        1061385,
+        0.4631019384933991,
+        114547790826,
+        "INR",
+        113.84954594715796,
+        2.6759,
+        2.6507595519410834,
+        0,
+        "Technology services",
+        "india",
+        "Technology Services",
+        "Buy",
+        "Buy"
+      ]
+    },
+    {
+      "s": "NSE:NAVINFLUOR",
+      "d": [
+        {
+          "description": "Navin Fluorine International Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "navin-fluorine-international-l",
+            "style": "single"
+          },
+          "name": "NAVINFLUOR",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        7789,
+        "stock",
+        ["common"],
+        10,
+        5,
+        "false",
+        0,
+        "INR",
+        -1.179903577772139,
+        188907,
+        1.7451444471542914,
+        404604268012,
+        "INR",
+        59.837136052853964,
+        130.17,
+        123.89060887512898,
+        0.191423953348335,
+        "Process industries",
+        "india",
+        "Process Industries",
+        "Buy",
+        "Buy"
+      ]
+    },
+    {
+      "s": "NSE:NAM_INDIA",
+      "d": [
+        {
+          "description": "Nippon Life India Asset Management Ltd.",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "nippon-life-india-asset",
+            "style": "single"
+          },
+          "name": "NAM_INDIA",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        1147.9,
+        "stock",
+        ["common"],
+        10,
+        1,
+        "false",
+        0,
+        "INR",
+        -1.6282457794155454,
+        930942,
+        1.1862381179255315,
+        746377961426,
+        "INR",
+        48.639830508474574,
+        23.6,
+        17.94102948525737,
+        1.84154175588865,
+        "Finance",
+        "india",
+        "Finance",
+        "Buy",
+        "Buy"
+      ]
+    },
+    {
+      "s": "NSE:MOTHERSON",
+      "d": [
+        {
+          "description": "Samvardhana Motherson International Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "motherson",
+            "style": "single"
+          },
+          "name": "MOTHERSON",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        143.6,
+        "stock",
+        ["common"],
+        100,
+        1,
+        "false",
+        0,
+        "INR",
+        -1.115548822476246,
+        15608148,
+        1.0933728552209365,
+        1534035177942,
+        "INR",
+        39.268232656074815,
+        3.6569,
+        -11.420889448696837,
+        0.401330202958418,
+        "Producer manufacturing",
+        "india",
+        "Producer Manufacturing",
+        "Buy",
+        "Buy"
+      ]
+    },
+    {
+      "s": "NSE:MCX",
+      "d": [
+        {
+          "description": "Multi Commodity Exchange of India Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "multi-commodity-exchange-of-india-limited",
+            "style": "single"
+          },
+          "name": "MCX",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        2803.9,
+        "stock",
+        ["common"],
+        10,
+        1,
+        "false",
+        0,
+        "INR",
+        0.09638726260175186,
+        980174,
+        0.4253152143609526,
+        714499888050,
+        "INR",
+        53.62990222331033,
+        52.2824,
+        137.60083256454422,
+        0.214128941310826,
+        "Finance",
+        "india",
+        "Finance",
+        "Buy",
+        "Buy"
+      ]
+    },
+    {
+      "s": "NSE:MARICO",
+      "d": [
+        {
+          "description": "Marico Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "marico",
+            "style": "single"
+          },
+          "name": "MARICO",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        862.65,
+        "stock",
+        ["common"],
+        100,
+        5,
+        "false",
+        0,
+        "INR",
+        1.0661355515201245,
+        1248595,
+        0.7752380547916559,
+        1108107848424,
+        "INR",
+        63.521693028187684,
+        13.5804,
+        8.022717510619001,
+        1.23030054484738,
+        "Consumer non-durables",
+        "india",
+        "Consumer Non-Durables",
+        "StrongBuy",
+        "Strong buy"
+      ]
+    },
+    {
+      "s": "NSE:MANAPPURAM",
+      "d": [
+        {
+          "description": "Manappuram Finance Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "manappuram-finance",
+            "style": "single"
+          },
+          "name": "MANAPPURAM",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        350.2,
+        "stock",
+        ["common"],
+        100,
+        5,
+        "false",
+        0,
+        "INR",
+        -0.44065387348969765,
+        4714729,
+        1.31794516652796,
+        330223601732,
+        "INR",
+        29.57645369705671,
+        11.8405,
+        -17.592321933157944,
+        0.568909116768596,
+        "Finance",
+        "india",
+        "Finance",
+        "Neutral",
+        "Neutral"
+      ]
+    },
+    {
+      "s": "NSE:MAHABANK",
+      "d": [
+        {
+          "description": "Bank of Maharashtra",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "bank-of-maharashtra",
+            "style": "single"
+          },
+          "name": "MAHABANK",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        79.17,
+        "stock",
+        ["common"],
+        100,
+        1,
+        "false",
+        0,
+        "INR",
+        -3.155963302752292,
+        11928863,
+        0.5581498062368813,
+        628707703637,
+        "INR",
+        8.080632814493494,
+        9.7975,
+        28.38740958171716,
+        2.69146072914118,
+        "Finance",
+        "india",
+        "Finance",
+        "Buy",
+        "Buy"
+      ]
+    },
+    {
+      "s": "NSE:LUPIN",
+      "d": [
+        {
+          "description": "Lupin Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "lupin",
+            "style": "single"
+          },
+          "name": "LUPIN",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        2406.9,
+        "stock",
+        ["common"],
+        10,
+        1,
+        "false",
+        0,
+        "INR",
+        -4.29059965007158,
+        1224924,
+        1.6511006515445217,
+        1149671372316,
+        "INR",
+        20.667181865018033,
+        116.46,
+        62.381483547127715,
+        0.477251034043907,
+        "Health technology",
+        "india",
+        "Health Technology",
+        "Neutral",
+        "Neutral"
+      ]
+    },
+    {
+      "s": "NSE:LTF",
+      "d": [
+        {
+          "description": "L\u0026T Finance Ltd",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "l-and-t-finance",
+            "style": "single"
+          },
+          "name": "LTF",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        305.9,
+        "stock",
+        ["common"],
+        100,
+        5,
+        "false",
+        0,
+        "INR",
+        -0.2770986145069349,
+        4876518,
+        0.5860658817102403,
+        768987086660,
+        "INR",
+        24.14364640883978,
+        12.67,
+        19.303201506591343,
+        0.896057347670251,
+        "Finance",
+        "india",
+        "Finance",
+        "Buy",
+        "Buy"
+      ]
+    },
+    {
+      "s": "NSE:LLOYDSME",
+      "d": [
+        {
+          "description": "Lloyds Metals \u0026 Energy Ltd.",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "lloyds-metals-and-energy-ltd",
+            "style": "single"
+          },
+          "name": "LLOYDSME",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        1871.7,
+        "stock",
+        ["common"],
+        10,
+        1,
+        "false",
+        0,
+        "INR",
+        -3.3412518074777964,
+        401670,
+        0.7452061686974449,
+        1086884105079.9999,
+        "INR",
+        28.28195829555757,
+        66.18,
+        147.0066585052701,
+        0.0516689056525783,
+        "Non-energy minerals",
+        "india",
+        "Non-Energy Minerals",
+        "Buy",
+        "Buy"
+      ]
+    },
+    {
+      "s": "NSE:LINDEINDIA",
+      "d": [
+        {
+          "description": "Linde India Ltd.",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "linde",
+            "style": "single"
+          },
+          "name": "LINDEINDIA",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        6840.5,
+        "stock",
+        ["common"],
+        10,
+        5,
+        "false",
+        0,
+        "INR",
+        -2.3343803540833807,
+        26168,
+        1.2665714769729677,
+        597015146858,
+        "INR",
+        106.2710895408306,
+        64.3684,
+        20.691956919569186,
+        0.0642829593017442,
+        "Process industries",
+        "india",
+        "Process Industries",
+        "StrongSell",
+        "Strong sell"
+      ]
+    },
+    {
+      "s": "NSE:LAURUSLABS",
+      "d": [
+        {
+          "description": "Laurus Labs Ltd.",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "laurus-labs",
+            "style": "single"
+          },
+          "name": "LAURUSLABS",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        1577.8,
+        "stock",
+        ["common"],
+        10,
+        1,
+        "false",
+        0,
+        "INR",
+        -0.9666080843585294,
+        1183077,
+        0.7500478338341992,
+        860590530539,
+        "INR",
+        95.90090199606136,
+        16.4524,
+        147.71741748976152,
+        0.125553218870649,
+        "Health technology",
+        "india",
+        "Health Technology",
+        "Neutral",
+        "Neutral"
+      ]
+    },
+    {
+      "s": "NSE:KIRLOSENG",
+      "d": [
+        {
+          "description": "Kirloskar Oil Engines Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "kirloskar-oil-engines",
+            "style": "single"
+          },
+          "name": "KIRLOSENG",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        2187.9,
+        "stock",
+        ["common"],
+        10,
+        1,
+        "false",
+        0,
+        "INR",
+        -1.5213575190169568,
+        434352,
+        0.7969423681308188,
+        323172339078,
+        "INR",
+        55.50228310502283,
+        39.42,
+        17.391304347826097,
+        0.292404237612182,
+        "Producer manufacturing",
+        "india",
+        "Producer Manufacturing",
+        "StrongBuy",
+        "Strong buy"
+      ]
+    },
+    {
+      "s": "NSE:KEI",
+      "d": [
+        {
+          "description": "KEI Industries Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "kei-industries",
+            "style": "single"
+          },
+          "name": "KEI",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        4971,
+        "stock",
+        ["common"],
+        10,
+        1,
+        "false",
+        0,
+        "INR",
+        -0.07035883003316916,
+        206064,
+        0.6575256443106119,
+        475627283748,
+        "INR",
+        51.7704644865653,
+        96.02,
+        27.533536990304142,
+        0.090449534184899,
+        "Producer manufacturing",
+        "india",
+        "Producer Manufacturing",
+        "Buy",
+        "Buy"
+      ]
+    },
+    {
+      "s": "NSE:KARURVYSYA",
+      "d": [
+        {
+          "description": "Karur Vysya Bank Ltd.",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "karur-vysya-bank",
+            "style": "single"
+          },
+          "name": "KARURVYSYA",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        339.15,
+        "stock",
+        ["common"],
+        100,
+        5,
+        "false",
+        0,
+        "INR",
+        -0.33793711431091217,
+        16009675,
+        1.4913639841961392,
+        328660697561,
+        "INR",
+        11.942868612598907,
+        28.3977,
+        36.956049944779096,
+        0.637068509261982,
+        "Finance",
+        "india",
+        "Finance",
+        "StrongBuy",
+        "Strong buy"
+      ]
+    },
+    {
+      "s": "NSE:JSWSTEEL",
+      "d": [
+        {
+          "description": "JSW Steel Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "jsw",
+            "style": "single"
+          },
+          "name": "JSWSTEEL",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        1266.9,
+        "stock",
+        ["common"],
+        10,
+        1,
+        "false",
+        0,
+        "INR",
+        -0.039450844248066906,
+        3988761,
+        2.5329903822517323,
+        3097412105336,
+        "INR",
+        12.500246669955601,
+        101.35,
+        411.822157581634,
+        0.221064266540344,
+        "Non-energy minerals",
+        "india",
+        "Non-Energy Minerals",
+        "Buy",
+        "Buy"
+      ]
+    },
+    {
+      "s": "NSE:JSWENERGY",
+      "d": [
+        {
+          "description": "JSW Energy Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "jsw-energy",
+            "style": "single"
+          },
+          "name": "JSWENERGY",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        561.7,
+        "stock",
+        ["common"],
+        100,
+        5,
+        "false",
+        0,
+        "INR",
+        -0.7947721653126103,
+        3511240,
+        1.3517394997596794,
+        1037476190876,
+        "INR",
+        44.02348128002759,
+        12.7591,
+        14.127391611581702,
+        0.353450561102766,
+        "Utilities",
+        "india",
+        "Utilities",
+        "Buy",
+        "Buy"
+      ]
+    },
+    {
+      "s": "NSE:JINDALSAW",
+      "d": [
+        {
+          "description": "Jindal Saw Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "jindal-saw-ltd",
+            "style": "single"
+          },
+          "name": "JINDALSAW",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        265.15,
+        "stock",
+        ["common"],
+        100,
+        5,
+        "false",
+        0,
+        "INR",
+        1.1058150619637663,
+        2054097,
+        0.7499779015243764,
+        167647081146,
+        "INR",
+        25.89886597837447,
+        10.2379,
+        -61.96916790490342,
+        0.762921991226397,
+        "Non-energy minerals",
+        "india",
+        "Non-Energy Minerals",
+        "StrongBuy",
+        "Strong buy"
+      ]
+    },
+    {
+      "s": "NSE:JBCHEPHARM",
+      "d": [
+        {
+          "description": "JB Chemicals \u0026 Pharmaceuticals Ltd.",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "jbchemicals-and-pharmaceutical",
+            "style": "single"
+          },
+          "name": "JBCHEPHARM",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        2408.9,
+        "stock",
+        ["common"],
+        10,
+        1,
+        "false",
+        0,
+        "INR",
+        -3.8747007182761335,
+        4779224,
+        9.567326478972486,
+        387307725430,
+        "INR",
+        54.01121076233184,
+        44.6,
+        6.688099971055478,
+        0.912011607420458,
+        "Health technology",
+        "india",
+        "Health Technology",
+        "StrongBuy",
+        "Strong buy"
+      ]
+    },
+    {
+      "s": "NSE:J\u0026KBANK",
+      "d": [
+        {
+          "description": "Jammu \u0026 Kashmir Bank Ltd.",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "jammu-and-kashmir-bank",
+            "style": "single"
+          },
+          "name": "J\u0026KBANK",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        179.82,
+        "stock",
+        ["common"],
+        100,
+        1,
+        "false",
+        0,
+        "INR",
+        -3.8035628310062664,
+        5189606,
+        0.5992642785438487,
+        206581842805,
+        "INR",
+        8.392959659464832,
+        21.4251,
+        13.330335889976192,
+        1.14605543710021,
+        "Finance",
+        "india",
+        "Finance",
+        "StrongBuy",
+        "Strong buy"
+      ]
+    },
+    {
+      "s": "NSE:IPCALAB",
+      "d": [
+        {
+          "description": "IPCA Laboratories Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "ipca",
+            "style": "single"
+          },
+          "name": "IPCALAB",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        1788.5,
+        "stock",
+        ["common"],
+        10,
+        1,
+        "false",
+        0,
+        "INR",
+        -0.5836575875486382,
+        193000,
+        0.6484779248706404,
+        456282227150,
+        "INR",
+        39.76353093929531,
+        44.9784,
+        54.69040183791667,
+        0.22237046920169,
+        "Health technology",
+        "india",
+        "Health Technology",
+        "StrongBuy",
+        "Strong buy"
+      ]
+    },
+    {
+      "s": "NSE:INDUSINDBK",
+      "d": [
+        {
+          "description": "IndusInd Bank Ltd.",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "indusind-bank",
+            "style": "single"
+          },
+          "name": "INDUSINDBK",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        1069.3,
+        "stock",
+        ["common"],
+        10,
+        1,
+        "false",
+        0,
+        "INR",
+        0.5500963844092256,
+        5069159,
+        2.5570316442035113,
+        829231025428,
+        "INR",
+        94.15504367427444,
+        11.3568,
+        -65.62337300674407,
+        0.140937705534154,
+        "Finance",
+        "india",
+        "Finance",
+        "Neutral",
+        "Neutral"
+      ]
+    },
+    {
+      "s": "NSE:IKS",
+      "d": [
+        {
+          "description": "Inventurus Knowledge Solutions Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "inventurus-knowledge-solutions",
+            "style": "single"
+          },
+          "name": "IKS",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        1815.6,
+        "stock",
+        ["common"],
+        10,
+        1,
+        "false",
+        0,
+        "INR",
+        -3.569152326322501,
+        125663,
+        0.7637040769009645,
+        315022935931,
+        "INR",
+        43.003315963998105,
+        42.22,
+        null,
+        0,
+        "Commercial services",
+        "india",
+        "Commercial Services",
+        "StrongBuy",
+        "Strong buy"
+      ]
+    },
+    {
+      "s": "NSE:IFCI",
+      "d": [
+        {
+          "description": "IFCI Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "ifci",
+            "style": "single"
+          },
+          "name": "IFCI",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        71.47,
+        "stock",
+        ["common"],
+        100,
+        1,
+        "false",
+        0,
+        "INR",
+        -1.9212295869356466,
+        9004898,
+        0.39982928761082753,
+        196631060016,
+        "INR",
+        106.3225230586135,
+        0.6722,
+        6.970082749840876,
+        0,
+        "Finance",
+        "india",
+        "Finance",
+        "NoRating",
+        "No rating"
+      ]
+    },
+    {
+      "s": "NSE:IDEA",
+      "d": [
+        {
+          "description": "Vodafone Idea Ltd",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "vodafone-idea",
+            "style": "single"
+          },
+          "name": "IDEA",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        13.54,
+        "stock",
+        ["common"],
+        100,
+        1,
+        "false",
+        0,
+        "INR",
+        0.37064492216455847,
+        356889740,
+        1.2373338168187447,
+        1462630921875,
+        "INR",
+        4.241456003508442,
+        3.1923,
+        null,
+        0,
+        "Communications",
+        "india",
+        "Communications",
+        "Neutral",
+        "Neutral"
+      ]
+    },
+    {
+      "s": "NSE:HSCL",
+      "d": [
+        {
+          "description": "Himadri Speciality Chemical Ltd.",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "himadri-speciality",
+            "style": "single"
+          },
+          "name": "HSCL",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        768.25,
+        "stock",
+        ["common"],
+        100,
+        5,
+        "false",
+        0,
+        "INR",
+        -4.07666375327756,
+        21308321,
+        1.8509677236936326,
+        404036903485,
+        "INR",
+        48.260850446330416,
+        15.9187,
+        29.000810372771475,
+        0.0999000999000999,
+        "Process industries",
+        "india",
+        "Process Industries",
+        "Neutral",
+        "Neutral"
+      ]
+    },
+    {
+      "s": "NSE:HONASA",
+      "d": [
+        {
+          "description": "Honasa Consumer Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "honasa-consumer-limited",
+            "style": "single"
+          },
+          "name": "HONASA",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        456.65,
+        "stock",
+        ["common"],
+        100,
+        5,
+        "false",
+        0,
+        "INR",
+        1.2303258700953124,
+        667174,
+        0.6653634130803259,
+        146596793460,
+        "INR",
+        74.58067255712163,
+        6.1229,
+        174.82831365860224,
+        0,
+        "Retail trade",
+        "india",
+        "Retail Trade",
+        "Buy",
+        "Buy"
+      ]
+    },
+    {
+      "s": "NSE:HFCL",
+      "d": [
+        {
+          "description": "HFCL Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "himachal-futuristics",
+            "style": "single"
+          },
+          "name": "HFCL",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        217.9,
+        "stock",
+        ["common"],
+        100,
+        1,
+        "false",
+        0,
+        "INR",
+        -0.03211451117125897,
+        55935312,
+        3.1425498858682364,
+        332906052246,
+        "INR",
+        102.44475787494125,
+        2.127,
+        72.870611183355,
+        0.0459770114942529,
+        "Electronic technology",
+        "india",
+        "Electronic Technology",
+        "StrongBuy",
+        "Strong buy"
+      ]
+    },
+    {
+      "s": "NSE:GVT\u0026D",
+      "d": [
+        {
+          "description": "GE Vernova T\u0026D India Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "ge-t-and-d-india-ltd",
+            "style": "single"
+          },
+          "name": "GVT\u0026D",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        4481.5,
+        "stock",
+        ["common"],
+        10,
+        1,
+        "false",
+        0,
+        "INR",
+        -0.12925367147282735,
+        614306,
+        0.9185463812796005,
+        1149380162630,
+        "INR",
+        93.04165126872148,
+        48.1666,
+        102.73332603772948,
+        0.111384622239054,
+        "Producer manufacturing",
+        "india",
+        "Producer Manufacturing",
+        "Buy",
+        "Buy"
+      ]
+    },
+    {
+      "s": "NSE:GRASIM",
+      "d": [
+        {
+          "description": "Grasim Industries Ltd.",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "grasim",
+            "style": "single"
+          },
+          "name": "GRASIM",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        3166.3,
+        "stock",
+        ["common"],
+        10,
+        1,
+        "false",
+        0,
+        "INR",
+        -0.42455500345933705,
+        396629,
+        0.6067000424169499,
+        2161864169189,
+        "INR",
+        43.279942481130036,
+        73.1586,
+        23.8511049639579,
+        0.314811899889816,
+        "Non-energy minerals",
+        "india",
+        "Non-Energy Minerals",
+        "StrongBuy",
+        "Strong buy"
+      ]
+    },
+    {
+      "s": "NSE:GRANULES",
+      "d": [
+        {
+          "description": "Granules India Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "granules",
+            "style": "single"
+          },
+          "name": "GRANULES",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        853.8,
+        "stock",
+        ["common"],
+        100,
+        5,
+        "false",
+        0,
+        "INR",
+        -2.5008564576910004,
+        1607330,
+        1.1858560185330351,
+        216933817319,
+        "INR",
+        31.713839982170715,
+        26.922,
+        36.162249645964,
+        0.171340453481067,
+        "Health technology",
+        "india",
+        "Health Technology",
+        "StrongBuy",
+        "Strong buy"
+      ]
+    },
+    {
+      "s": "NSE:GMRAIRPORT",
+      "d": [
+        {
+          "description": "GMR Airports Ltd",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "gmr",
+            "style": "single"
+          },
+          "name": "GMRAIRPORT",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        109.83,
+        "stock",
+        ["common"],
+        100,
+        1,
+        "false",
+        0,
+        "INR",
+        -1.4800861141011892,
+        18683019,
+        1.0005761541174687,
+        1177325777832,
+        "INR",
+        999.3630573248407,
+        0.1099,
+        null,
+        0,
+        "Transportation",
+        "india",
+        "Transportation",
+        "StrongBuy",
+        "Strong buy"
+      ]
+    },
+    {
+      "s": "NSE:GLENMARK",
+      "d": [
+        {
+          "description": "Glenmark Pharmaceuticals Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "glenmark",
+            "style": "single"
+          },
+          "name": "GLENMARK",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        2199.9,
+        "stock",
+        ["common"],
+        10,
+        1,
+        "false",
+        0,
+        "INR",
+        -1.8821640426385895,
+        942175,
+        1.8884634510891622,
+        632665958660,
+        "INR",
+        45.60238304011741,
+        48.2409,
+        30.008004074801736,
+        0,
+        "Health technology",
+        "india",
+        "Health Technology",
+        "StrongBuy",
+        "Strong buy"
+      ]
+    },
+    {
+      "s": "NSE:GLAND",
+      "d": [
+        {
+          "description": "Gland Pharma Ltd.",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "gland-pharma",
+            "style": "single"
+          },
+          "name": "GLAND",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        2439.1,
+        "stock",
+        ["common"],
+        10,
+        1,
+        "false",
+        0,
+        "INR",
+        -1.7442797292942385,
+        671215,
+        1.3963997325430009,
+        409817612717,
+        "INR",
+        39.13329482736491,
+        62.328,
+        47.00450721366458,
+        0.724535592810997,
+        "Health technology",
+        "india",
+        "Health Technology",
+        "Buy",
+        "Buy"
+      ]
+    },
+    {
+      "s": "NSE:GESHIP",
+      "d": [
+        {
+          "description": "Great Eastern Shipping Co. Ltd.",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "great-eastern-shipping",
+            "style": "single"
+          },
+          "name": "GESHIP",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        1435.2,
+        "stock",
+        ["common"],
+        10,
+        1,
+        "false",
+        0,
+        "INR",
+        1.8667045212577154,
+        436604,
+        0.9791230716823204,
+        201144642359,
+        "INR",
+        6.977490398172007,
+        205.69,
+        25.520229450173915,
+        2.49130527361772,
+        "Transportation",
+        "india",
+        "Transportation",
+        "StrongBuy",
+        "Strong buy"
+      ]
+    },
+    {
+      "s": "NSE:FINCABLES",
+      "d": [
+        {
+          "description": "Finolex Cables Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "finolex-cables",
+            "style": "single"
+          },
+          "name": "FINCABLES",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        1014.9,
+        "stock",
+        ["common"],
+        10,
+        1,
+        "false",
+        0,
+        "INR",
+        0.8646392367322531,
+        296476,
+        1.5639790425668845,
+        154269920493,
+        "INR",
+        21.7498457001783,
+        46.6624,
+        1.8382762150235414,
+        0.793100029741251,
+        "Producer manufacturing",
+        "india",
+        "Producer Manufacturing",
+        "Buy",
+        "Buy"
+      ]
+    },
+    {
+      "s": "NSE:FEDERALBNK",
+      "d": [
+        {
+          "description": "Federal Bank Ltd. (India)",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "fed-bank",
+            "style": "single"
+          },
+          "name": "FEDERALBNK",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        353.25,
+        "stock",
+        ["common"],
+        100,
+        5,
+        "false",
+        0,
+        "INR",
+        -0.7864064035950038,
+        4288304,
+        0.44802404113797795,
+        870050207637,
+        "INR",
+        18.90048154093098,
+        18.69,
+        14.38188494492045,
+        0.33698399326032,
+        "Finance",
+        "india",
+        "Finance",
+        "Buy",
+        "Buy"
+      ]
+    },
+    {
+      "s": "NSE:ENGINERSIN",
+      "d": [
+        {
+          "description": "Engineers India Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "engineers-india",
+            "style": "single"
+          },
+          "name": "ENGINERSIN",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        225.39,
+        "stock",
+        ["common"],
+        100,
+        1,
+        "false",
+        0,
+        "INR",
+        -1.1967385586533483,
+        789212,
+        0.45416562003570093,
+        128173761548,
+        "INR",
+        18.330649490069778,
+        12.2958,
+        19.204257918157232,
+        1.97325147993861,
+        "Industrial services",
+        "india",
+        "Industrial Services",
+        "StrongBuy",
+        "Strong buy"
+      ]
+    },
+    {
+      "s": "NSE:EMCURE",
+      "d": [
+        {
+          "description": "Emcure Pharmaceuticals Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "emcure-pharmaceuticals-l",
+            "style": "single"
+          },
+          "name": "EMCURE",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        1889.2,
+        "stock",
+        ["common"],
+        10,
+        1,
+        "false",
+        0,
+        "INR",
+        -1.8342426604312785,
+        110499,
+        0.7642853486901897,
+        364641115886,
+        "INR",
+        38.73565763682143,
+        48.7716,
+        34.07705122636479,
+        0.15605493133583,
+        "Health technology",
+        "india",
+        "Health Technology",
+        "StrongBuy",
+        "Strong buy"
+      ]
+    },
+    {
+      "s": "NSE:ELGIEQUIP",
+      "d": [
+        {
+          "description": "ELGI Equipments Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "elgi",
+            "style": "single"
+          },
+          "name": "ELGIEQUIP",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        583.2,
+        "stock",
+        ["common"],
+        100,
+        5,
+        "false",
+        0,
+        "INR",
+        -2.9617304492512404,
+        179052,
+        0.6088356865876068,
+        190414781196,
+        "INR",
+        42.933494309397965,
+        13.5838,
+        22.693811928138512,
+        0.36614795706083,
+        "Producer manufacturing",
+        "india",
+        "Producer Manufacturing",
+        "Buy",
+        "Buy"
+      ]
+    },
+    {
+      "s": "NSE:EICHERMOT",
+      "d": [
+        {
+          "description": "Eicher Motors Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "eicher-motors",
+            "style": "single"
+          },
+          "name": "EICHERMOT",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        7632,
+        "stock",
+        ["common"],
+        10,
+        5,
+        "false",
+        0,
+        "INR",
+        -0.7477729371220495,
+        409800,
+        0.6994617148828146,
+        2110405620232,
+        "INR",
+        38.01932848460695,
+        200.74,
+        16.465537247621253,
+        0.910480278346828,
+        "Consumer durables",
+        "india",
+        "Consumer Durables",
+        "Buy",
+        "Buy"
+      ]
+    },
+    {
+      "s": "NSE:DIVISLAB",
+      "d": [
+        {
+          "description": "Divi's Laboratories Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "divis",
+            "style": "single"
+          },
+          "name": "DIVISLAB",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        7386.5,
+        "stock",
+        ["common"],
+        10,
+        5,
+        "false",
+        0,
+        "INR",
+        0.7708049113233288,
+        371324,
+        0.7786279294427939,
+        1945897816916,
+        "INR",
+        76.35840743642916,
+        96.7346,
+        17.206751699011193,
+        0.409274152290912,
+        "Health technology",
+        "india",
+        "Health Technology",
+        "Neutral",
+        "Neutral"
+      ]
+    },
+    {
+      "s": "NSE:DATAPATTNS",
+      "d": [
+        {
+          "description": "Data Patterns (India) Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "data-patterns-india-ltd",
+            "style": "single"
+          },
+          "name": "DATAPATTNS",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        4782.8,
+        "stock",
+        ["common"],
+        10,
+        1,
+        "false",
+        0,
+        "INR",
+        12.698225688635468,
+        6972637,
+        12.57678406451308,
+        237442015486,
+        "INR",
+        98.66976943770527,
+        48.4728,
+        22.34334419476884,
+        0.186265841438255,
+        "Electronic technology",
+        "india",
+        "Electronic Technology",
+        "Buy",
+        "Buy"
+      ]
+    },
+    {
+      "s": "NSE:CUMMINSIND",
+      "d": [
+        {
+          "description": "Cummins India Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "cummins",
+            "style": "single"
+          },
+          "name": "CUMMINSIND",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        5586,
+        "stock",
+        ["common"],
+        10,
+        5,
+        "false",
+        0,
+        "INR",
+        0.05373455131649651,
+        322364,
+        0.7659396317994556,
+        1547635415223,
+        "INR",
+        65.56322637740287,
+        85.2002,
+        18.09103244862288,
+        0.958249001450807,
+        "Producer manufacturing",
+        "india",
+        "Producer Manufacturing",
+        "Neutral",
+        "Neutral"
+      ]
+    },
+    {
+      "s": "NSE:CRAFTSMAN",
+      "d": [
+        {
+          "description": "Craftsman Automation Ltd.",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "craftsman-automation",
+            "style": "single"
+          },
+          "name": "CRAFTSMAN",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        9400,
+        "stock",
+        ["common"],
+        10,
+        5,
+        "false",
+        0,
+        "INR",
+        -0.03722018397405221,
+        46412,
+        0.9972882492232188,
+        245681677696,
+        "INR",
+        58.39800601872215,
+        160.9644,
+        91.43080386609249,
+        0.0532282961622399,
+        "Producer manufacturing",
+        "india",
+        "Producer Manufacturing",
+        "Buy",
+        "Buy"
+      ]
+    },
+    {
+      "s": "NSE:CPPLUS",
+      "d": [
+        {
+          "description": "Aditya Infotech Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "aditya-infotech-ltd",
+            "style": "single"
+          },
+          "name": "CPPLUS",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        3446.3,
+        "stock",
+        ["common"],
+        10,
+        1,
+        "false",
+        0,
+        "INR",
+        -1.2860907424381198,
+        164064,
+        0.8836198771385761,
+        411233375254,
+        "INR",
+        109.35913383428108,
+        31.5136,
+        null,
+        0,
+        "Consumer durables",
+        "india",
+        "Consumer Durables",
+        "StrongBuy",
+        "Strong buy"
+      ]
+    },
+    {
+      "s": "NSE:CIEINDIA",
+      "d": [
+        {
+          "description": "CIE Automotive India Ltd",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "mahindra-cie-automotive",
+            "style": "single"
+          },
+          "name": "CIEINDIA",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        472.5,
+        "stock",
+        ["common"],
+        100,
+        5,
+        "false",
+        0,
+        "INR",
+        -0.04231013327691742,
+        223736,
+        1.2099554059593558,
+        179172840700,
+        "INR",
+        20.57631089608201,
+        22.9633,
+        8.427414594990205,
+        1.48210882913403,
+        "Producer manufacturing",
+        "india",
+        "Producer Manufacturing",
+        "Buy",
+        "Buy"
+      ]
+    },
+    {
+      "s": "NSE:CHENNPETRO",
+      "d": [
+        {
+          "description": "Chennai Petroleum Corporation Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "chennai-petro",
+            "style": "single"
+          },
+          "name": "CHENNPETRO",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        1307.8,
+        "stock",
+        ["common"],
+        10,
+        1,
+        "false",
+        0,
+        "INR",
+        3.950401398934906,
+        2966118,
+        1.436713078499829,
+        187583673498,
+        "INR",
+        6.2771065600995275,
+        208.3444,
+        1349.4229284208623,
+        1.03199174406605,
+        "Energy minerals",
+        "india",
+        "Energy Minerals",
+        "StrongBuy",
+        "Strong buy"
+      ]
+    },
+    {
+      "s": "NSE:CGPOWER",
+      "d": [
+        {
+          "description": "CG Power \u0026 Industrial Solutions Ltd",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "cg-power-and-industrial-solutions",
+            "style": "single"
+          },
+          "name": "CGPOWER",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        912.85,
+        "stock",
+        ["common"],
+        100,
+        5,
+        "false",
+        0,
+        "INR",
+        -0.21861507350931847,
+        2122173,
+        0.6222543104384731,
+        1438113512940,
+        "INR",
+        118.38743564138146,
+        7.7107,
+        21.037595165214668,
+        0.142372138867594,
+        "Producer manufacturing",
+        "india",
+        "Producer Manufacturing",
+        "Buy",
+        "Buy"
+      ]
+    },
+    {
+      "s": "NSE:CEMPRO",
+      "d": [
+        {
+          "description": "Cemindia Projects Ltd",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "itd-cementation",
+            "style": "single"
+          },
+          "name": "CEMPRO",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        1596.6,
+        "stock",
+        ["common"],
+        10,
+        1,
+        "false",
+        0,
+        "INR",
+        -2.622590875823372,
+        732933,
+        1.1927916251538322,
+        281680090469,
+        "INR",
+        45.87047895951067,
+        34.8067,
+        60.38845241112366,
+        0.182960297615417,
+        "Industrial services",
+        "india",
+        "Industrial Services",
+        "StrongBuy",
+        "Strong buy"
+      ]
+    },
+    {
+      "s": "NSE:CCL",
+      "d": [
+        {
+          "description": "CCL Products (India) Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "ccl-products-ind",
+            "style": "single"
+          },
+          "name": "CCL",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        1203.2,
+        "stock",
+        ["common"],
+        10,
+        1,
+        "false",
+        0,
+        "INR",
+        -0.1659475605708596,
+        81454,
+        0.45944089155922463,
+        160974594797,
+        "INR",
+        41.35318964658008,
+        29.0957,
+        25.09437207102627,
+        0.642860105346108,
+        "Consumer non-durables",
+        "india",
+        "Consumer Non-Durables",
+        "Buy",
+        "Buy"
+      ]
+    },
+    {
+      "s": "NSE:CARBORUNIV",
+      "d": [
+        {
+          "description": "Carborundum Universal Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "carborundum-unvrsl",
+            "style": "single"
+          },
+          "name": "CARBORUNIV",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        1068.9,
+        "stock",
+        ["common"],
+        10,
+        1,
+        "false",
+        0,
+        "INR",
+        -1.4111787493082415,
+        89071,
+        0.5179651704753282,
+        206790227961,
+        "INR",
+        104.52767455505574,
+        10.226,
+        -33.3389829403597,
+        0.368476808990834,
+        "Process industries",
+        "india",
+        "Process Industries",
+        "Sell",
+        "Sell"
+      ]
+    },
+    {
+      "s": "NSE:BSE",
+      "d": [
+        {
+          "description": "BSE Ltd.",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "bse",
+            "style": "single"
+          },
+          "name": "BSE",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        3632.2,
+        "stock",
+        ["common"],
+        10,
+        1,
+        "false",
+        0,
+        "INR",
+        -0.8679039301310093,
+        1588231,
+        0.6041797527879524,
+        1492343800781,
+        "INR",
+        59.4506032299934,
+        61.0961,
+        87.14154439917911,
+        0.16375518558952,
+        "Finance",
+        "india",
+        "Finance",
+        "Buy",
+        "Buy"
+      ]
+    },
+    {
+      "s": "NSE:BIOCON",
+      "d": [
+        {
+          "description": "Biocon Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "biocon",
+            "style": "single"
+          },
+          "name": "BIOCON",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        437.95,
+        "stock",
+        ["common"],
+        100,
+        5,
+        "false",
+        0,
+        "INR",
+        -0.5337270043152448,
+        6102889,
+        0.6284618031618949,
+        713234544102,
+        "INR",
+        159.1388081395349,
+        2.752,
+        -67.39297858979371,
+        0.113520263367011,
+        "Health technology",
+        "india",
+        "Health Technology",
+        "Buy",
+        "Buy"
+      ]
+    },
+    {
+      "s": "NSE:BHEL",
+      "d": [
+        {
+          "description": "Bharat Heavy Electricals Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "bharat-heavy-electricals",
+            "style": "single"
+          },
+          "name": "BHEL",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        416.45,
+        "stock",
+        ["common"],
+        100,
+        5,
+        "false",
+        0,
+        "INR",
+        0.7621582385676209,
+        11711567,
+        0.5710376082344487,
+        1439484919030,
+        "INR",
+        59.61464133873485,
+        6.9857,
+        739.324762705755,
+        0.120948234155781,
+        "Producer manufacturing",
+        "india",
+        "Producer Manufacturing",
+        "Neutral",
+        "Neutral"
+      ]
+    },
+    {
+      "s": "NSE:BHARATFORG",
+      "d": [
+        {
+          "description": "Bharat Forge Ltd",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "bharat-forge",
+            "style": "single"
+          },
+          "name": "BHARATFORG",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        2185.5,
+        "stock",
+        ["common"],
+        10,
+        1,
+        "false",
+        0,
+        "INR",
+        -0.740303388136987,
+        796312,
+        0.9691944901703641,
+        1053133642192,
+        "INR",
+        96.78490766573668,
+        22.581,
+        12.757287952781857,
+        0.363174142001089,
+        "Producer manufacturing",
+        "india",
+        "Producer Manufacturing",
+        "Neutral",
+        "Neutral"
+      ]
+    },
+    {
+      "s": "NSE:BELRISE",
+      "d": [
+        {
+          "description": "Belrise Industries Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "belrise-industries-limited",
+            "style": "single"
+          },
+          "name": "BELRISE",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        232.3,
+        "stock",
+        ["common"],
+        100,
+        1,
+        "false",
+        0,
+        "INR",
+        -1.8837641493495438,
+        5002956,
+        1.1258273570532669,
+        210723399981,
+        "INR",
+        41.11504424778761,
+        5.65,
+        -4.475290378210214,
+        0.232263513513514,
+        "Producer manufacturing",
+        "india",
+        "Producer Manufacturing",
+        "StrongBuy",
+        "Strong buy"
+      ]
+    },
+    {
+      "s": "NSE:BALRAMCHIN",
+      "d": [
+        {
+          "description": "Balrampur Chini Mills Ltd",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "balrampur-chini-mills",
+            "style": "single"
+          },
+          "name": "BALRAMCHIN",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        624.75,
+        "stock",
+        ["common"],
+        100,
+        5,
+        "false",
+        0,
+        "INR",
+        1.1167759164845799,
+        455682,
+        0.4580736483252711,
+        130446933154,
+        "INR",
+        33.58870967741935,
+        18.6,
+        -13.769123783031983,
+        0.566847518017653,
+        "Process industries",
+        "india",
+        "Process Industries",
+        "StrongBuy",
+        "Strong buy"
+      ]
+    },
+    {
+      "s": "NSE:BAJAJ_AUTO",
+      "d": [
+        {
+          "description": "Bajaj Auto Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "bajaj-auto",
+            "style": "single"
+          },
+          "name": "BAJAJ_AUTO",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        10998.5,
+        "stock",
+        ["common"],
+        1,
+        1,
+        "false",
+        0,
+        "INR",
+        5.719229105589465,
+        1448948,
+        2.862130247995005,
+        2909041289091,
+        "INR",
+        26.156793310557966,
+        420.4835,
+        54.740280052256786,
+        1.44118523073376,
+        "Consumer durables",
+        "india",
+        "Consumer Durables",
+        "Buy",
+        "Buy"
+      ]
+    },
+    {
+      "s": "NSE:AUROPHARMA",
+      "d": [
+        {
+          "description": "Aurobindo Pharma Ltd",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "aurobindo",
+            "style": "single"
+          },
+          "name": "AUROPHARMA",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        1533.6,
+        "stock",
+        ["common"],
+        10,
+        1,
+        "false",
+        0,
+        "INR",
+        -2.9182756219535437,
+        2357447,
+        2.985919820772376,
+        909355924417,
+        "INR",
+        25.415428570481577,
+        60.3413,
+        0.7708789456192953,
+        0.253092473662564,
+        "Health technology",
+        "india",
+        "Health Technology",
+        "Buy",
+        "Buy"
+      ]
+    },
+    {
+      "s": "NSE:ATHERENERG",
+      "d": [
+        {
+          "description": "Ather Energy Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "ather-energy-limited",
+            "style": "single"
+          },
+          "name": "ATHERENERG",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        1268.2,
+        "stock",
+        ["common"],
+        10,
+        1,
+        "false",
+        0,
+        "INR",
+        -1.567836075752875,
+        2691508,
+        0.41755318563045446,
+        494009943570,
+        "INR",
+        null,
+        -13.6762,
+        null,
+        0,
+        "Consumer durables",
+        "india",
+        "Consumer Durables",
+        "StrongBuy",
+        "Strong buy"
+      ]
+    },
+    {
+      "s": "NSE:ASTERDM",
+      "d": [
+        {
+          "description": "Aster DM Quality Care Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "aster-dm-healthcare",
+            "style": "single"
+          },
+          "name": "ASTERDM",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        799.5,
+        "stock",
+        ["common"],
+        100,
+        5,
+        "false",
+        0,
+        "INR",
+        -1.714917942098475,
+        396292,
+        0.7797218640745982,
+        421828251434,
+        "INR",
+        106.2472590997887,
+        7.5249,
+        -93.02322347120801,
+        0.982619910335933,
+        "Health services",
+        "india",
+        "Health Services",
+        "StrongBuy",
+        "Strong buy"
+      ]
+    },
+    {
+      "s": "NSE:APOLLOHOSP",
+      "d": [
+        {
+          "description": "Apollo Hospitals Enterprise Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "apollo-hospitals",
+            "style": "single"
+          },
+          "name": "APOLLOHOSP",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        8938,
+        "stock",
+        ["common"],
+        10,
+        5,
+        "false",
+        0,
+        "INR",
+        0.1288298885341399,
+        158324,
+        0.47481336485480197,
+        1282645316799,
+        "INR",
+        66.21559852218755,
+        134.9833,
+        34.231469539111444,
+        0.224200165908123,
+        "Health services",
+        "india",
+        "Health Services",
+        "StrongBuy",
+        "Strong buy"
+      ]
+    },
+    {
+      "s": "NSE:APARINDS",
+      "d": [
+        {
+          "description": "APAR Industries Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "apar-industries",
+            "style": "single"
+          },
+          "name": "APARINDS",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        13630,
+        "stock",
+        ["common"],
+        1,
+        1,
+        "false",
+        0,
+        "INR",
+        -1.5244563254100139,
+        59083,
+        0.6660196188505157,
+        555161676853,
+        "INR",
+        56.132114323367105,
+        242.82,
+        18.757492036616163,
+        0.369061101321745,
+        "Electronic technology",
+        "india",
+        "Electronic Technology",
+        "Buy",
+        "Buy"
+      ]
+    },
+    {
+      "s": "NSE:ANTHEM",
+      "d": [
+        {
+          "description": "Anthem Biosciences Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "anthem-biosciences-ltd",
+            "style": "single"
+          },
+          "name": "ANTHEM",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        778.9,
+        "stock",
+        ["common"],
+        100,
+        5,
+        "false",
+        0,
+        "INR",
+        -1.5981302507737956,
+        4415918,
+        5.003687682054161,
+        446031725823,
+        "INR",
+        76.73891625615764,
+        10.15,
+        null,
+        0.252620942276115,
+        "Health technology",
+        "india",
+        "Health Technology",
+        "StrongBuy",
+        "Strong buy"
+      ]
+    },
+    {
+      "s": "NSE:ANGELONE",
+      "d": [
+        {
+          "description": "Angel One Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "angel-broking",
+            "style": "single"
+          },
+          "name": "ANGELONE",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        312.4,
+        "stock",
+        ["common"],
+        100,
+        5,
+        "false",
+        0,
+        "INR",
+        -2.951227089158124,
+        7825074,
+        0.9404654352474939,
+        293879048004,
+        "INR",
+        28.27149321266968,
+        11.05,
+        2.3053420979538983,
+        2.06714330121231,
+        "Finance",
+        "india",
+        "Finance",
+        "Buy",
+        "Buy"
+      ]
+    },
+    {
+      "s": "NSE:ANANDRATHI",
+      "d": [
+        {
+          "description": "Anand Rathi Wealth Ltd.",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "anand-rathi-wealth-limited",
+            "style": "single"
+          },
+          "name": "ANANDRATHI",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        2079.7,
+        "stock",
+        ["common"],
+        10,
+        1,
+        "false",
+        0,
+        "INR",
+        -0.5499234889058914,
+        214458,
+        0.5175545692607946,
+        347208894511,
+        "INR",
+        74.8028947141254,
+        27.8024,
+        44.081507853837266,
+        0.310841184065803,
+        "Finance",
+        "india",
+        "Finance",
+        "Sell",
+        "Sell"
+      ]
+    },
+    {
+      "s": "NSE:AJANTPHARM",
+      "d": [
+        {
+          "description": "Ajanta Pharma Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "ajanta-pharma",
+            "style": "single"
+          },
+          "name": "AJANTPHARM",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        3458.9,
+        "stock",
+        ["common"],
+        10,
+        1,
+        "false",
+        0,
+        "INR",
+        -3.255670852795572,
+        97050,
+        0.9957604511241166,
+        446982172911,
+        "INR",
+        40.93232303270066,
+        84.5029,
+        15.105396146485317,
+        0.782625709254549,
+        "Health technology",
+        "india",
+        "Health Technology",
+        "Buy",
+        "Buy"
+      ]
+    },
+    {
+      "s": "NSE:AIAENG",
+      "d": [
+        {
+          "description": "AIA Engineering Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "aia-engineering",
+            "style": "single"
+          },
+          "name": "AIAENG",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        4626.5,
+        "stock",
+        ["common"],
+        10,
+        1,
+        "false",
+        0,
+        "INR",
+        -1.1748371248531453,
+        38515,
+        0.47754017524478354,
+        436548023915,
+        "INR",
+        34.07643757784402,
+        135.7683,
+        20.064467918588264,
+        0.342030162784981,
+        "Producer manufacturing",
+        "india",
+        "Producer Manufacturing",
+        "Buy",
+        "Buy"
+      ]
+    },
+    {
+      "s": "NSE:AEGISLOG",
+      "d": [
+        {
+          "description": "Aegis Logistics Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "aegis-logistics",
+            "style": "single"
+          },
+          "name": "AEGISLOG",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        1351.3,
+        "stock",
+        ["common"],
+        10,
+        1,
+        "false",
+        0,
+        "INR",
+        2.877807384849635,
+        1774539,
+        0.7455609846028769,
+        461494817139,
+        "INR",
+        52.80929174661857,
+        25.5883,
+        35.392128850651346,
+        0,
+        "Distribution services",
+        "india",
+        "Distribution Services",
+        "Buy",
+        "Buy"
+      ]
+    },
+    {
+      "s": "NSE:ADANIPOWER",
+      "d": [
+        {
+          "description": "Adani Power Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "adani",
+            "style": "single"
+          },
+          "name": "ADANIPOWER",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        216.95,
+        "stock",
+        ["common"],
+        100,
+        1,
+        "false",
+        0,
+        "INR",
+        -1.5519353814040096,
+        45613497,
+        1.4994760733902714,
+        4248418005923,
+        "INR",
+        32.59856953960813,
+        6.6552,
+        -0.8063434337412254,
+        0,
+        "Utilities",
+        "india",
+        "Utilities",
+        "StrongBuy",
+        "Strong buy"
+      ]
+    },
+    {
+      "s": "NSE:ADANIPORTS",
+      "d": [
+        {
+          "description": "Adani Ports \u0026 Special Economic Zone Ltd",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "adani",
+            "style": "single"
+          },
+          "name": "ADANIPORTS",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        1819.4,
+        "stock",
+        ["common"],
+        10,
+        1,
+        "false",
+        0,
+        "INR",
+        -1.4676414838884326,
+        1436881,
+        1.125781962241421,
+        4249767657127.0005,
+        "INR",
+        31.247209150551303,
+        58.226,
+        13.390457643622195,
+        0.406603236561763,
+        "Transportation",
+        "india",
+        "Transportation",
+        "StrongBuy",
+        "Strong buy"
+      ]
+    },
+    {
+      "s": "NSE:ADANIGREEN",
+      "d": [
+        {
+          "description": "Adani Green Energy Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "adani",
+            "style": "single"
+          },
+          "name": "ADANIGREEN",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        1472.3,
+        "stock",
+        ["common"],
+        10,
+        1,
+        "false",
+        0,
+        "INR",
+        -4.513911408003122,
+        3809107,
+        1.4055475688289376,
+        2539698502748,
+        "INR",
+        145.92976578683925,
+        10.0891,
+        13.18771315742236,
+        0,
+        "Utilities",
+        "india",
+        "Utilities",
+        "Buy",
+        "Buy"
+      ]
+    },
+    {
+      "s": "NSE:ADANIENT",
+      "d": [
+        {
+          "description": "Adani Enterprises Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "adani",
+            "style": "single"
+          },
+          "name": "ADANIENT",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        3147.7,
+        "stock",
+        ["common"],
+        10,
+        1,
+        "false",
+        0,
+        "INR",
+        -1.0996952273227134,
+        977224,
+        0.6199773991685962,
+        4307444687875,
+        "INR",
+        40.64159937611523,
+        77.4502,
+        29.161809561451328,
+        0.0408464644243005,
+        "Distribution services",
+        "india",
+        "Distribution Services",
+        "StrongBuy",
+        "Strong buy"
+      ]
+    },
+    {
+      "s": "NSE:ADANIENSOL",
+      "d": [
+        {
+          "description": "Adani Energy Solutions Ltd",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "adani-transmiss-in",
+            "style": "single"
+          },
+          "name": "ADANIENSOL",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        1724.4,
+        "stock",
+        ["common"],
+        10,
+        1,
+        "false",
+        0,
+        "INR",
+        -0.9875976113918131,
+        2410451,
+        1.0237623012181,
+        2091853413598,
+        "INR",
+        70.96296296296296,
+        24.3,
+        21.81428084457902,
+        0,
+        "Utilities",
+        "india",
+        "Utilities",
+        "Buy",
+        "Buy"
+      ]
+    },
+    {
+      "s": "NSE:ACUTAAS",
+      "d": [
+        {
+          "description": "Acutaas Chemicals Ltd",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "ami-organics-ltd",
+            "style": "single"
+          },
+          "name": "ACUTAAS",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        3659.6,
+        "stock",
+        ["common"],
+        10,
+        1,
+        "false",
+        0,
+        "INR",
+        -0.47321185749252354,
+        161629,
+        0.5873262048019838,
+        300880479237,
+        "INR",
+        84.3731267579656,
+        43.374,
+        122.2176681848689,
+        0.0408157712139971,
+        "Health technology",
+        "india",
+        "Health Technology",
+        "Buy",
+        "Buy"
+      ]
+    },
+    {
+      "s": "NSE:ACMESOLAR",
+      "d": [
+        {
+          "description": "ACME Solar Holdings Ltd.",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "acme-solar-ltd",
+            "style": "single"
+          },
+          "name": "ACMESOLAR",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        369.6,
+        "stock",
+        ["common"],
+        100,
+        5,
+        "false",
+        0,
+        "INR",
+        -0.9380863039399624,
+        678714,
+        0.37511121290236576,
+        263522741078,
+        "INR",
+        45.294117647058826,
+        8.16,
+        95.67876070118224,
+        0.0536480686695279,
+        "Industrial services",
+        "india",
+        "Industrial Services",
+        "StrongBuy",
+        "Strong buy"
+      ]
+    },
+    {
+      "s": "NSE:ABSLAMC",
+      "d": [
+        {
+          "description": "Aditya Birla Sun Life Amc Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "aditya-birla-sun-life",
+            "style": "single"
+          },
+          "name": "ABSLAMC",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        1002.9,
+        "stock",
+        ["common"],
+        10,
+        1,
+        "false",
+        0,
+        "INR",
+        -3.853897037676152,
+        1218591,
+        3.7104822048697015,
+        301644266627,
+        "INR",
+        28.82004212801053,
+        34.7987,
+        3.4751709782931726,
+        2.30149597238205,
+        "Technology services",
+        "india",
+        "Technology Services",
+        "Buy",
+        "Buy"
+      ]
+    },
+    {
+      "s": "NSE:ABCAPITAL",
+      "d": [
+        {
+          "description": "Aditya Birla Capital Ltd.",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "aditya-birla-capital",
+            "style": "single"
+          },
+          "name": "ABCAPITAL",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        400.6,
+        "stock",
+        ["common"],
+        100,
+        5,
+        "false",
+        0,
+        "INR",
+        -2.0657621317687296,
+        4736082,
+        1.4656741105282352,
+        1119496106834,
+        "INR",
+        28.132022471910112,
+        14.24,
+        12.391475927387532,
+        0,
+        "Finance",
+        "india",
+        "Finance",
+        "StrongBuy",
+        "Strong buy"
+      ]
+    },
+    {
+      "s": "NSE:ABB",
+      "d": [
+        {
+          "description": "ABB India Limited",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "abb",
+            "style": "single"
+          },
+          "name": "ABB",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        7506,
+        "stock",
+        ["common"],
+        10,
+        5,
+        "false",
+        0,
+        "INR",
+        -0.34519383961763145,
+        212131,
+        0.4016794222115006,
+        1596379947154,
+        "INR",
+        53.42409593276507,
+        140.4984,
+        57.780048738306746,
+        0.522476720184247,
+        "Producer manufacturing",
+        "india",
+        "Producer Manufacturing",
+        "Sell",
+        "Sell"
+      ]
+    },
+    {
+      "s": "NSE:AARTIIND",
+      "d": [
+        {
+          "description": "AARTI Industries Ltd",
+          "exchange": "NSE",
+          "kind": "rt",
+          "kind-delay": 900,
+          "logo": {
+            "logoid": "aarti-industries",
+            "style": "single"
+          },
+          "name": "AARTIIND",
+          "type": "stock",
+          "typespecs": ["common"]
+        },
+        495.95,
+        "stock",
+        ["common"],
+        100,
+        5,
+        "false",
+        0,
+        "INR",
+        -0.710710710710713,
+        875805,
+        0.8454249911143039,
+        181290792520,
+        "INR",
+        42.94162467314319,
+        11.5494,
+        26.48975434523094,
+        0.200080032012805,
+        "Process industries",
+        "india",
+        "Process Industries",
+        "Buy",
+        "Buy"
+      ]
+    }
+  ]
+}

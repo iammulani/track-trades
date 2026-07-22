@@ -57,3 +57,4 @@ The files this feature owns under `modules/<feature>/`.
 | Drafts domain | [drafts.spec.md](drafts.spec.md)           | `frontend/src/modules/drafts`      |
 | Trade Detail  | [trade-detail.spec.md](trade-detail.spec.md) | `frontend/src/modules/trade-detail` |
 | Settings      | [settings.spec.md](settings.spec.md)       | `frontend/src/modules/settings`    |
+| Scanner Checklist | [scanner-checklist.spec.md](scanner-checklist.spec.md) | `backend/stock-scanner` (CLI) |
