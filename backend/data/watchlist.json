@@ -1,7 +1,7 @@
 [
   {
     "symbol": "SUNPHARMA",
-    "category": "active",
+    "category": "long-term",
     "side": "long",
     "notes": "",
     "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/SUNPHARMA/857857",
@@ -10,7 +10,7 @@
   },
   {
     "symbol": "VIJAYA",
-    "category": "active",
+    "category": "daily",
     "side": "long",
     "notes": "",
     "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/VIJAYA/1429761",
@@ -46,7 +46,7 @@
   },
   {
     "symbol": "SYRMA",
-    "category": "active",
+    "category": "daily",
     "side": "long",
     "notes": "",
     "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/SYRMA/2763009",
@@ -55,7 +55,7 @@
   },
   {
     "symbol": "SONACOMS",
-    "category": "active",
+    "category": "long-term",
     "side": "long",
     "notes": "",
     "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/SONACOMS/1199105",
@@ -82,7 +82,7 @@
   },
   {
     "symbol": "NYKAA",
-    "category": "active",
+    "category": "long-term",
     "side": "long",
     "notes": "",
     "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/NYKAA/1675521",
@@ -100,7 +100,7 @@
   },
   {
     "symbol": "NIVABUPA",
-    "category": "daily",
+    "category": "long-term",
     "side": "long",
     "notes": "",
     "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/NIVABUPA/6936833",
@@ -109,7 +109,7 @@
   },
   {
     "symbol": "NH",
-    "category": "daily",
+    "category": "long-term",
     "side": "long",
     "notes": "",
     "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/NH/3031041",
