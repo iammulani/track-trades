@@ -20,25 +20,46 @@ It lives entirely in `backend/stock-scanner/` and is run by hand from the consol
 - **Only `s` is consumed.** The `d` columns are position-dependent and change with the
   screen's column config, so reading them would couple this script to one saved screen.
   A ticker is all a checklist row needs.
-- **Outputs**, both written next to the input file:
+- **Outputs are markdown, not JSON**, both written next to the input file. This file is
+  read and ticked by a human far more often than it's parsed, so it's optimised for
+  that: JSON cost 4 lines per stock (~12 visible per screen), markdown costs 1 (~45).
+  It also renders as real clickable checkboxes in VS Code's markdown preview, and a
+  review shows up in git as `- [ ] → - [x]` rather than a reshuffled JSON block.
 
-  ```ts
-  // checklist.json — the current review list, in scanner order
-  interface ChecklistItem {
-    TICKER: string   // "NSE:ZYDUSLIFE"
-    checked: boolean // the review state, owned by the human
-  }
+  `checklist.md` — the current review list, in scanner order:
 
-  // removed.json — running history of everything dropped out of the checklist
-  interface RemovedItem extends ChecklistItem {
-    removedAt: string // ISO timestamp of the run that dropped it
-  }
+  ```markdown
+  # Scanner Checklist
+
+  _124 stocks · 38 reviewed · synced 2026-07-22 from scanner-result.json_
+
+  - [x] NSE:ZYDUSLIFE
+  - [ ] NSE:ZENTEC  strong base, watch for volume
   ```
 
-- **Not under `backend/data/`, so not an endpoint.** Dropping these files there would
-  make them `/checklist` and `/removed` automatically (see "Adding a resource" in
-  [`../CLAUDE.md`](../CLAUDE.md)) — deliberately not done yet, because nothing in the
-  frontend consumes them. That's the move if this ever grows a UI.
+  `removed.md` — history of everything dropped, newest run first, grouped under a
+  `## YYYY-MM-DD` heading per run. The heading **is** the removal date; it isn't
+  repeated on each line:
+
+  ```markdown
+  # Removed from the checklist
+
+  ## 2026-07-22
+  - [x] NSE:AAA  already reviewed, screen dropped it
+  - [ ] NSE:CCC
+  ```
+
+- **Anything after the ticker on a line is a free-text note, preserved verbatim**
+  across syncs — including when a stock is removed and when it comes back. Reviewing a
+  list means writing on it, and a sync that erased your annotations would make the file
+  worse than the JSON it replaced.
+- **Everything outside the `- [ ]` lines is regenerated**, so the title and the summary
+  line are not places to keep notes.
+- **Not under `backend/data/`, so not an endpoint.** JSON files dropped there become
+  resources automatically (see "Adding a resource" in [`../CLAUDE.md`](../CLAUDE.md)) —
+  markdown is not a resource format, so growing a UI later means the checklist moves to
+  `backend/data/checklist.json` and this file stops being the source of truth. That's a
+  deliberate trade: the CLI is optimised for the hand-editing workflow it has now.
 - **`checked` is the only human-authored value in the system.** Everything else is
   derivable from the scanner export, which is why the sync rules below all exist to
   protect it.
@@ -64,27 +85,31 @@ node build-checklist.mjs <scanner-result.json> [--dry-run]
 **The scanner file is the source of truth for membership.** After a run, the checklist
 contains exactly the scanned tickers, in scanner order. Three cases:
 
-| Ticker is…                     | Result                                            |
-| ------------------------------ | ------------------------------------------------- |
-| in the scan, not the checklist | **added** as `{ TICKER, checked: false }`          |
-| in both                        | **left alone** — its `checked` value is preserved  |
-| in the checklist, not the scan | **removed**, and appended to `removed.json`        |
+| Ticker is…                     | Result                                              |
+| ------------------------------ | --------------------------------------------------- |
+| in the scan, not the checklist | **added** as an unticked `- [ ]` line               |
+| in both                        | **left alone** — tick state and note both preserved |
+| in the checklist, not the scan | **removed**, and moved into `removed.md`            |
 
 - **Removal is a move, never a delete.** A ticker leaving the screen isn't a reason to
-  lose that you'd already reviewed it, so it goes to `removed.json` carrying its
-  `checked` state and a `removedAt` stamp.
-- **`removed.json` accumulates** across runs rather than being overwritten — it's a
+  lose that you'd already reviewed it, so it goes to `removed.md` under today's heading,
+  carrying its tick state and note.
+- **`removed.md` accumulates** across runs rather than being overwritten — it's a
   history of what the screen has dropped, not a diff of the last run.
-- **A reappearing ticker is restored, not re-added.** If it's in `removed.json` when it
-  comes back, it moves back into the checklist **with its old `checked` state** and is
-  dropped from the history. Otherwise a stock that briefly fell out of the screen would
-  come back looking unreviewed, and get reviewed twice.
+- **A reappearing ticker is restored, not re-added.** If it's in `removed.md` when it
+  comes back, it moves back into the checklist **with its old tick state and note**, and
+  is dropped from the history. Otherwise a stock that briefly fell out of the screen
+  would come back looking unreviewed, and get reviewed twice.
 - **Re-running the same export is a no-op** — every ticker matches, nothing is written
   that changes meaning. The sync is idempotent, so it's safe to run when unsure.
-- **Duplicate tickers within one export are collapsed**, first occurrence winning.
-- **A missing `checklist.json` is a first run**, not an error. A malformed one — valid
-  JSON that isn't an array — **aborts before writing**, rather than overwriting whatever
-  it actually was.
+- **Duplicate tickers are collapsed, first occurrence winning** — in the export, in
+  `checklist.md`, and in `removed.md`. A repeated line in the checklist is much more
+  likely to be a stray hand-edit than a correction, and the first copy is the one
+  carrying the note; `removed.md` is written newest-first, so first-wins also means the
+  most recent removal is the one that counts.
+- **A missing `checklist.md` is a first run**, not an error. Lines that aren't
+  `- [ ] TICKER` are ignored rather than treated as corruption, so hand-edits that break
+  the shape lose at most the line they broke — never the whole file.
 
 ## File map
 
@@ -92,8 +117,8 @@ contains exactly the scanned tickers, in scanner order. Three cases:
 backend/stock-scanner/
 ├── build-checklist.mjs    # the sync: parse export -> add/restore/remove -> write both files
 ├── scanner-result.json    # raw TradingView export (input; filename is an argument)
-├── checklist.json         # generated — current review list
-└── removed.json           # generated — history of dropped tickers
+├── checklist.md           # generated — current review list
+└── removed.md             # generated — history of dropped tickers, grouped by run date
 ```
 
 Plain `.mjs` run directly by node: no build step, no dependencies, no npm script. It's a
