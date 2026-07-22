@@ -11,13 +11,15 @@ track-trades/
 │   ├── data/            # source of truth — one JSON file per resource
 │   │   └── trades.json  # -> becomes the "trades" endpoint
 │   ├── merge-db.js      # keeps data/*.json <-> db.json in sync, both directions
-│   └── db.json          # what json-server actually serves; gitignored
+│   ├── db.json          # what json-server actually serves; gitignored
+│   └── stock-scanner/   # hand-run CLI: TradingView export -> reviewable checklist.csv
 ├── frontend/            # React UI (Vite + TypeScript)
 │   └── src/
 │       ├── app/         # App shell: router + top-level composition
 │       ├── modules/     # feature modules (one folder per feature)
 │       └── shared/      # cross-cutting: api client, UI primitives, utils
-└── specs/               # feature specs — READ THESE before building a feature
+├── specs/               # feature specs — READ THESE before building a feature
+└── .claude/hooks/       # spec-reminder.mjs — surfaces the right spec on every edit
 ```
 
 ## Run

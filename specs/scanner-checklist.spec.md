@@ -17,6 +17,13 @@ It lives entirely in `backend/stock-scanner/` and is run by hand from the consol
   export, passed by filename as an argument (the filename is an input, not hardcoded).
   Its shape is TradingView's, not ours: `{ totalCount, data: [{ s, d: [...] }] }`, where
   `s` is the ticker (`"NSE:ZYDUSLIFE"`) and `d` is a positional array of screen columns.
+- **Captured by hand from the browser**, since TradingView has no export button for this:
+  run the screener, open dev tools → Network, filter for `/scan?label-product=screener-stock`,
+  and save that response as `scanner-result.json`. The recipe lives in
+  `trading-view-list.md` next to the script. **Check `totalCount` against the number of
+  rows in `data`** — the screener paginates, so a capture that stops short is silently a
+  partial list, and the sync would read every missing ticker as one that dropped off the
+  screen.
 - **Only `s` is consumed.** The `d` columns are position-dependent and change with the
   screen's column config, so reading them would couple this script to one saved screen.
   A ticker is all a checklist row needs.
@@ -126,6 +133,7 @@ contains exactly the scanned tickers, in scanner order. Three cases:
 ```
 backend/stock-scanner/
 ├── build-checklist.mjs    # the sync: parse export -> add/restore/remove -> write both files
+├── trading-view-list.md   # how to capture the export from TradingView's dev-tools network tab
 ├── scanner-result.json    # raw TradingView export (input; filename is an argument)
 ├── checklist.csv          # generated — current review list, the Sheets working copy
 └── removed.csv            # generated — history of dropped tickers, newest first
