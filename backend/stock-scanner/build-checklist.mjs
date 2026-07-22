@@ -1,16 +1,16 @@
 #!/usr/bin/env node
-// Sync checklist.md against a TradingView scanner result.
+// Sync checklist.csv against a TradingView scanner result.
 //
 //   node build-checklist.mjs scanner-result.json
 //   node build-checklist.mjs scanner-result.json --dry-run
 //
 // The scanner file is the source of truth for *which* stocks belong in the list:
-//   - tickers in the scan but not in the checklist  -> added as "- [ ] TICKER"
-//   - tickers in the checklist but not in the scan  -> moved to removed.md
-//   - tickers in both                               -> left alone, tick + note kept
+//   - tickers in the scan but not in the checklist  -> added, status "new"
+//   - tickers in the checklist but not in the scan  -> moved to removed.csv
+//   - tickers in both                               -> left alone, your columns kept
 //
-// removed.md is a running history, grouped by run date. If a stock shows up in a later
-// scan it is pulled back into the checklist with its old tick state and note.
+// The review happens in Google Sheets, so the CSV has to survive that round trip:
+// status / comment / date added are yours and are never rewritten by a sync.
 //
 // See specs/scanner-checklist.spec.md.
 
@@ -28,12 +28,82 @@ if (!inputArg) {
 
 const inputPath = path.resolve(process.cwd(), inputArg);
 const dir = path.dirname(inputPath);
-const checklistPath = path.join(dir, 'checklist.md');
-const removedPath = path.join(dir, 'removed.md');
+const checklistPath = path.join(dir, 'checklist.csv');
+const removedPath = path.join(dir, 'removed.csv');
 
-// "- [x] NSE:FOO  some note" -> checked, ticker, note. Anything else is not an entry.
-const ENTRY = /^\s*[-*]\s*\[([ xX])\]\s+(\S+)[ \t]*(.*)$/;
-const DATE_HEADING = /^##\s+(\d{4}-\d{2}-\d{2})\s*$/;
+const CHECKLIST_HEADER = ['ticker', 'status', 'comment', 'date added'];
+const REMOVED_HEADER = [...CHECKLIST_HEADER, 'date removed'];
+const NEW_STATUS = 'new';
+
+// --- CSV (RFC 4180) -------------------------------------------------------------
+// Hand-rolled to keep the tool dependency-free. A naive split(',') would shred every
+// comment containing a comma, which is most of them.
+
+const parseCsv = (text) => {
+  const rows = [];
+  let row = [];
+  let field = '';
+  let quoted = false;
+  let i = 0;
+
+  const endField = () => {
+    row.push(field);
+    field = '';
+  };
+  const endRow = () => {
+    endField();
+    if (row.some((f) => f !== '')) rows.push(row);
+    row = [];
+  };
+
+  while (i < text.length) {
+    const char = text[i];
+
+    if (quoted) {
+      if (char === '"') {
+        if (text[i + 1] === '"') {
+          field += '"'; // escaped quote
+          i += 2;
+          continue;
+        }
+        quoted = false;
+        i += 1;
+        continue;
+      }
+      field += char;
+      i += 1;
+      continue;
+    }
+
+    if (char === '"' && field === '') {
+      quoted = true;
+      i += 1;
+    } else if (char === ',') {
+      endField();
+      i += 1;
+    } else if (char === '\r') {
+      i += 1; // tolerate CRLF from Sheets/Excel
+    } else if (char === '\n') {
+      endRow();
+      i += 1;
+    } else {
+      field += char;
+      i += 1;
+    }
+  }
+  if (field !== '' || row.length > 0) endRow();
+  return rows;
+};
+
+const escapeField = (value) => {
+  const str = String(value ?? '');
+  return /[",\n\r]/.test(str) ? `"${str.replace(/"/g, '""')}"` : str;
+};
+
+const toCsv = (header, rows) =>
+  [header, ...rows].map((row) => row.map(escapeField).join(',')).join('\n') + '\n';
+
+// --- reading --------------------------------------------------------------------
 
 const readTextOrEmpty = async (file) => {
   try {
@@ -44,57 +114,32 @@ const readTextOrEmpty = async (file) => {
   }
 };
 
-// Lines that don't parse are skipped, never treated as corruption — a broken hand-edit
-// costs one line, not the file.
-const parseEntries = (text) => {
+// Positional, not by header name: a Sheets export can reorder or requote anything, and
+// a row without a ticker is a blank line rather than corruption.
+const parseEntries = (text, withRemovedAt = false) => {
+  const rows = parseCsv(text);
   const entries = [];
-  for (const line of text.split('\n')) {
-    const match = line.match(ENTRY);
-    if (!match) continue;
-    const [, tick, ticker, note] = match;
-    entries.push({ ticker, checked: tick.toLowerCase() === 'x', note: note.trim() });
+  for (const row of rows) {
+    const ticker = (row[0] ?? '').trim();
+    if (!ticker || ticker.toLowerCase() === 'ticker') continue; // header or blank
+    const entry = {
+      ticker,
+      status: (row[1] ?? '').trim(),
+      comment: row[2] ?? '',
+      dateAdded: (row[3] ?? '').trim(),
+    };
+    if (withRemovedAt) entry.dateRemoved = (row[4] ?? '').trim();
+    entries.push(entry);
   }
   return entries;
 };
 
-// removed.md groups entries under "## YYYY-MM-DD" — the heading is the removal date.
-const parseRemoved = (text) => {
-  const groups = new Map();
-  let current = null;
-  for (const line of text.split('\n')) {
-    const heading = line.match(DATE_HEADING);
-    if (heading) {
-      current = heading[1];
-      if (!groups.has(current)) groups.set(current, []);
-      continue;
-    }
-    const match = line.match(ENTRY);
-    if (!match || !current) continue;
-    const [, tick, ticker, note] = match;
-    groups.get(current).push({ ticker, checked: tick.toLowerCase() === 'x', note: note.trim() });
-  }
-  return groups;
-};
-
-const formatEntry = ({ ticker, checked, note }) =>
-  `- [${checked ? 'x' : ' '}] ${ticker}${note ? `  ${note}` : ''}`;
-
-const renderChecklist = (entries, sourceName, today) => {
-  const done = entries.filter((e) => e.checked).length;
-  return [
-    '# Scanner Checklist',
-    '',
-    `_${entries.length} stocks · ${done} reviewed · synced ${today} from ${sourceName}_`,
-    '',
-    ...entries.map(formatEntry),
-    '',
-  ].join('\n');
-};
-
-const renderRemoved = (groups) => {
-  const dates = [...groups.keys()].filter((d) => groups.get(d).length > 0).sort().reverse();
-  const sections = dates.flatMap((date) => [`## ${date}`, '', ...groups.get(date).map(formatEntry), '']);
-  return ['# Removed from the checklist', '', ...sections].join('\n');
+// First occurrence wins everywhere: a duplicated row is far more likely to be a stray
+// edit than a correction, and the first copy is the annotated one. removed.csv is
+// written newest-first, so first-wins also keeps the most recent removal.
+const keepFirst = (map, key, value) => {
+  if (!map.has(key)) map.set(key, value);
+  return map;
 };
 
 // Pull "NSE:ZYDUSLIFE" out of each scanner row, keeping the scanner's order.
@@ -107,6 +152,8 @@ const extractTickers = (scanner) => {
   return [...new Set(tickers)];
 };
 
+// --- sync -----------------------------------------------------------------------
+
 const scanner = JSON.parse(await readFile(inputPath, 'utf8'));
 const scanned = extractTickers(scanner);
 const scannedSet = new Set(scanned);
@@ -114,22 +161,12 @@ const scannedSet = new Set(scanned);
 const checklistText = await readTextOrEmpty(checklistPath);
 const hadChecklist = checklistText.length > 0;
 const checklist = parseEntries(checklistText);
-const removedGroups = parseRemoved(await readTextOrEmpty(removedPath));
-
-// First occurrence wins everywhere: a duplicated line is far more likely to be a stray
-// hand-edit than an intentional correction, and the first copy is the annotated one.
-// removed.md is rendered newest-first, so first-wins keeps the most recent removal too.
-const keepFirst = (map, key, value) => {
-  if (!map.has(key)) map.set(key, value);
-  return map;
-};
+const removed = parseEntries(await readTextOrEmpty(removedPath), true);
 
 const checklistMap = checklist.reduce((map, e) => keepFirst(map, e.ticker, e), new Map());
-const removedMap = new Map();
-for (const [date, entries] of removedGroups) {
-  for (const entry of entries) keepFirst(removedMap, entry.ticker, { ...entry, date });
-}
+const removedMap = removed.reduce((map, e) => keepFirst(map, e.ticker, e), new Map());
 
+const today = new Date().toISOString().slice(0, 10);
 const added = [];
 const restored = [];
 const dropped = [];
@@ -142,45 +179,43 @@ const nextChecklist = scanned.map((ticker) => {
   const previously = removedMap.get(ticker);
   if (previously) {
     restored.push(ticker);
-    return { ticker, checked: previously.checked, note: previously.note };
+    // Original date added is kept — it answers "how long have I watched this".
+    return {
+      ticker,
+      status: previously.status,
+      comment: previously.comment,
+      dateAdded: previously.dateAdded || today,
+    };
   }
 
   added.push(ticker);
-  return { ticker, checked: false, note: '' };
+  return { ticker, status: NEW_STATUS, comment: '', dateAdded: today };
 });
-
-const today = new Date().toISOString().slice(0, 10);
 
 // Anything left in the checklist that the scan no longer returns.
 const removedToday = [];
 for (const entry of checklist) {
   if (scannedSet.has(entry.ticker)) continue;
   dropped.push(entry.ticker);
-  removedToday.push(entry);
+  removedToday.push({ ...entry, dateRemoved: today });
 }
 
-// Restored tickers leave the history; today's drops join it.
-for (const [date, entries] of removedGroups) {
-  removedGroups.set(
-    date,
-    entries.filter((e) => !restored.includes(e.ticker))
-  );
-}
-if (removedToday.length > 0) {
-  const existingToday = removedGroups.get(today) ?? [];
-  const seen = new Set(existingToday.map((e) => e.ticker));
-  removedGroups.set(today, [...existingToday, ...removedToday.filter((e) => !seen.has(e.ticker))]);
-}
+const restoredSet = new Set(restored);
+const nextRemoved = [
+  ...removedToday,
+  ...removed.filter((e) => !restoredSet.has(e.ticker) && !scannedSet.has(e.ticker)),
+];
 
-const removedTotal = [...removedGroups.values()].reduce((n, entries) => n + entries.length, 0);
+const checklistRows = nextChecklist.map((e) => [e.ticker, e.status, e.comment, e.dateAdded]);
+const removedRows = nextRemoved.map((e) => [e.ticker, e.status, e.comment, e.dateAdded, e.dateRemoved]);
 
 if (!dryRun) {
-  await writeFile(checklistPath, renderChecklist(nextChecklist, path.basename(inputPath), today), 'utf8');
-  if (removedTotal > 0) await writeFile(removedPath, renderRemoved(removedGroups), 'utf8');
+  await writeFile(checklistPath, toCsv(CHECKLIST_HEADER, checklistRows), 'utf8');
+  if (removedRows.length > 0) await writeFile(removedPath, toCsv(REMOVED_HEADER, removedRows), 'utf8');
 }
 
 const preview = (list) => (list.length > 8 ? `${list.slice(0, 8).join(', ')} …` : list.join(', '));
-const reviewed = nextChecklist.filter((e) => e.checked).length;
+const untouched = nextChecklist.filter((e) => e.status === NEW_STATUS).length;
 
 console.log(`Source    : ${inputPath}`);
 console.log(`Checklist : ${checklistPath}${hadChecklist ? '' : ' (created)'}`);
@@ -189,5 +224,5 @@ console.log(`Added     : ${added.length}${added.length ? ` — ${preview(added)}
 console.log(`Restored  : ${restored.length}${restored.length ? ` — ${preview(restored)}` : ''}`);
 console.log(`Removed   : ${dropped.length}${dropped.length ? ` — ${preview(dropped)}` : ''}`);
 console.log(`Unchanged : ${nextChecklist.length - added.length - restored.length}`);
-console.log(`Total     : ${nextChecklist.length} in checklist (${reviewed} reviewed), ${removedTotal} in removed.md`);
+console.log(`Total     : ${nextChecklist.length} in checklist (${untouched} still "${NEW_STATUS}"), ${nextRemoved.length} in removed.csv`);
 if (dryRun) console.log('\n(dry run — nothing written)');
