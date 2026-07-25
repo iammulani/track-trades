@@ -124,5 +124,14 @@
     "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/GRASIM/315393",
     "watchedSince": "2026-07-22T07:47:18.241Z",
     "id": "OvqMPl_ZypM"
+  },
+  {
+    "symbol": "SCHNEIDER",
+    "category": "long-term",
+    "side": "long",
+    "notes": "",
+    "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/SCHNEIDER/7995905",
+    "watchedSince": "2026-07-24T06:35:04.695Z",
+    "id": "nFQ4HlxeN50"
   }
 ]
