@@ -133,5 +133,23 @@
     "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/SCHNEIDER/7995905",
     "watchedSince": "2026-07-24T06:35:04.695Z",
     "id": "nFQ4HlxeN50"
+  },
+  {
+    "symbol": "APOLLOHOSP",
+    "category": "active",
+    "side": "long",
+    "notes": "",
+    "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/APOLLOHOSP/40193",
+    "watchedSince": "2026-07-27T04:47:34.078Z",
+    "id": "t-u495-Bi0w"
+  },
+  {
+    "symbol": "KELENRG",
+    "category": "long-term",
+    "side": "long",
+    "notes": "",
+    "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/BSE/KELENRG/129671172",
+    "watchedSince": "2026-07-27T17:30:46.693Z",
+    "id": "jePrSzmtN34"
   }
 ]

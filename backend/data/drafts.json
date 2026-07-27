@@ -60,17 +60,17 @@
   },
   {
     "watchlistId": "Sv9nwYYWPwk",
-    "stepIndex": 0,
+    "stepIndex": 2,
     "tradeParams": {
-      "entryPrice": "1933",
-      "stopLoss": "",
+      "entryPrice": "2029",
+      "stopLoss": "1840",
       "target": "",
       "quantity": "27",
       "entryDate": "2026-07-16"
     },
     "stageBaseAnswers": {
-      "stage": null,
-      "base": null
+      "stage": "stage-2",
+      "base": "base-1"
     },
     "indicatorData": {
       "rsi": "70",
@@ -78,7 +78,11 @@
       "week52Low": "",
       "week52High": ""
     },
-    "indicatorChecklistChecked": {},
+    "indicatorChecklistChecked": {
+      "ma-uptrend": true,
+      "ma-stacked": true,
+      "ma200-duration": true
+    },
     "vcpStructureData": {
       "baseStartDate": "",
       "baseEndDate": "",
@@ -95,7 +99,7 @@
     },
     "finalChecksChecked": {},
     "createdAt": "2026-07-16T04:26:20.102Z",
-    "updatedAt": "2026-07-24T03:34:18.428Z",
+    "updatedAt": "2026-07-27T08:37:42.071Z",
     "id": "2KCShzw-sEE"
   },
   {
