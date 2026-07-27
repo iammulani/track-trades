@@ -1,5 +1,10 @@
 import { apiClient } from '../../../shared/api/client'
-import type { NewWatchlistItem, WatchCategory, WatchlistItem } from '../types/watchlistItem'
+import type {
+  NewWatchlistItem,
+  WatchCategory,
+  WatchlistItem,
+  WatchRating,
+} from '../types/watchlistItem'
 
 export async function fetchWatchlist(): Promise<WatchlistItem[]> {
   const { data } = await apiClient.get<WatchlistItem[]>('/watchlist')
@@ -27,5 +32,13 @@ export async function updateWatchlistCategory(
   category: WatchCategory,
 ): Promise<WatchlistItem> {
   const { data } = await apiClient.patch<WatchlistItem>(`/watchlist/${id}`, { category })
+  return data
+}
+
+export async function updateWatchlistRating(
+  id: string,
+  rating: WatchRating,
+): Promise<WatchlistItem> {
+  const { data } = await apiClient.patch<WatchlistItem>(`/watchlist/${id}`, { rating })
   return data
 }

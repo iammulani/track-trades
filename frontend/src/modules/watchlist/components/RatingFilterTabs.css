@@ -1,0 +1,16 @@
+/* Pill styling comes from CategoryFilterTabs.css — only the star glyph is new here. */
+.rating-tabs__star {
+  color: var(--amber);
+  fill: var(--amber);
+  flex-shrink: 0;
+}
+
+.filter-tabs__tab:not(.is-active) .rating-tabs__star {
+  color: var(--text-muted);
+  fill: var(--text-muted);
+}
+
+.filter-tabs__tab:hover .rating-tabs__star {
+  color: var(--amber);
+  fill: var(--amber);
+}

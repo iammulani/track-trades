@@ -5,10 +5,12 @@ import { ConfirmDialog } from '../../../shared/components/ConfirmDialog'
 import { Icon } from '../../../shared/components/Icon'
 import { SideBadge } from '../../../shared/components/SideBadge'
 import { avatarColor } from '../../../shared/utils/avatarColor'
-import { formatDateTime } from '../../../shared/utils/format'
+import { formatDate, formatDateTime } from '../../../shared/utils/format'
 import type { TradeDraft } from '../../drafts'
-import type { WatchCategory, WatchlistItemWithMetrics } from '../types/watchlistItem'
+import type { WatchCategory, WatchlistItemWithMetrics, WatchRating } from '../types/watchlistItem'
+import { itemRating } from '../utils/ratings'
 import { CategorySelect } from './CategorySelect'
+import { StarRating } from './StarRating'
 import './WatchlistTable.css'
 
 interface WatchlistTableProps {
@@ -17,9 +19,16 @@ interface WatchlistTableProps {
   drafts: Record<string, TradeDraft>
   onRemove: (id: string) => void
   onUpdateCategory: (id: string, category: WatchCategory) => void
+  onUpdateRating: (id: string, rating: WatchRating) => void
 }
 
-export function WatchlistTable({ items, drafts, onRemove, onUpdateCategory }: WatchlistTableProps) {
+export function WatchlistTable({
+  items,
+  drafts,
+  onRemove,
+  onUpdateCategory,
+  onUpdateRating,
+}: WatchlistTableProps) {
   const [pending, setPending] = useState<WatchlistItemWithMetrics | null>(null)
 
   return (
@@ -30,6 +39,7 @@ export function WatchlistTable({ items, drafts, onRemove, onUpdateCategory }: Wa
             <tr>
               <th className="ta-left">Stock</th>
               <th className="ta-left">Side</th>
+              <th className="ta-left watch-table__rating-head">Rating</th>
               <th className="ta-left">Watching for</th>
               <th className="ta-left">Since</th>
               <th className="ta-left">Reason</th>
@@ -77,8 +87,17 @@ export function WatchlistTable({ items, drafts, onRemove, onUpdateCategory }: Wa
                   <td className="ta-left">
                     <SideBadge side={item.side} />
                   </td>
+                  <td className="ta-left watch-table__rating">
+                    <StarRating
+                      value={itemRating(item)}
+                      symbol={item.symbol}
+                      onChange={(rating) => onUpdateRating(item.id, rating)}
+                    />
+                  </td>
                   <td className="ta-left watch-table__duration">{item.watchedLabel}</td>
-                  <td className="ta-left cell-time">{formatDateTime(item.watchedSince)}</td>
+                  <td className="ta-left cell-time" title={formatDateTime(item.watchedSince)}>
+                    {formatDate(item.watchedSince)}
+                  </td>
                   <td className="ta-left">
                     <CategorySelect
                       value={item.category}

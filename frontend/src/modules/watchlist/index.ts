@@ -5,4 +5,5 @@ export type {
   WatchlistItemWithMetrics,
   WatchCategory,
   WatchSide,
+  WatchRating,
 } from './types/watchlistItem'

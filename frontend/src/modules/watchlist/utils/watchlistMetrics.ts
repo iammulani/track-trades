@@ -1,4 +1,5 @@
 import type { WatchlistItem, WatchlistItemWithMetrics } from '../types/watchlistItem'
+import { itemRating } from './ratings'
 
 const DAY_MS = 24 * 60 * 60 * 1000
 
@@ -22,9 +23,13 @@ export function withWatchMetrics(item: WatchlistItem): WatchlistItemWithMetrics 
   return { ...item, watchedMs, watchedLabel: formatWatchedLabel(watchedMs) }
 }
 
-/** Newest-added first. */
-export function sortByWatchedDesc(items: WatchlistItemWithMetrics[]): WatchlistItemWithMetrics[] {
+/** Best-rated first (unrated last), then newest-added within the same rating. */
+export function sortByRatingThenWatched(
+  items: WatchlistItemWithMetrics[],
+): WatchlistItemWithMetrics[] {
   return [...items].sort(
-    (a, b) => new Date(b.watchedSince).getTime() - new Date(a.watchedSince).getTime(),
+    (a, b) =>
+      itemRating(b) - itemRating(a) ||
+      new Date(b.watchedSince).getTime() - new Date(a.watchedSince).getTime(),
   )
 }

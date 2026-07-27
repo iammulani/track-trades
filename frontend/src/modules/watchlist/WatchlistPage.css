@@ -13,6 +13,11 @@
   flex-wrap: wrap;
 }
 
+/* The rating filter gets its own row — eleven pills in one line is unreadable. */
+.watchlist-page__toolbar--secondary {
+  margin-top: -8px;
+}
+
 .watchlist-page__add-trigger {
   display: inline-flex;
   align-items: center;

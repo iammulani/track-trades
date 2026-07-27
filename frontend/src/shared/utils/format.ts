@@ -52,6 +52,11 @@ export function formatDuration(ms: number): string {
   return `${minutes}m`
 }
 
+/** Date only, e.g. "Jun 2" — for tables where the time is noise and lives in a title. */
+export function formatDate(iso: string): string {
+  return new Date(iso).toLocaleString('en-US', { month: 'short', day: 'numeric' })
+}
+
 /** Compact datetime, e.g. "Jun 2, 09:35". */
 export function formatDateTime(iso: string): string {
   const d = new Date(iso)
