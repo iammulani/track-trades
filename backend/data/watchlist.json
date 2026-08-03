@@ -85,7 +85,7 @@
   },
   {
     "symbol": "NYKAA",
-    "category": "long-term",
+    "category": "active",
     "side": "long",
     "notes": "",
     "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/NYKAA/1675521",
@@ -94,7 +94,7 @@
   },
   {
     "symbol": "NUVAMA",
-    "category": "daily",
+    "category": "active",
     "side": "long",
     "notes": "",
     "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/NUVAMA/4792577",
@@ -103,7 +103,7 @@
   },
   {
     "symbol": "NIVABUPA",
-    "category": "long-term",
+    "category": "active",
     "side": "long",
     "notes": "",
     "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/NIVABUPA/6936833",
@@ -112,7 +112,7 @@
   },
   {
     "symbol": "NH",
-    "category": "long-term",
+    "category": "active",
     "side": "long",
     "notes": "",
     "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/NH/3031041",
@@ -155,5 +155,77 @@
     "watchedSince": "2026-07-27T17:30:46.693Z",
     "id": "jePrSzmtN34",
     "rating": 0
+  },
+  {
+    "symbol": "RADICO",
+    "category": "long-term",
+    "side": "long",
+    "notes": "",
+    "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/RADICO/2813441",
+    "watchedSince": "2026-07-30T09:37:23.229Z",
+    "id": "ltZC8N5ZukY"
+  },
+  {
+    "symbol": "POWERINDIA",
+    "category": "long-term",
+    "side": "long",
+    "notes": "",
+    "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/POWERINDIA/4724993",
+    "watchedSince": "2026-07-30T09:38:16.426Z",
+    "id": "ffTueiXYlfM"
+  },
+  {
+    "symbol": "POLYCAB",
+    "category": "long-term",
+    "side": "long",
+    "notes": "",
+    "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/POLYCAB/2455041",
+    "watchedSince": "2026-07-30T09:40:48.942Z",
+    "id": "X8IMrD4Feqg"
+  },
+  {
+    "symbol": "PNBHOUSING",
+    "category": "daily",
+    "side": "long",
+    "notes": "",
+    "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/PNBHOUSING/4840449",
+    "watchedSince": "2026-07-30T09:41:36.875Z",
+    "id": "Zofe3q-QouE"
+  },
+  {
+    "symbol": "NETWEB",
+    "category": "long-term",
+    "side": "long",
+    "notes": "",
+    "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/NETWEB/4462849",
+    "watchedSince": "2026-07-30T09:53:42.759Z",
+    "id": "SpRDz_SUTmQ"
+  },
+  {
+    "symbol": "NESTLEIND",
+    "category": "active",
+    "side": "long",
+    "notes": "",
+    "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/NESTLEIND/4598529",
+    "watchedSince": "2026-07-30T09:57:45.158Z",
+    "id": "PRyG-btHx-o"
+  },
+  {
+    "symbol": "NAZARA",
+    "category": "active",
+    "side": "long",
+    "notes": "",
+    "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/NAZARA/764673",
+    "watchedSince": "2026-07-30T10:00:08.258Z",
+    "id": "NKHIF4VmhX4"
+  },
+  {
+    "symbol": "ADANIENT",
+    "category": "daily",
+    "side": "long",
+    "notes": "",
+    "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/ADANIENT/6401",
+    "watchedSince": "2026-08-02T16:40:56.845Z",
+    "id": "mOWrDXPKFcY"
   }
 ]
