@@ -6,4 +6,5 @@ export type {
   WatchCategory,
   WatchSide,
   WatchRating,
+  WatchNote,
 } from './types/watchlistItem'

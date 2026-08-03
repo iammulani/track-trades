@@ -27,8 +27,17 @@ export function WatchlistPage() {
   const [searchParams, setSearchParams] = useSearchParams()
   const [search, setSearch] = useState('')
   const [modalOpen, setModalOpen] = useState(false)
-  const { items, loading, error, adding, addItem, removeItem, updateCategory, updateRating } =
-    useWatchlist()
+  const {
+    items,
+    loading,
+    error,
+    adding,
+    addItem,
+    removeItem,
+    updateCategory,
+    updateRating,
+    updateNotes,
+  } = useWatchlist()
   const { byWatchlistId: draftsByItem, discard: discardDraft } = useDrafts()
 
   const filterParam = searchParams.get('category')
@@ -171,6 +180,7 @@ export function WatchlistPage() {
               onRemove={handleRemove}
               onUpdateCategory={updateCategory}
               onUpdateRating={updateRating}
+              onUpdateNotes={updateNotes}
             />
           )}
         </>

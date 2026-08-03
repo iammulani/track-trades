@@ -57,6 +57,10 @@
   text-align: right;
 }
 
+.ta-center {
+  text-align: center;
+}
+
 .watch-table__stock {
   display: flex;
   align-items: center;
@@ -110,10 +114,51 @@
   font-variant-numeric: tabular-nums;
 }
 
+/* Just the icon button — the note bodies live in the popup, so this column
+ * stays narrow instead of eating 320px for text that's usually empty. */
 .watch-table__notes {
-  color: var(--text-secondary);
-  white-space: normal;
-  max-width: 320px;
+  width: 1%;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.watch-table__notes-btn {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.watch-table__notes-btn:hover {
+  background: var(--surface-2);
+  color: var(--accent);
+}
+
+.watch-table__notes-btn.is-filled {
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  color: var(--accent);
+}
+
+.watch-table__notes-count {
+  position: absolute;
+  top: -3px;
+  right: -5px;
+  min-width: 14px;
+  height: 14px;
+  padding: 0 3px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 14px;
+  font-variant-numeric: tabular-nums;
 }
 
 .cell-time {

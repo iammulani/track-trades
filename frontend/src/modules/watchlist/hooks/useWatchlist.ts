@@ -4,12 +4,14 @@ import {
   fetchWatchlist,
   removeWatchlistItem,
   updateWatchlistCategory,
+  updateWatchlistNotes,
   updateWatchlistRating,
 } from '../api/watchlistApi'
 import type {
   NewWatchlistItem,
   WatchCategory,
   WatchlistItemWithMetrics,
+  WatchNote,
   WatchRating,
 } from '../types/watchlistItem'
 import { sortByRatingThenWatched, withWatchMetrics } from '../utils/watchlistMetrics'
@@ -23,6 +25,7 @@ interface WatchlistState {
   removeItem: (id: string) => Promise<void>
   updateCategory: (id: string, category: WatchCategory) => Promise<void>
   updateRating: (id: string, rating: WatchRating) => Promise<void>
+  updateNotes: (id: string, notes: WatchNote[]) => Promise<void>
 }
 
 /** Fetches the watchlist and derives "how long watched" for each item. */
@@ -90,5 +93,23 @@ export function useWatchlist(): WatchlistState {
     [load],
   )
 
-  return { items, loading, error, adding, addItem, removeItem, updateCategory, updateRating }
+  const updateNotes = useCallback(
+    async (id: string, notes: WatchNote[]) => {
+      await updateWatchlistNotes(id, notes)
+      await load(true)
+    },
+    [load],
+  )
+
+  return {
+    items,
+    loading,
+    error,
+    adding,
+    addItem,
+    removeItem,
+    updateCategory,
+    updateRating,
+    updateNotes,
+  }
 }

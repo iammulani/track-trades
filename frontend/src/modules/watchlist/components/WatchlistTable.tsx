@@ -7,9 +7,16 @@ import { SideBadge } from '../../../shared/components/SideBadge'
 import { avatarColor } from '../../../shared/utils/avatarColor'
 import { formatDate, formatDateTime } from '../../../shared/utils/format'
 import type { TradeDraft } from '../../drafts'
-import type { WatchCategory, WatchlistItemWithMetrics, WatchRating } from '../types/watchlistItem'
+import type {
+  WatchCategory,
+  WatchlistItemWithMetrics,
+  WatchNote,
+  WatchRating,
+} from '../types/watchlistItem'
+import { noteCount } from '../utils/notes'
 import { itemRating } from '../utils/ratings'
 import { CategorySelect } from './CategorySelect'
+import { NotesModal } from './NotesModal'
 import { StarRating } from './StarRating'
 import './WatchlistTable.css'
 
@@ -20,6 +27,7 @@ interface WatchlistTableProps {
   onRemove: (id: string) => void
   onUpdateCategory: (id: string, category: WatchCategory) => void
   onUpdateRating: (id: string, rating: WatchRating) => void
+  onUpdateNotes: (id: string, notes: WatchNote[]) => Promise<void>
 }
 
 export function WatchlistTable({
@@ -28,8 +36,14 @@ export function WatchlistTable({
   onRemove,
   onUpdateCategory,
   onUpdateRating,
+  onUpdateNotes,
 }: WatchlistTableProps) {
   const [pending, setPending] = useState<WatchlistItemWithMetrics | null>(null)
+  const [notesFor, setNotesFor] = useState<WatchlistItemWithMetrics | null>(null)
+
+  // The open item is re-read from `items` so a save's silent refetch flows straight
+  // back into the popup instead of leaving it on a stale copy.
+  const openNotesItem = notesFor ? (items.find((i) => i.id === notesFor.id) ?? null) : null
 
   return (
     <Card className="watch-table">
@@ -43,13 +57,14 @@ export function WatchlistTable({
               <th className="ta-left">Watching for</th>
               <th className="ta-left">Since</th>
               <th className="ta-left">Reason</th>
-              <th className="ta-left">Notes</th>
+              <th className="ta-center">Notes</th>
               <th className="ta-right"></th>
             </tr>
           </thead>
           <tbody>
             {items.map((item) => {
               const draft = drafts[item.id]
+              const notes = noteCount(item)
               return (
                 <tr key={item.id}>
                   <td className="ta-left">
@@ -104,7 +119,22 @@ export function WatchlistTable({
                       onChange={(category) => onUpdateCategory(item.id, category)}
                     />
                   </td>
-                  <td className="ta-left watch-table__notes">{item.notes || '—'}</td>
+                  <td className="ta-center watch-table__notes">
+                    <button
+                      type="button"
+                      className={`watch-table__notes-btn${notes > 0 ? ' is-filled' : ''}`}
+                      onClick={() => setNotesFor(item)}
+                      aria-label={
+                        notes > 0
+                          ? `${notes} note${notes === 1 ? '' : 's'} for ${item.symbol}`
+                          : `Add a note for ${item.symbol}`
+                      }
+                      title={notes > 0 ? 'View notes' : 'Add a note'}
+                    >
+                      <Icon name="note" size={15} />
+                      {notes > 1 && <span className="watch-table__notes-count">{notes}</span>}
+                    </button>
+                  </td>
                   <td className="ta-right">
                     <div className="watch-table__actions">
                       <Link
@@ -166,6 +196,12 @@ export function WatchlistTable({
           if (pending) onRemove(pending.id)
           setPending(null)
         }}
+      />
+
+      <NotesModal
+        item={openNotesItem}
+        onSave={onUpdateNotes}
+        onClose={() => setNotesFor(null)}
       />
     </Card>
   )

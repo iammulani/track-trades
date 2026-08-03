@@ -1,0 +1,301 @@
+.notes-modal__head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.notes-modal__avatar {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  flex-shrink: 0;
+}
+
+.notes-modal__symbol {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.notes-modal__sub {
+  margin: 2px 0 0;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.notes-modal__close {
+  margin-left: auto;
+  display: inline-grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.notes-modal__close:hover {
+  background: var(--surface-2);
+  color: var(--text-primary);
+}
+
+.notes-modal__composer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px 0;
+}
+
+.notes-modal__textarea {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-strong);
+  background: var(--page);
+  color: var(--text-primary);
+  font-size: 14px;
+  font-family: inherit;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+/* Visually subordinate in the composer too, so the split reads before you type. */
+.notes-modal__textarea--conclusion {
+  font-size: 13.5px;
+  color: var(--text-secondary);
+}
+
+.notes-modal__textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 20%, transparent);
+}
+
+.notes-modal__composer-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.notes-modal__date-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.notes-modal__date {
+  padding: 7px 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-strong);
+  background: var(--page);
+  color: var(--text-primary);
+  font-size: 13px;
+  font-family: inherit;
+  color-scheme: light dark;
+}
+
+.notes-modal__date:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.notes-modal__add {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  border: none;
+  background: var(--grad-accent);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(79, 70, 229, 0.3);
+}
+
+.notes-modal__add:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.notes-modal__empty {
+  margin: 0;
+  padding: 20px 0 4px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+/* The log can run long — keep the composer and header fixed and scroll the entries. */
+.notes-modal__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 46vh;
+  overflow-y: auto;
+}
+
+.notes-modal__entry {
+  position: relative;
+  padding: 14px 0;
+  border-top: 1px solid var(--border);
+}
+
+/* The date opens the sentence rather than sitting on its own line — the log reads
+ * as "Jul 20 — this happened", which is how you'd say it out loud. */
+.notes-modal__entry-date {
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.notes-modal__dash {
+  color: var(--text-primary);
+}
+
+/* Editing keeps the date fixed and out of the way — it's the one part of an
+ * entry you can't change from here. */
+.notes-modal__editing-date {
+  margin: 0 0 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.notes-modal__edited {
+  margin: 6px 0 0;
+  font-size: 11px;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* Only revealed on hover/focus — the notes are what you scan, not the buttons.
+ * Pinned top-right so it never reflows the text as it appears. */
+.notes-modal__entry-actions {
+  position: absolute;
+  top: 12px;
+  right: 0;
+  display: flex;
+  gap: 2px;
+  opacity: 0;
+  transition: opacity 0.12s;
+}
+
+.notes-modal__entry:hover .notes-modal__entry-actions,
+.notes-modal__entry-actions:focus-within {
+  opacity: 1;
+}
+
+.notes-modal__icon-btn {
+  display: inline-grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.notes-modal__icon-btn:hover {
+  background: var(--surface-2);
+  color: var(--accent);
+}
+
+.notes-modal__icon-btn--danger:hover {
+  background: color-mix(in srgb, var(--critical) 12%, transparent);
+  color: var(--critical);
+}
+
+.notes-modal__text {
+  margin: 0;
+  padding-right: 56px; /* clears the hover actions pinned top-right */
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--text-secondary);
+  white-space: pre-wrap;
+}
+
+/* The conclusion is set apart as a quote: what happened is the record, what you
+ * read into it is commentary — and months later you want to tell them apart. */
+.notes-modal__conclusion {
+  margin: 8px 0 0;
+  padding-left: 14px;
+  border-left: 2px solid var(--border-strong);
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--text-muted);
+  white-space: pre-wrap;
+}
+
+.notes-modal__inline-actions,
+.notes-modal__confirm {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.notes-modal__confirm {
+  justify-content: flex-start;
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--critical) 10%, transparent);
+  font-size: 13px;
+  color: var(--text-primary);
+}
+
+.notes-modal__confirm span {
+  margin-right: auto;
+}
+
+.notes-modal__ghost {
+  padding: 7px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-strong);
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.notes-modal__ghost:hover {
+  color: var(--text-primary);
+  border-color: var(--text-muted);
+}
+
+.notes-modal__danger {
+  padding: 7px 14px;
+  border-radius: var(--radius-sm);
+  border: none;
+  background: var(--critical);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.notes-modal__danger:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

@@ -4,9 +4,10 @@
 
 Track symbols the trader is keeping an eye on but hasn't traded yet — added by
 typing a ticker, tagged with the **long/short bias** and _why_ it's being
-watched, with an optional note on the setup, movable between reasons as the
-setup evolves, **rateable out of 5 stars so the best setups can be set aside**,
-searchable, and showing how long it's been on the list.
+watched, carrying **a dated log of notes** on how the setup is developing,
+movable between reasons as the setup evolves, **rateable out of 5 stars so the
+best setups can be set aside**, searchable, and showing how long it's been on
+the list.
 
 ## Data
 
@@ -21,9 +22,19 @@ searchable, and showing how long it's been on the list.
   | `category`     | `"active" \| "daily" \| "long-term"` | why it's being watched                  |
   | `side`         | `"long" \| "short"`                  | the bias being watched for              |
   | `watchedSince` | string (ISO)                         | when it was added to the list           |
-  | `notes`        | string?                              | free text — the setup, what to wait for |
+  | `notes`        | `WatchNote[]`?                       | dated journal entries on the setup      |
   | `link`         | string?                              | URL — a chart, news article, or writeup |
   | `rating`       | `0 \| 1 \| 2 \| 3 \| 4 \| 5`?        | manual star rating; `0`/absent = unrated |
+
+  A **`WatchNote`**:
+
+  | field        | type          | meaning                                                  |
+  | ------------ | ------------- | -------------------------------------------------------- |
+  | `id`         | string        | unique id (`crypto.randomUUID()`)                         |
+  | `text`       | string        | **what happened** — the event, price action, the numbers  |
+  | `conclusion` | string?       | **what you read into it** — optional; absent, never `''`  |
+  | `date`       | string (ISO)  | the day the observation belongs to — backdatable          |
+  | `editedAt`   | string (ISO)? | set only once an entry is changed; absent = never edited  |
 
 - **Categories** (`utils/categories.ts` — fixed order, never reordered by data):
   1. `active` — **Actively Watching**: near the trading area, could trigger soon.
@@ -37,6 +48,29 @@ searchable, and showing how long it's been on the list.
   rating field), rated later on the list, and can be re-rated or cleared at any
   time. `itemRating()` is the one place "absent means unrated" is decided, so
   the 0-vs-undefined distinction never leaks into components.
+
+- **Notes** (`utils/notes.ts`) — a **dated log**, not one field. A symbol you've
+  watched for three months accumulates observations; overwriting yesterday's read
+  with today's throws away exactly the record worth keeping. So each note carries
+  its own `date`, entries are shown newest first, and **every entry stays editable
+  and deletable however old it is**.
+
+  Each entry is split into **what happened** (`text`) and **what you read into it**
+  (`conclusion`, optional). This split is the point of the log, not decoration: the
+  fact is fixed and the judgement is yours, and months later — reviewing why a setup
+  worked or didn't — you need to tell them apart. "PAT −5%, stock −12.7%" is a
+  record; "base is broken, not tightening" is a call you made, and it can be wrong.
+  Keeping the call out of the fact means re-reading the log doesn't relitigate the
+  facts through the lens of what you concluded at the time. An empty conclusion is
+  stored as **absent, never `''`**, so "has a conclusion" is a plain truthiness
+  check and clearing one in the editor genuinely removes it.
+
+  Editing is allowed on any entry however old — a note is a record you can correct,
+  and the `editedAt` stamp keeps that honest rather than silent. `itemNotes()` is the one
+  place "absent means no notes" is decided, and it also reads the **legacy single
+  string** shape (pre-log rows) back as one entry dated `watchedSince`, so the
+  0-vs-`''`-vs-`[]` distinction never leaks into components. No data migration was
+  needed: a row converts to an array the first time a note is saved against it.
 
 - **Derived — per item** (`utils/watchlistMetrics.ts`):
   - `watchedMs` = `now − watchedSince`.
@@ -77,7 +111,12 @@ Reached via the **Watchlist** sidebar item. Top to bottom:
    hover title, since the time of day is noise next to "Watching for" and the
    table is already wide), `Reason` (`CategorySelect` — an inline
    dropdown, not a static badge: picking a different value **moves the item
-   to that category** immediately), `Notes`, a **Place Trade** action (pill
+   to that category** immediately), `Notes` (a single **icon button**, not a text
+   cell — muted when the log is empty, accent-tinted once it has entries, with a
+   small count badge when there's more than one; it opens the notes popup. The
+   bodies live in the popup so the column stays narrow: free text at full width
+   cost ~320px for content that's usually empty and made rows different heights),
+   a **Place Trade** action (pill
    button, links to `/watchlist/:id/place-trade` — see
    [place-trade.spec.md](place-trade.spec.md)), and a remove (×) action.
    A row whose place-trade run was parked as a **draft** (see
@@ -93,13 +132,38 @@ Reached via the **Watchlist** sidebar item. Top to bottom:
    tab was active when opened, else "Watch Daily"), a required **"Watching
    since" date** (defaults to today, can be backdated but not set in the
    future — lets a symbol that was actually being watched earlier be added
-   with its real start date instead of today's), an **optional note**
-   (textarea — the setup, what to wait for), and an **optional link** (URL
+   with its real start date instead of today's), an **optional opening note**
+   (a single textarea — the setup, what to wait for; it becomes the first entry
+   in the item's log, dated `watchedSince` rather than "now", since a backdated
+   ticker's first thought belongs on the day it was actually had. No conclusion
+   field here: at the moment of adding there's nothing yet to conclude from), and an
+   **optional link** (URL
    input — a chart, news article, or writeup for the setup). If the typed ticker already
    exists on the list, an inline warning names its current category and
    **the Add button is disabled** — there's no reason to duplicate a row;
    the user should move the existing one via `CategorySelect` instead.
-5. **Remove confirmation** (`ConfirmDialog`, shared `Modal`) — shows the
+5. **Notes popup** (`NotesModal`, shared `Modal`) — the dated log for one symbol,
+   opened from the Notes icon. Header: avatar chip + ticker + entry count, so
+   it's unambiguous whose notes these are. Below it a **composer** — two stacked
+   textareas, "what happened" (required) above "your read on it" (optional, set
+   visually subordinate so the split reads before you type) — plus a **date**
+   field defaulting to today and capped at today (backdatable, so a thought you
+   had last week gets logged on the day you had it), and an "Add note" button
+   disabled until there's a fact. Then the entries, **newest first**. Each reads
+   as one sentence — **`Jul 22 —` in bold opening the fact inline**, not as a
+   separate heading line, because that's how you'd say it out loud — with the
+   conclusion below it as an indented **quote block** (left rule, muted, smaller)
+   when there is one, and an `edited <date>` marker underneath when it has one.
+   Line breaks are preserved in both. On row hover a **pencil** and a **×** fade
+   in, pinned top-right so their appearing never reflows the text. Pencil swaps
+   the entry into the same two-field editor with Save/Cancel; the date is shown
+   but not editable there, and saving only stamps `editedAt` if something
+   actually changed. Emptying the conclusion field removes it. × flips the entry into an
+   inline "Delete this note?" confirmation rather than opening a `ConfirmDialog`:
+   stacking a second `Modal` backdrop over this one looks broken, and the entry
+   being deleted is already on screen to read. Empty log → "No notes yet. Add the
+   first one above."
+6. **Remove confirmation** (`ConfirmDialog`, shared `Modal`) — shows the
    symbol prominently (avatar chip + bold ticker, not buried in a sentence) so
    it's unambiguous which stock is about to be removed.
 
@@ -125,13 +189,20 @@ Reached via the **Watchlist** sidebar item. Top to bottom:
   the same silent-refetch path, so the row re-sorts into place without a flash.
   Clearing a rating PATCHes `0` rather than deleting the key, so the stored
   value is always a plain number.
+- **Adding, editing and deleting a note** all go down one path: the popup computes
+  the next list and `PATCH`es the **whole `notes` array** to `/watchlist/:id`, then
+  the same silent refetch runs. One API call covers all three because the array is
+  small and this is a single-user local-first journal — there's no concurrent writer
+  to lose an entry to.
 - **Removing requires confirmation** — clicking × opens `ConfirmDialog`; only
   confirming calls `DELETE /watchlist/:id`. It **also discards that item's draft**,
   if it has one — a draft with no watchlist item behind it can never be resumed.
   This is the only place the Watchlist deletes a draft; discarding one on its own
   belongs to the stepper.
-- Refetches after add/remove/move/rate are silent (no loading flash) — only the
-  first load shows the loading state.
+- Refetches after add/remove/move/rate/note are silent (no loading flash) — only
+  the first load shows the loading state. The open notes popup re-reads its item
+  from the refreshed list by id, so a save flows straight back into it instead of
+  leaving it on a stale copy.
 - **States:** loading → "Loading…"; error → message; empty list → prompt to add
   a ticker; empty filtered/search result → distinct messages ("No symbols in
   this category yet." / "No symbols with this rating yet." / "Everything on
@@ -145,14 +216,16 @@ frontend/src/modules/watchlist/
 ├── WatchlistPage.css
 ├── index.ts                    # exports WatchlistPage
 ├── types/watchlistItem.ts      # WatchlistItem, WatchCategory, WatchSide, derived types
-├── api/watchlistApi.ts         # fetchWatchlist, addWatchlistItem, removeWatchlistItem, updateWatchlistCategory, updateWatchlistRating
-├── hooks/useWatchlist.ts       # fetch + derive + add/remove/updateCategory/updateRating actions (silent refetch)
+├── api/watchlistApi.ts         # fetchWatchlist, addWatchlistItem, removeWatchlistItem, updateWatchlistCategory, updateWatchlistRating, updateWatchlistNotes
+├── hooks/useWatchlist.ts       # fetch + derive + add/remove/updateCategory/updateRating/updateNotes actions (silent refetch)
 ├── utils/
 │   ├── categories.ts           # CATEGORIES (fixed order + tone), categoryMeta()
 │   ├── ratings.ts              # RATING_VALUES, itemRating() (absent = unrated), nextRating() (re-click clears)
+│   ├── notes.ts                # itemNotes() (absent/legacy string = none), noteCount(), makeNote() (drops an empty conclusion), sortNotesByDate()
 │   └── watchlistMetrics.ts     # withWatchMetrics, formatWatchedLabel, sortByRatingThenWatched
 └── components/
-    ├── AddTickerModal.tsx      # popup: ticker + side + category + note, duplicate-ticker warning/block
+    ├── AddTickerModal.tsx      # popup: ticker + side + category + opening note, duplicate-ticker warning/block
+    ├── NotesModal.tsx          # popup: the dated notes log — fact + optional conclusion per entry
     ├── TickerSearch.tsx        # client-side ticker search box
     ├── CategoryFilterTabs.tsx  # All/Active/Daily/Long-term, with counts
     ├── RatingFilterTabs.tsx    # Any/★1-★5/Unrated, with counts — reuses CategoryFilterTabs.css pills
@@ -168,10 +241,16 @@ frontend/src/shared/components/
 ```
 
 Uses `shared/utils/avatarColor.ts` (also used by the dashboard's trades table)
-for the per-symbol avatar chip — the one place that mapping lives. Also uses
-`shared/utils/dateInput.ts` (`todayDateValue`, `dateValueToIso`) for the "Watching
-since" date field — the same helper `modules/place-trade` uses for its entry
-date (see [place-trade.spec.md](place-trade.spec.md)).
+for the per-symbol avatar chip — the one place that mapping lives, shared by the
+table, the remove confirmation and the notes popup. Also uses
+`shared/utils/dateInput.ts` (`todayDateValue`, `dateValueToIso`) for both the
+"Watching since" date field and the notes composer's date — the same helper
+`modules/place-trade` uses for its entry date (see
+[place-trade.spec.md](place-trade.spec.md)).
+
+`NotesModal` follows `modules/dashboard`'s `ExitTradeModal` pattern of being
+**open when its target object is non-null** rather than taking a separate `open`
+flag — the thing being edited and the open state are the same fact.
 
 `StarRating` deliberately does **not** reuse `modules/place-trade`'s `RatingStars`:
 that one is a read-only, ratio-clipped rendering of a *computed* checklist score,
