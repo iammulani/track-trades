@@ -41,7 +41,26 @@
     "symbol": "TIPSMUSIC",
     "category": "active",
     "side": "long",
-    "notes": "",
+    "notes": [
+      {
+        "id": "15f1d5af-2437-4e85-b4ed-3815acc58372",
+        "text": "Buyback rescheduled to Aug 5 (not cancelled). Stock +14%.",
+        "conclusion": "Bounce is buyback speculation, not accumulation. Not a shakeout — the drop had real fundamental cause.",
+        "date": "2026-07-23T06:30:00.000Z"
+      },
+      {
+        "id": "4abb6b6d-ee52-48a8-91fe-687230f74d27",
+        "text": "Q1 FY27: revenue ₹106.5 Cr (+21%), but PAT ₹43.7 Cr (−5%) — content cost doubled to ₹44.6 Cr. Buyback deferred. Stock −12.7% to ₹625.",
+        "conclusion": "Revenue met guidance, profit missed. Failed breakout at ₹713–745 on record volume. Base is broken, not tightening.",
+        "date": "2026-07-22T06:30:00.000Z"
+      },
+      {
+        "id": "4629ff58-34cd-4942-a2e6-dde2ac673894",
+        "text": "Board announces buyback meeting for Jul 22. Stock +7.3% to ₹718, runs to ₹745.",
+        "conclusion": "Event-driven pop, not a base breakout. No trade.",
+        "date": "2026-07-20T06:30:00.000Z"
+      }
+    ],
     "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/TIPSMUSIC/2333953",
     "watchedSince": "2026-07-17T08:46:08.099Z",
     "id": "StfHLlgpa0U",
