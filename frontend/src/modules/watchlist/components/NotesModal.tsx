@@ -25,12 +25,25 @@ export function NotesModal({ item, onSave, onClose }: NotesModalProps) {
   const [editText, setEditText] = useState('')
   const [editConclusion, setEditConclusion] = useState('')
   const [confirmingId, setConfirmingId] = useState<string | null>(null)
+  const [composing, setComposing] = useState(false)
   const [saving, setSaving] = useState(false)
   const composerRef = useRef<HTMLTextAreaElement>(null)
 
-  // Fresh composer every time a different symbol's log is opened — keyed on the id
+  const notes = item ? itemNotes(item) : []
+
+  function closeComposer() {
+    setComposing(false)
+    setDraft('')
+    setDraftConclusion('')
+    setDraftDate(todayDateValue())
+  }
+
+  // Fresh state every time a different symbol's log is opened — keyed on the id
   // alone, so a save's refetch swapping in a new object doesn't wipe what's typed.
+  // An empty log starts composing: there's nothing to read, so the one useful
+  // action shouldn't need a click to reach.
   const itemId = item?.id
+  const startEmpty = notes.length === 0
   useEffect(() => {
     if (!itemId) return
     setDraft('')
@@ -38,10 +51,16 @@ export function NotesModal({ item, onSave, onClose }: NotesModalProps) {
     setDraftDate(todayDateValue())
     setEditingId(null)
     setConfirmingId(null)
-    requestAnimationFrame(() => composerRef.current?.focus())
+    setComposing(startEmpty)
+    // startEmpty is read once at open — it must not re-run when the count changes.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [itemId])
 
-  const notes = item ? itemNotes(item) : []
+  // Focus after the commit that actually renders the textarea — a rAF here races
+  // the render and lands before the element exists.
+  useEffect(() => {
+    if (composing) composerRef.current?.focus()
+  }, [composing, itemId])
 
   async function commit(next: WatchNote[]) {
     if (!item) return
@@ -57,9 +76,8 @@ export function NotesModal({ item, onSave, onClose }: NotesModalProps) {
     const text = draft.trim()
     if (!text || saving) return
     await commit([makeNote(text, dateValueToIso(draftDate), draftConclusion), ...notes])
-    setDraft('')
-    setDraftConclusion('')
-    setDraftDate(todayDateValue())
+    // Collapse back to the log so the entry you just wrote is what you see.
+    closeComposer()
   }
 
   async function handleEditSave(note: WatchNote) {
@@ -107,6 +125,18 @@ export function NotesModal({ item, onSave, onClose }: NotesModalProps) {
                   : `${notes.length} note${notes.length === 1 ? '' : 's'}`}
               </p>
             </div>
+            {!composing && (
+              <button
+                type="button"
+                className="notes-modal__new"
+                onClick={() => setComposing(true)}
+                aria-label={`Add a note for ${item.symbol}`}
+                title="Add a note"
+              >
+                <Icon name="plus" size={15} />
+                Add note
+              </button>
+            )}
             <button
               type="button"
               className="notes-modal__close"
@@ -117,6 +147,7 @@ export function NotesModal({ item, onSave, onClose }: NotesModalProps) {
             </button>
           </div>
 
+          {composing && (
           <div className="notes-modal__composer">
             <textarea
               ref={composerRef}
@@ -145,20 +176,28 @@ export function NotesModal({ item, onSave, onClose }: NotesModalProps) {
                 max={todayDateValue()}
                 onChange={(e) => setDraftDate(e.target.value)}
               />
-              <button
-                type="button"
-                className="notes-modal__add"
-                onClick={handleAdd}
-                disabled={!draft.trim() || saving}
-              >
-                <Icon name="plus" size={15} />
-                {saving ? 'Saving…' : 'Add note'}
-              </button>
+              <div className="notes-modal__composer-buttons">
+                {notes.length > 0 && (
+                  <button type="button" className="notes-modal__ghost" onClick={closeComposer}>
+                    Cancel
+                  </button>
+                )}
+                <button
+                  type="button"
+                  className="notes-modal__add"
+                  onClick={handleAdd}
+                  disabled={!draft.trim() || saving}
+                >
+                  <Icon name="plus" size={15} />
+                  {saving ? 'Saving…' : 'Add note'}
+                </button>
+              </div>
             </div>
           </div>
+          )}
 
           {notes.length === 0 ? (
-            <p className="notes-modal__empty">No notes yet. Add the first one above.</p>
+            !composing && <p className="notes-modal__empty">No notes yet.</p>
           ) : (
             <ul className="notes-modal__list">
               {notes.map((note) => (

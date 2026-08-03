@@ -31,8 +31,35 @@
   color: var(--text-muted);
 }
 
-.notes-modal__close {
+/* The composer is collapsed by default — this is the way back to it. Sits in the
+ * header so the log itself starts at the top of the popup. */
+.notes-modal__new {
   margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.12s;
+}
+
+.notes-modal__new:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.notes-modal__new + .notes-modal__close {
+  margin-left: 4px;
+}
+
+.notes-modal__close {
+  margin-left: auto; /* takes over when the Add trigger is hidden while composing */
   display: inline-grid;
   place-items: center;
   width: 28px;
@@ -49,11 +76,17 @@
   color: var(--text-primary);
 }
 
+/* A mode now rather than a permanent fixture, so it reads as a panel you opened
+ * and can close again, not as part of the log. */
 .notes-modal__composer {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  padding: 14px 0;
+  margin-top: 14px;
+  padding: 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface-2);
 }
 
 .notes-modal__textarea {
@@ -111,8 +144,14 @@
   border-color: var(--accent);
 }
 
-.notes-modal__add {
+.notes-modal__composer-buttons {
   margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.notes-modal__add {
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -149,8 +188,13 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
-  max-height: 46vh;
+  max-height: 52vh;
   overflow-y: auto;
+}
+
+/* The header (or the composer panel) already provides the separation. */
+.notes-modal__list .notes-modal__entry:first-child {
+  border-top: none;
 }
 
 .notes-modal__entry {

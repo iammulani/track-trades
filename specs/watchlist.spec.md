@@ -144,12 +144,25 @@ Reached via the **Watchlist** sidebar item. Top to bottom:
    the user should move the existing one via `CategorySelect` instead.
 5. **Notes popup** (`NotesModal`, shared `Modal`) — the dated log for one symbol,
    opened from the Notes icon. Header: avatar chip + ticker + entry count, so
-   it's unambiguous whose notes these are. Below it a **composer** — two stacked
-   textareas, "what happened" (required) above "your read on it" (optional, set
-   visually subordinate so the split reads before you type) — plus a **date**
-   field defaulting to today and capped at today (backdatable, so a thought you
-   had last week gets logged on the day you had it), and an "Add note" button
-   disabled until there's a fact. Then the entries, **newest first**. Each reads
+   it's unambiguous whose notes these are, plus a small **"+ Add note"** pill.
+
+   The popup **opens in view mode**: the log starts directly under the header and
+   gets the height. The composer is a panel the Add pill unfolds, not a permanent
+   fixture — left always-open it ate ~200px of a ~480px popup for a form you use
+   far less often than you read. Unfolding it focuses the first field, hides the
+   Add pill, and offers **Cancel** alongside "Add note"; adding or cancelling
+   folds it away and discards the draft, so what you land back on is the log with
+   your new entry at the top. An **empty log opens unfolded** — there's nothing to
+   read, so the one useful action shouldn't cost a click — and drops the Cancel,
+   since there'd be nothing to go back to.
+
+   The composer itself is two stacked textareas, "what happened" (required) above
+   "your read on it" (optional, set visually subordinate so the split reads before
+   you type), plus a **date** field defaulting to today and capped at today
+   (backdatable, so a thought you had last week gets logged on the day you had
+   it), and an "Add note" button disabled until there's a fact.
+
+   Entries run **newest first**. Each reads
    as one sentence — **`Jul 22 —` in bold opening the fact inline**, not as a
    separate heading line, because that's how you'd say it out loud — with the
    conclusion below it as an indented **quote block** (left rule, muted, smaller)
@@ -161,8 +174,9 @@ Reached via the **Watchlist** sidebar item. Top to bottom:
    actually changed. Emptying the conclusion field removes it. × flips the entry into an
    inline "Delete this note?" confirmation rather than opening a `ConfirmDialog`:
    stacking a second `Modal` backdrop over this one looks broken, and the entry
-   being deleted is already on screen to read. Empty log → "No notes yet. Add the
-   first one above."
+   being deleted is already on screen to read. An empty log needs no empty-state
+   copy while the composer is unfolded — the placeholder text already says what
+   goes there; "No notes yet." only shows if you fold the composer away.
 6. **Remove confirmation** (`ConfirmDialog`, shared `Modal`) — shows the
    symbol prominently (avatar chip + bold ticker, not buried in a sentence) so
    it's unambiguous which stock is about to be removed.
