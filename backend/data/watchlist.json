@@ -246,5 +246,59 @@
     "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/ADANIENT/6401",
     "watchedSince": "2026-08-02T16:40:56.845Z",
     "id": "mOWrDXPKFcY"
+  },
+  {
+    "symbol": "NAM-INDIA",
+    "category": "long-term",
+    "side": "long",
+    "notes": [],
+    "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/NAM-INDIA/91393",
+    "watchedSince": "2026-08-03T17:15:13.561Z",
+    "id": "MoaxcPiQdok"
+  },
+  {
+    "symbol": "MOTHERSON",
+    "category": "long-term",
+    "side": "long",
+    "notes": [],
+    "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/MOTHERSON/1076225",
+    "watchedSince": "2026-08-03T17:16:14.360Z",
+    "id": "jbjDZIv9lN4"
+  },
+  {
+    "symbol": "KIRLOSENG",
+    "category": "active",
+    "side": "short",
+    "notes": [],
+    "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/KIRLOSENG/5359617",
+    "watchedSince": "2026-08-04T11:03:16.125Z",
+    "id": "eQgvv4SCJyo"
+  },
+  {
+    "symbol": "JINDALSAW",
+    "category": "daily",
+    "side": "long",
+    "notes": [],
+    "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/JINDALSAW/774145",
+    "watchedSince": "2026-08-04T11:17:02.243Z",
+    "id": "GjvovlISKr4"
+  },
+  {
+    "symbol": "IKS",
+    "category": "daily",
+    "side": "long",
+    "notes": [],
+    "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/IKS/7200001",
+    "watchedSince": "2026-08-04T11:24:09.362Z",
+    "id": "HnqHCYqImyk"
+  },
+  {
+    "symbol": "IDEA",
+    "category": "long-term",
+    "side": "long",
+    "notes": [],
+    "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/IDEA/3677697",
+    "watchedSince": "2026-08-04T11:25:37.727Z",
+    "id": "hFaaiaa-qPk"
   }
 ]
