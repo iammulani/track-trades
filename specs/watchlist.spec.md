@@ -99,9 +99,12 @@ Reached via the **Watchlist** sidebar item. Top to bottom:
    applies **within** the active category + rating filters, in that order.
    There is no inline add form on the page — Add only opens the popup.
 3. **Table** (`WatchlistTable`) — one row per item (respecting filter + search),
-   newest-watched first. Columns: `Stock` (avatar chip, reusing the shared
-   per-symbol colour, plus a small link icon next to the symbol when `link`
-   is set — opens the URL in a new tab), `Side` (`shared/SideBadge` — long/short pill, the same
+   newest-watched first. Columns: `Stock` (no header label — the avatar chip
+   and symbol are self-evidently the row's identity, left-aligned rather than
+   centred like the rest of the table so varying-length tickers don't zigzag;
+   avatar reuses the shared per-symbol colour, plus a small link icon next to
+   the symbol when `link` is set — opens the URL in a new tab), `Side`
+   (`shared/SideBadge` — long/short pill, the same
    one the dashboard's trades table uses), `Rating` (`StarRating` — five
    **clickable** stars, not a static display: clicking star N rates the item N,
    clicking the star it's already on clears it back to unrated; hovering

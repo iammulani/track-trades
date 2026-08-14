@@ -55,7 +55,7 @@ export function WatchlistTable({
         <table className="watch-table__table">
           <thead>
             <tr>
-              <th className="ta-center">Stock</th>
+              <th className="ta-left"></th>
               <th className="ta-center">Side</th>
               <th className="ta-center watch-table__rating-head">Rating</th>
               <th className="ta-center">Since</th>
@@ -71,7 +71,7 @@ export function WatchlistTable({
               const notes = noteCount(item)
               return (
                 <tr key={item.id}>
-                  <td className="ta-center">
+                  <td className="ta-left">
                     <div className="watch-table__stock">
                       <span
                         className="watch-table__avatar"
