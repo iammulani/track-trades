@@ -110,10 +110,11 @@ Reached via the **Watchlist** sidebar item. Top to bottom:
    the cell's hover title, since the time of day is noise next to the
    duration and the table is already wide. One column, not two — the
    duration and the date are the same fact at two grains, so they don't
-   need separate headers), `Rating` (`RatingFlame` — a flame icon with the
+   need separate headers), `Rating` (`RatingStar` — a single star icon with the
    number beside it, not a five-star row and not a digit overlaid on the
-   icon (tried first, but text cramped into an icon's uneven silhouette read
-   poorly at this size). Outline and muted while unrated; once rated, each
+   icon (both tried first: five stars were the widest thing in the table,
+   and text cramped inside an icon's uneven silhouette read poorly at this
+   size). Outline and muted while unrated; once rated, each
    value 1–5 gets its own fixed colour from `RATING_TONES` (`utils/ratings.ts`)
    — a cold-to-hot ramp, blue → teal → amber → orange → red — so the exact
    value is readable from colour alone at a glance, with the number there
@@ -279,7 +280,7 @@ frontend/src/modules/watchlist/
     ├── CategoryFilterTabs.tsx  # All/Active/Daily/Long-term, with counts
     ├── RatingFilterTabs.tsx    # Any/★1-★5/Unrated, with counts — reuses CategoryFilterTabs.css pills
     ├── CategorySelect.tsx      # icon-only chip over a real <select> — reassigns an item's category
-    ├── RatingFlame.tsx         # compact rating control — flame icon + number, click cycles unrated→1..5→unrated
+    ├── RatingStar.tsx          # compact rating control — star icon + number, click cycles unrated→1..5→unrated
     └── WatchlistTable.tsx      # the detail table; owns the remove-confirmation flow
 
 frontend/src/shared/components/
@@ -301,12 +302,12 @@ table, the remove confirmation and the notes popup. Also uses
 **open when its target object is non-null** rather than taking a separate `open`
 flag — the thing being edited and the open state are the same fact.
 
-`RatingFlame` doesn't reuse `shared/components/RatingStars`: that one is a
-read-only, ratio-clipped rendering of a *computed* score (trade rating, Code
-33) as a star row; this is an interactive control for a *manual* judgement,
-and — since the star-row shape is exactly what made the column wide — is
-deliberately a single flame icon instead, coloured per value rather than
-rendered as a row of anything.
+`RatingStar` (singular) is unrelated to `shared/components/RatingStars`
+(plural) despite the name — that one is a read-only, ratio-clipped rendering
+of a *computed* score (trade rating, Code 33) as a row of stars; this is an
+interactive control for a *manual* judgement, rendered as a single icon
+rather than a row of five, since a five-star row was exactly what made the
+column wide in the first place.
 
 The barrel (`index.ts`) also exports `useWatchlist` and the item types —
 `modules/place-trade` consumes both to load the item being traded and remove

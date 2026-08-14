@@ -18,7 +18,7 @@ import { noteCount } from '../utils/notes'
 import { itemRating } from '../utils/ratings'
 import { CategorySelect } from './CategorySelect'
 import { NotesModal } from './NotesModal'
-import { RatingFlame } from './RatingFlame'
+import { RatingStar } from './RatingStar'
 import './WatchlistTable.css'
 
 interface WatchlistTableProps {
@@ -114,7 +114,7 @@ export function WatchlistTable({
                     <div className="cell-time">{formatDate(item.watchedSince)}</div>
                   </td>
                   <td className="ta-center watch-table__rating">
-                    <RatingFlame
+                    <RatingStar
                       value={itemRating(item)}
                       symbol={item.symbol}
                       onChange={(rating) => onUpdateRating(item.id, rating)}

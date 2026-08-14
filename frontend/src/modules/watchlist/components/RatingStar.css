@@ -1,7 +1,7 @@
 /* Icon + number side by side — not overlaid, so nothing gets cramped inside an
  * uneven silhouette. Muted/outline while unrated; once rated, both the icon
  * and the number pick up the value's fixed tone via the `color` set inline. */
-.rating-flame {
+.rating-star {
   display: inline-flex;
   align-items: center;
   gap: 4px;
@@ -13,11 +13,11 @@
   cursor: pointer;
 }
 
-.rating-flame:hover {
+.rating-star:hover {
   background: var(--surface-2);
 }
 
-.rating-flame__icon {
+.rating-star__icon {
   fill: none;
   stroke: currentColor;
   transition:
@@ -25,11 +25,11 @@
     stroke 0.12s;
 }
 
-.rating-flame.is-rated .rating-flame__icon {
+.rating-star.is-rated .rating-star__icon {
   fill: currentColor;
 }
 
-.rating-flame__value {
+.rating-star__value {
   font-size: 13px;
   font-weight: 700;
   color: currentColor;
