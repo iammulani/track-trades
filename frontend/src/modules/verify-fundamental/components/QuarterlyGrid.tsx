@@ -1,4 +1,5 @@
 import { deriveQuarters, formatPeriodLabel, type QuarterFinancials } from '../../fundamentals'
+import { Icon } from '../../../shared/components/Icon'
 import { formatPercent, formatSignedPercent } from '../../../shared/utils/format'
 import './QuarterlyGrid.css'
 
@@ -29,7 +30,15 @@ export function QuarterlyGrid({ rows, onChange }: QuarterlyGridProps) {
             <th className="ta-right">Sales</th>
             <th className="ta-right">Net Profit</th>
             <th className="ta-right">EPS</th>
-            <th className="ta-right">Net Margin</th>
+            <th className="ta-right">
+              <span
+                className="quarterly-grid__th-note"
+                title="Net Profit ÷ Sales × 100, for this quarter"
+              >
+                Net Margin
+                <Icon name="info" size={12} />
+              </span>
+            </th>
             <th className="ta-right">Sales YoY</th>
             <th className="ta-right">EPS YoY</th>
           </tr>

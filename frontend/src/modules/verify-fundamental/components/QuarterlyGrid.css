@@ -59,6 +59,18 @@
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 20%, transparent);
 }
 
+.quarterly-grid__th-note {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  cursor: help;
+}
+
+.quarterly-grid__th-note svg {
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
 .quarterly-grid__derived {
   color: var(--text-secondary);
   font-weight: 600;

@@ -52,8 +52,11 @@ continuously-editable form.
    only editable cells), then three read-only derived columns — `Net Margin`, `Sales YoY`,
    `EPS YoY` — that update live as the three inputs are typed, formatted with
    `shared/utils/format`'s `formatPercent`/`formatSignedPercent`. A derived cell reads "—" until
-   there's enough data to compute it (a blank row, or no same-quarter-prior-year row yet). Before
-   an "as of" quarter is picked, the grid shows a prompt instead of an empty table.
+   there's enough data to compute it (a blank row, or no same-quarter-prior-year row yet). The
+   `Net Margin` header carries a `title` tooltip spelling out the formula ("Net Profit ÷ Sales ×
+   100, for this quarter") — a plain native tooltip, not a `HoverCard`, since it's one line, not
+   worked-example content. Before an "as of" quarter is picked, the grid shows a prompt instead
+   of an empty table.
 5. **Code 33 summary** (`Code33Summary`) — `RatingStars` (from `shared/components`) sized larger
    + `N.N / 5` + a verdict pill (tone-coloured: good / caution / bad), then a plain list of every
    step in the evaluation window (`Jun 2025 → Sep 2025`, with a check/✕ per metric) so the score
