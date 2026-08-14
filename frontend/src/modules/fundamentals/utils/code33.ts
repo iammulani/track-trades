@@ -27,6 +27,11 @@ export interface Code33Rating {
   hits: number
   /** 3 metrics * step count — what `hits` is being counted out of. */
   totalChecks: number
+  /** `hits` broken out per metric, each out of `steps.length` — lets the UI show *which* of the
+   * 3 cylinders is actually carrying the score (e.g. "Sales 2/3") rather than just the total. */
+  epsHits: number
+  salesHits: number
+  marginHits: number
   steps: Code33Step[]
 }
 
@@ -78,7 +83,17 @@ export function computeCode33(quarters: QuarterFinancials[]): Code33Rating {
   // Fewer than 2 usable quarters means zero step-comparisons are possible — not yet
   // judgeable, and deliberately distinct from a "no acceleration" read.
   if (windowQuarters.length < 2) {
-    return { status: 'pending', ratio: 0, stars: 0, hits: 0, totalChecks: 0, steps: [] }
+    return {
+      status: 'pending',
+      ratio: 0,
+      stars: 0,
+      hits: 0,
+      totalChecks: 0,
+      epsHits: 0,
+      salesHits: 0,
+      marginHits: 0,
+      steps: [],
+    }
   }
 
   const steps: Code33Step[] = []
@@ -94,10 +109,10 @@ export function computeCode33(quarters: QuarterFinancials[]): Code33Rating {
     })
   }
 
-  const hits = steps.reduce(
-    (sum, s) => sum + Number(s.epsAccelerated) + Number(s.salesAccelerated) + Number(s.marginExpanded),
-    0,
-  )
+  const epsHits = steps.filter((s) => s.epsAccelerated).length
+  const salesHits = steps.filter((s) => s.salesAccelerated).length
+  const marginHits = steps.filter((s) => s.marginExpanded).length
+  const hits = epsHits + salesHits + marginHits
   const totalChecks = steps.length * 3
   const ratio = hits / totalChecks
 
@@ -107,6 +122,9 @@ export function computeCode33(quarters: QuarterFinancials[]): Code33Rating {
     stars: ratio * CODE33_STARS,
     hits,
     totalChecks,
+    epsHits,
+    salesHits,
+    marginHits,
     steps,
   }
 }

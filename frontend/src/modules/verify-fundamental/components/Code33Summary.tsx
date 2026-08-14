@@ -8,12 +8,15 @@ interface Code33SummaryProps {
 }
 
 /** Compact Code 33 readout for the title row — stars + score. The grid itself (colour-coded
- * per cell) carries the "why" now, so the hover here just names the overall verdict, plus the
- * plain count it's computed from ("N of M checks passed") — a fixed fact read straight off
- * `rating.hits`/`rating.totalChecks`, not prose, so it can't drift or vary between renders. */
+ * per cell) carries the per-quarter "why" now, so the hover here explains the *score*: what was
+ * checked, and the per-metric tally it came from — "EPS 1/3 · Sales 2/3 · Margin 1/3" — so it's
+ * visible which cylinder is actually carrying (or dragging down) the number, not just the total.
+ * Every figure here is read straight off `Code33Rating`'s counts, not prose, so it can't drift
+ * or vary between renders. */
 export function Code33Summary({ rating }: Code33SummaryProps) {
   const verdict = code33Verdict(rating)
   const stars = rating.stars.toFixed(1)
+  const stepCount = rating.steps.length
 
   return (
     <HoverCard
@@ -31,7 +34,9 @@ export function Code33Summary({ rating }: Code33SummaryProps) {
       <p className={`code33-verdict is-${verdict.tone}`}>{verdict.label}</p>
       {rating.status !== 'pending' && (
         <p className="code33-summary__note">
-          {rating.hits} of {rating.totalChecks} checks passed
+          Checked EPS, Sales, and Margin across {stepCount} quarter{stepCount === 1 ? '' : 's'} —
+          EPS {rating.epsHits}/{stepCount} · Sales {rating.salesHits}/{stepCount} · Margin{' '}
+          {rating.marginHits}/{stepCount} ({rating.hits} of {rating.totalChecks} passed)
         </p>
       )}
     </HoverCard>
