@@ -4,6 +4,7 @@ import { PageHeader } from '../../shared/components/PageHeader'
 import { SideBadge } from '../../shared/components/SideBadge'
 import { formatDateTime } from '../../shared/utils/format'
 import { AsOfPicker } from './components/AsOfPicker'
+import { Code33Explainer } from './components/Code33Explainer'
 import { Code33Summary } from './components/Code33Summary'
 import { QuarterlyGrid } from './components/QuarterlyGrid'
 import { useVerifyFundamental } from './hooks/useVerifyFundamental'
@@ -31,6 +32,7 @@ export function VerifyFundamentalPage() {
         icon="bars"
         title="Verify Fundamental"
         subtitle="Type in quarterly Sales, Net Profit and EPS — growth %, margins and the Code 33 rating are worked out for you."
+        actions={<Code33Explainer />}
       />
 
       {loading && <p className="verify-fundamental-page__state">Loading…</p>}

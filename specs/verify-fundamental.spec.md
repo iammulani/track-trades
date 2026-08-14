@@ -25,7 +25,18 @@ plus a rating breakdown) outgrows what `shared/Modal` comfortably holds, and unl
 there's no sequence of gated steps to walk through, so it isn't a stepper either: one
 continuously-editable form.
 
-1. **Header** (`shared/PageHeader`) — `bars` icon + "Verify Fundamental" + subtitle.
+1. **Header** (`shared/PageHeader`) — `bars` icon + "Verify Fundamental" + subtitle, with a
+   **"What is Code 33?"** pill in the header's actions slot (`Code33Explainer`). A `HoverCard`
+   trigger (`info` icon + label, `hover-card__trigger--plain`) revealing a fixed, generic
+   reminder of what the three metrics mean and why all three matter together, plus an explicit
+   "what Code 33 does NOT tell you" section (debt, cash flow, valuation, durability) — the
+   blind spots worth knowing before treating a high score as the whole picture. Deliberately
+   **not** built from the watchlist item currently open — a made-up example (₹100 billed → ₹9
+   profit) rather than that stock's real numbers, so the same reminder shows every time this
+   page is opened, for any stock, rather than needing the current item's figures to make sense.
+   Content and styling mirror the worked-example `HoverCard`s already used in `place-trade`
+   (e.g. `FinalChecksStep`'s "More about overhead supply") — own CSS in this module, not shared,
+   since the class names are bespoke to this one panel's sections.
 2. **Title row** — the item's `SideBadge` + symbol, and a single **"As of"** date field
    (`AsOfPicker`, `<input type="date">`, capped at today, **defaults to today** — a fresh visit
    is almost always "check this stock now," so the grid is populated from the moment the page
@@ -160,7 +171,8 @@ frontend/src/modules/verify-fundamental/
 ├── components/
 │   ├── AsOfPicker.tsx(+.css)          # <input type="date"> -> previousQuarterPeriod() resolves it to the last closed Mar/Jun/Sep/Dec quarter
 │   ├── QuarterlyGrid.tsx(+.css)       # the generated grid: editable Sales/Net Profit/EPS + colour-coded derived columns (tone map built from rating.steps)
-│   └── Code33Summary.tsx(+.css)       # compact stars + score for the title row; HoverCard reveals just the verdict line (mirrors TradeRatingBadge's collapsed-by-default shape, not its content)
+│   ├── Code33Summary.tsx(+.css)       # compact stars + score for the title row; HoverCard reveals just the verdict line (mirrors TradeRatingBadge's collapsed-by-default shape, not its content)
+│   └── Code33Explainer.tsx(+.css)     # header's "What is Code 33?" HoverCard — fixed generic reminder of the 3 metrics + the blind spots, not built from the current item's data
 └── index.ts                           # exports VerifyFundamentalPage
 ```
 
