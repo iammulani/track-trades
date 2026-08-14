@@ -8,11 +8,11 @@ interface Code33SummaryProps {
 }
 
 /** Compact Code 33 readout for the title row — stars + score. The grid itself (colour-coded
- * per cell) carries the per-quarter "why" now, so the hover here explains the *score*: what was
- * checked, and the per-metric tally it came from — "EPS 1/3 · Sales 2/3 · Margin 1/3" — so it's
- * visible which cylinder is actually carrying (or dragging down) the number, not just the total.
- * Every figure here is read straight off `Code33Rating`'s counts, not prose, so it can't drift
- * or vary between renders. */
+ * per cell) carries the per-quarter "why" now, so the hover here just explains the *score*:
+ * what was checked overall, and — since a bare total reads the same whether every metric
+ * contributed evenly or one metric carried the whole thing alone — the per-metric split
+ * underneath it. Every figure here is read straight off `Code33Rating`'s counts, not prose, so
+ * it can't drift or vary between renders. */
 export function Code33Summary({ rating }: Code33SummaryProps) {
   const verdict = code33Verdict(rating)
   const stars = rating.stars.toFixed(1)
@@ -33,11 +33,17 @@ export function Code33Summary({ rating }: Code33SummaryProps) {
     >
       <p className={`code33-verdict is-${verdict.tone}`}>{verdict.label}</p>
       {rating.status !== 'pending' && (
-        <p className="code33-summary__note">
-          Checked EPS, Sales, and Margin across {stepCount} quarter{stepCount === 1 ? '' : 's'} —
-          EPS {rating.epsHits}/{stepCount} · Sales {rating.salesHits}/{stepCount} · Margin{' '}
-          {rating.marginHits}/{stepCount} ({rating.hits} of {rating.totalChecks} passed)
-        </p>
+        <>
+          <p className="code33-summary__note">
+            Checked whether EPS, Sales, and Margin each improved quarter-over-quarter across{' '}
+            {stepCount} quarter{stepCount === 1 ? '' : 's'} ({rating.totalChecks} checks) —{' '}
+            {rating.hits} passed
+          </p>
+          <p className="code33-summary__note">
+            EPS {rating.epsHits}/{stepCount} · Sales {rating.salesHits}/{stepCount} · Margin{' '}
+            {rating.marginHits}/{stepCount}
+          </p>
+        </>
       )}
     </HoverCard>
   )
