@@ -29,14 +29,16 @@
   stroke: var(--amber);
 }
 
+/* Dark, not white — white-on-amber is under 2.5:1 contrast, hard to read at this size.
+ * A near-black digit reads clearly against the amber fill in both themes. */
 .rating-pill__value {
   position: absolute;
-  top: 53%;
+  top: 56%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 800;
-  color: #fff;
+  color: #2b1400;
   font-variant-numeric: tabular-nums;
   pointer-events: none;
 }
