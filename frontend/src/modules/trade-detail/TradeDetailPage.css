@@ -409,6 +409,52 @@
   text-decoration: none;
 }
 
+.trade-detail__quarters-scroll {
+  overflow-x: auto;
+  margin-top: 12px;
+}
+
+.trade-detail__quarters {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.trade-detail__quarters th {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 6px 8px;
+  white-space: nowrap;
+}
+
+.trade-detail__quarters td {
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-secondary);
+}
+
+.trade-detail__quarters tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.trade-detail__quarters td:first-child {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.trade-detail__quarters .ta-left {
+  text-align: left;
+}
+
+.trade-detail__quarters .ta-right {
+  text-align: right;
+}
+
 .trade-detail__contractions {
   margin: 4px 0 0;
   padding: 0;

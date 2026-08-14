@@ -141,11 +141,17 @@ export function computeCode33(quarters: QuarterFinancials[]): Code33Rating {
 }
 
 /** Strips a live `Code33Rating` down to what gets frozen onto a trade at placement — mirrors
- * `toRatingSnapshot()` in `place-trade/utils/tradeRating.ts`. Returns `null` for a `pending`
- * rating: there's no read worth freezing when there wasn't enough data to judge yet (matches
- * `Code33Snapshot`'s own doc comment on why `pending` isn't a valid snapshot status). */
-export function toCode33Snapshot(rating: Code33Rating): Code33Snapshot | null {
+ * `toRatingSnapshot()` in `place-trade/utils/tradeRating.ts`, but also carries the raw
+ * `quarters` the rating was computed from (parsed to numbers): the score alone isn't the whole
+ * record, and the source fundamentals record is deleted the moment the trade is placed, so
+ * without this the actual figures the trader read would be lost for good, not just the
+ * derivation of them. Returns `null` for a `pending` rating: there's no read worth freezing when
+ * there wasn't enough data to judge yet (matches `Code33Snapshot`'s own doc comment on why
+ * `pending` isn't a valid snapshot status). */
+export function toCode33Snapshot(rating: Code33Rating, quarters: QuarterFinancials[]): Code33Snapshot | null {
   if (rating.status === 'pending') return null
+  // Reuses deriveQuarters' own string -> number|null parsing rather than a bare `Number()` call
+  // here, so a blank field freezes as `null` (not entered), never a misleading 0.
   return {
     status: rating.status,
     ratio: rating.ratio,
@@ -155,6 +161,12 @@ export function toCode33Snapshot(rating: Code33Rating): Code33Snapshot | null {
     epsHits: rating.epsHits,
     salesHits: rating.salesHits,
     marginHits: rating.marginHits,
+    quarters: deriveQuarters(quarters).map((d) => ({
+      period: d.period,
+      sales: d.sales,
+      netProfit: d.netProfit,
+      eps: d.eps,
+    })),
   }
 }
 

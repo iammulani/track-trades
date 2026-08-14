@@ -13,6 +13,7 @@ export type {
   TradeRatingGateSnapshot,
   Code33Snapshot,
   Code33SnapshotStatus,
+  TradeQuarterFinancials,
   TradeMetrics,
   TradeWithMetrics,
   DashboardSummary,

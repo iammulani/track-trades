@@ -1,5 +1,3 @@
-import type { QuarterFinancials } from '../types/fundamentals'
-
 /** One quarter's figures, parsed, plus everything derived from them. `null` means
  * "not enough data to say" — an unfilled field, or no same-quarter-prior-year row yet. */
 export interface QuarterDerived {
@@ -12,7 +10,20 @@ export interface QuarterDerived {
   epsGrowthYoY: number | null
 }
 
-function toNumberOrNull(value: string): number | null {
+/** Structurally satisfied by both `QuarterFinancials` (live editing — raw typed strings) and
+ * `TradeQuarterFinancials` (frozen on a trade — already-parsed numbers or `null`, nothing left
+ * to edit). Lets `deriveQuarters` run identically over either, so the live grid and a frozen
+ * trade's quarterly table can never disagree on the math. */
+interface QuarterFinancialsLike {
+  period: string
+  sales: string | number | null
+  netProfit: string | number | null
+  eps: string | number | null
+}
+
+function toNumberOrNull(value: string | number | null): number | null {
+  if (value === null) return null
+  if (typeof value === 'number') return Number.isFinite(value) ? value : null
   const n = Number(value)
   return value.trim() !== '' && Number.isFinite(n) ? n : null
 }
@@ -35,7 +46,7 @@ export function formatPeriodLabel(period: string): string {
  * row sits a few positions away — so a quarter with no same-quarter-prior-year row simply
  * reads `null` rather than a guessed number.
  */
-export function deriveQuarters(quarters: QuarterFinancials[]): QuarterDerived[] {
+export function deriveQuarters(quarters: QuarterFinancialsLike[]): QuarterDerived[] {
   const byPeriod = new Map(quarters.map((q) => [q.period, q]))
 
   return quarters.map((q) => {

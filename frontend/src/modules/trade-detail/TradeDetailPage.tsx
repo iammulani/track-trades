@@ -13,7 +13,7 @@ import {
   formatSignedCurrency,
   formatSignedPercent,
 } from '../../shared/utils/format'
-import { CODE33_STARS, code33Verdict, metricTone } from '../fundamentals'
+import { CODE33_STARS, code33Verdict, deriveQuarters, formatPeriodLabel, metricTone } from '../fundamentals'
 import {
   BASE_OPTIONS,
   BREAKOUT_CONFIRMATION_CHECKLIST_ITEMS,
@@ -327,6 +327,44 @@ export function TradeDetailPage() {
                         )
                       })}
                     </ul>
+                  )}
+                  {fundamentals.quarters.length > 0 && (
+                    <div className="trade-detail__quarters-scroll">
+                      <table className="trade-detail__quarters">
+                        <thead>
+                          <tr>
+                            <th className="ta-left">Quarter</th>
+                            <th className="ta-right">Sales</th>
+                            <th className="ta-right">Net Profit</th>
+                            <th className="ta-right">EPS</th>
+                            <th className="ta-right">Net Margin</th>
+                            <th className="ta-right">Sales YoY</th>
+                            <th className="ta-right">EPS YoY</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {deriveQuarters(fundamentals.quarters).map((d) => (
+                            <tr key={d.period}>
+                              <td className="ta-left">{formatPeriodLabel(d.period)}</td>
+                              <td className="ta-right">{d.sales === null ? '—' : d.sales.toLocaleString()}</td>
+                              <td className="ta-right">
+                                {d.netProfit === null ? '—' : d.netProfit.toLocaleString()}
+                              </td>
+                              <td className="ta-right">{d.eps === null ? '—' : d.eps.toFixed(2)}</td>
+                              <td className="ta-right">
+                                {d.netMargin === null ? '—' : formatPercent(d.netMargin)}
+                              </td>
+                              <td className="ta-right">
+                                {d.salesGrowthYoY === null ? '—' : formatSignedPercent(d.salesGrowthYoY)}
+                              </td>
+                              <td className="ta-right">
+                                {d.epsGrowthYoY === null ? '—' : formatSignedPercent(d.epsGrowthYoY)}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
                   )}
                 </div>
               )}

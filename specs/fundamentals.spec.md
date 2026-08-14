@@ -119,12 +119,25 @@ consumers, so this can't create a cycle (same relationship `place-trade`'s
   structurally too. `Code33Rating extends Code33Score` by adding `steps: Code33Step[]`,
   needed only by the live grid's per-cell tone map.
 
-- **`toCode33Snapshot(rating)`** — strips a live `Code33Rating` down to a `Code33Snapshot` for
-  freezing onto a trade at placement (mirrors `toRatingSnapshot()` in
-  `place-trade/utils/tradeRating.ts`). Returns `null` for a `pending` rating: there's no read
-  worth freezing when there wasn't enough data to judge yet. See `Code33Snapshot` in
-  [trades.spec.md](trades.spec.md) and the placement flow in
+- **`toCode33Snapshot(rating, quarters)`** — freezes a live `Code33Rating` **plus its raw
+  `quarters`** into a `Code33Snapshot` at trade placement (mirrors `toRatingSnapshot()` in
+  `place-trade/utils/tradeRating.ts` for the score half; the `quarters` half has no
+  equivalent there, since a trade rating has no analogous "raw source data" to preserve).
+  Returns `null` for a `pending` rating: there's no read worth freezing when there wasn't
+  enough data to judge yet — the raw quarters aren't preserved in that case either, since the
+  whole point is being available to the *snapshot*, and there isn't one. Re-derives each
+  quarter's numbers via `deriveQuarters(quarters)` rather than a bare `Number()` parse, so a
+  blank field freezes as `null` (not entered), never a misleading `0`. See `Code33Snapshot` /
+  `TradeQuarterFinancials` in [trades.spec.md](trades.spec.md) and the placement flow in
   [place-trade.spec.md](place-trade.spec.md).
+
+- **`deriveQuarters()` accepts either raw or already-parsed figures.** Its parameter type
+  (`sales`/`netProfit`/`eps` each `string | number | null`) is structurally satisfied by both
+  the live `QuarterFinancials` (raw typed strings, for an editable grid) and the frozen
+  `TradeQuarterFinancials` (already-parsed numbers or `null`, nothing left to edit) — so Trade
+  Detail can call `deriveQuarters(setup.fundamentals.quarters)` directly to reconstruct a
+  placed trade's full quarterly table (margins, YoY growth) without a second parsing path that
+  could drift from the live one. See [trade-detail.spec.md](trade-detail.spec.md).
 
   Because YoY needs a same-quarter match 12 months back, the 4-quarter evaluation window alone
   is never enough data to compute anything — each of those 4 needs its own prior-year match, so

@@ -176,7 +176,7 @@ export function usePlaceTrade(watchlistId: string) {
       // trade placement can never leave one orphaned, same as removing the watchlist item does.
       const fundamentalsRecord = await fetchFundamentalsFor(item.id)
       const fundamentalsSnapshot = fundamentalsRecord
-        ? toCode33Snapshot(computeCode33(fundamentalsRecord.quarters))
+        ? toCode33Snapshot(computeCode33(fundamentalsRecord.quarters), fundamentalsRecord.quarters)
         : null
 
       await addTrade({

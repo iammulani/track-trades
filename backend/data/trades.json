@@ -796,7 +796,81 @@
         "totalChecks": 9,
         "epsHits": 3,
         "salesHits": 2,
-        "marginHits": 2
+        "marginHits": 2,
+        "quarters": [
+          {
+            "period": "2023-06",
+            "sales": 1682,
+            "netProfit": 202,
+            "eps": 21.82
+          },
+          {
+            "period": "2023-09",
+            "sales": 1347,
+            "netProfit": 209,
+            "eps": 22.12
+          },
+          {
+            "period": "2023-12",
+            "sales": 1429,
+            "netProfit": 222,
+            "eps": 22.47
+          },
+          {
+            "period": "2024-03",
+            "sales": 1611,
+            "netProfit": 243,
+            "eps": 25.98
+          },
+          {
+            "period": "2024-06",
+            "sales": 1685,
+            "netProfit": 301,
+            "eps": 31.66
+          },
+          {
+            "period": "2024-09",
+            "sales": 1716,
+            "netProfit": 304,
+            "eps": 31.59
+          },
+          {
+            "period": "2024-12",
+            "sales": 1973,
+            "netProfit": 338,
+            "eps": 34.8
+          },
+          {
+            "period": "2025-03",
+            "sales": 2167,
+            "netProfit": 346,
+            "eps": 35.61
+          },
+          {
+            "period": "2025-06",
+            "sales": 2154,
+            "netProfit": 353,
+            "eps": 37.43
+          },
+          {
+            "period": "2025-09",
+            "sales": 2082,
+            "netProfit": 361,
+            "eps": 38.12
+          },
+          {
+            "period": "2025-12",
+            "sales": 2548,
+            "netProfit": 467,
+            "eps": 49.31
+          },
+          {
+            "period": "2026-03",
+            "sales": 3053,
+            "netProfit": 556,
+            "eps": 60.52
+          }
+        ]
       }
     },
     "id": "VjA_ZyZE1oM"

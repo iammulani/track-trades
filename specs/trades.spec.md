@@ -70,24 +70,38 @@ persisted beyond the raw fields; everything else is computed on read.
   `modules/place-trade` — see [place-trade.spec.md](place-trade.spec.md).
 
 - **`Code33Snapshot`** — the Code 33 fundamentals read **as computed on the day the
-  trade was taken**, frozen the same way `TradeRatingSnapshot` is and for the same
-  reason: quarterly figures on the watchlist item's fundamentals record don't even
-  exist anymore by the time this is read back (see below), so there's nothing left
-  to recompute from even if the formula were meant to be live here. Just the
-  numbers, no id-keyed prose to look up — Code 33's verdict is banded straight from
-  `ratio`/`status` by `code33Verdict()`, live, so freezing needs nothing more than:
-  - `status` (`'partial' | 'complete'` — never `'pending'`; see below),
-    `ratio`, `stars`.
-  - `hits` / `totalChecks` and the per-metric `epsHits` / `salesHits` / `marginHits`
-    — see [fundamentals.spec.md](fundamentals.spec.md) for what these count.
+  trade was taken**, frozen the same way `TradeRatingSnapshot` is: a point-in-time
+  judgement, not a live derivation, so re-tuning the Code 33 formula later doesn't
+  retroactively regrade a trade you already took. Two parts:
+  - **The frozen score** — `status` (`'partial' | 'complete'` — never `'pending'`; see
+    below), `ratio`, `stars`, `hits` / `totalChecks`, and the per-metric `epsHits` /
+    `salesHits` / `marginHits` (see [fundamentals.spec.md](fundamentals.spec.md) for
+    what these count). Just numbers, no id-keyed prose to look up — Code 33's verdict
+    is banded straight from `ratio`/`status` by `code33Verdict()`, live, whether it's
+    fed a fresh `Code33Rating` or a replayed `Code33Snapshot`.
+  - **`quarters: TradeQuarterFinancials[]`** — every quarter that had a value entered
+    at the moment of placement (`{ period, sales, netProfit, eps }`, each figure
+    `number | null` — parsed once, since nothing on a frozen trade is ever re-edited;
+    mirrors how `TradeVcpContraction` stores parsed numbers rather than the editable
+    string form `VcpContraction` uses). **This is the actual raw data, not a
+    derivation** — the source fundamentals record is deleted the moment the trade is
+    placed (see below), so without this the quarterly figures the trader actually
+    read would be lost for good, leaving only an unexplained aggregate score. Net
+    margin and YoY growth per quarter are *not* stored alongside it — those are
+    recomputed on read via `deriveQuarters()` (`modules/fundamentals`), the same pure
+    function the live grid uses, since they're facts about the stored numbers, not a
+    judgement (convention 4: derive, don't store — this part of the snapshot follows
+    the normal rule; only the score itself is the deliberate exception).
 
-  Written by `toCode33Snapshot()` in `modules/fundamentals`, called from
-  `usePlaceTrade`'s `placeTrade()` — see [place-trade.spec.md](place-trade.spec.md).
-  Read back on Trade Detail with no rebuild step at all: `code33Verdict()` and
-  `metricTone()` both accept the snapshot directly (see `Code33Score` in
+  Written by `toCode33Snapshot(rating, quarters)` in `modules/fundamentals`, called
+  from `usePlaceTrade`'s `placeTrade()` — see [place-trade.spec.md](place-trade.spec.md).
+  The score half is read back on Trade Detail with no rebuild step: `code33Verdict()`
+  and `metricTone()` both accept the snapshot directly (see `Code33Score` in
   [fundamentals.spec.md](fundamentals.spec.md) — a live `Code33Rating` and a frozen
   `Code33Snapshot` are structurally interchangeable for rendering purposes, unlike
-  the rating, which needs `fromRatingSnapshot()`'s id-lookup rebuild).
+  the rating, which needs `fromRatingSnapshot()`'s id-lookup rebuild). The quarters
+  half is read back through `deriveQuarters(setup.fundamentals.quarters)` to
+  reconstruct the full table, margins and growth included.
 
   `toCode33Snapshot()` returns `null` for a `'pending'` read (not enough consecutive
   quarters to judge) — a `pending` state isn't a judgement worth freezing, so
@@ -166,7 +180,7 @@ persisted beyond the raw fields; everything else is computed on read.
 - Types: `Trade`, `TradeSide`, `TradeStatus`, `TradeOutcome`, `TradeStage`,
   `TradeBase`, `TradeChecklist`, `TradeVcpContraction`, `TradeSetup`,
   `TradeRatingSnapshot`, `TradeRatingCriterionSnapshot`, `TradeRatingGateSnapshot`,
-  `Code33Snapshot`, `Code33SnapshotStatus`,
+  `Code33Snapshot`, `Code33SnapshotStatus`, `TradeQuarterFinancials`,
   `TradeMetrics`, `TradeWithMetrics`, `DashboardSummary`, `NewTrade`,
   `ExitReason`, `ExitLearning`, `CloseTradeInput`, `ExitPreview`.
 
