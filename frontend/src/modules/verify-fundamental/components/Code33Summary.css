@@ -13,27 +13,84 @@
 
 /* --- Hover-card panel content --- */
 
-.code33-verdict {
-  margin: 0;
-  font-size: 13px;
-  font-weight: 600;
+.code33-details {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 260px;
 }
 
-.code33-verdict.is-good {
+.code33-details__verdict-pill {
+  align-self: flex-start;
+  padding: 4px 11px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.code33-details__verdict-pill.is-good {
+  background: color-mix(in srgb, var(--good) 14%, transparent);
   color: var(--good-text);
 }
 
-.code33-verdict.is-caution {
+.code33-details__verdict-pill.is-caution {
+  background: color-mix(in srgb, var(--amber) 14%, transparent);
   color: var(--amber-text);
 }
 
-.code33-verdict.is-bad {
+.code33-details__verdict-pill.is-bad {
+  background: color-mix(in srgb, var(--critical) 14%, transparent);
   color: var(--critical-text);
 }
 
-.code33-summary__note {
-  margin: 4px 0 0;
+.code33-details__note {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--text-secondary);
+}
+
+.code33-details__breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+}
+
+.code33-details__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 3px 0;
+}
+
+.code33-details__row-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.code33-details__row-count {
+  padding: 2px 9px;
+  border-radius: 999px;
   font-size: 12px;
-  color: var(--text-muted);
+  font-weight: 700;
   font-variant-numeric: tabular-nums;
+}
+
+.code33-details__row-count.is-good {
+  background: color-mix(in srgb, var(--good) 12%, transparent);
+  color: var(--good-text);
+}
+
+.code33-details__row-count.is-caution {
+  background: color-mix(in srgb, var(--amber) 12%, transparent);
+  color: var(--amber-text);
+}
+
+.code33-details__row-count.is-bad {
+  background: color-mix(in srgb, var(--critical) 12%, transparent);
+  color: var(--critical-text);
 }

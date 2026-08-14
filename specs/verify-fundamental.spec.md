@@ -73,20 +73,30 @@ continuously-editable form.
    for this quarter." Before an "as of" quarter is picked, the grid shows a prompt instead of an
    empty table.
 5. **Code 33 detail** — lives behind the title row's rating badge (point 2), not as a page
-   section. Hovering it reveals: the tone-coloured verdict label (e.g. "Mixed — some cylinders
-   firing", or "Not enough consecutive quarters yet…" when `pending`); then, except when
-   `pending` (nothing to count yet), a fixed-wording summary line — **"Checked whether EPS,
-   Sales, and Margin each improved quarter-over-quarter across N quarters (totalChecks checks) —
-   hits passed"**; then a per-metric split underneath it — **"EPS a/N · Sales b/N · Margin
-   c/N"**. Both lines are read straight off `rating.hits`/`totalChecks`/`epsHits`/`salesHits`/
-   `marginHits` (see [fundamentals.spec.md](fundamentals.spec.md)) with the summary's wording
-   fixed in code, not composed as prose, so it can't drift or vary between renders. The
-   per-metric line matters alongside the total: "4 of 9 passed" alone reads the same whether
-   every metric contributed evenly or one metric carried the whole score while the other two
-   never moved — the split is what actually answers "why this many stars." A per-*step* list
-   (each step's own EPS/Sales/Margin figures) used to live here too, but once the grid itself
-   started colour-coding those same cells (point 4), it read as duplicated, harder-to-parse
-   detail — the grid *is* the per-quarter breakdown now; the hover explains the aggregate score.
+   section. Hovering it reveals a small structured panel, not a run of plain text:
+   - The verdict as a tone-coloured **pill** (e.g. "Mixed — some cylinders firing", or "Not
+     enough consecutive quarters yet…" when `pending`), not inline text — it's the headline of
+     the panel, so it gets the visual weight.
+   - Except when `pending` (nothing to count yet), a fixed-wording summary sentence — **"Checked
+     whether EPS, Sales, and Margin each improved quarter-over-quarter across N quarters
+     (totalChecks checks) — hits passed."** — at comfortable body size/line-height, not the
+     small muted caption size everything used to share.
+   - A per-metric breakdown underneath, separated by a rule: three rows (`EPS`, `Sales`,
+     `Margin`), each showing its own `hits/N` as a small tone-coloured pill, right-aligned —
+     `metricTone()` bands each row the same way `code33Verdict()` bands the overall score (all
+     hits → green, none → red, some → amber), so "which cylinder is actually carrying the score"
+     reads at a glance instead of requiring three numbers to be parsed out of one sentence.
+     Compares `hits * 3 >= total * 2` rather than `hits / total >= 0.67` — `total` is always
+     small (1–3 steps), and 2/3 as a float is `0.6666...`, which a `>= 0.67` check would wrongly
+     exclude from "good."
+
+   All figures are read straight off `rating.hits`/`totalChecks`/`epsHits`/`salesHits`/
+   `marginHits` (see [fundamentals.spec.md](fundamentals.spec.md)), with the summary's wording
+   fixed in code, not composed as prose, so nothing here can drift or vary between renders. A
+   per-*step* list (each step's own EPS/Sales/Margin figures) used to live here too, but once the
+   grid itself started colour-coding those same cells (point 4), it read as duplicated,
+   harder-to-parse detail — the grid *is* the per-quarter breakdown now; the hover explains the
+   aggregate score.
 6. **Footer** — a "← Back to Watchlist" link, and the autosave status ("Saving…" /
    "Saved · <time>"), same language as Place Trade's draft-status footer.
 
