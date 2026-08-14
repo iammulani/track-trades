@@ -57,7 +57,11 @@ continuously-editable form.
 5. **Code 33 summary** (`Code33Summary`) — `RatingStars` (from `shared/components`) sized larger
    + `N.N / 5` + a verdict pill (tone-coloured: good / caution / bad), then a plain list of every
    step in the evaluation window (`Jun 2025 → Sep 2025`, with a check/✕ per metric) so the score
-   is never a black box. Nothing renders here if fewer than 2 usable quarters exist yet — the
+   is never a black box. Each metric shows the two YoY-growth figures being compared, not just
+   the verdict — `EPS -69.5% → -49.1% ✓` — since a bare check/✕ on its own doesn't explain *why*:
+   the comparison is between two already-year-over-year numbers (each quarter's growth vs. its
+   own year-ago match), not between the raw quarters, and that's easy to misread as one without
+   seeing the figures. Nothing renders here if fewer than 2 usable quarters exist yet — the
    verdict pill itself explains what's missing and points at "Show earlier quarters."
 6. **Footer** — a "← Back to Watchlist" link, and the autosave status ("Saving…" /
    "Saved · <time>"), same language as Place Trade's draft-status footer.

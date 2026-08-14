@@ -1,5 +1,6 @@
 import { Icon } from '../../../shared/components/Icon'
 import { RatingStars } from '../../../shared/components/RatingStars'
+import { formatPercent, formatSignedPercent } from '../../../shared/utils/format'
 import { CODE33_STARS, code33Verdict, formatPeriodLabel, type Code33Rating } from '../../fundamentals'
 import './Code33Summary.css'
 
@@ -31,15 +32,15 @@ export function Code33Summary({ rating }: Code33SummaryProps) {
               </span>
               <span className={`code33-summary__check${step.epsAccelerated ? ' is-met' : ''}`}>
                 <Icon name={step.epsAccelerated ? 'check' : 'x'} size={13} />
-                EPS
+                EPS {formatSignedPercent(step.epsGrowthFrom)} → {formatSignedPercent(step.epsGrowthTo)}
               </span>
               <span className={`code33-summary__check${step.salesAccelerated ? ' is-met' : ''}`}>
                 <Icon name={step.salesAccelerated ? 'check' : 'x'} size={13} />
-                Sales
+                Sales {formatSignedPercent(step.salesGrowthFrom)} → {formatSignedPercent(step.salesGrowthTo)}
               </span>
               <span className={`code33-summary__check${step.marginExpanded ? ' is-met' : ''}`}>
                 <Icon name={step.marginExpanded ? 'check' : 'x'} size={13} />
-                Margin
+                Margin {formatPercent(step.marginFrom)} → {formatPercent(step.marginTo)}
               </span>
             </li>
           ))}

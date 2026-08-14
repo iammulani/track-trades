@@ -71,6 +71,8 @@
   align-items: center;
   gap: 5px;
   color: var(--text-muted);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
 }
 
 .code33-summary__check svg {
