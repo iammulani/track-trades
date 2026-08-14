@@ -367,7 +367,6 @@ frontend/src/modules/place-trade/
 │   └── tradeRating.ts                # computeTradeRating() (live, in the stepper), toRatingSnapshot()/fromRatingSnapshot() (freeze at placement / read back on Trade Detail — never re-judge), GATE_META + CRITERION_LABELS (the prose, keyed by the persisted ids), ratingVerdict(), bindingGates(), RATING_STARS, criterionState()/criterionPoints()/formatPoints()/formatStars()/CRITERION_STATE_ICON/CRITERION_STATE_LABEL/GATE_STATE_ICON/GATE_STATE_LABEL
 └── components/
     ├── StepIndicator.tsx              # numbered progress row (dots only, no labels)
-    ├── RatingStars.tsx                # the 5-star row (outline + clipped fill) — shared by the badge, Review and Trade Detail
     ├── RatingGateBanner.tsx           # the failed non-negotiables + the ceiling they impose, with this trade's real numbers plugged into the failure (`detail`); renders nothing when all pass
     ├── TradeRatingBadge.tsx            # RatingStars + "N / 5 · P%" + hover-card breakdown (gates, then criteria)
     ├── TradeParamsStep.tsx            # entry/qty/stop/target inputs

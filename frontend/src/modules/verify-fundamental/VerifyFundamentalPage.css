@@ -1,0 +1,111 @@
+.verify-fundamental-page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 1240px;
+  margin: 0 auto;
+}
+
+.verify-fundamental-page__state {
+  color: var(--text-secondary);
+  padding: 8px 0;
+}
+
+.verify-fundamental-page__state--error {
+  color: var(--critical-text);
+}
+
+.verify-fundamental-page__back-link {
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.verify-fundamental-page__card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.verify-fundamental-page__title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.verify-fundamental-page__title-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.verify-fundamental-page__symbol {
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.verify-fundamental-page__as-of {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.verify-fundamental-page__earlier {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  margin-top: -8px;
+  border-radius: 999px;
+  border: 1px dashed var(--border-strong);
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.verify-fundamental-page__earlier:hover {
+  color: var(--text-primary);
+  border-color: var(--text-muted);
+}
+
+.verify-fundamental-page__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.verify-fundamental-page__cancel {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.verify-fundamental-page__cancel:hover {
+  color: var(--text-secondary);
+}
+
+.verify-fundamental-page__save-status {
+  font-size: 12px;
+  color: var(--text-muted);
+}

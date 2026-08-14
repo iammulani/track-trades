@@ -1,0 +1,1 @@
+export { VerifyFundamentalPage } from './VerifyFundamentalPage'

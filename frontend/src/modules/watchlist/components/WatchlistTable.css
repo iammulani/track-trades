@@ -166,6 +166,12 @@
   color: var(--text-muted);
 }
 
+.watch-table__fundamentals {
+  width: 1%;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
 .watch-table__remove {
   display: inline-grid;
   place-items: center;
@@ -206,6 +212,27 @@
 
 .watch-table__place-trade:hover {
   filter: brightness(1.05);
+}
+
+/* Secondary to Place Trade — checking fundamentals precedes placing a trade, but shouldn't
+ * visually compete with the primary action. */
+.watch-table__verify-fundamental {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.watch-table__verify-fundamental:hover {
+  color: var(--text-primary);
+  border-color: var(--text-muted);
 }
 
 .watch-table__draft-pill {

@@ -38,7 +38,7 @@ import {
   type TradeRating,
 } from '../utils/tradeRating'
 import { RatingGateBanner } from './RatingGateBanner'
-import { RatingStars } from './RatingStars'
+import { RatingStars } from '../../../shared/components/RatingStars'
 import { RiskSummary } from './RiskSummary'
 import './ReviewStep.css'
 

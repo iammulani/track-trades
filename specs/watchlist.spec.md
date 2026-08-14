@@ -116,7 +116,15 @@ Reached via the **Watchlist** sidebar item. Top to bottom:
    small count badge when there's more than one; it opens the notes popup. The
    bodies live in the popup so the column stays narrow: free text at full width
    cost ~320px for content that's usually empty and made rows different heights),
-   a **Place Trade** action (pill
+   `Fundamentals` (`Code33Badge` — a muted icon
+   until enough consecutive quarters have been entered to judge; once judged, a
+   compact star row + score, `title` naming the verdict. Always links through to
+   `/watchlist/:id/verify-fundamental` — see
+   [verify-fundamental.spec.md](verify-fundamental.spec.md)), a **Verify
+   Fundamental** action (secondary pill, same link as the badge — checking
+   fundamentals precedes placing a trade, so it sits before Place Trade in the
+   actions cell, styled quieter so Place Trade stays the visually primary
+   action), a **Place Trade** action (pill
    button, links to `/watchlist/:id/place-trade` — see
    [place-trade.spec.md](place-trade.spec.md)), and a remove (×) action.
    A row whose place-trade run was parked as a **draft** (see
@@ -125,7 +133,10 @@ Reached via the **Watchlist** sidebar item. Top to bottom:
    Draft** instead of Place Trade (same link — the stepper hydrates itself back
    to the step it was left on). The row gains **no** second action: discarding a
    draft is only offered from inside the stepper, where you can see what you're
-   about to throw away — see [place-trade.spec.md](place-trade.spec.md).
+   about to throw away — see [place-trade.spec.md](place-trade.spec.md). Unlike
+   Place Trade, Verify Fundamental never removes the row or offers a discard —
+   it's a non-destructive, repeat-visit action (see
+   [fundamentals.spec.md](fundamentals.spec.md)).
 4. **Add popup** (`AddTickerModal`, shared `Modal`) — ticker input (autofocused,
    auto-uppercased), a required **long/short toggle** (defaults to "Long"),
    a required category picker (segmented pills, defaults to whatever filter
@@ -212,7 +223,8 @@ Reached via the **Watchlist** sidebar item. Top to bottom:
   confirming calls `DELETE /watchlist/:id`. It **also discards that item's draft**,
   if it has one — a draft with no watchlist item behind it can never be resumed.
   This is the only place the Watchlist deletes a draft; discarding one on its own
-  belongs to the stepper.
+  belongs to the stepper. It **also deletes that item's fundamentals record**, if
+  one exists, the same way — see [fundamentals.spec.md](fundamentals.spec.md).
 - Refetches after add/remove/move/rate/note are silent (no loading flash) — only
   the first load shows the loading state. The open notes popup re-reads its item
   from the refreshed list by id, so a save flows straight back into it instead of
@@ -266,11 +278,18 @@ table, the remove confirmation and the notes popup. Also uses
 **open when its target object is non-null** rather than taking a separate `open`
 flag — the thing being edited and the open state are the same fact.
 
-`StarRating` deliberately does **not** reuse `modules/place-trade`'s `RatingStars`:
-that one is a read-only, ratio-clipped rendering of a *computed* checklist score,
-this one is an interactive control for a *manual* judgement. They share the visual
-language (amber fill over a `--border-strong` outline) but not the component.
+`StarRating` deliberately does **not** reuse `shared/components/RatingStars`:
+that one is a read-only, ratio-clipped rendering of a *computed* score (trade
+rating, Code 33), this one is an interactive control for a *manual* judgement.
+They share the visual language (amber fill over a `--border-strong` outline)
+but not the component.
 
 The barrel (`index.ts`) also exports `useWatchlist` and the item types —
 `modules/place-trade` consumes both to load the item being traded and remove
 it once the trade is placed.
+
+Depends on `modules/fundamentals` (`useFundamentals`, `Code33Badge`) the same
+way it depends on `modules/drafts` — both are domain-only leaves that neither
+imports back, so there's no cycle. See
+[fundamentals.spec.md](fundamentals.spec.md) and
+[verify-fundamental.spec.md](verify-fundamental.spec.md).

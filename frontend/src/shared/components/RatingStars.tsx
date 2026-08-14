@@ -1,19 +1,20 @@
 import type { CSSProperties } from 'react'
-import { Icon } from '../../../shared/components/Icon'
-import { RATING_STARS } from '../utils/tradeRating'
+import { Icon } from './Icon'
 import './RatingStars.css'
 
 interface RatingStarsProps {
   /** 0..1 — the share of the row to fill. */
   ratio: number
+  /** How many star glyphs to render. */
+  count?: number
   size?: number
 }
 
 /** A row of outline stars with an identical filled row clipped to the score — smooth partial
- * fill without needing a half-star glyph. Shared by the stepper badge, the Review banner and
- * the Trade Detail page so the three can't drift apart on star count or styling. */
-export function RatingStars({ ratio, size = 15 }: RatingStarsProps) {
-  const stars = Array.from({ length: RATING_STARS }, (_, i) => (
+ * fill without needing a half-star glyph. Shared by every star rating in the app (trade rating,
+ * Code 33) so they can't drift apart on styling. */
+export function RatingStars({ ratio, count = 5, size = 15 }: RatingStarsProps) {
+  const stars = Array.from({ length: count }, (_, i) => (
     <Icon key={i} name="star" size={size} className="rating-stars__star" />
   ))
   return (

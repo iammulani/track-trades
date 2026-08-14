@@ -1,0 +1,66 @@
+.quarterly-grid__empty {
+  color: var(--text-secondary);
+  padding: 24px 0;
+  text-align: center;
+}
+
+.quarterly-grid__scroll {
+  overflow-x: auto;
+}
+
+.quarterly-grid {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.quarterly-grid th {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 8px 10px;
+  white-space: nowrap;
+}
+
+.quarterly-grid td {
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.quarterly-grid tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.quarterly-grid__period {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.quarterly-grid__input {
+  width: 110px;
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-strong);
+  background: var(--page);
+  color: var(--text-primary);
+  font-size: 13px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.quarterly-grid__input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 20%, transparent);
+}
+
+.quarterly-grid__derived {
+  color: var(--text-secondary);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}

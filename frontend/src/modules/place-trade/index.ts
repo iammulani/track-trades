@@ -32,5 +32,5 @@ export type {
   RatingVerdict,
   TradeRating,
 } from './utils/tradeRating'
-export { RatingStars } from './components/RatingStars'
+export { RatingStars } from '../../shared/components/RatingStars'
 export { RatingGateBanner } from './components/RatingGateBanner'

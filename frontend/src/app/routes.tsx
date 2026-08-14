@@ -6,6 +6,7 @@ import { ReportPage } from '../modules/report'
 import { SettingsPage } from '../modules/settings'
 import { WatchlistPage } from '../modules/watchlist'
 import { PlaceTradePage } from '../modules/place-trade'
+import { VerifyFundamentalPage } from '../modules/verify-fundamental'
 import { TradeDetailPage } from '../modules/trade-detail'
 import { Home } from '../modules/home'
 
@@ -19,6 +20,7 @@ export const router = createBrowserRouter([
       { path: 'equity', element: <EquityPage /> },
       { path: 'watchlist', element: <WatchlistPage /> },
       { path: 'watchlist/:id/place-trade', element: <PlaceTradePage /> },
+      { path: 'watchlist/:id/verify-fundamental', element: <VerifyFundamentalPage /> },
       { path: 'trades/:id', element: <TradeDetailPage /> },
       { path: 'settings', element: <SettingsPage /> },
       { path: 'about', element: <Home /> },

@@ -58,3 +58,5 @@ The files this feature owns under `modules/<feature>/`.
 | Trade Detail  | [trade-detail.spec.md](trade-detail.spec.md) | `frontend/src/modules/trade-detail` |
 | Settings      | [settings.spec.md](settings.spec.md)       | `frontend/src/modules/settings`    |
 | Scanner Checklist | [scanner-checklist.spec.md](scanner-checklist.spec.md) | `backend/stock-scanner` (CLI) |
+| Fundamentals domain | [fundamentals.spec.md](fundamentals.spec.md) | `frontend/src/modules/fundamentals` |
+| Verify Fundamental | [verify-fundamental.spec.md](verify-fundamental.spec.md) | `frontend/src/modules/verify-fundamental` |

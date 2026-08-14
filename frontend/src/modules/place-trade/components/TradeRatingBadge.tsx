@@ -1,5 +1,6 @@
 import { HoverCard } from '../../../shared/components/HoverCard'
 import { Icon } from '../../../shared/components/Icon'
+import { RatingStars } from '../../../shared/components/RatingStars'
 import {
   CRITERION_STATE_ICON,
   criterionState,
@@ -8,7 +9,6 @@ import {
   RATING_STARS,
   type TradeRating,
 } from '../utils/tradeRating'
-import { RatingStars } from './RatingStars'
 import './TradeRatingBadge.css'
 
 interface TradeRatingBadgeProps {

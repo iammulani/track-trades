@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom'
 import { Icon } from '../../shared/components/Icon'
 import { PageHeader } from '../../shared/components/PageHeader'
 import { useDrafts } from '../drafts'
+import { useFundamentals } from '../fundamentals'
 import { AddTickerModal } from './components/AddTickerModal'
 import { CategoryFilterTabs, type CategoryFilter } from './components/CategoryFilterTabs'
 import { RatingFilterTabs, type RatingFilter } from './components/RatingFilterTabs'
@@ -39,6 +40,7 @@ export function WatchlistPage() {
     updateNotes,
   } = useWatchlist()
   const { byWatchlistId: draftsByItem, discard: discardDraft } = useDrafts()
+  const { byWatchlistItemId: fundamentalsByItem, removeFor: removeFundamentalsFor } = useFundamentals()
 
   const filterParam = searchParams.get('category')
   const filter: CategoryFilter = VALID_FILTERS.includes(filterParam as CategoryFilter)
@@ -109,11 +111,12 @@ export function WatchlistPage() {
     setSearchParams({})
   }
 
-  // Drop the parked stepper run along with the symbol — a draft with no watchlist item
-  // behind it can never be resumed.
+  // Drop the parked stepper run and any fundamentals record along with the symbol — neither
+  // can be resumed/attached to a watchlist item that no longer exists.
   async function handleRemove(id: string) {
     await removeItem(id)
     await discardDraft(id)
+    await removeFundamentalsFor(id)
   }
 
   return (
@@ -177,6 +180,7 @@ export function WatchlistPage() {
             <WatchlistTable
               items={filtered}
               drafts={draftsByItem}
+              fundamentals={fundamentalsByItem}
               onRemove={handleRemove}
               onUpdateCategory={updateCategory}
               onUpdateRating={updateRating}

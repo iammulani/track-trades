@@ -1,0 +1,67 @@
+[
+  {
+    "id": "xhBC4EdzEI4",
+    "watchlistItemId": "GjvovlISKr4",
+    "asOfPeriod": "2026-06",
+    "quarterCount": 8,
+    "quarters": [
+      {
+        "period": "2024-09",
+        "sales": "5572",
+        "netProfit": "475",
+        "eps": "7.81"
+      },
+      {
+        "period": "2024-12",
+        "sales": "5271",
+        "netProfit": "479",
+        "eps": "7.92"
+      },
+      {
+        "period": "2025-03",
+        "sales": "5047",
+        "netProfit": "87",
+        "eps": "4.55"
+      },
+      {
+        "period": "2025-06",
+        "sales": "4085",
+        "netProfit": "415",
+        "eps": "6.63"
+      },
+      {
+        "period": "2025-09",
+        "sales": "4234",
+        "netProfit": "139",
+        "eps": "2.38"
+      },
+      {
+        "period": "2025-12",
+        "sales": "4943",
+        "netProfit": "248",
+        "eps": "4.03"
+      },
+      {
+        "period": "2026-03",
+        "sales": "4633",
+        "netProfit": "124",
+        "eps": "2.18"
+      },
+      {
+        "period": "2026-06",
+        "sales": "4452",
+        "netProfit": "91",
+        "eps": "1.63"
+      }
+    ],
+    "updatedAt": "2026-08-14T10:40:45.068Z"
+  },
+  {
+    "id": "ktVbRIqttKU",
+    "watchlistItemId": "hFaaiaa-qPk",
+    "asOfPeriod": "2026-06",
+    "quarterCount": 8,
+    "quarters": [],
+    "updatedAt": "2026-08-14T10:07:12.187Z"
+  }
+]

@@ -7,6 +7,7 @@ import { SideBadge } from '../../../shared/components/SideBadge'
 import { avatarColor } from '../../../shared/utils/avatarColor'
 import { formatDate, formatDateTime } from '../../../shared/utils/format'
 import type { TradeDraft } from '../../drafts'
+import { Code33Badge, type FundamentalsRecord } from '../../fundamentals'
 import type {
   WatchCategory,
   WatchlistItemWithMetrics,
@@ -24,6 +25,8 @@ interface WatchlistTableProps {
   items: WatchlistItemWithMetrics[]
   /** Parked stepper runs, keyed by watchlist item id — a row with one resumes instead of starting over. */
   drafts: Record<string, TradeDraft>
+  /** Quarterly fundamentals, keyed by watchlist item id — drives the Code 33 badge. */
+  fundamentals: Record<string, FundamentalsRecord>
   onRemove: (id: string) => void
   onUpdateCategory: (id: string, category: WatchCategory) => void
   onUpdateRating: (id: string, rating: WatchRating) => void
@@ -33,6 +36,7 @@ interface WatchlistTableProps {
 export function WatchlistTable({
   items,
   drafts,
+  fundamentals,
   onRemove,
   onUpdateCategory,
   onUpdateRating,
@@ -58,6 +62,7 @@ export function WatchlistTable({
               <th className="ta-left">Since</th>
               <th className="ta-left">Reason</th>
               <th className="ta-center">Notes</th>
+              <th className="ta-center">Fundamentals</th>
               <th className="ta-right"></th>
             </tr>
           </thead>
@@ -135,8 +140,24 @@ export function WatchlistTable({
                       {notes > 1 && <span className="watch-table__notes-count">{notes}</span>}
                     </button>
                   </td>
+                  <td className="ta-center watch-table__fundamentals">
+                    <Code33Badge
+                      watchlistItemId={item.id}
+                      symbol={item.symbol}
+                      record={fundamentals[item.id]}
+                    />
+                  </td>
                   <td className="ta-right">
                     <div className="watch-table__actions">
+                      <Link
+                        to={`/watchlist/${item.id}/verify-fundamental`}
+                        className="watch-table__verify-fundamental"
+                        aria-label={`Verify fundamentals for ${item.symbol}`}
+                        title="Verify fundamentals"
+                      >
+                        <Icon name="bars" size={13} />
+                        Verify Fundamental
+                      </Link>
                       <Link
                         to={`/watchlist/${item.id}/place-trade`}
                         className="watch-table__place-trade"
