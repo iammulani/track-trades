@@ -55,11 +55,11 @@ export function WatchlistTable({
         <table className="watch-table__table">
           <thead>
             <tr>
-              <th className="ta-left">Stock</th>
-              <th className="ta-left">Side</th>
-              <th className="ta-left watch-table__rating-head">Rating</th>
-              <th className="ta-left">Since</th>
-              <th className="ta-left watch-table__reason-head">Reason</th>
+              <th className="ta-center">Stock</th>
+              <th className="ta-center">Side</th>
+              <th className="ta-center watch-table__rating-head">Rating</th>
+              <th className="ta-center">Since</th>
+              <th className="ta-center watch-table__reason-head">Reason</th>
               <th className="ta-center">Notes</th>
               <th className="ta-center">Fundamentals</th>
               <th className="ta-right"></th>
@@ -71,7 +71,7 @@ export function WatchlistTable({
               const notes = noteCount(item)
               return (
                 <tr key={item.id}>
-                  <td className="ta-left">
+                  <td className="ta-center">
                     <div className="watch-table__stock">
                       <span
                         className="watch-table__avatar"
@@ -103,10 +103,10 @@ export function WatchlistTable({
                       )}
                     </div>
                   </td>
-                  <td className="ta-left">
+                  <td className="ta-center">
                     <SideBadge side={item.side} />
                   </td>
-                  <td className="ta-left watch-table__rating">
+                  <td className="ta-center watch-table__rating">
                     <StarRating
                       value={itemRating(item)}
                       symbol={item.symbol}
@@ -114,13 +114,13 @@ export function WatchlistTable({
                     />
                   </td>
                   <td
-                    className="ta-left watch-table__since"
+                    className="ta-center watch-table__since"
                     title={formatDateTime(item.watchedSince)}
                   >
                     <div className="watch-table__duration">{item.watchedLabel}</div>
                     <div className="cell-time">{formatDate(item.watchedSince)}</div>
                   </td>
-                  <td className="ta-left watch-table__reason">
+                  <td className="ta-center watch-table__reason">
                     <CategorySelect
                       value={item.category}
                       onChange={(category) => onUpdateCategory(item.id, category)}
