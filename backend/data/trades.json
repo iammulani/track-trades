@@ -657,5 +657,138 @@
         "note": "need to understand more on the good setups, it seems it was good, but when i looked overall after a trade. it seems i missed few pointer, need to very careful with making good selection"
       }
     ]
+  },
+  {
+    "symbol": "SOLARINDS",
+    "side": "long",
+    "quantity": 2,
+    "entryPrice": 19100,
+    "exitPrice": null,
+    "entryTime": "2026-08-13T06:25:53.986Z",
+    "exitTime": null,
+    "notes": "",
+    "setup": {
+      "watchedSince": "2026-07-15T06:37:09.084Z",
+      "stopLoss": 17740,
+      "target": 22500,
+      "stage": "stage-2",
+      "base": "base-1",
+      "rsi": 68,
+      "fiftyDayMa": 18252.12,
+      "technicalChecklist": {
+        "ma-uptrend": true,
+        "ma-stacked": true,
+        "ma200-duration": true
+      },
+      "week52Low": 11772,
+      "week52High": 19170,
+      "weeksInBase": 12,
+      "vcpContractions": [
+        {
+          "high": 18816,
+          "low": 16851
+        },
+        {
+          "high": 18869,
+          "low": 17061
+        },
+        {
+          "high": 19185,
+          "low": 17991
+        }
+      ],
+      "finalChecks": {
+        "volume-price-quiet": true,
+        "weak-holders-shaken-out": true,
+        "market-bullish": true,
+        "group-positive": true,
+        "volume-confirms-breakout": true,
+        "minimal-overhead-resistance": true
+      },
+      "rating": {
+        "ratio": 0.9333333333333333,
+        "rawRatio": 0.9333333333333333,
+        "criteria": [
+          {
+            "id": "risk-reward",
+            "weight": 2,
+            "score": 1
+          },
+          {
+            "id": "stop-placement",
+            "weight": 1,
+            "score": 1
+          },
+          {
+            "id": "stage-quality",
+            "weight": 2,
+            "score": 1
+          },
+          {
+            "id": "base-quality",
+            "weight": 1,
+            "score": 1
+          },
+          {
+            "id": "ma-trend",
+            "weight": 1,
+            "score": 1
+          },
+          {
+            "id": "relative-strength",
+            "weight": 1,
+            "score": 0
+          },
+          {
+            "id": "week-range",
+            "weight": 2,
+            "score": 1
+          },
+          {
+            "id": "vcp-structure",
+            "weight": 3,
+            "score": 1
+          },
+          {
+            "id": "final-checks",
+            "weight": 1,
+            "score": 1
+          },
+          {
+            "id": "breakout-checklist",
+            "weight": 1,
+            "score": 1
+          }
+        ],
+        "gates": [
+          {
+            "id": "stage-2",
+            "state": "pass",
+            "cap": 0.4
+          },
+          {
+            "id": "trend-template",
+            "state": "pass",
+            "cap": 0.6
+          },
+          {
+            "id": "logical-stop",
+            "state": "pass",
+            "cap": 0.6
+          },
+          {
+            "id": "real-base",
+            "state": "pass",
+            "cap": 0.6
+          },
+          {
+            "id": "breakout-confirmation",
+            "state": "pass",
+            "cap": 0.6
+          }
+        ]
+      }
+    },
+    "id": "VjA_ZyZE1oM"
   }
 ]

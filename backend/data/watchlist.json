@@ -18,16 +18,6 @@
     "id": "esvWIi7HCHw"
   },
   {
-    "symbol": "SOLARINDS",
-    "category": "active",
-    "side": "long",
-    "notes": "",
-    "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/SOLARINDS/3412993",
-    "watchedSince": "2026-07-15T06:37:09.084Z",
-    "id": "zrCZKL7xErc",
-    "rating": 4
-  },
-  {
     "symbol": "LLOYDSME",
     "category": "active",
     "side": "long",
@@ -35,7 +25,7 @@
     "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/LLOYDSME/4432129",
     "watchedSince": "2026-07-15T10:00:28.453Z",
     "id": "Sv9nwYYWPwk",
-    "rating": 2
+    "rating": 0
   },
   {
     "symbol": "TIPSMUSIC",
@@ -64,16 +54,17 @@
     "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/TIPSMUSIC/2333953",
     "watchedSince": "2026-07-17T08:46:08.099Z",
     "id": "StfHLlgpa0U",
-    "rating": 4
+    "rating": 0
   },
   {
     "symbol": "SYRMA",
-    "category": "daily",
+    "category": "active",
     "side": "long",
     "notes": "",
     "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/SYRMA/2763009",
     "watchedSince": "2026-07-18T08:55:47.397Z",
-    "id": "FKmnpSLuNxA"
+    "id": "FKmnpSLuNxA",
+    "rating": 3
   },
   {
     "symbol": "SONACOMS",
@@ -163,7 +154,8 @@
     "notes": "",
     "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/APOLLOHOSP/40193",
     "watchedSince": "2026-07-27T04:47:34.078Z",
-    "id": "t-u495-Bi0w"
+    "id": "t-u495-Bi0w",
+    "rating": 3
   },
   {
     "symbol": "KELENRG",
@@ -276,12 +268,13 @@
   },
   {
     "symbol": "JINDALSAW",
-    "category": "daily",
+    "category": "active",
     "side": "long",
     "notes": [],
     "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/JINDALSAW/774145",
     "watchedSince": "2026-08-04T11:17:02.243Z",
-    "id": "GjvovlISKr4"
+    "id": "GjvovlISKr4",
+    "rating": 3
   },
   {
     "symbol": "IKS",
