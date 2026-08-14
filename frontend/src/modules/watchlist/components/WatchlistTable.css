@@ -114,6 +114,12 @@
   font-variant-numeric: tabular-nums;
 }
 
+/* Duration (bold) + date (muted, via .cell-time) stacked in one cell —
+ * replaces the old separate "Watching for" / "Since" columns. */
+.watch-table__since .cell-time {
+  margin-top: 2px;
+}
+
 /* Just the icon button — the note bodies live in the popup, so this column
  * stays narrow instead of eating 320px for text that's usually empty. */
 .watch-table__notes {
@@ -166,6 +172,14 @@
   color: var(--text-muted);
 }
 
+/* Icon-only chip now, not a text pill — column shrinks to fit it. */
+.watch-table__reason,
+.watch-table__table th.watch-table__reason-head {
+  width: 1%;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
 .watch-table__fundamentals {
   width: 1%;
   padding-left: 8px;
@@ -215,19 +229,17 @@
 }
 
 /* Secondary to Place Trade — checking fundamentals precedes placing a trade, but shouldn't
- * visually compete with the primary action. */
+ * visually compete with the primary action. Icon-only: the Fundamentals column's badge
+ * links to the same page, so this is a quiet shortcut rather than the only way there. */
 .watch-table__verify-fundamental {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 12px;
-  border-radius: 999px;
+  display: inline-grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
   border: 1px solid var(--border-strong);
   background: transparent;
   color: var(--text-secondary);
-  font-size: 12px;
-  font-weight: 600;
-  white-space: nowrap;
 }
 
 .watch-table__verify-fundamental:hover {

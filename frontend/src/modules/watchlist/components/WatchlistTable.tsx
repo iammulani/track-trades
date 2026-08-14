@@ -58,9 +58,8 @@ export function WatchlistTable({
               <th className="ta-left">Stock</th>
               <th className="ta-left">Side</th>
               <th className="ta-left watch-table__rating-head">Rating</th>
-              <th className="ta-left">Watching for</th>
               <th className="ta-left">Since</th>
-              <th className="ta-left">Reason</th>
+              <th className="ta-left watch-table__reason-head">Reason</th>
               <th className="ta-center">Notes</th>
               <th className="ta-center">Fundamentals</th>
               <th className="ta-right"></th>
@@ -114,11 +113,14 @@ export function WatchlistTable({
                       onChange={(rating) => onUpdateRating(item.id, rating)}
                     />
                   </td>
-                  <td className="ta-left watch-table__duration">{item.watchedLabel}</td>
-                  <td className="ta-left cell-time" title={formatDateTime(item.watchedSince)}>
-                    {formatDate(item.watchedSince)}
+                  <td
+                    className="ta-left watch-table__since"
+                    title={formatDateTime(item.watchedSince)}
+                  >
+                    <div className="watch-table__duration">{item.watchedLabel}</div>
+                    <div className="cell-time">{formatDate(item.watchedSince)}</div>
                   </td>
-                  <td className="ta-left">
+                  <td className="ta-left watch-table__reason">
                     <CategorySelect
                       value={item.category}
                       onChange={(category) => onUpdateCategory(item.id, category)}
@@ -156,7 +158,6 @@ export function WatchlistTable({
                         title="Verify fundamentals"
                       >
                         <Icon name="bars" size={13} />
-                        Verify Fundamental
                       </Link>
                       <Link
                         to={`/watchlist/${item.id}/place-trade`}

@@ -106,12 +106,20 @@ Reached via the **Watchlist** sidebar item. Top to bottom:
    **clickable** stars, not a static display: clicking star N rates the item N,
    clicking the star it's already on clears it back to unrated; hovering
    previews the fill; an unrated row shows five empty stars so it's visibly
-   editable), `Watching for` (the humanised
-   duration), `Since` (the date only — `Jul 24`; the full timestamp is the cell's
-   hover title, since the time of day is noise next to "Watching for" and the
-   table is already wide), `Reason` (`CategorySelect` — an inline
-   dropdown, not a static badge: picking a different value **moves the item
-   to that category** immediately), `Notes` (a single **icon button**, not a text
+   editable), `Since` (the humanised duration bold on top — `12 days` — with
+   the date underneath in muted small text — `Jul 24`; the full timestamp is
+   the cell's hover title, since the time of day is noise next to the
+   duration and the table is already wide. One column, not two — the
+   duration and the date are the same fact at two grains, so they don't
+   need separate headers), `Reason` (`CategorySelect` — an icon-only chip
+   naming the category by icon + colour, not spelled-out text: `target` for
+   Actively Watching, `clock` for Watch Daily, `trending` for Long-Term
+   Setup, with the full name as the chip's hover title. It's a real native
+   `<select>` underneath (invisible but full-size and focusable, so click,
+   keyboard and screen-reader access all still work) — opening it shows the
+   full category names same as before; picking a different value **moves the
+   item to that category** immediately. Not a static badge), `Notes` (a
+   single **icon button**, not a text
    cell — muted when the log is empty, accent-tinted once it has entries, with a
    small count badge when there's more than one; it opens the notes popup. The
    bodies live in the popup so the column stays narrow: free text at full width
@@ -121,10 +129,12 @@ Reached via the **Watchlist** sidebar item. Top to bottom:
    compact star row + score, `title` naming the verdict. Always links through to
    `/watchlist/:id/verify-fundamental` — see
    [verify-fundamental.spec.md](verify-fundamental.spec.md)), a **Verify
-   Fundamental** action (secondary pill, same link as the badge — checking
+   Fundamental** action (icon-only button, same link as the badge — checking
    fundamentals precedes placing a trade, so it sits before Place Trade in the
-   actions cell, styled quieter so Place Trade stays the visually primary
-   action), a **Place Trade** action (pill
+   actions cell, styled quieter and unlabeled so Place Trade stays the
+   visually primary action; the Fundamentals badge already goes to the same
+   page, so this is a quiet shortcut rather than the only way there), a
+   **Place Trade** action (pill
    button, links to `/watchlist/:id/place-trade` — see
    [place-trade.spec.md](place-trade.spec.md)), and a remove (×) action.
    A row whose place-trade run was parked as a **draft** (see
@@ -199,8 +209,10 @@ Reached via the **Watchlist** sidebar item. Top to bottom:
   newest-added first inside each rating. Re-rating an item visibly moves it,
   which is the point: the shortlist maintains itself without needing a filter.
 - **Colour = category**, fixed mapping: `active` → amber, `daily` → accent
-  (indigo), `long-term` → violet — always paired with the category label, never
-  colour alone.
+  (indigo), `long-term` → violet — always paired with a shape that also
+  distinguishes the category, never colour alone: the label text in the
+  filter tabs and Add popup, a distinct icon in the table's compact Reason
+  chip.
 - **After adding, the view always resets to "All" + "Any rating"** and the popup
   closes. This is deliberate: an item added while looking at, say, "Actively
   Watching" won't appear there if its category differs — and a new item is
@@ -255,7 +267,7 @@ frontend/src/modules/watchlist/
     ├── TickerSearch.tsx        # client-side ticker search box
     ├── CategoryFilterTabs.tsx  # All/Active/Daily/Long-term, with counts
     ├── RatingFilterTabs.tsx    # Any/★1-★5/Unrated, with counts — reuses CategoryFilterTabs.css pills
-    ├── CategorySelect.tsx      # inline dropdown pill — reassigns an item's category
+    ├── CategorySelect.tsx      # icon-only chip over a real <select> — reassigns an item's category
     ├── StarRating.tsx          # inline 1-5 star editor — click to rate, re-click to clear
     └── WatchlistTable.tsx      # the detail table; owns the remove-confirmation flow
 
