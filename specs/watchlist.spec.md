@@ -105,21 +105,22 @@ Reached via the **Watchlist** sidebar item. Top to bottom:
    avatar reuses the shared per-symbol colour, plus a small link icon next to
    the symbol when `link` is set — opens the URL in a new tab), `Side`
    (`shared/SideBadge` — long/short pill, the same
-   one the dashboard's trades table uses), `Rating` (`RatingPill` — a single
-   star icon, not a five-star row: showing all five for every row was the
-   widest thing in the table for a value that's just a number. Outline and
-   empty while unrated; once rated, filled amber with the number overlaid on
-   top of the star rather than sitting beside it, so the control stays a
-   single compact glyph. One click steps it forward — unrated → 1 → 2 → 3 →
-   4 → 5 → back to unrated. Trades "click star N to jump straight to N" for
-   a fraction of the width; the full 1-5 star *display* (read-only) still
-   exists elsewhere — `shared/components/RatingStars`, used for the computed
-   Code 33 read, is untouched by this), `Since` (the humanised duration bold on top — `12 days` — with
+   one the dashboard's trades table uses), `Since` (the humanised duration bold on top — `12 days` — with
    the date underneath in muted small text — `Jul 24`; the full timestamp is
    the cell's hover title, since the time of day is noise next to the
    duration and the table is already wide. One column, not two — the
    duration and the date are the same fact at two grains, so they don't
-   need separate headers), `Reason` (`CategorySelect` — an icon-only chip
+   need separate headers), `Rating` (`RatingPill` — a single
+   star icon, not a five-star row: showing all five for every row was the
+   widest thing in the table for a value that's just a number. Outline and
+   empty while unrated; once rated, filled amber with the number overlaid on
+   top of the star rather than sitting beside it, so the control stays a
+   single compact glyph, sized generously (38px) since it's now the only
+   rating indicator in the row. One click steps it forward — unrated → 1 →
+   2 → 3 → 4 → 5 → back to unrated. Trades "click star N to jump straight to
+   N" for a fraction of the width; the full 1-5 star *display* (read-only)
+   still exists elsewhere — `shared/components/RatingStars`, used for the
+   computed Code 33 read, is untouched by this), `Reason` (`CategorySelect` — an icon-only chip
    naming the category by icon + colour, not spelled-out text: `target` for
    Actively Watching, `clock` for Watch Daily, `trending` for Long-Term
    Setup, with the full name as the chip's hover title. It's a real native

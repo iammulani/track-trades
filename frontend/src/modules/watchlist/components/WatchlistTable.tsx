@@ -57,8 +57,8 @@ export function WatchlistTable({
             <tr>
               <th className="ta-left"></th>
               <th className="ta-center">Side</th>
-              <th className="ta-center watch-table__rating-head">Rating</th>
               <th className="ta-center">Since</th>
+              <th className="ta-center watch-table__rating-head">Rating</th>
               <th className="ta-center watch-table__reason-head">Reason</th>
               <th className="ta-center">Notes</th>
               <th className="ta-center">Fundamentals</th>
@@ -106,19 +106,19 @@ export function WatchlistTable({
                   <td className="ta-center">
                     <SideBadge side={item.side} />
                   </td>
-                  <td className="ta-center watch-table__rating">
-                    <RatingPill
-                      value={itemRating(item)}
-                      symbol={item.symbol}
-                      onChange={(rating) => onUpdateRating(item.id, rating)}
-                    />
-                  </td>
                   <td
                     className="ta-center watch-table__since"
                     title={formatDateTime(item.watchedSince)}
                   >
                     <div className="watch-table__duration">{item.watchedLabel}</div>
                     <div className="cell-time">{formatDate(item.watchedSince)}</div>
+                  </td>
+                  <td className="ta-center watch-table__rating">
+                    <RatingPill
+                      value={itemRating(item)}
+                      symbol={item.symbol}
+                      onChange={(rating) => onUpdateRating(item.id, rating)}
+                    />
                   </td>
                   <td className="ta-center watch-table__reason">
                     <CategorySelect

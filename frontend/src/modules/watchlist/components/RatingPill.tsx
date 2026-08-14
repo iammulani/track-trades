@@ -24,7 +24,7 @@ export function RatingPill({ value, symbol, onChange }: RatingPillProps) {
       aria-label={`Rating for ${symbol}: ${rated ? `${value} star${value > 1 ? 's' : ''}` : 'unrated'}`}
       title={rated ? `${value} star${value > 1 ? 's' : ''} — click to change` : 'Unrated — click to rate'}
     >
-      <Icon name="star" size={26} className="rating-pill__star" />
+      <Icon name="star" size={38} className="rating-pill__star" />
       {rated && <span className="rating-pill__value">{value}</span>}
     </button>
   )
