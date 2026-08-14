@@ -228,25 +228,6 @@
   filter: brightness(1.05);
 }
 
-/* Secondary to Place Trade — checking fundamentals precedes placing a trade, but shouldn't
- * visually compete with the primary action. Icon-only: the Fundamentals column's badge
- * links to the same page, so this is a quiet shortcut rather than the only way there. */
-.watch-table__verify-fundamental {
-  display: inline-grid;
-  place-items: center;
-  width: 26px;
-  height: 26px;
-  border-radius: 8px;
-  border: 1px solid var(--border-strong);
-  background: transparent;
-  color: var(--text-secondary);
-}
-
-.watch-table__verify-fundamental:hover {
-  color: var(--text-primary);
-  border-color: var(--text-muted);
-}
-
 .watch-table__draft-pill {
   padding: 2px 8px;
   border-radius: 999px;

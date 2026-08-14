@@ -131,13 +131,11 @@ Reached via the **Watchlist** sidebar item. Top to bottom:
    fundamentals have been captured, not what they read — the actual star
    rating and verdict live on the page this always links through to:
    `/watchlist/:id/verify-fundamental` — see
-   [verify-fundamental.spec.md](verify-fundamental.spec.md)), a **Verify
-   Fundamental** action (icon-only button, same link as the badge — checking
-   fundamentals precedes placing a trade, so it sits before Place Trade in the
-   actions cell, styled quieter and unlabeled so Place Trade stays the
-   visually primary action; the Fundamentals badge already goes to the same
-   page, so this is a quiet shortcut rather than the only way there), a
-   **Place Trade** action (pill
+   [verify-fundamental.spec.md](verify-fundamental.spec.md); this badge is
+   the row's **only** entry point to that page — there's no separate Verify
+   Fundamental action in the actions cell, since that would just be a second
+   link to the same destination sitting next to the badge), a **Place
+   Trade** action (pill
    button, links to `/watchlist/:id/place-trade` — see
    [place-trade.spec.md](place-trade.spec.md)), and a remove (×) action.
    A row whose place-trade run was parked as a **draft** (see

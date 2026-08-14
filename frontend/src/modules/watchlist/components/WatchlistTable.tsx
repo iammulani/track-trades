@@ -152,14 +152,6 @@ export function WatchlistTable({
                   <td className="ta-right">
                     <div className="watch-table__actions">
                       <Link
-                        to={`/watchlist/${item.id}/verify-fundamental`}
-                        className="watch-table__verify-fundamental"
-                        aria-label={`Verify fundamentals for ${item.symbol}`}
-                        title="Verify fundamentals"
-                      >
-                        <Icon name="bars" size={13} />
-                      </Link>
-                      <Link
                         to={`/watchlist/${item.id}/place-trade`}
                         className="watch-table__place-trade"
                         aria-label={
