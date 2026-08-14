@@ -13,6 +13,7 @@ import {
   formatSignedCurrency,
   formatSignedPercent,
 } from '../../shared/utils/format'
+import { CODE33_STARS, code33Verdict, metricTone } from '../fundamentals'
 import {
   BASE_OPTIONS,
   BREAKOUT_CONFIRMATION_CHECKLIST_ITEMS,
@@ -42,6 +43,13 @@ import {
 } from '../trades'
 import './TradeDetailPage.css'
 
+/** Maps fundamentals' good/caution/bad vocabulary onto the met/partial/unmet row classes the
+ * rest of this page's breakdown lists already use — same colours, same CSS, no new rules. */
+function metricRowState(hits: number, total: number): 'met' | 'partial' | 'unmet' {
+  const tone = metricTone(hits, total)
+  return tone === 'good' ? 'met' : tone === 'bad' ? 'unmet' : 'partial'
+}
+
 /** % pullback for one stored contraction — null only if `high` is 0 (shouldn't happen, but avoids a div/0). */
 function contractionPercent(c: TradeVcpContraction): number | null {
   return c.high === 0 ? null : ((c.high - c.low) / c.high) * 100
@@ -70,6 +78,11 @@ export function TradeDetailPage() {
   // taken. Re-tuning the formula changes what *new* trades score, not what past ones did.
   const rating = setup?.rating ? fromRatingSnapshot(setup.rating) : null
   const verdict = rating ? ratingVerdict(rating.ratio) : null
+  // Same "frozen, never recomputed" rule as the rating above — see Code33Snapshot in
+  // modules/trades. Absent (not just unrated) when no fundamentals record existed yet, or one
+  // existed but wasn't scoreable at the moment of placement.
+  const fundamentals = setup?.fundamentals ?? null
+  const fundamentalsVerdict = fundamentals ? code33Verdict(fundamentals) : null
   const contractions = setup?.vcpContractions ?? []
   const percents = contractions.map(contractionPercent).filter((p): p is number => p !== null)
   const largest = percents.length ? Math.max(...percents) : null
@@ -281,6 +294,42 @@ export function TradeDetailPage() {
                   })}
                 </ul>
               </div>
+
+              {fundamentals && fundamentalsVerdict && (
+                <div className="trade-detail__section">
+                  <span className="trade-detail__section-title">Code 33 — Fundamentals</span>
+                  <div className={`trade-detail__rating trade-detail__rating--${fundamentalsVerdict.tone}`}>
+                    <RatingStars ratio={fundamentals.ratio} size={20} />
+                    <span className="trade-detail__rating-score">
+                      {fundamentals.stars.toFixed(1)} / {CODE33_STARS}
+                    </span>
+                    <span className="trade-detail__rating-verdict">{fundamentalsVerdict.label}</span>
+                  </div>
+                  {fundamentals.totalChecks > 0 && (
+                    <ul className="trade-detail__breakdown">
+                      {(
+                        [
+                          ['EPS', fundamentals.epsHits],
+                          ['Sales', fundamentals.salesHits],
+                          ['Margin', fundamentals.marginHits],
+                        ] as const
+                      ).map(([label, hits]) => {
+                        const stepCount = fundamentals.totalChecks / 3
+                        const state = metricRowState(hits, stepCount)
+                        return (
+                          <li key={label} className={`trade-detail__breakdown-row is-${state}`}>
+                            <Icon name={CRITERION_STATE_ICON[state]} size={14} />
+                            <span className="trade-detail__breakdown-label">{label}</span>
+                            <span className="trade-detail__breakdown-points">
+                              {hits}/{stepCount}
+                            </span>
+                          </li>
+                        )
+                      })}
+                    </ul>
+                  )}
+                </div>
+              )}
 
               <div className="trade-detail__section">
                 <span className="trade-detail__section-title">Setup</span>

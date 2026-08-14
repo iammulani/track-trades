@@ -12,9 +12,13 @@ export {
   CODE33_STARS,
   code33Verdict,
   computeCode33,
+  metricTone,
+  toCode33Snapshot,
   type Code33Rating,
+  type Code33Score,
   type Code33Status,
   type Code33Step,
   type Code33Verdict,
+  type MetricTone,
 } from './utils/code33'
 export { Code33Badge } from './components/Code33Badge'

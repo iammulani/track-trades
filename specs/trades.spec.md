@@ -44,6 +44,7 @@ persisted beyond the raw fields; everything else is computed on read.
   | `vcpContractions`      | `TradeVcpContraction[]`       | each filled contraction's `{ high, low }`               |
   | `finalChecks`          | `TradeChecklist`              | overhead-supply + breakout-confirmation checklist        |
   | `rating`               | `TradeRatingSnapshot` \| null | The rating **frozen at placement** — `ratio`, `rawRatio`, and every criterion's `{id, weight, score}` + every gate's `{id, state, cap}`. See below. |
+  | `fundamentals`         | `Code33Snapshot` \| null      | The Code 33 fundamentals read **frozen at placement**. See below. |
 
 - **`TradeRatingSnapshot`** — the rating **as judged on the day the trade was
   taken**, written once and read back forever. This is the app's one deliberate
@@ -67,6 +68,36 @@ persisted beyond the raw fields; everything else is computed on read.
   which rebuilds a full `TradeRating` for the UI taking `ratio`/`rawRatio`
   **verbatim** rather than re-deriving them. Both live in
   `modules/place-trade` — see [place-trade.spec.md](place-trade.spec.md).
+
+- **`Code33Snapshot`** — the Code 33 fundamentals read **as computed on the day the
+  trade was taken**, frozen the same way `TradeRatingSnapshot` is and for the same
+  reason: quarterly figures on the watchlist item's fundamentals record don't even
+  exist anymore by the time this is read back (see below), so there's nothing left
+  to recompute from even if the formula were meant to be live here. Just the
+  numbers, no id-keyed prose to look up — Code 33's verdict is banded straight from
+  `ratio`/`status` by `code33Verdict()`, live, so freezing needs nothing more than:
+  - `status` (`'partial' | 'complete'` — never `'pending'`; see below),
+    `ratio`, `stars`.
+  - `hits` / `totalChecks` and the per-metric `epsHits` / `salesHits` / `marginHits`
+    — see [fundamentals.spec.md](fundamentals.spec.md) for what these count.
+
+  Written by `toCode33Snapshot()` in `modules/fundamentals`, called from
+  `usePlaceTrade`'s `placeTrade()` — see [place-trade.spec.md](place-trade.spec.md).
+  Read back on Trade Detail with no rebuild step at all: `code33Verdict()` and
+  `metricTone()` both accept the snapshot directly (see `Code33Score` in
+  [fundamentals.spec.md](fundamentals.spec.md) — a live `Code33Rating` and a frozen
+  `Code33Snapshot` are structurally interchangeable for rendering purposes, unlike
+  the rating, which needs `fromRatingSnapshot()`'s id-lookup rebuild).
+
+  `toCode33Snapshot()` returns `null` for a `'pending'` read (not enough consecutive
+  quarters to judge) — a `pending` state isn't a judgement worth freezing, so
+  `setup.fundamentals` is `null` for both "no fundamentals record existed at
+  placement" and "one existed but wasn't scoreable yet." Either way, the source
+  fundamentals record is deleted once the trade is placed, regardless of whether it
+  produced a snapshot — see fundamentals.spec.md's "never orphaned" rule, which
+  trade placement satisfies via this same path (not through the watchlist-removal
+  path drafts/fundamentals normally get cleaned up through, since placing a trade
+  calls `removeItem` directly rather than `WatchlistPage`'s remove handler).
 
 - **`ExitReason`** — a fixed, closed-ended taxonomy (`utils/exitReasons.ts` →
   `EXIT_REASON_OPTIONS`, `exitReasonLabel()`) so exit reasons can be
@@ -134,6 +165,8 @@ persisted beyond the raw fields; everything else is computed on read.
   `exitReasonLabel`.
 - Types: `Trade`, `TradeSide`, `TradeStatus`, `TradeOutcome`, `TradeStage`,
   `TradeBase`, `TradeChecklist`, `TradeVcpContraction`, `TradeSetup`,
+  `TradeRatingSnapshot`, `TradeRatingCriterionSnapshot`, `TradeRatingGateSnapshot`,
+  `Code33Snapshot`, `Code33SnapshotStatus`,
   `TradeMetrics`, `TradeWithMetrics`, `DashboardSummary`, `NewTrade`,
   `ExitReason`, `ExitLearning`, `CloseTradeInput`, `ExitPreview`.
 

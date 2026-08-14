@@ -1,3 +1,4 @@
+import type { Code33Snapshot } from '../../trades'
 import type { QuarterFinancials } from '../types/fundamentals'
 import { deriveQuarters, type QuarterDerived } from './quarterlyCalc'
 
@@ -16,7 +17,12 @@ export interface Code33Step {
   marginExpanded: boolean
 }
 
-export interface Code33Rating {
+/** The numbers behind a Code 33 read — everything `code33Verdict()` and the compact/frozen
+ * displays need, without the full `Code33Step[]` (which only the live grid's per-cell tone map
+ * needs). `Code33Rating` extends this; a frozen `Code33Snapshot` (see `modules/trades`)
+ * satisfies it structurally too, so both a live rating and a replayed snapshot can feed the
+ * same rendering code. */
+export interface Code33Score {
   status: Code33Status
   /** hits / totalChecks. 0..1. */
   ratio: number
@@ -27,11 +33,14 @@ export interface Code33Rating {
   hits: number
   /** 3 metrics * step count — what `hits` is being counted out of. */
   totalChecks: number
-  /** `hits` broken out per metric, each out of `steps.length` — lets the UI show *which* of the
-   * 3 cylinders is actually carrying the score (e.g. "Sales 2/3") rather than just the total. */
+  /** `hits` broken out per metric, each out of `totalChecks / 3` — lets the UI show *which* of
+   * the 3 cylinders is actually carrying the score (e.g. "Sales 2/3") rather than just the total. */
   epsHits: number
   salesHits: number
   marginHits: number
+}
+
+export interface Code33Rating extends Code33Score {
   steps: Code33Step[]
 }
 
@@ -72,9 +81,11 @@ function trailingUsableRun(derived: QuarterDerived[]): QuarterDerived[] {
  * not a weighted formula, since this is one signal from one data source rather than several
  * blended together (contrast `computeTradeRating`, which does need gates/weights).
  *
- * Never frozen — recomputed live from the raw `quarters` on every call. Unlike a trade's
- * rating, there's no "moment of commitment" here: the user comes back every quarter and adds
- * a row, so the read has to reflect the current full history every time.
+ * Never frozen on the watchlist side — recomputed live from the raw `quarters` on every call,
+ * since the user comes back every quarter and adds a row, so the read has to reflect the
+ * current full history every time. A trade placed against this stock *does* freeze a snapshot
+ * of the result (see `toCode33Snapshot` and `Code33Snapshot` in `modules/trades`) — that's a
+ * different, deliberate point-in-time judgement, same distinction `computeTradeRating` draws.
  */
 export function computeCode33(quarters: QuarterFinancials[]): Code33Rating {
   const derived = deriveQuarters(quarters).slice().sort((a, b) => (a.period < b.period ? -1 : 1))
@@ -129,25 +140,62 @@ export function computeCode33(quarters: QuarterFinancials[]): Code33Rating {
   }
 }
 
+/** Strips a live `Code33Rating` down to what gets frozen onto a trade at placement — mirrors
+ * `toRatingSnapshot()` in `place-trade/utils/tradeRating.ts`. Returns `null` for a `pending`
+ * rating: there's no read worth freezing when there wasn't enough data to judge yet (matches
+ * `Code33Snapshot`'s own doc comment on why `pending` isn't a valid snapshot status). */
+export function toCode33Snapshot(rating: Code33Rating): Code33Snapshot | null {
+  if (rating.status === 'pending') return null
+  return {
+    status: rating.status,
+    ratio: rating.ratio,
+    stars: rating.stars,
+    hits: rating.hits,
+    totalChecks: rating.totalChecks,
+    epsHits: rating.epsHits,
+    salesHits: rating.salesHits,
+    marginHits: rating.marginHits,
+  }
+}
+
 export interface Code33Verdict {
   label: string
   tone: 'good' | 'caution' | 'bad'
 }
 
-/** A quick read on a Code 33 rating. Stricter bands than `ratingVerdict` — "hitting on all
- * cylinders" is a closer-to-binary claim than a weighted trade score. */
-export function code33Verdict(rating: Code33Rating): Code33Verdict {
-  if (rating.status === 'pending') {
+/** A quick read on a Code 33 score. Stricter bands than `ratingVerdict` — "hitting on all
+ * cylinders" is a closer-to-binary claim than a weighted trade score. Takes the narrow
+ * `Code33Score` shape (not the full `Code33Rating`) so a replayed `Code33Snapshot` can be
+ * banded with the exact same function a live rating is, without needing a fake `steps` array —
+ * the "(based on N of 3 steps)" suffix is derived from `totalChecks / 3`, which is always the
+ * real step count by construction. */
+export function code33Verdict(score: Code33Score): Code33Verdict {
+  if (score.status === 'pending') {
     return {
       label: 'Not enough consecutive quarters yet — show earlier quarters for the same-quarter-last-year matches',
       tone: 'caution',
     }
   }
-  const suffix = rating.status === 'partial' ? ` (based on ${rating.steps.length} of 3 steps)` : ''
-  const { ratio } = rating
+  const stepCount = score.totalChecks / 3
+  const suffix = score.status === 'partial' ? ` (based on ${stepCount} of 3 steps)` : ''
+  const { ratio } = score
   if (ratio === 1) return { label: `Full Code 33 — hitting on all cylinders${suffix}`, tone: 'good' }
   if (ratio >= 0.67) return { label: `Strong — most cylinders firing${suffix}`, tone: 'good' }
   if (ratio >= 0.34) return { label: `Mixed — some cylinders firing${suffix}`, tone: 'caution' }
   if (ratio > 0) return { label: `Weak — barely accelerating${suffix}`, tone: 'bad' }
   return { label: `No acceleration — flat or decelerating${suffix}`, tone: 'bad' }
+}
+
+export type MetricTone = 'good' | 'caution' | 'bad'
+
+/** Majority-rule banding for one metric's own hit rate (out of a step count that's always
+ * small, 1-3): all hits is green, none is red, anything in between is amber. Compares
+ * `hits * 3 >= total * 2` rather than `hits / total >= 0.67` — 2/3 as a float is `0.6666...`,
+ * which a `>= 0.67` check would wrongly exclude from "good." Shared by the live hover-card
+ * breakdown and the frozen Trade Detail breakdown, so the two can't band the same fraction
+ * differently. */
+export function metricTone(hits: number, total: number): MetricTone {
+  if (hits === 0) return 'bad'
+  if (hits * 3 >= total * 2) return 'good'
+  return 'caution'
 }

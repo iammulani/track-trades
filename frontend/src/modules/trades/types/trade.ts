@@ -72,6 +72,33 @@ export interface TradeRatingSnapshot {
   gates: TradeRatingGateSnapshot[]
 }
 
+/** How thoroughly the Code 33 evaluation window could be judged at the moment of placement.
+ * Mirrors `Code33Status` in `modules/fundamentals`, inlined here rather than imported — same
+ * reason `TradeRatingGateSnapshot.state` repeats `GateState`'s literals instead of importing
+ * them: this module's stored shapes shouldn't depend on another feature module's types. */
+export type Code33SnapshotStatus = 'partial' | 'complete'
+
+/** The Code 33 fundamentals read **as computed at the moment the trade was placed**, frozen the
+ * same way `TradeRatingSnapshot` is — a point-in-time judgement about the company's
+ * fundamentals when the trade was taken. Unlike the rating snapshot, there's no id-keyed prose
+ * to look up at render time (the verdict is banded straight from `ratio`/`status`, the same
+ * function used live), so this is just the numbers `computeCode33()` produced — nothing here is
+ * ever recomputed from the trade's own data, since the watchlist item's fundamentals record is
+ * deleted at this same moment (see fundamentals.spec.md's "never orphaned" rule, which trade
+ * placement now also satisfies). Only ever written when there was an actual read to freeze —
+ * `status: 'pending'` (not enough consecutive quarters) isn't worth storing, so `null` covers
+ * both "no fundamentals record existed" and "one existed but wasn't scoreable yet." */
+export interface Code33Snapshot {
+  status: Code33SnapshotStatus
+  ratio: number
+  stars: number
+  hits: number
+  totalChecks: number
+  epsHits: number
+  salesHits: number
+  marginHits: number
+}
+
 /** Everything the place-trade stepper collects beyond the core fill data — a
  * point-in-time record of the setup that justified the trade, kept for later
  * analysis (e.g. "do tight VCPs actually outperform?"). */
@@ -94,6 +121,9 @@ export interface TradeSetup {
   /** The frozen rating (see `TradeRatingSnapshot`). `null` only for trades placed before
    * the rating existed, or entered outside the stepper. */
   rating: TradeRatingSnapshot | null
+  /** The frozen Code 33 fundamentals read (see `Code33Snapshot`). `null` when no fundamentals
+   * record existed for the watchlist item at placement, or it existed but wasn't scoreable yet. */
+  fundamentals: Code33Snapshot | null
 }
 
 /** Raw trade as stored in db.json. */

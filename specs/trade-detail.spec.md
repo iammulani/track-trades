@@ -25,6 +25,14 @@ Beyond what `modules/trades` already derives, this page also:
   [trades.spec.md](trades.spec.md) for why this is stored rather than derived.
   A trade with no `setup.rating` (placed before the rating existed, or entered
   outside the stepper) simply shows no rating section.
+- **Reads back** `setup.fundamentals` (a `Code33Snapshot`) the same "frozen, never
+  recomputed" way, but with no rebuild step at all: `code33Verdict()` and
+  `metricTone()` (`modules/fundamentals`) both accept the snapshot directly — a
+  frozen `Code33Snapshot` and a live `Code33Rating` are structurally interchangeable
+  for these two functions (see `Code33Score` in [fundamentals.spec.md](fundamentals.spec.md)),
+  so there's no `fromCode33Snapshot()` to call. `setup.fundamentals` is `null` for a
+  trade placed against a watchlist item with no fundamentals record, or one that
+  wasn't scoreable yet — the section simply doesn't render.
 - A couple of presentational-only calculations (per-contraction % pullback,
   largest/narrowest of a trade's VCP contractions) mirrored from
   [place-trade.spec.md](place-trade.spec.md)'s VCP Structure step, since
@@ -77,6 +85,17 @@ column.
        the Review step's breakdown in [place-trade.spec.md](place-trade.spec.md),
        reconstructed here from the stored setup. Partial rows get an amber
        background, unmet rows a red one, so dropped points are what jumps out.
+     - **Code 33 — Fundamentals** (only when `setup.fundamentals` is present) —
+       `RatingStars` + `N.N / 5` + verdict, in a tone-tinted band (reusing
+       `trade-detail__rating`, same component the technical rating above uses, just
+       banded by `code33Verdict()` instead of `ratingVerdict()`). Underneath, a
+       3-row breakdown (`EPS`, `Sales`, `Margin`, each `hits/stepCount`) reusing the
+       criteria breakdown's `is-met`/`is-partial`/`is-unmet` row styling — the
+       mapping from `metricTone()`'s good/caution/bad to met/partial/unmet is a
+       local `metricRowState()` helper, not a shared one, since it's just a
+       vocabulary translation between the two modules. No rows render at all if
+       `totalChecks` is 0 (shouldn't happen for a non-null snapshot, since
+       `toCode33Snapshot()` never freezes a `pending` read, but guarded anyway).
      - **Setup** — how long the symbol was watched before being traded
        (`entryTime − watchedSince`), stop loss, target.
      - **Stage & Base** — labels + verdict, colour-coded by tone, from
@@ -109,14 +128,15 @@ frontend/src/modules/trade-detail/
 ```
 
 Depends on `modules/trades` (`useTrades`, `TradeVcpContraction`,
-`computeExitPreview`, `exitReasonLabel`) and
+`computeExitPreview`, `exitReasonLabel`),
 `modules/place-trade` (`STAGE_OPTIONS`, `BASE_OPTIONS`,
 `INDICATOR_CHECKLIST_ITEMS`, `OVERHEAD_SUPPLY_CHECKLIST_ITEMS`,
 `BREAKOUT_CONFIRMATION_CHECKLIST_ITEMS`, `checklistItemClass`, `fromRatingSnapshot`,
 `criterionState`, `criterionPoints`, `CRITERION_STATE_ICON`, `CRITERION_STATE_LABEL`,
 `GATE_STATE_ICON`, `GATE_STATE_LABEL`, `formatPoints`,
 `formatStars`, `RATING_STARS`, `RatingStars`, `RatingGateBanner`,
-`ratingVerdict`) through their `index.ts` barrels, so the stage/base labels,
+`ratingVerdict`), and `modules/fundamentals` (`CODE33_STARS`, `code33Verdict`,
+`metricTone`) through their `index.ts` barrels, so the stage/base labels,
 checklist copy, star row, gate banner, and rating/breakdown logic can't drift from
 the stepper that originally captured them. Also uses
 `shared/components/{Card,PageHeader,SideBadge,ResultBadge}` and

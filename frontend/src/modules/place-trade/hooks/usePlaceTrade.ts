@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { dateValueToIso, todayDateValue } from '../../../shared/utils/dateInput'
 import type { DraftStepperState } from '../../drafts'
+import { computeCode33, fetchFundamentalsFor, removeFundamentals, toCode33Snapshot } from '../../fundamentals'
 import { addTrade } from '../../trades'
 import { useWatchlist } from '../../watchlist'
 import {
@@ -170,6 +171,14 @@ export function usePlaceTrade(watchlistId: string) {
     if (!item) return
     setPlacing(true)
     try {
+      // Same "freeze, then clean up the source" shape as the rating below — a fundamentals
+      // record with no data worth freezing (`status: 'pending'`) still gets deleted, so a
+      // trade placement can never leave one orphaned, same as removing the watchlist item does.
+      const fundamentalsRecord = await fetchFundamentalsFor(item.id)
+      const fundamentalsSnapshot = fundamentalsRecord
+        ? toCode33Snapshot(computeCode33(fundamentalsRecord.quarters))
+        : null
+
       await addTrade({
         symbol: item.symbol,
         side: item.side,
@@ -195,11 +204,13 @@ export function usePlaceTrade(watchlistId: string) {
           // Frozen here and never recomputed — the grade this setup earned on the day it
           // was taken, not what today's formula would say about it.
           rating: toRatingSnapshot(rating),
+          fundamentals: fundamentalsSnapshot,
         },
       })
       await removeItem(item.id)
       // It's a trade now, not a run in progress.
       await draft.discard()
+      if (fundamentalsRecord) await removeFundamentals(fundamentalsRecord.id)
       navigate('/')
     } finally {
       setPlacing(false)

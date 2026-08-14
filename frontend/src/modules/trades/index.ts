@@ -11,6 +11,8 @@ export type {
   TradeRatingSnapshot,
   TradeRatingCriterionSnapshot,
   TradeRatingGateSnapshot,
+  Code33Snapshot,
+  Code33SnapshotStatus,
   TradeMetrics,
   TradeWithMetrics,
   DashboardSummary,

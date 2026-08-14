@@ -9,10 +9,16 @@ The user types only the raw figures off a source like screener.in; every percent
 final star rating is computed, never entered.
 
 Domain-only module: no page, no route. It's the data layer that
-[verify-fundamental.spec.md](verify-fundamental.spec.md) (captures and edits the figures) and
-[watchlist.spec.md](watchlist.spec.md) (surfaces the rating on the row) both consume — see
-convention 7 in [`../CLAUDE.md`](../CLAUDE.md). Both of those import it, so **`fundamentals`
-imports neither** — it stays a leaf, the same arrangement as [drafts.spec.md](drafts.spec.md).
+[verify-fundamental.spec.md](verify-fundamental.spec.md) (captures and edits the figures),
+[watchlist.spec.md](watchlist.spec.md) (surfaces the rating on the row), and
+[place-trade.spec.md](place-trade.spec.md) (freezes a snapshot at trade placement) all
+consume — see convention 7 in [`../CLAUDE.md`](../CLAUDE.md). All three import it, so
+**`fundamentals` imports none of them** — it stays a leaf, the same arrangement as
+[drafts.spec.md](drafts.spec.md). It does import a type from `modules/trades`
+(`Code33Snapshot`, for `toCode33Snapshot()`'s return type) — safe, since `trades` is a
+foundational domain module that doesn't import back from any of `fundamentals`'s own
+consumers, so this can't create a cycle (same relationship `place-trade`'s
+`toRatingSnapshot()` already has with `trades`' `TradeRatingSnapshot`).
 
 ## Data
 
@@ -87,15 +93,38 @@ imports neither** — it stays a leaf, the same arrangement as [drafts.spec.md](
      - 4 → `status: 'complete'`, the full 3-step read.
   4. Per step (quarter *N* vs. quarter *N−1*): does EPS growth, Sales growth, and Net Margin
      each move up? `epsHits`/`salesHits`/`marginHits` = how many steps each metric moved up in
-     (each out of `steps.length`). `hits` = the three summed. `totalChecks` = 3 × step count.
+     (each out of `totalChecks / 3`). `hits` = the three summed. `totalChecks` = 3 × step count.
      `ratio = hits / totalChecks`. `stars = ratio * 5`. All four counts are carried on
-     `Code33Rating` (not just the derived `ratio`/`stars`) so the UI can always show *which*
+     `Code33Score` (not just the derived `ratio`/`stars`) so the UI can always show *which*
      metric is carrying the score, not just the total — "EPS 1/3 · Sales 2/3 · Margin 1/3"
      explains a "4 of 9" in a way the bare total can't (both a perfectly even 4/9 split across
      metrics and a lopsided one — one metric maxed out, the others at zero — land on the same
      total).
   5. `code33Verdict()` bands the ratio into a label (Full Code 33 / Strong / Mixed / Weak / No
      acceleration), qualified with "(based on N of 3 steps)" when `partial`.
+  6. `metricTone(hits, total)` bands one metric's own hit rate the same majority-rule way: all
+     hits → green, none → red, anything between → amber. Compares `hits * 3 >= total * 2` rather
+     than `hits / total >= 0.67`, since `total` is always small (1–3) and 2/3 as a float
+     (`0.6666...`) would otherwise be wrongly excluded from "good." Shared by every place that
+     colours a per-metric fraction — the live hover-card breakdown, the watchlist grid's
+     per-cell tone (via each step's boolean flags, not `metricTone` directly — see
+     [verify-fundamental.spec.md](verify-fundamental.spec.md)), and the frozen Trade Detail
+     breakdown — so the same fraction can't band differently in different places.
+
+- **`Code33Score`** — the subset of `Code33Rating` that doesn't depend on having real
+  `Code33Step[]` data: `status`, `ratio`, `stars`, `hits`, `totalChecks`, `epsHits`,
+  `salesHits`, `marginHits`. `code33Verdict()` and `metricTone()`-consuming UI take this
+  narrower shape rather than the full `Code33Rating`, so a frozen `Code33Snapshot` (see
+  [trades.spec.md](trades.spec.md)) — which never carries step-level data — satisfies it
+  structurally too. `Code33Rating extends Code33Score` by adding `steps: Code33Step[]`,
+  needed only by the live grid's per-cell tone map.
+
+- **`toCode33Snapshot(rating)`** — strips a live `Code33Rating` down to a `Code33Snapshot` for
+  freezing onto a trade at placement (mirrors `toRatingSnapshot()` in
+  `place-trade/utils/tradeRating.ts`). Returns `null` for a `pending` rating: there's no read
+  worth freezing when there wasn't enough data to judge yet. See `Code33Snapshot` in
+  [trades.spec.md](trades.spec.md) and the placement flow in
+  [place-trade.spec.md](place-trade.spec.md).
 
   Because YoY needs a same-quarter match 12 months back, the 4-quarter evaluation window alone
   is never enough data to compute anything — each of those 4 needs its own prior-year match, so
@@ -111,18 +140,27 @@ imports neither** — it stays a leaf, the same arrangement as [drafts.spec.md](
   2-of-3 accelerating" — both 6 of 9 checks — deliberately score the same rather than adding a
   second weighting layer.
 
-- **Never frozen.** Unlike `TradeRatingSnapshot` (frozen at trade placement — see
-  [place-trade.spec.md](place-trade.spec.md)), Code 33 has no "moment of commitment." The user
-  returns every quarter and adds a row, so `computeCode33()` runs live off the stored raw
-  `quarters` on every call. Only the raw quarters are ever persisted.
+- **Never frozen — on the watchlist/verify-fundamental side.** The user returns every quarter
+  and adds a row, so `computeCode33()` runs live off the stored raw `quarters` on every call.
+  Only the raw quarters are ever persisted here. A trade placed against the stock *does* freeze
+  a one-time snapshot of the result at that moment (`toCode33Snapshot()`, above) — that's a
+  genuine "moment of commitment," the same distinction `TradeRatingSnapshot` draws for the
+  technical rating (see [trades.spec.md](trades.spec.md)), just arriving via a different
+  module's data instead of a live recomputation.
 
 ## Behaviour
 
 - **One record per watchlist item.** `fetchFundamentalsFor(watchlistItemId)`
   (`GET /fundamentals?watchlistItemId=…`) is the lookup; there is no record without a watchlist
   item behind it.
-- **A record is deleted, never orphaned**, in one place: the watchlist item is **removed**
-  (`WatchlistPage`, via `useFundamentals().removeFor`) — nothing left to attach it to.
+- **A record is deleted, never orphaned**, in two places:
+  1. the watchlist item is **removed** (`WatchlistPage`, via `useFundamentals().removeFor`) —
+     nothing left to attach it to;
+  2. a trade is **placed** against it (`usePlaceTrade`'s `placeTrade()`, via
+     `removeFundamentals()` directly) — the watchlist item is gone the same way, just through a
+     different removal path (`removeItem` called straight from the stepper, not through
+     `WatchlistPage`'s remove handler), which is why this needed its own explicit cleanup call
+     rather than being covered by path 1. See [place-trade.spec.md](place-trade.spec.md).
 - **Nothing is ever "submitted."** Unlike a place-trade draft, there's no consuming action that
   converts or discards the record — it's autosaved indefinitely as
   [verify-fundamental.spec.md](verify-fundamental.spec.md) edits it.
@@ -136,7 +174,7 @@ frontend/src/modules/fundamentals/
 ├── hooks/useFundamentals.ts # every record, indexed byWatchlistItemId, + removeFor() — for the Watchlist page
 ├── utils/
 │   ├── quarterlyCalc.ts     # deriveQuarters(), priorYearPeriod(), formatPeriodLabel()
-│   └── code33.ts            # CODE33_STARS, computeCode33(), code33Verdict()
+│   └── code33.ts            # CODE33_STARS, computeCode33(), code33Verdict(), metricTone(), toCode33Snapshot()
 ├── components/
 │   └── Code33Badge.tsx      # the watchlist row's compact indicator (muted / mini stars + score)
 └── index.ts                 # barrel
@@ -151,3 +189,7 @@ drives them lives with the page that owns the state
 change so both `place-trade` and `fundamentals` can use it without a cross-module import cycle —
 `place-trade` already depends on `watchlist`, and `watchlist` depends on `fundamentals`, so
 `fundamentals` importing anything from `place-trade` would cycle back).
+
+`utils/code33.ts` imports the `Code33Snapshot` type from `modules/trades` for
+`toCode33Snapshot()`'s return type — the one place this module reaches outside itself besides
+`shared/`. See the Purpose section above for why this doesn't create a cycle.

@@ -173,10 +173,26 @@ before capital goes behind it. See [drafts.spec.md](drafts.spec.md).
      derived. Viewable afterward via the read-only Trade Detail page, which reads
      the snapshot back with `fromRatingSnapshot()` — see
      [trade-detail.spec.md](trade-detail.spec.md).
+
+     `setup` also carries `fundamentals: toCode33Snapshot(computeCode33(record.quarters))`
+     (or `null` if no fundamentals record exists for this watchlist item, or one exists
+     but scores `pending`) — fetched via `fetchFundamentalsFor(item.id)` right at the top
+     of `placeTrade()`, computed and frozen the same "write once, never recompute" way as
+     the rating. See `Code33Snapshot` in [trades.spec.md](trades.spec.md) and
+     [fundamentals.spec.md](fundamentals.spec.md).
   2. `removeItem` (from `useWatchlist`) — `DELETE /watchlist/:id`. Once placed,
      it's a trade, not something still being watched.
   3. `removeDraft` (from `modules/drafts`) — `DELETE /drafts/:id`, if this run was
      resumed from or auto-saved into a draft. It's a trade now, not a run in progress.
+  4. `removeFundamentals` (from `modules/fundamentals`) — `DELETE /fundamentals/:id`,
+     if a fundamentals record existed for this watchlist item (regardless of whether it
+     was scoreable enough to freeze a snapshot from). Placing a trade removes the
+     watchlist item through this hook's own `removeItem` call, **not** through
+     `WatchlistPage`'s remove handler — so without this explicit cleanup here, the
+     fundamentals record would be left behind, orphaned, referencing a watchlist item
+     that no longer exists. This is the one place besides `WatchlistPage`'s remove flow
+     where a fundamentals record is deleted — see fundamentals.spec.md's "never
+     orphaned" rule.
 - **Writes, continuously** — the draft (`hooks/useDraftAutosave.ts`). See
   [drafts.spec.md](drafts.spec.md) for the record; the stepper's whole form state plus
   its `stepIndex`, debounced, `POST` on the first write and `PATCH` after. The rating is
@@ -381,8 +397,10 @@ frontend/src/modules/place-trade/
 ```
 
 Depends on `modules/trades` (`addTrade`, `NewTrade`, `TradeStage`, `TradeBase`),
-`modules/watchlist` (`useWatchlist`, `WatchlistItemWithMetrics`, `WatchSide`)
-and `modules/drafts` (the draft API + the form-state types) — all export what's
+`modules/watchlist` (`useWatchlist`, `WatchlistItemWithMetrics`, `WatchSide`),
+`modules/drafts` (the draft API + the form-state types), and `modules/fundamentals`
+(`fetchFundamentalsFor`, `removeFundamentals`, `computeCode33`, `toCode33Snapshot` —
+used only inside `placeTrade()`, not by any step component) — all export what's
 needed through their `index.ts` barrels. `place-trade`'s own `Stage`/`Base` types
 are re-exports of `TradeStage`/`TradeBase` — `modules/trades` is the canonical
 definition since the choice is now persisted as part of the trade's `setup` —

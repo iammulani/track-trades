@@ -1,22 +1,10 @@
 import { HoverCard } from '../../../shared/components/HoverCard'
 import { RatingStars } from '../../../shared/components/RatingStars'
-import { CODE33_STARS, code33Verdict, type Code33Rating } from '../../fundamentals'
+import { CODE33_STARS, code33Verdict, metricTone, type Code33Score } from '../../fundamentals'
 import './Code33Summary.css'
 
 interface Code33SummaryProps {
-  rating: Code33Rating
-}
-
-type MetricTone = 'good' | 'caution' | 'bad'
-
-/** Majority-rule banding for one metric's own hit rate: all hits is green, none is red,
- * anything in between is amber. Compares `hits * 3 >= total * 2` rather than `hits / total >=
- * 0.67` — `total` is always small (1-3), and 2/3 as a float is 0.6666..., which a `>= 0.67`
- * check would wrongly exclude. */
-function metricTone(hits: number, total: number): MetricTone {
-  if (hits === 0) return 'bad'
-  if (hits * 3 >= total * 2) return 'good'
-  return 'caution'
+  rating: Code33Score
 }
 
 /** Compact Code 33 readout for the title row — stars + score. The grid itself (colour-coded
@@ -24,11 +12,11 @@ function metricTone(hits: number, total: number): MetricTone {
  * what was checked overall, and — since a bare total reads the same whether every metric
  * contributed evenly or one metric carried the whole thing alone — the per-metric split
  * underneath it, each row toned the same way the overall verdict is. Every figure here is read
- * straight off `Code33Rating`'s counts, not prose, so it can't drift or vary between renders. */
+ * straight off `Code33Score`'s counts, not prose, so it can't drift or vary between renders. */
 export function Code33Summary({ rating }: Code33SummaryProps) {
   const verdict = code33Verdict(rating)
   const stars = rating.stars.toFixed(1)
-  const stepCount = rating.steps.length
+  const stepCount = rating.totalChecks / 3
 
   return (
     <HoverCard
