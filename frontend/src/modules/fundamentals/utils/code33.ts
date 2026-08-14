@@ -5,21 +5,14 @@ export const CODE33_STARS = 5
 
 export type Code33Status = 'pending' | 'partial' | 'complete'
 
-/** One quarter-over-quarter comparison inside the evaluation window. Each `*Accelerated`/
- * `*Expanded` flag is a comparison of two *already-YoY* figures (`*From` -> `*To`), not the raw
- * quarters against each other — the `From`/`To` values are carried alongside the flag so the UI
- * can show the numbers that actually drove the check, not just its verdict. */
+/** One quarter-over-quarter comparison inside the evaluation window. Each flag is a comparison
+ * of two *already-YoY* figures (the quarter's growth vs. the previous window quarter's growth),
+ * not the raw quarters against each other. */
 export interface Code33Step {
   fromPeriod: string
   toPeriod: string
-  epsGrowthFrom: number
-  epsGrowthTo: number
   epsAccelerated: boolean
-  salesGrowthFrom: number
-  salesGrowthTo: number
   salesAccelerated: boolean
-  marginFrom: number
-  marginTo: number
   marginExpanded: boolean
 }
 
@@ -89,14 +82,8 @@ export function computeCode33(quarters: QuarterFinancials[]): Code33Rating {
     steps.push({
       fromPeriod: prev.period,
       toPeriod: curr.period,
-      epsGrowthFrom: prev.epsGrowthYoY!,
-      epsGrowthTo: curr.epsGrowthYoY!,
       epsAccelerated: curr.epsGrowthYoY! > prev.epsGrowthYoY!,
-      salesGrowthFrom: prev.salesGrowthYoY!,
-      salesGrowthTo: curr.salesGrowthYoY!,
       salesAccelerated: curr.salesGrowthYoY! > prev.salesGrowthYoY!,
-      marginFrom: prev.netMargin!,
-      marginTo: curr.netMargin!,
       marginExpanded: curr.netMargin! > prev.netMargin!,
     })
   }

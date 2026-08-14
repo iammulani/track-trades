@@ -73,14 +73,12 @@ continuously-editable form.
    for this quarter." Before an "as of" quarter is picked, the grid shows a prompt instead of an
    empty table.
 5. **Code 33 detail** — lives behind the title row's rating badge (point 2), not as a page
-   section. Hovering it reveals: the verdict label (tone-coloured: good / caution / bad), then a
-   plain list of every step in the evaluation window (`Jun 2025 → Sep 2025`, with a check/✕ per
-   metric). Each metric shows the two YoY-growth figures being compared, not just the verdict —
-   `EPS -69.5% → -49.1% ✓` — since a bare check/✕ on its own doesn't explain *why*: the
-   comparison is between two already-year-over-year numbers (each quarter's growth vs. its own
-   year-ago match), not between the raw quarters, and that's easy to misread as one without
-   seeing the figures. If fewer than 2 usable quarters exist yet, the panel shows the verdict
-   label alone ("Not enough consecutive quarters yet…") instead of an empty steps list.
+   section. Hovering it reveals a single tone-coloured line: the verdict label (e.g. "Mixed —
+   some cylinders firing", or "Not enough consecutive quarters yet…" when `pending`) — nothing
+   more. This used to also list every step with its EPS/Sales/Margin figures, but once the grid
+   itself started colour-coding those same cells (point 4), the list read as duplicated, harder-
+   to-parse detail rather than useful depth — the grid *is* the per-quarter breakdown now; the
+   hover just names the overall verdict.
 6. **Footer** — a "← Back to Watchlist" link, and the autosave status ("Saving…" /
    "Saved · <time>"), same language as Place Trade's draft-status footer.
 
@@ -141,7 +139,7 @@ frontend/src/modules/verify-fundamental/
 ├── components/
 │   ├── AsOfPicker.tsx(+.css)          # <input type="date"> -> previousQuarterPeriod() resolves it to the last closed Mar/Jun/Sep/Dec quarter
 │   ├── QuarterlyGrid.tsx(+.css)       # the generated grid: editable Sales/Net Profit/EPS + colour-coded derived columns (tone map built from rating.steps)
-│   └── Code33Summary.tsx(+.css)       # compact stars + score for the title row; HoverCard reveals verdict + per-step breakdown (mirrors TradeRatingBadge)
+│   └── Code33Summary.tsx(+.css)       # compact stars + score for the title row; HoverCard reveals just the verdict line (mirrors TradeRatingBadge's collapsed-by-default shape, not its content)
 └── index.ts                           # exports VerifyFundamentalPage
 ```
 
