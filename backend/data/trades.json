@@ -787,6 +787,16 @@
             "cap": 0.6
           }
         ]
+      },
+      "fundamentals": {
+        "status": "complete",
+        "ratio": 0.7777777777777778,
+        "stars": 3.888888888888889,
+        "hits": 7,
+        "totalChecks": 9,
+        "epsHits": 3,
+        "salesHits": 2,
+        "marginHits": 2
       }
     },
     "id": "VjA_ZyZE1oM"
