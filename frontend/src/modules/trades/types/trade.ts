@@ -92,6 +92,21 @@ export interface TradeQuarterFinancials {
   eps: number | null
 }
 
+/** One quarter-over-quarter comparison, exactly as it was judged when the trade was placed.
+ * Mirrors `Code33Step` in `modules/fundamentals`, inlined here rather than imported for the
+ * same reason `Code33SnapshotStatus` repeats `Code33Status`'s literals instead of importing
+ * them. Frozen rather than recomputed from the frozen `quarters` on read, so a later change to
+ * the acceleration formula can't make a placed trade's per-quarter colouring disagree with its
+ * own frozen `hits`/`epsHits`/etc — the same "point-in-time judgement" the score itself is,
+ * just one level down. */
+export interface TradeCode33Step {
+  fromPeriod: string
+  toPeriod: string
+  epsAccelerated: boolean
+  salesAccelerated: boolean
+  marginExpanded: boolean
+}
+
 /** The Code 33 fundamentals read **as computed at the moment the trade was placed**, frozen the
  * same way `TradeRatingSnapshot` is — a point-in-time judgement about the company's
  * fundamentals when the trade was taken. Unlike the rating snapshot, there's no id-keyed prose
@@ -118,6 +133,10 @@ export interface Code33Snapshot {
    * scoring window. Preserves the full quarterly picture the trader was actually looking at,
    * even the older baseline quarters with no YoY comparison of their own. */
   quarters: TradeQuarterFinancials[]
+  /** The step-by-step judgement behind `hits`/`epsHits`/`salesHits`/`marginHits` — which
+   * quarter-over-quarter comparisons actually accelerated. Lets Trade Detail colour the
+   * quarterly table's cells the same way the live grid does, without recomputing anything. */
+  steps: TradeCode33Step[]
 }
 
 /** Everything the place-trade stepper collects beyond the core fill data — a

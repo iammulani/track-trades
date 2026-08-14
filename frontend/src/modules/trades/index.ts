@@ -14,6 +14,7 @@ export type {
   Code33Snapshot,
   Code33SnapshotStatus,
   TradeQuarterFinancials,
+  TradeCode33Step,
   TradeMetrics,
   TradeWithMetrics,
   DashboardSummary,

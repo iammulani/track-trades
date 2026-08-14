@@ -63,10 +63,13 @@ continuously-editable form.
    relative to the previous quarter *in the evaluation window*, `is-bad` (red, `--critical-text`)
    if it moved down, uncoloured if there's no prior-quarter-in-window comparison yet (the
    window's own earliest quarter, or any quarter without YoY data at all). The tone per cell
-   comes straight from `rating.steps` (passed in as a `rating` prop) — `QuarterlyGrid` builds a
-   `period -> {eps, sales, margin}` tone map keyed by each step's `toPeriod`, so a cell's colour
-   and the hover-card breakdown behind the title-row badge can never disagree; they're reading
-   the same `Code33Step` array.
+   comes straight from `rating.steps` (passed in as a `rating` prop) via
+   `buildQuarterTones(steps)` (`modules/fundamentals`) — a `period -> {eps, sales, margin}`
+   tone map keyed by each step's `toPeriod`. This is a *shared* function, not local to
+   `QuarterlyGrid`: `TradeDetailPage` calls the exact same one (fed `Code33Snapshot.steps`
+   instead of a live rating's) to colour a placed trade's frozen quarterly table the identical
+   way — see [trade-detail.spec.md](trade-detail.spec.md) — so the live grid, the hover-card
+   breakdown, and a frozen trade's table can never disagree on which quarters were good or bad.
 
    The `Net Margin` header carries an info `HoverCard` (not a native `title` — a native tooltip
    proved unreliable to trigger in practice) spelling out the formula: "Net Profit ÷ Sales × 100,

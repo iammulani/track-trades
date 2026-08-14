@@ -13,7 +13,14 @@ import {
   formatSignedCurrency,
   formatSignedPercent,
 } from '../../shared/utils/format'
-import { CODE33_STARS, code33Verdict, deriveQuarters, formatPeriodLabel, metricTone } from '../fundamentals'
+import {
+  buildQuarterTones,
+  CODE33_STARS,
+  code33Verdict,
+  deriveQuarters,
+  formatPeriodLabel,
+  metricTone,
+} from '../fundamentals'
 import {
   BASE_OPTIONS,
   BREAKOUT_CONFIRMATION_CHECKLIST_ITEMS,
@@ -50,6 +57,12 @@ function metricRowState(hits: number, total: number): 'met' | 'partial' | 'unmet
   return tone === 'good' ? 'met' : tone === 'bad' ? 'unmet' : 'partial'
 }
 
+/** Same `is-good`/`is-bad` colouring the live QuarterlyGrid gives its derived cells — `tone`
+ * is `undefined` for a quarter outside the scoring window, which stays uncoloured. */
+function quarterCellClass(accelerated: boolean | undefined): string {
+  return accelerated === undefined ? '' : accelerated ? ' is-good' : ' is-bad'
+}
+
 /** % pullback for one stored contraction — null only if `high` is 0 (shouldn't happen, but avoids a div/0). */
 function contractionPercent(c: TradeVcpContraction): number | null {
   return c.high === 0 ? null : ((c.high - c.low) / c.high) * 100
@@ -83,6 +96,7 @@ export function TradeDetailPage() {
   // existed but wasn't scoreable at the moment of placement.
   const fundamentals = setup?.fundamentals ?? null
   const fundamentalsVerdict = fundamentals ? code33Verdict(fundamentals) : null
+  const quarterTones = fundamentals ? buildQuarterTones(fundamentals.steps) : {}
   const contractions = setup?.vcpContractions ?? []
   const percents = contractions.map(contractionPercent).filter((p): p is number => p !== null)
   const largest = percents.length ? Math.max(...percents) : null
@@ -343,25 +357,28 @@ export function TradeDetailPage() {
                           </tr>
                         </thead>
                         <tbody>
-                          {deriveQuarters(fundamentals.quarters).map((d) => (
-                            <tr key={d.period}>
-                              <td className="ta-left">{formatPeriodLabel(d.period)}</td>
-                              <td className="ta-right">{d.sales === null ? '—' : d.sales.toLocaleString()}</td>
-                              <td className="ta-right">
-                                {d.netProfit === null ? '—' : d.netProfit.toLocaleString()}
-                              </td>
-                              <td className="ta-right">{d.eps === null ? '—' : d.eps.toFixed(2)}</td>
-                              <td className="ta-right">
-                                {d.netMargin === null ? '—' : formatPercent(d.netMargin)}
-                              </td>
-                              <td className="ta-right">
-                                {d.salesGrowthYoY === null ? '—' : formatSignedPercent(d.salesGrowthYoY)}
-                              </td>
-                              <td className="ta-right">
-                                {d.epsGrowthYoY === null ? '—' : formatSignedPercent(d.epsGrowthYoY)}
-                              </td>
-                            </tr>
-                          ))}
+                          {deriveQuarters(fundamentals.quarters).map((d) => {
+                            const tone = quarterTones[d.period]
+                            return (
+                              <tr key={d.period}>
+                                <td className="ta-left">{formatPeriodLabel(d.period)}</td>
+                                <td className="ta-right">{d.sales === null ? '—' : d.sales.toLocaleString()}</td>
+                                <td className="ta-right">
+                                  {d.netProfit === null ? '—' : d.netProfit.toLocaleString()}
+                                </td>
+                                <td className="ta-right">{d.eps === null ? '—' : d.eps.toFixed(2)}</td>
+                                <td className={`ta-right${quarterCellClass(tone?.margin)}`}>
+                                  {d.netMargin === null ? '—' : formatPercent(d.netMargin)}
+                                </td>
+                                <td className={`ta-right${quarterCellClass(tone?.sales)}`}>
+                                  {d.salesGrowthYoY === null ? '—' : formatSignedPercent(d.salesGrowthYoY)}
+                                </td>
+                                <td className={`ta-right${quarterCellClass(tone?.eps)}`}>
+                                  {d.epsGrowthYoY === null ? '—' : formatSignedPercent(d.epsGrowthYoY)}
+                                </td>
+                              </tr>
+                            )
+                          })}
                         </tbody>
                       </table>
                     </div>

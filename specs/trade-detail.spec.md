@@ -104,11 +104,21 @@ column.
        the snapshot; they're recomputed via `deriveQuarters(setup.fundamentals.quarters)`
        (`modules/fundamentals`) — the same pure function the live Verify Fundamental
        grid uses, since those numbers are facts about the stored figures, not a
-       judgement (only the score above is frozen). A dedicated `trade-detail__quarters`
-       table (own CSS, not shared with `QuarterlyGrid`) since this one is plain,
-       read-only data, not an editable form — same reasoning every other section on
-       this page uses for building its own read-only rendering rather than reusing an
-       editable step component.
+       judgement (only the score above is frozen).
+
+       **The `Net Margin`/`Sales YoY`/`EPS YoY` cells are colour-coded**, same
+       `is-good`/`is-bad` convention the live `QuarterlyGrid` uses (green if that
+       metric accelerated/expanded, red if it didn't, uncoloured outside the scoring
+       window) — built via `buildQuarterTones(setup.fundamentals.steps)`
+       (`modules/fundamentals`), the identical function the live grid calls on a
+       live rating's `steps`, just fed the frozen `TradeCode33Step[]` instead. A
+       local `quarterCellClass()` helper maps the returned booleans to
+       `is-good`/`is-bad` — analogous to `metricRowState()` for the breakdown rows
+       above, but per-quarter rather than per-metric-fraction. A dedicated
+       `trade-detail__quarters` table (own CSS, not shared with `QuarterlyGrid`)
+       since this one is plain, read-only data, not an editable form — same
+       reasoning every other section on this page uses for building its own
+       read-only rendering rather than reusing an editable step component.
      - **Setup** — how long the symbol was watched before being traded
        (`entryTime − watchedSince`), stop loss, target.
      - **Stage & Base** — labels + verdict, colour-coded by tone, from
@@ -149,8 +159,8 @@ Depends on `modules/trades` (`useTrades`, `TradeVcpContraction`,
 `GATE_STATE_ICON`, `GATE_STATE_LABEL`, `formatPoints`,
 `formatStars`, `RATING_STARS`, `RatingStars`, `RatingGateBanner`,
 `ratingVerdict`), and `modules/fundamentals` (`CODE33_STARS`, `code33Verdict`,
-`metricTone`, `deriveQuarters`, `formatPeriodLabel`) through their `index.ts`
-barrels, so the stage/base labels,
+`metricTone`, `buildQuarterTones`, `deriveQuarters`, `formatPeriodLabel`) through
+their `index.ts` barrels, so the stage/base labels,
 checklist copy, star row, gate banner, and rating/breakdown logic can't drift from
 the stepper that originally captured them. Also uses
 `shared/components/{Card,PageHeader,SideBadge,ResultBadge}` and

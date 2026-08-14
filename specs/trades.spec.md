@@ -72,7 +72,7 @@ persisted beyond the raw fields; everything else is computed on read.
 - **`Code33Snapshot`** — the Code 33 fundamentals read **as computed on the day the
   trade was taken**, frozen the same way `TradeRatingSnapshot` is: a point-in-time
   judgement, not a live derivation, so re-tuning the Code 33 formula later doesn't
-  retroactively regrade a trade you already took. Two parts:
+  retroactively regrade a trade you already took. Three parts:
   - **The frozen score** — `status` (`'partial' | 'complete'` — never `'pending'`; see
     below), `ratio`, `stars`, `hits` / `totalChecks`, and the per-metric `epsHits` /
     `salesHits` / `marginHits` (see [fundamentals.spec.md](fundamentals.spec.md) for
@@ -92,16 +92,29 @@ persisted beyond the raw fields; everything else is computed on read.
     function the live grid uses, since they're facts about the stored numbers, not a
     judgement (convention 4: derive, don't store — this part of the snapshot follows
     the normal rule; only the score itself is the deliberate exception).
+  - **`steps: TradeCode33Step[]`** — `{ fromPeriod, toPeriod, epsAccelerated,
+    salesAccelerated, marginExpanded }` per step, mirroring `Code33Step` in
+    `modules/fundamentals` (inlined here, not imported — same reason
+    `Code33SnapshotStatus` repeats `Code33Status`'s literals). **This one *is* frozen
+    judgement, not a derivation** — unlike margin/growth, "did this accelerate" is
+    exactly the call the score itself is built from, so it's kept alongside `quarters`
+    rather than recomputed from them on read. Without it, Trade Detail's quarterly
+    table would have the right numbers but no way to colour which quarters actually
+    drove the score — and worse, recomputing it from the frozen `quarters` on every
+    render would let a later change to the acceleration formula make the table's
+    colours disagree with the trade's own frozen `hits`/`epsHits`/etc.
 
   Written by `toCode33Snapshot(rating, quarters)` in `modules/fundamentals`, called
   from `usePlaceTrade`'s `placeTrade()` — see [place-trade.spec.md](place-trade.spec.md).
-  The score half is read back on Trade Detail with no rebuild step: `code33Verdict()`
-  and `metricTone()` both accept the snapshot directly (see `Code33Score` in
+  The score is read back on Trade Detail with no rebuild step: `code33Verdict()` and
+  `metricTone()` both accept the snapshot directly (see `Code33Score` in
   [fundamentals.spec.md](fundamentals.spec.md) — a live `Code33Rating` and a frozen
   `Code33Snapshot` are structurally interchangeable for rendering purposes, unlike
   the rating, which needs `fromRatingSnapshot()`'s id-lookup rebuild). The quarters
-  half is read back through `deriveQuarters(setup.fundamentals.quarters)` to
-  reconstruct the full table, margins and growth included.
+  are read back through `deriveQuarters(setup.fundamentals.quarters)` to reconstruct
+  the full table, margins and growth included; the steps are read back through
+  `buildQuarterTones(setup.fundamentals.steps)` to colour that table's cells the
+  same way the live grid colours its own.
 
   `toCode33Snapshot()` returns `null` for a `'pending'` read (not enough consecutive
   quarters to judge) — a `pending` state isn't a judgement worth freezing, so
@@ -180,7 +193,7 @@ persisted beyond the raw fields; everything else is computed on read.
 - Types: `Trade`, `TradeSide`, `TradeStatus`, `TradeOutcome`, `TradeStage`,
   `TradeBase`, `TradeChecklist`, `TradeVcpContraction`, `TradeSetup`,
   `TradeRatingSnapshot`, `TradeRatingCriterionSnapshot`, `TradeRatingGateSnapshot`,
-  `Code33Snapshot`, `Code33SnapshotStatus`, `TradeQuarterFinancials`,
+  `Code33Snapshot`, `Code33SnapshotStatus`, `TradeQuarterFinancials`, `TradeCode33Step`,
   `TradeMetrics`, `TradeWithMetrics`, `DashboardSummary`, `NewTrade`,
   `ExitReason`, `ExitLearning`, `CloseTradeInput`, `ExitPreview`.
 

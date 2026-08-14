@@ -142,12 +142,16 @@ export function computeCode33(quarters: QuarterFinancials[]): Code33Rating {
 
 /** Strips a live `Code33Rating` down to what gets frozen onto a trade at placement — mirrors
  * `toRatingSnapshot()` in `place-trade/utils/tradeRating.ts`, but also carries the raw
- * `quarters` the rating was computed from (parsed to numbers): the score alone isn't the whole
- * record, and the source fundamentals record is deleted the moment the trade is placed, so
- * without this the actual figures the trader read would be lost for good, not just the
- * derivation of them. Returns `null` for a `pending` rating: there's no read worth freezing when
- * there wasn't enough data to judge yet (matches `Code33Snapshot`'s own doc comment on why
- * `pending` isn't a valid snapshot status). */
+ * `quarters` the rating was computed from (parsed to numbers) *and* the `steps` that produced
+ * the score: the score alone isn't the whole record, and the source fundamentals record is
+ * deleted the moment the trade is placed, so without these the actual figures the trader read,
+ * and which quarters actually drove the score, would be lost for good — not just the
+ * derivation of them. `steps` is frozen rather than recomputed from the frozen `quarters` on
+ * read specifically so a later change to the acceleration formula can't make a placed trade's
+ * per-quarter colouring disagree with its own frozen `hits`/`epsHits`/etc — same "point-in-time
+ * judgement" reasoning as the score itself, just applied one level down. Returns `null` for a
+ * `pending` rating: there's no read worth freezing when there wasn't enough data to judge yet
+ * (matches `Code33Snapshot`'s own doc comment on why `pending` isn't a valid snapshot status). */
 export function toCode33Snapshot(rating: Code33Rating, quarters: QuarterFinancials[]): Code33Snapshot | null {
   if (rating.status === 'pending') return null
   // Reuses deriveQuarters' own string -> number|null parsing rather than a bare `Number()` call
@@ -166,6 +170,13 @@ export function toCode33Snapshot(rating: Code33Rating, quarters: QuarterFinancia
       sales: d.sales,
       netProfit: d.netProfit,
       eps: d.eps,
+    })),
+    steps: rating.steps.map((s) => ({
+      fromPeriod: s.fromPeriod,
+      toPeriod: s.toPeriod,
+      epsAccelerated: s.epsAccelerated,
+      salesAccelerated: s.salesAccelerated,
+      marginExpanded: s.marginExpanded,
     })),
   }
 }
@@ -196,6 +207,30 @@ export function code33Verdict(score: Code33Score): Code33Verdict {
   if (ratio >= 0.34) return { label: `Mixed — some cylinders firing${suffix}`, tone: 'caution' }
   if (ratio > 0) return { label: `Weak — barely accelerating${suffix}`, tone: 'bad' }
   return { label: `No acceleration — flat or decelerating${suffix}`, tone: 'bad' }
+}
+
+export interface QuarterToneRow {
+  eps: boolean
+  sales: boolean
+  margin: boolean
+}
+
+/** Per-quarter tone for the grid's derived cells (green if that metric accelerated/expanded
+ * there, red if it didn't), keyed by period. A quarter only gets an entry if it's the *later*
+ * half of a step — no YoY data yet, or it's the scoring window's own baseline quarter, and it's
+ * absent, left uncoloured rather than guessed. Shared by the live grid (`QuarterlyGrid`, fed
+ * `rating.steps`) and a placed trade's frozen table (`TradeDetailPage`, fed
+ * `Code33Snapshot.steps`), so the exact same quarters light up the exact same way in both. */
+export function buildQuarterTones(steps: Code33Step[]): Record<string, QuarterToneRow> {
+  const map: Record<string, QuarterToneRow> = {}
+  for (const step of steps) {
+    map[step.toPeriod] = {
+      eps: step.epsAccelerated,
+      sales: step.salesAccelerated,
+      margin: step.marginExpanded,
+    }
+  }
+  return map
 }
 
 export type MetricTone = 'good' | 'caution' | 'bad'

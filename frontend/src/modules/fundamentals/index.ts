@@ -9,6 +9,7 @@ export {
 export { useFundamentals } from './hooks/useFundamentals'
 export { deriveQuarters, formatPeriodLabel, priorYearPeriod, type QuarterDerived } from './utils/quarterlyCalc'
 export {
+  buildQuarterTones,
   CODE33_STARS,
   code33Verdict,
   computeCode33,
@@ -20,5 +21,6 @@ export {
   type Code33Step,
   type Code33Verdict,
   type MetricTone,
+  type QuarterToneRow,
 } from './utils/code33'
 export { Code33Badge } from './components/Code33Badge'

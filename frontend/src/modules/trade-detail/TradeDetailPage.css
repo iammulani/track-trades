@@ -455,6 +455,16 @@
   text-align: right;
 }
 
+.trade-detail__quarters td.is-good {
+  color: var(--good-text);
+  font-weight: 700;
+}
+
+.trade-detail__quarters td.is-bad {
+  color: var(--critical-text);
+  font-weight: 700;
+}
+
 .trade-detail__contractions {
   margin: 4px 0 0;
   padding: 0;

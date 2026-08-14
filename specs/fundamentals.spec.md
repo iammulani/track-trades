@@ -106,29 +106,42 @@ consumers, so this can't create a cycle (same relationship `place-trade`'s
      hits → green, none → red, anything between → amber. Compares `hits * 3 >= total * 2` rather
      than `hits / total >= 0.67`, since `total` is always small (1–3) and 2/3 as a float
      (`0.6666...`) would otherwise be wrongly excluded from "good." Shared by every place that
-     colours a per-metric fraction — the live hover-card breakdown, the watchlist grid's
-     per-cell tone (via each step's boolean flags, not `metricTone` directly — see
-     [verify-fundamental.spec.md](verify-fundamental.spec.md)), and the frozen Trade Detail
-     breakdown — so the same fraction can't band differently in different places.
+     colours a per-metric *fraction* — the live hover-card breakdown and the frozen Trade Detail
+     breakdown's `EPS`/`Sales`/`Margin` rows.
+  7. `buildQuarterTones(steps)` bands one metric's own boolean flag *per quarter* instead of a
+     fraction — a quarter only appears in the returned `period -> {eps, sales, margin}` map if
+     it's the `toPeriod` of some step, and its tone is that flag directly (`good` if
+     accelerated/expanded, `bad` if not — never `caution`, since there's nothing to average at
+     this granularity). Shared by the live grid's per-cell colouring (`QuarterlyGrid`, fed
+     `rating.steps`) and a placed trade's frozen quarterly table (`TradeDetailPage`, fed
+     `Code33Snapshot.steps`) — see [verify-fundamental.spec.md](verify-fundamental.spec.md) and
+     [trade-detail.spec.md](trade-detail.spec.md) — so the exact same quarters colour the exact
+     same way whether the read is live or replayed.
 
 - **`Code33Score`** — the subset of `Code33Rating` that doesn't depend on having real
   `Code33Step[]` data: `status`, `ratio`, `stars`, `hits`, `totalChecks`, `epsHits`,
   `salesHits`, `marginHits`. `code33Verdict()` and `metricTone()`-consuming UI take this
   narrower shape rather than the full `Code33Rating`, so a frozen `Code33Snapshot` (see
-  [trades.spec.md](trades.spec.md)) — which never carries step-level data — satisfies it
-  structurally too. `Code33Rating extends Code33Score` by adding `steps: Code33Step[]`,
-  needed only by the live grid's per-cell tone map.
+  [trades.spec.md](trades.spec.md)) satisfies it structurally too. `Code33Rating extends
+  Code33Score` by adding `steps: Code33Step[]`, needed by `buildQuarterTones()` — which is why
+  `Code33Snapshot` freezes its own `steps` (as `TradeCode33Step[]`, trades' own inlined mirror
+  of `Code33Step`) rather than leaving them out the way the narrower `Code33Score` shape does:
+  the frozen quarterly table needs the same per-cell colouring the live one gets.
 
 - **`toCode33Snapshot(rating, quarters)`** — freezes a live `Code33Rating` **plus its raw
-  `quarters`** into a `Code33Snapshot` at trade placement (mirrors `toRatingSnapshot()` in
-  `place-trade/utils/tradeRating.ts` for the score half; the `quarters` half has no
-  equivalent there, since a trade rating has no analogous "raw source data" to preserve).
-  Returns `null` for a `pending` rating: there's no read worth freezing when there wasn't
-  enough data to judge yet — the raw quarters aren't preserved in that case either, since the
-  whole point is being available to the *snapshot*, and there isn't one. Re-derives each
-  quarter's numbers via `deriveQuarters(quarters)` rather than a bare `Number()` parse, so a
-  blank field freezes as `null` (not entered), never a misleading `0`. See `Code33Snapshot` /
-  `TradeQuarterFinancials` in [trades.spec.md](trades.spec.md) and the placement flow in
+  `quarters` and its `steps`** into a `Code33Snapshot` at trade placement (mirrors
+  `toRatingSnapshot()` in `place-trade/utils/tradeRating.ts` for the score half; `quarters` and
+  `steps` have no equivalent there, since a trade rating has no analogous "raw source data" or
+  "per-quarter judgement" to preserve). `steps` is copied straight from `rating.steps` — frozen,
+  not recomputed from the frozen `quarters` on read, so a later change to the acceleration
+  formula can't make a placed trade's per-quarter colouring disagree with its own frozen
+  `hits`/`epsHits`/etc. Returns `null` for a `pending` rating: there's no read worth freezing
+  when there wasn't enough data to judge yet — neither the raw quarters nor the steps are
+  preserved in that case, since the whole point is being available to the *snapshot*, and there
+  isn't one. Re-derives each quarter's numbers via `deriveQuarters(quarters)` rather than a bare
+  `Number()` parse, so a blank field freezes as `null` (not entered), never a misleading `0`.
+  See `Code33Snapshot` / `TradeQuarterFinancials` / `TradeCode33Step` in
+  [trades.spec.md](trades.spec.md) and the placement flow in
   [place-trade.spec.md](place-trade.spec.md).
 
 - **`deriveQuarters()` accepts either raw or already-parsed figures.** Its parameter type
@@ -187,7 +200,7 @@ frontend/src/modules/fundamentals/
 ├── hooks/useFundamentals.ts # every record, indexed byWatchlistItemId, + removeFor() — for the Watchlist page
 ├── utils/
 │   ├── quarterlyCalc.ts     # deriveQuarters(), priorYearPeriod(), formatPeriodLabel()
-│   └── code33.ts            # CODE33_STARS, computeCode33(), code33Verdict(), metricTone(), toCode33Snapshot()
+│   └── code33.ts            # CODE33_STARS, computeCode33(), code33Verdict(), metricTone(), buildQuarterTones(), toCode33Snapshot()
 ├── components/
 │   └── Code33Badge.tsx      # the watchlist row's compact indicator (muted / mini stars + score)
 └── index.ts                 # barrel
