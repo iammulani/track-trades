@@ -47,6 +47,12 @@ export function useFundamentalsAutosave(
   watchlistItemId: string,
   state: FundamentalsState,
   pristine: FundamentalsState,
+  /** True only once the caller has finished seeding its local state from `hydrated` (or
+   * confirmed there's nothing to seed). Hydration finishing and that seeding happening are two
+   * separate renders — `hydrating` alone flips false a render *before* the caller's state has
+   * caught up, and without this flag a debounced save can get scheduled against that stale,
+   * still-pristine state and silently overwrite a real record. See `useVerifyFundamental`. */
+  ready: boolean,
 ): FundamentalsAutosave {
   const [hydrating, setHydrating] = useState(true)
   const [hydrated, setHydrated] = useState<FundamentalsRecord | null>(null)
@@ -87,6 +93,10 @@ export function useFundamentalsAutosave(
   }, [watchlistItemId])
 
   const save = useCallback(async () => {
+    // Guards against the same stale-state window the scheduling effect below guards against —
+    // this path also runs directly, unscheduled, from the flush-on-unmount effect, so it needs
+    // its own copy of the check rather than trusting the caller only ever invokes it once ready.
+    if (!ready) return
     const current = stateRef.current
     const currentKey = JSON.stringify(current)
     if (currentKey === savedKeyRef.current) return
@@ -106,15 +116,16 @@ export function useFundamentalsAutosave(
     } catch {
       setStatus('idle')
     }
-  }, [watchlistItemId, pristineKey])
+  }, [watchlistItemId, pristineKey, ready])
 
   useEffect(() => {
+    if (!ready) return
     if (hydrating) return
     if (key === savedKeyRef.current) return
     if (!recordIdRef.current && key === pristineKey) return
     const timer = setTimeout(() => void save(), DEBOUNCE_MS)
     return () => clearTimeout(timer)
-  }, [key, pristineKey, hydrating, save])
+  }, [key, pristineKey, hydrating, save, ready])
 
   // Leaving the page mid-debounce still flushes the last edit.
   const saveRef = useRef(save)

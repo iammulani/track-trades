@@ -63,16 +63,25 @@
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  cursor: help;
 }
 
-.quarterly-grid__th-note svg {
-  color: var(--text-muted);
-  flex-shrink: 0;
+.quarterly-grid__th-note-panel {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.5;
 }
 
 .quarterly-grid__derived {
   color: var(--text-secondary);
   font-weight: 600;
   font-variant-numeric: tabular-nums;
+}
+
+.quarterly-grid__derived.is-good {
+  color: var(--good-text);
+}
+
+.quarterly-grid__derived.is-bad {
+  color: var(--critical-text);
 }

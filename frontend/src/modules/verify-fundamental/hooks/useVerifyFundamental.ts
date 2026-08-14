@@ -46,6 +46,10 @@ export function useVerifyFundamental(watchlistItemId: string) {
   const [asOfPeriod, setAsOfPeriodState] = useState(DEFAULT_AS_OF_PERIOD)
   const [quarterCount, setQuarterCount] = useState(DEFAULT_QUARTER_COUNT)
   const [quartersByPeriod, setQuartersByPeriod] = useState<Record<string, QuarterFinancials>>({})
+  // Hydration resolving and this local state catching up from it are two separate renders —
+  // `seeded` is only set true in the same effect that finishes the catch-up, so the autosave
+  // hook is never handed a "ready" state that's actually still stale. See useFundamentalsAutosave.
+  const [seeded, setSeeded] = useState(false)
 
   // Picking a new "as of" quarter starts over at the default window — extending history is a
   // deliberate follow-up action, not something a fresh anchor date should carry over.
@@ -77,17 +81,29 @@ export function useVerifyFundamental(watchlistItemId: string) {
   )
 
   const state: FundamentalsState = { asOfPeriod, quarterCount, quarters: savedQuarters }
-  const autosave = useFundamentalsAutosave(watchlistItemId, state, PRISTINE)
+  const autosave = useFundamentalsAutosave(watchlistItemId, state, PRISTINE, seeded)
 
-  // Seed the page from the parked record, once, when it lands.
+  // A fresh item resets the catch-up flag — the record just hydrated belongs to the previous
+  // item, and must not be treated as "ready" state for this one.
   useEffect(() => {
-    if (!autosave.hydrated) return
-    setAsOfPeriodState(autosave.hydrated.asOfPeriod)
-    setQuarterCount(autosave.hydrated.quarterCount)
-    const map: Record<string, QuarterFinancials> = {}
-    for (const q of autosave.hydrated.quarters) map[q.period] = q
-    setQuartersByPeriod(map)
-  }, [autosave.hydrated])
+    setSeeded(false)
+  }, [watchlistItemId])
+
+  // Seed the page from the parked record once hydration resolves (record or none), then — in
+  // that same render — mark local state caught up. Doing both together, not in two effects, is
+  // what closes the gap: `seeded` only ever becomes true once `asOfPeriod`/`quarterCount`/
+  // `quartersByPeriod` already reflect it.
+  useEffect(() => {
+    if (autosave.hydrating) return
+    if (autosave.hydrated) {
+      setAsOfPeriodState(autosave.hydrated.asOfPeriod)
+      setQuarterCount(autosave.hydrated.quarterCount)
+      const map: Record<string, QuarterFinancials> = {}
+      for (const q of autosave.hydrated.quarters) map[q.period] = q
+      setQuartersByPeriod(map)
+    }
+    setSeeded(true)
+  }, [autosave.hydrating, autosave.hydrated])
 
   // The rendered grid always covers every generated period, blank rows included — only what's
   // actually been typed into is written back (see `savedQuarters` above).
@@ -107,7 +123,9 @@ export function useVerifyFundamental(watchlistItemId: string) {
 
   return {
     item,
-    loading: watchlistLoading || autosave.hydrating,
+    // Also waits on `seeded`, not just `autosave.hydrating` — otherwise the grid could flash
+    // the pristine default for one render before the real record's values land.
+    loading: watchlistLoading || autosave.hydrating || !seeded,
     error,
     asOfPeriod,
     setAsOfPeriod,

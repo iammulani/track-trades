@@ -56,6 +56,7 @@ export function VerifyFundamentalPage() {
             <div className="verify-fundamental-page__title-meta">
               <SideBadge side={item.side} />
               <span className="verify-fundamental-page__symbol">{item.symbol}</span>
+              <Code33Summary rating={code33} />
             </div>
             <label className="verify-fundamental-page__as-of">
               As of
@@ -74,9 +75,7 @@ export function VerifyFundamentalPage() {
             </button>
           )}
 
-          <QuarterlyGrid rows={rows} onChange={updateQuarter} />
-
-          <Code33Summary rating={code33} />
+          <QuarterlyGrid rows={rows} rating={code33} onChange={updateQuarter} />
 
           <div className="verify-fundamental-page__footer">
             <Link to="/watchlist" className="verify-fundamental-page__cancel">

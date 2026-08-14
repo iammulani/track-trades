@@ -43,6 +43,10 @@ continuously-editable form.
    checked as they stood on the day of an old trade, not only the present. Picking a new "as of"
    date resets the grid back to its default 8-quarter window — extending history is a deliberate
    follow-up action on that anchor, not something a fresh pick should carry over.
+   The title row also carries the compact **Code 33 rating** (`Code33Summary`) — `RatingStars`
+   (from `shared/components`) + `N.N / 5`, sitting right after the symbol. It's a `HoverCard`
+   trigger (same collapsed-by-default pattern as `TradeRatingBadge`), not a permanent page
+   section — see point 5.
 3. **"Show 4 earlier quarters"** button, directly above the grid — grows the window backward
    4 quarters at a time without moving "as of" or disturbing anything already entered. Hidden
    until an "as of" quarter is picked.
@@ -52,20 +56,31 @@ continuously-editable form.
    only editable cells), then three read-only derived columns — `Net Margin`, `Sales YoY`,
    `EPS YoY` — that update live as the three inputs are typed, formatted with
    `shared/utils/format`'s `formatPercent`/`formatSignedPercent`. A derived cell reads "—" until
-   there's enough data to compute it (a blank row, or no same-quarter-prior-year row yet). The
-   `Net Margin` header carries a `title` tooltip spelling out the formula ("Net Profit ÷ Sales ×
-   100, for this quarter") — a plain native tooltip, not a `HoverCard`, since it's one line, not
-   worked-example content. Before an "as of" quarter is picked, the grid shows a prompt instead
-   of an empty table.
-5. **Code 33 summary** (`Code33Summary`) — `RatingStars` (from `shared/components`) sized larger
-   + `N.N / 5` + a verdict pill (tone-coloured: good / caution / bad), then a plain list of every
-   step in the evaluation window (`Jun 2025 → Sep 2025`, with a check/✕ per metric) so the score
-   is never a black box. Each metric shows the two YoY-growth figures being compared, not just
-   the verdict — `EPS -69.5% → -49.1% ✓` — since a bare check/✕ on its own doesn't explain *why*:
-   the comparison is between two already-year-over-year numbers (each quarter's growth vs. its
-   own year-ago match), not between the raw quarters, and that's easy to misread as one without
-   seeing the figures. Nothing renders here if fewer than 2 usable quarters exist yet — the
-   verdict pill itself explains what's missing and points at "Show earlier quarters."
+   there's enough data to compute it (a blank row, or no same-quarter-prior-year row yet).
+
+   **Each derived cell is colour-coded** — this is the primary way "did this accelerate" reads,
+   not a separate breakdown section: `is-good` (green, `--good-text`) if that metric moved up
+   relative to the previous quarter *in the evaluation window*, `is-bad` (red, `--critical-text`)
+   if it moved down, uncoloured if there's no prior-quarter-in-window comparison yet (the
+   window's own earliest quarter, or any quarter without YoY data at all). The tone per cell
+   comes straight from `rating.steps` (passed in as a `rating` prop) — `QuarterlyGrid` builds a
+   `period -> {eps, sales, margin}` tone map keyed by each step's `toPeriod`, so a cell's colour
+   and the hover-card breakdown behind the title-row badge can never disagree; they're reading
+   the same `Code33Step` array.
+
+   The `Net Margin` header carries an info `HoverCard` (not a native `title` — a native tooltip
+   proved unreliable to trigger in practice) spelling out the formula: "Net Profit ÷ Sales × 100,
+   for this quarter." Before an "as of" quarter is picked, the grid shows a prompt instead of an
+   empty table.
+5. **Code 33 detail** — lives behind the title row's rating badge (point 2), not as a page
+   section. Hovering it reveals: the verdict label (tone-coloured: good / caution / bad), then a
+   plain list of every step in the evaluation window (`Jun 2025 → Sep 2025`, with a check/✕ per
+   metric). Each metric shows the two YoY-growth figures being compared, not just the verdict —
+   `EPS -69.5% → -49.1% ✓` — since a bare check/✕ on its own doesn't explain *why*: the
+   comparison is between two already-year-over-year numbers (each quarter's growth vs. its own
+   year-ago match), not between the raw quarters, and that's easy to misread as one without
+   seeing the figures. If fewer than 2 usable quarters exist yet, the panel shows the verdict
+   label alone ("Not enough consecutive quarters yet…") instead of an empty steps list.
 6. **Footer** — a "← Back to Watchlist" link, and the autosave status ("Saving…" /
    "Saved · <time>"), same language as Place Trade's draft-status footer.
 
@@ -91,6 +106,19 @@ message + back link — same three states as `PlaceTradePage`.
   adapted to a `{asOfPeriod, quarterCount, quarters}` payload. A page opened and closed untouched
   writes nothing. Only quarters with at least one non-empty value are ever persisted; a fully
   blank generated row exists only in the rendered grid, not in storage.
+- **A save can never fire against stale, pre-hydration local state.** Hydration finishing
+  (`useFundamentalsAutosave`'s `hydrating` flipping false) and `useVerifyFundamental` finishing
+  seeding its local state *from* that hydrated record are two separate renders, not one — so
+  gating only on `hydrating` leaves a one-render window where the debounce effect sees
+  `hydrating: false` and a `recordId` already assigned, but `state` still holding the pristine
+  defaults, which used to be enough to schedule (and, on an unlucky timing, actually fire) a save
+  that overwrote a real record with an empty one. `useVerifyFundamental` closes this with an
+  explicit `seeded` flag, set true in the *same* effect that finishes the local-state catch-up
+  (never in a separate one), and passes it into `useFundamentalsAutosave` as a `ready` param that
+  both the scheduling effect and `save()` itself check first — the unmount-flush path calls
+  `save()` directly, unscheduled, so the guard has to live in `save()` too, not only in the
+  effect that normally calls it. `loading` also waits on `seeded`, not just `hydrating`, so the
+  grid can't flash the pristine default for a frame before the real values land.
 - **Never removes or converts the watchlist item.** There is no submit, no "Place Trade"-style
   consuming action, and no discard — the record just keeps accumulating quarters over time. The
   item's removal (and therefore this record's deletion) is handled entirely by
@@ -112,8 +140,8 @@ frontend/src/modules/verify-fundamental/
 │   └── previousQuarter.ts             # previousQuarterPeriod(dateValue), quarterEndDateValue(period) — the date <-> quarter-end math AsOfPicker and the default-to-today anchor both use
 ├── components/
 │   ├── AsOfPicker.tsx(+.css)          # <input type="date"> -> previousQuarterPeriod() resolves it to the last closed Mar/Jun/Sep/Dec quarter
-│   ├── QuarterlyGrid.tsx(+.css)       # the generated grid: editable Sales/Net Profit/EPS + read-only derived columns
-│   └── Code33Summary.tsx(+.css)       # RatingStars + score + verdict + per-step breakdown
+│   ├── QuarterlyGrid.tsx(+.css)       # the generated grid: editable Sales/Net Profit/EPS + colour-coded derived columns (tone map built from rating.steps)
+│   └── Code33Summary.tsx(+.css)       # compact stars + score for the title row; HoverCard reveals verdict + per-step breakdown (mirrors TradeRatingBadge)
 └── index.ts                           # exports VerifyFundamentalPage
 ```
 
