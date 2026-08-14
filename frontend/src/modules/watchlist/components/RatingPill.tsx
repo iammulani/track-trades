@@ -1,3 +1,4 @@
+import { Icon } from '../../../shared/components/Icon'
 import type { WatchRating } from '../types/watchlistItem'
 import { cycleRating } from '../utils/ratings'
 import './RatingPill.css'
@@ -9,9 +10,9 @@ interface RatingPillProps {
   onChange: (rating: WatchRating) => void
 }
 
-/** Compact rating control — a numeric pill, not five stars. One click steps the rating
- * forward (unrated → 1 → 2 → 3 → 4 → 5 → back to unrated), trading "click star N to set
- * N directly" for a column that's a fraction of the width. */
+/** Compact rating control — a single star with the number on top, not five stars or a bare
+ * ring. One click steps the rating forward (unrated → 1 → 2 → 3 → 4 → 5 → back to unrated),
+ * trading "click star N to set N directly" for a column that's a fraction of the width. */
 export function RatingPill({ value, symbol, onChange }: RatingPillProps) {
   const rated = value > 0
 
@@ -23,7 +24,8 @@ export function RatingPill({ value, symbol, onChange }: RatingPillProps) {
       aria-label={`Rating for ${symbol}: ${rated ? `${value} star${value > 1 ? 's' : ''}` : 'unrated'}`}
       title={rated ? `${value} star${value > 1 ? 's' : ''} — click to change` : 'Unrated — click to rate'}
     >
-      {rated ? value : '–'}
+      <Icon name="star" size={26} className="rating-pill__star" />
+      {rated && <span className="rating-pill__value">{value}</span>}
     </button>
   )
 }
