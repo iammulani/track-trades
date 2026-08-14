@@ -38,6 +38,15 @@ export function formatPercent(value: number, digits = 1): string {
   return `${value.toFixed(digits)}%`
 }
 
+/** Signed percentage-*point* change, e.g. "+2.0pp" / "-1.3pp" — an absolute difference between
+ * two percentages (like margin quarter vs. margin a year ago), distinct from
+ * `formatSignedPercent`'s *relative* % change. Using "%" for both would read as though a
+ * 9.0% -> 11.0% move were a +22.2% change, not the +2.0-point move it actually is. */
+export function formatSignedPoints(value: number, digits = 1): string {
+  const sign = value > 0 ? '+' : value < 0 ? '-' : ''
+  return `${sign}${Math.abs(value).toFixed(digits)}pp`
+}
+
 /** Humanised duration from milliseconds, e.g. "4h 35m", "2d 6h", "45m". */
 export function formatDuration(ms: number): string {
   if (ms < 0) ms = 0

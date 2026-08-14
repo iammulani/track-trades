@@ -8,6 +8,10 @@ export interface QuarterDerived {
   netMargin: number | null
   salesGrowthYoY: number | null
   epsGrowthYoY: number | null
+  /** Percentage-*point* change vs. the same quarter a year earlier (e.g. 9.0% -> 11.0% is
+   * `+2.0`, not `+22.2`) — an absolute difference between two percentages, not a relative %
+   * change, since margin is already a percentage itself. */
+  netMarginChangeYoY: number | null
 }
 
 /** Structurally satisfied by both `QuarterFinancials` (live editing — raw typed strings) and
@@ -57,7 +61,12 @@ export function deriveQuarters(quarters: QuarterFinancialsLike[]): QuarterDerive
 
     const prior = byPeriod.get(priorYearPeriod(q.period))
     const priorSales = prior ? toNumberOrNull(prior.sales) : null
+    const priorNetProfit = prior ? toNumberOrNull(prior.netProfit) : null
     const priorEps = prior ? toNumberOrNull(prior.eps) : null
+    const priorNetMargin =
+      priorSales !== null && priorSales > 0 && priorNetProfit !== null
+        ? (priorNetProfit / priorSales) * 100
+        : null
 
     const salesGrowthYoY =
       sales !== null && priorSales !== null && priorSales > 0
@@ -69,7 +78,18 @@ export function deriveQuarters(quarters: QuarterFinancialsLike[]): QuarterDerive
       eps !== null && priorEps !== null && priorEps !== 0
         ? ((eps - priorEps) / Math.abs(priorEps)) * 100
         : null
+    const netMarginChangeYoY =
+      netMargin !== null && priorNetMargin !== null ? netMargin - priorNetMargin : null
 
-    return { period: q.period, sales, netProfit, eps, netMargin, salesGrowthYoY, epsGrowthYoY }
+    return {
+      period: q.period,
+      sales,
+      netProfit,
+      eps,
+      netMargin,
+      salesGrowthYoY,
+      epsGrowthYoY,
+      netMarginChangeYoY,
+    }
   })
 }

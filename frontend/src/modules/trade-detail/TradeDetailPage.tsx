@@ -12,6 +12,7 @@ import {
   formatPrice,
   formatSignedCurrency,
   formatSignedPercent,
+  formatSignedPoints,
 } from '../../shared/utils/format'
 import {
   buildQuarterTones,
@@ -352,6 +353,7 @@ export function TradeDetailPage() {
                             <th className="ta-right">Net Profit</th>
                             <th className="ta-right">EPS</th>
                             <th className="ta-right">Net Margin</th>
+                            <th className="ta-right">Net Margin YoY</th>
                             <th className="ta-right">Sales YoY</th>
                             <th className="ta-right">EPS YoY</th>
                           </tr>
@@ -369,6 +371,9 @@ export function TradeDetailPage() {
                                 <td className="ta-right">{d.eps === null ? '—' : d.eps.toFixed(2)}</td>
                                 <td className={`ta-right${quarterCellClass(tone?.margin)}`}>
                                   {d.netMargin === null ? '—' : formatPercent(d.netMargin)}
+                                </td>
+                                <td className="ta-right">
+                                  {d.netMarginChangeYoY === null ? '—' : formatSignedPoints(d.netMarginChangeYoY)}
                                 </td>
                                 <td className={`ta-right${quarterCellClass(tone?.sales)}`}>
                                   {d.salesGrowthYoY === null ? '—' : formatSignedPercent(d.salesGrowthYoY)}

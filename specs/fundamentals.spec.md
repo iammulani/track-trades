@@ -75,11 +75,12 @@ consumers, so this can't create a cycle (same relationship `place-trade`'s
 - **Derived, never stored** (`utils/quarterlyCalc.ts`, convention 4 — computed from the raw
   quarters every time, on every render):
 
-  | value           | formula                                                                              |
-  | --------------- | ------------------------------------------------------------------------------------- |
-  | `netMargin`     | `netProfit / sales * 100` — `null` if sales is blank or ≤ 0                          |
-  | `salesGrowthYoY`| `(sales − priorYearSales) / priorYearSales * 100` — `null` without an exact same-quarter-prior-year row, or if that row's sales ≤ 0 |
-  | `epsGrowthYoY`  | `(eps − priorYearEps) / abs(priorYearEps) * 100` — `null` without a prior-year row, or if its EPS is 0. Divided by the *absolute* prior value so a prior-year loss flipping sign doesn't misread a recovery as a decline. |
+  | value               | formula                                                                              |
+  | -------------------- | ------------------------------------------------------------------------------------- |
+  | `netMargin`          | `netProfit / sales * 100` — `null` if sales is blank or ≤ 0                          |
+  | `salesGrowthYoY`     | `(sales − priorYearSales) / priorYearSales * 100` — `null` without an exact same-quarter-prior-year row, or if that row's sales ≤ 0 |
+  | `epsGrowthYoY`       | `(eps − priorYearEps) / abs(priorYearEps) * 100` — `null` without a prior-year row, or if its EPS is 0. Divided by the *absolute* prior value so a prior-year loss flipping sign doesn't misread a recovery as a decline. |
+  | `netMarginChangeYoY` | `netMargin − priorYearNetMargin` — a **percentage-point** difference (9.0% → 11.0% is `+2.0`, not `+22.2`), not a relative % change like the other two rows. `null` unless both this quarter's and the prior-year quarter's margins are known. Formatted with `formatSignedPoints()` (`shared/utils/format.ts`), not `formatSignedPercent()`, specifically so it can't be misread as a relative move. |
 
 - **Code 33 rating** (`utils/code33.ts`):
   1. Derive every quarter, sort ascending by period.

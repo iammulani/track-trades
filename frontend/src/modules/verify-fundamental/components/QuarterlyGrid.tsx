@@ -1,6 +1,6 @@
 import { HoverCard } from '../../../shared/components/HoverCard'
 import { Icon } from '../../../shared/components/Icon'
-import { formatPercent, formatSignedPercent } from '../../../shared/utils/format'
+import { formatPercent, formatSignedPercent, formatSignedPoints } from '../../../shared/utils/format'
 import {
   buildQuarterTones,
   deriveQuarters,
@@ -57,6 +57,20 @@ export function QuarterlyGrid({ rows, rating, onChange }: QuarterlyGridProps) {
                 </HoverCard>
               </span>
             </th>
+            <th className="ta-right">
+              <span className="quarterly-grid__th-note">
+                Net Margin YoY
+                <HoverCard
+                  label="How Net Margin YoY is calculated"
+                  trigger={<Icon name="info" size={12} />}
+                >
+                  <p className="quarterly-grid__th-note-panel">
+                    This quarter's Net Margin minus the same quarter last year's — in
+                    percentage points, not a relative %. 9.0% → 11.0% shows as +2.0pp.
+                  </p>
+                </HoverCard>
+              </span>
+            </th>
             <th className="ta-right">Sales YoY</th>
             <th className="ta-right">EPS YoY</th>
           </tr>
@@ -100,6 +114,9 @@ export function QuarterlyGrid({ rows, rating, onChange }: QuarterlyGridProps) {
                 </td>
                 <td className={`ta-right quarterly-grid__derived${toneClass(tone?.margin)}`}>
                   {d.netMargin !== null ? formatPercent(d.netMargin) : '—'}
+                </td>
+                <td className="ta-right quarterly-grid__derived">
+                  {d.netMarginChangeYoY !== null ? formatSignedPoints(d.netMarginChangeYoY) : '—'}
                 </td>
                 <td className={`ta-right quarterly-grid__derived${toneClass(tone?.sales)}`}>
                   {d.salesGrowthYoY !== null ? formatSignedPercent(d.salesGrowthYoY) : '—'}

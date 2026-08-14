@@ -64,10 +64,18 @@ continuously-editable form.
 4. **Quarterly grid** (`QuarterlyGrid`) — one row per generated quarter, oldest → newest,
    `quarterCount` rows ending at "as of" (starts at 8 — see Behaviour for why). Columns:
    `Quarter` (read-only, formatted "Jun 2026"), `Sales`, `Net Profit`, `EPS` (number inputs, the
-   only editable cells), then three read-only derived columns — `Net Margin`, `Sales YoY`,
-   `EPS YoY` — that update live as the three inputs are typed, formatted with
-   `shared/utils/format`'s `formatPercent`/`formatSignedPercent`. A derived cell reads "—" until
-   there's enough data to compute it (a blank row, or no same-quarter-prior-year row yet).
+   only editable cells), then four read-only derived columns — `Net Margin`, `Net Margin YoY`,
+   `Sales YoY`, `EPS YoY` — that update live as the three inputs are typed, formatted with
+   `shared/utils/format`'s `formatPercent`/`formatSignedPercent`/`formatSignedPoints`. A derived
+   cell reads "—" until there's enough data to compute it (a blank row, or no
+   same-quarter-prior-year row yet). `Net Margin YoY` — `QuarterDerived.netMarginChangeYoY`,
+   `netMargin` minus the same quarter last year's — is a **percentage-point** difference
+   (`9.0% → 11.0%` reads `+2.0pp`), not a relative % change like the other two YoY columns;
+   `formatSignedPoints()` exists specifically so this can't be misread as a `+22.2%` relative
+   move. It carries its own `HoverCard` info note next to the header, same pattern as `Net
+   Margin`'s. Uncoloured — it's informational context alongside the coloured `Net Margin` cell
+   (which reflects the *sequential*-quarter comparison the score is actually built from), not a
+   second scored comparison of its own.
 
    **Each derived cell is colour-coded** — this is the primary way "did this accelerate" reads,
    not a separate breakdown section: `is-good` (green, `--good-text`) if that metric moved up

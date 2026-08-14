@@ -124,8 +124,32 @@
   {
     "watchlistItemId": "FKmnpSLuNxA",
     "asOfPeriod": "2026-06",
-    "quarterCount": 8,
+    "quarterCount": 12,
     "quarters": [
+      {
+        "period": "2023-09",
+        "sales": "712",
+        "netProfit": "31",
+        "eps": "1.60"
+      },
+      {
+        "period": "2023-12",
+        "sales": "707",
+        "netProfit": "20",
+        "eps": "0.87"
+      },
+      {
+        "period": "2024-03",
+        "sales": "1143",
+        "netProfit": "45",
+        "eps": "1.97"
+      },
+      {
+        "period": "2024-06",
+        "sales": "1160",
+        "netProfit": "20",
+        "eps": "1.09"
+      },
       {
         "period": "2024-09",
         "sales": "833",
@@ -175,7 +199,7 @@
         "eps": "5.19"
       }
     ],
-    "updatedAt": "2026-08-14T16:00:05.400Z",
+    "updatedAt": "2026-08-14T16:30:57.017Z",
     "id": "k6swck8YgJo"
   }
 ]
