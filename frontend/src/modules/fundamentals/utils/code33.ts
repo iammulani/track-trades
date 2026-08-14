@@ -18,9 +18,15 @@ export interface Code33Step {
 
 export interface Code33Rating {
   status: Code33Status
-  /** Metrics that moved up, summed across every step, over (3 * step count). 0..1. */
+  /** hits / totalChecks. 0..1. */
   ratio: number
   stars: number
+  /** How many of the 3 metrics (EPS/Sales/Margin) moved up, summed across every step — the
+   * plain count `ratio`/`stars` are computed from, surfaced so the score can always be traced
+   * back to "N of M checks passed" rather than taken on faith. */
+  hits: number
+  /** 3 metrics * step count — what `hits` is being counted out of. */
+  totalChecks: number
   steps: Code33Step[]
 }
 
@@ -72,7 +78,7 @@ export function computeCode33(quarters: QuarterFinancials[]): Code33Rating {
   // Fewer than 2 usable quarters means zero step-comparisons are possible — not yet
   // judgeable, and deliberately distinct from a "no acceleration" read.
   if (windowQuarters.length < 2) {
-    return { status: 'pending', ratio: 0, stars: 0, steps: [] }
+    return { status: 'pending', ratio: 0, stars: 0, hits: 0, totalChecks: 0, steps: [] }
   }
 
   const steps: Code33Step[] = []
@@ -92,12 +98,15 @@ export function computeCode33(quarters: QuarterFinancials[]): Code33Rating {
     (sum, s) => sum + Number(s.epsAccelerated) + Number(s.salesAccelerated) + Number(s.marginExpanded),
     0,
   )
-  const ratio = hits / (steps.length * 3)
+  const totalChecks = steps.length * 3
+  const ratio = hits / totalChecks
 
   return {
     status: windowQuarters.length >= 4 ? 'complete' : 'partial',
     ratio,
     stars: ratio * CODE33_STARS,
+    hits,
+    totalChecks,
     steps,
   }
 }

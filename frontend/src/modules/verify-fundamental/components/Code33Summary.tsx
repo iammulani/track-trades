@@ -8,9 +8,9 @@ interface Code33SummaryProps {
 }
 
 /** Compact Code 33 readout for the title row — stars + score. The grid itself (colour-coded
- * per cell) carries the "why" now, so the hover here just names the overall verdict — the
- * numeric per-step breakdown that used to live here read as clutter once the grid already
- * showed the same thing in colour. */
+ * per cell) carries the "why" now, so the hover here just names the overall verdict, plus the
+ * plain count it's computed from ("N of M checks passed") — a fixed fact read straight off
+ * `rating.hits`/`rating.totalChecks`, not prose, so it can't drift or vary between renders. */
 export function Code33Summary({ rating }: Code33SummaryProps) {
   const verdict = code33Verdict(rating)
   const stars = rating.stars.toFixed(1)
@@ -29,6 +29,11 @@ export function Code33Summary({ rating }: Code33SummaryProps) {
       }
     >
       <p className={`code33-verdict is-${verdict.tone}`}>{verdict.label}</p>
+      {rating.status !== 'pending' && (
+        <p className="code33-summary__note">
+          {rating.hits} of {rating.totalChecks} checks passed
+        </p>
+      )}
     </HoverCard>
   )
 }

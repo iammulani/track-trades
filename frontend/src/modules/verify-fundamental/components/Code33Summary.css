@@ -30,3 +30,10 @@
 .code33-verdict.is-bad {
   color: var(--critical-text);
 }
+
+.code33-summary__note {
+  margin: 4px 0 0;
+  font-size: 12px;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}

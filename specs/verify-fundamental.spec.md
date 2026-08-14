@@ -73,12 +73,17 @@ continuously-editable form.
    for this quarter." Before an "as of" quarter is picked, the grid shows a prompt instead of an
    empty table.
 5. **Code 33 detail** — lives behind the title row's rating badge (point 2), not as a page
-   section. Hovering it reveals a single tone-coloured line: the verdict label (e.g. "Mixed —
-   some cylinders firing", or "Not enough consecutive quarters yet…" when `pending`) — nothing
-   more. This used to also list every step with its EPS/Sales/Margin figures, but once the grid
-   itself started colour-coding those same cells (point 4), the list read as duplicated, harder-
-   to-parse detail rather than useful depth — the grid *is* the per-quarter breakdown now; the
-   hover just names the overall verdict.
+   section. Hovering it reveals two lines: the tone-coloured verdict label (e.g. "Mixed — some
+   cylinders firing", or "Not enough consecutive quarters yet…" when `pending`), and — except
+   when `pending`, where there's nothing to count yet — a plain fact underneath it: **"N of M
+   checks passed"**, read straight off `rating.hits`/`rating.totalChecks`. Both the verdict and
+   the star count are already derived from this same `hits / totalChecks` ratio (see
+   [fundamentals.spec.md](fundamentals.spec.md)), so showing the raw numbers isn't a second
+   explanation competing with the first — it's the one number everything else is computed from,
+   made visible. This used to also list every step with its EPS/Sales/Margin figures, but once
+   the grid itself started colour-coding those same cells (point 4), the list read as duplicated,
+   harder-to-parse detail rather than useful depth — the grid *is* the per-quarter breakdown now;
+   the hover just states the verdict and the count it came from.
 6. **Footer** — a "← Back to Watchlist" link, and the autosave status ("Saving…" /
    "Saved · <time>"), same language as Place Trade's draft-status footer.
 

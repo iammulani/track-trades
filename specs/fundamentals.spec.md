@@ -86,8 +86,11 @@ imports neither** — it stays a leaf, the same arrangement as [drafts.spec.md](
      - 2–3 → `status: 'partial'`, scored on 1–2 steps.
      - 4 → `status: 'complete'`, the full 3-step read.
   4. Per step (quarter *N* vs. quarter *N−1*): does EPS growth, Sales growth, and Net Margin
-     each move up? `ratio` = (checks that moved up, summed across every step) / (3 × step
-     count). `stars = ratio * 5`.
+     each move up? `hits` = checks that moved up, summed across every step. `totalChecks` =
+     3 × step count. `ratio = hits / totalChecks`. `stars = ratio * 5`. Both `hits` and
+     `totalChecks` are carried on `Code33Rating` (not just the derived `ratio`/`stars`) so the
+     UI can always show the plain count a score came from — "4 of 9 checks passed" — rather than
+     only the banded label.
   5. `code33Verdict()` bands the ratio into a label (Full Code 33 / Strong / Mixed / Weak / No
      acceleration), qualified with "(based on N of 3 steps)" when `partial`.
 
