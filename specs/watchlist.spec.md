@@ -124,9 +124,12 @@ Reached via the **Watchlist** sidebar item. Top to bottom:
    small count badge when there's more than one; it opens the notes popup. The
    bodies live in the popup so the column stays narrow: free text at full width
    cost ~320px for content that's usually empty and made rows different heights),
-   `Fundamentals` (`Code33Badge` — a muted icon
-   until enough consecutive quarters have been entered to judge; once judged, a
-   compact star row + score, `title` naming the verdict. Always links through to
+   `Fundamentals` (`Code33Badge` — a single icon, no stars or score in this
+   compact spot: muted until at least one quarter has been captured, accent
+   once it has, `title` naming the verdict once there's one to name (or just
+   "Verify fundamentals" before any data exists). The colour says whether
+   fundamentals have been captured, not what they read — the actual star
+   rating and verdict live on the page this always links through to:
    `/watchlist/:id/verify-fundamental` — see
    [verify-fundamental.spec.md](verify-fundamental.spec.md)), a **Verify
    Fundamental** action (icon-only button, same link as the badge — checking

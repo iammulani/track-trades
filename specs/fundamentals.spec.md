@@ -202,7 +202,7 @@ frontend/src/modules/fundamentals/
 │   ├── quarterlyCalc.ts     # deriveQuarters(), priorYearPeriod(), formatPeriodLabel()
 │   └── code33.ts            # CODE33_STARS, computeCode33(), code33Verdict(), metricTone(), buildQuarterTones(), toCode33Snapshot()
 ├── components/
-│   └── Code33Badge.tsx      # the watchlist row's compact indicator (muted / mini stars + score)
+│   └── Code33Badge.tsx      # the watchlist row's compact indicator — icon only, muted/accent by whether captured
 └── index.ts                 # barrel
 ```
 
@@ -211,10 +211,10 @@ drives them lives with the page that owns the state
 (`verify-fundamental/hooks/useFundamentalsAutosave.ts`), not here — same split as `drafts` and
 `place-trade/hooks/useDraftAutosave.ts`.
 
-`Code33Badge` renders `shared/components/RatingStars` (promoted out of `place-trade` in this
-change so both `place-trade` and `fundamentals` can use it without a cross-module import cycle —
-`place-trade` already depends on `watchlist`, and `watchlist` depends on `fundamentals`, so
-`fundamentals` importing anything from `place-trade` would cycle back).
+`shared/components/RatingStars` (promoted out of `place-trade` so both it and
+`verify-fundamental`'s `Code33Summary` can render the star rating) is used by those two, not by
+`Code33Badge` — the watchlist row's badge deliberately doesn't show the rating at all, just
+whether fundamentals exist, so the star read stays a Verify Fundamental thing.
 
 `utils/code33.ts` imports the `Code33Snapshot` type from `modules/trades` for
 `toCode33Snapshot()`'s return type — the one place this module reaches outside itself besides

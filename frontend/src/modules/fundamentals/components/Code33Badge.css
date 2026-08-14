@@ -1,32 +1,24 @@
+/* Icon-only — colour says whether fundamentals have been captured, not what they read. */
 .code33-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 4px 8px;
+  display: inline-grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
   border-radius: 8px;
-  color: var(--text-secondary);
 }
 
 .code33-badge:hover {
   background: var(--surface-2);
 }
 
-.code33-badge__count {
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--text-secondary);
-  font-variant-numeric: tabular-nums;
-}
-
 .code33-badge--empty {
-  display: inline-grid;
-  place-items: center;
-  width: 26px;
-  height: 26px;
-  padding: 0;
   color: var(--text-muted);
 }
 
 .code33-badge--empty:hover {
+  color: var(--accent);
+}
+
+.code33-badge--captured {
   color: var(--accent);
 }

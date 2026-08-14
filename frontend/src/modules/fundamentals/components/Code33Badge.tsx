@@ -1,8 +1,7 @@
 import { Link } from 'react-router-dom'
 import { Icon } from '../../../shared/components/Icon'
-import { RatingStars } from '../../../shared/components/RatingStars'
 import type { FundamentalsRecord } from '../types/fundamentals'
-import { CODE33_STARS, code33Verdict, computeCode33 } from '../utils/code33'
+import { code33Verdict, computeCode33 } from '../utils/code33'
 import './Code33Badge.css'
 
 interface Code33BadgeProps {
@@ -12,50 +11,26 @@ interface Code33BadgeProps {
   record: FundamentalsRecord | undefined
 }
 
-/** The watchlist row's compact Code 33 indicator — a muted icon until enough consecutive
- * quarters are entered to judge, then a mini star row + score. Always links through to the
- * full breakdown on the Verify Fundamental page. */
+/** The watchlist row's compact Code 33 indicator — just an icon, coloured by whether
+ * fundamentals have been captured yet (not by what they read — the star rating and verdict
+ * live on the Verify Fundamental page this always links through to). */
 export function Code33Badge({ watchlistItemId, symbol, record }: Code33BadgeProps) {
   const href = `/watchlist/${watchlistItemId}/verify-fundamental`
+  const captured = !!record && record.quarters.length > 0
 
-  if (!record || record.quarters.length === 0) {
-    return (
-      <Link
-        to={href}
-        className="code33-badge code33-badge--empty"
-        aria-label={`Verify fundamentals for ${symbol}`}
-        title="Verify fundamentals"
-      >
-        <Icon name="bars" size={15} />
-      </Link>
-    )
-  }
-
-  const rating = computeCode33(record.quarters)
-  const verdict = code33Verdict(rating)
-
-  if (rating.status === 'pending') {
-    return (
-      <Link
-        to={href}
-        className="code33-badge code33-badge--empty"
-        aria-label={`Code 33 for ${symbol}: ${verdict.label}`}
-        title={verdict.label}
-      >
-        <Icon name="bars" size={15} />
-      </Link>
-    )
-  }
+  const title = captured ? code33Verdict(computeCode33(record.quarters)).label : 'Verify fundamentals'
+  const ariaLabel = captured
+    ? `Code 33 for ${symbol}: ${title}`
+    : `Verify fundamentals for ${symbol}`
 
   return (
     <Link
       to={href}
-      className="code33-badge"
-      aria-label={`Code 33 for ${symbol}: ${verdict.label}`}
-      title={verdict.label}
+      className={`code33-badge${captured ? ' code33-badge--captured' : ' code33-badge--empty'}`}
+      aria-label={ariaLabel}
+      title={title}
     >
-      <RatingStars ratio={rating.ratio} count={CODE33_STARS} size={13} />
-      <span className="code33-badge__count">{rating.stars.toFixed(1)}</span>
+      <Icon name="bars" size={15} />
     </Link>
   )
 }
