@@ -18,7 +18,7 @@ import { noteCount } from '../utils/notes'
 import { itemRating } from '../utils/ratings'
 import { CategorySelect } from './CategorySelect'
 import { NotesModal } from './NotesModal'
-import { StarRating } from './StarRating'
+import { RatingPill } from './RatingPill'
 import './WatchlistTable.css'
 
 interface WatchlistTableProps {
@@ -107,7 +107,7 @@ export function WatchlistTable({
                     <SideBadge side={item.side} />
                   </td>
                   <td className="ta-center watch-table__rating">
-                    <StarRating
+                    <RatingPill
                       value={itemRating(item)}
                       symbol={item.symbol}
                       onChange={(rating) => onUpdateRating(item.id, rating)}

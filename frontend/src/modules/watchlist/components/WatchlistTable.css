@@ -98,8 +98,8 @@
   color: var(--accent);
 }
 
-/* Tighter side padding than the other cells — five stars are wide, and this column
- * sits between Side and Watching-for where every pixel pushes the actions off-screen. */
+/* Tighter side padding than the other cells — the rating pill is small, no need
+ * to give it the same breathing room as text columns. */
 .watch-table__rating,
 .watch-table__table th.watch-table__rating-head {
   white-space: nowrap;

@@ -1,0 +1,29 @@
+/* Matches the sizing/tinting language of the table's other compact chips
+ * (Reason's cat-select, Fundamentals' code33-badge) — a small rounded control,
+ * muted until there's a value, tinted once there is. */
+.rating-pill {
+  display: inline-grid;
+  place-items: center;
+  min-width: 26px;
+  height: 26px;
+  padding: 0 6px;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+}
+
+.rating-pill:hover {
+  border-color: var(--amber);
+  color: var(--amber);
+}
+
+.rating-pill.is-rated {
+  border-color: transparent;
+  background: color-mix(in srgb, var(--amber) 16%, transparent);
+  color: var(--amber);
+}

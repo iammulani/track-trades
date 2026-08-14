@@ -8,7 +8,7 @@ export function itemRating(item: Pick<WatchlistItem, 'rating'>): WatchRating {
   return item.rating ?? 0
 }
 
-/** Clicking the star you're already on clears the rating — otherwise the clicked star wins. */
-export function nextRating(current: WatchRating, clicked: Exclude<WatchRating, 0>): WatchRating {
-  return current === clicked ? 0 : clicked
+/** One click steps the rating forward — unrated → 1 → 2 → 3 → 4 → 5 → back to unrated. */
+export function cycleRating(current: WatchRating): WatchRating {
+  return current === 5 ? 0 : ((current + 1) as WatchRating)
 }

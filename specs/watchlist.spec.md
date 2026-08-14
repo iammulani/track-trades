@@ -105,11 +105,14 @@ Reached via the **Watchlist** sidebar item. Top to bottom:
    avatar reuses the shared per-symbol colour, plus a small link icon next to
    the symbol when `link` is set — opens the URL in a new tab), `Side`
    (`shared/SideBadge` — long/short pill, the same
-   one the dashboard's trades table uses), `Rating` (`StarRating` — five
-   **clickable** stars, not a static display: clicking star N rates the item N,
-   clicking the star it's already on clears it back to unrated; hovering
-   previews the fill; an unrated row shows five empty stars so it's visibly
-   editable), `Since` (the humanised duration bold on top — `12 days` — with
+   one the dashboard's trades table uses), `Rating` (`RatingPill` — a compact
+   numeric pill, not five stars: showing the star row for every row was the
+   single widest thing in the table for a value that's just a number. One
+   click steps it forward — unrated (`–`) → 1 → 2 → 3 → 4 → 5 → back to
+   unrated — muted while unrated, amber-tinted once rated. Trades "click star
+   N to jump straight to N" for a fraction of the width; the full 1-5 star
+   *display* (read-only) still exists elsewhere — `shared/components/RatingStars`,
+   used for the computed Code 33 read, is untouched by this), `Since` (the humanised duration bold on top — `12 days` — with
    the date underneath in muted small text — `Jul 24`; the full timestamp is
    the cell's hover title, since the time of day is noise next to the
    duration and the table is already wide. One column, not two — the
@@ -262,7 +265,7 @@ frontend/src/modules/watchlist/
 ├── hooks/useWatchlist.ts       # fetch + derive + add/remove/updateCategory/updateRating/updateNotes actions (silent refetch)
 ├── utils/
 │   ├── categories.ts           # CATEGORIES (fixed order + tone), categoryMeta()
-│   ├── ratings.ts              # RATING_VALUES, itemRating() (absent = unrated), nextRating() (re-click clears)
+│   ├── ratings.ts              # RATING_VALUES, itemRating() (absent = unrated), cycleRating() (unrated→1..5→unrated)
 │   ├── notes.ts                # itemNotes() (absent/legacy string = none), noteCount(), makeNote() (drops an empty conclusion), sortNotesByDate()
 │   └── watchlistMetrics.ts     # withWatchMetrics, formatWatchedLabel, sortByRatingThenWatched
 └── components/
@@ -272,7 +275,7 @@ frontend/src/modules/watchlist/
     ├── CategoryFilterTabs.tsx  # All/Active/Daily/Long-term, with counts
     ├── RatingFilterTabs.tsx    # Any/★1-★5/Unrated, with counts — reuses CategoryFilterTabs.css pills
     ├── CategorySelect.tsx      # icon-only chip over a real <select> — reassigns an item's category
-    ├── StarRating.tsx          # inline 1-5 star editor — click to rate, re-click to clear
+    ├── RatingPill.tsx          # compact numeric rating control — click cycles unrated→1..5→unrated
     └── WatchlistTable.tsx      # the detail table; owns the remove-confirmation flow
 
 frontend/src/shared/components/
@@ -294,11 +297,11 @@ table, the remove confirmation and the notes popup. Also uses
 **open when its target object is non-null** rather than taking a separate `open`
 flag — the thing being edited and the open state are the same fact.
 
-`StarRating` deliberately does **not** reuse `shared/components/RatingStars`:
-that one is a read-only, ratio-clipped rendering of a *computed* score (trade
-rating, Code 33), this one is an interactive control for a *manual* judgement.
-They share the visual language (amber fill over a `--border-strong` outline)
-but not the component.
+`RatingPill` doesn't reuse `shared/components/RatingStars`: that one is a
+read-only, ratio-clipped rendering of a *computed* score (trade rating, Code
+33) as a star row; this is an interactive control for a *manual* judgement,
+and — since the star-row shape is exactly what made the column wide — is
+deliberately a numeric pill instead, not a star rendering of any kind.
 
 The barrel (`index.ts`) also exports `useWatchlist` and the item types —
 `modules/place-trade` consumes both to load the item being traded and remove
