@@ -12,3 +12,14 @@ export function itemRating(item: Pick<WatchlistItem, 'rating'>): WatchRating {
 export function cycleRating(current: WatchRating): WatchRating {
   return current === 5 ? 0 : ((current + 1) as WatchRating)
 }
+
+/** A fixed cold→hot colour per rating value — not theme-split, same pattern as
+ * `shared/utils/avatarColor.ts`. Lets the compact `RatingFlame` control read the
+ * exact value from colour alone at a glance, not just from the number. */
+export const RATING_TONES: Record<Exclude<WatchRating, 0>, string> = {
+  1: '#3b82f6',
+  2: '#14b8a6',
+  3: '#f59e0b',
+  4: '#f97316',
+  5: '#ef4444',
+}

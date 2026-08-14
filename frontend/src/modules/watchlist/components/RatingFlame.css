@@ -1,0 +1,37 @@
+/* Icon + number side by side — not overlaid, so nothing gets cramped inside an
+ * uneven silhouette. Muted/outline while unrated; once rated, both the icon
+ * and the number pick up the value's fixed tone via the `color` set inline. */
+.rating-flame {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.rating-flame:hover {
+  background: var(--surface-2);
+}
+
+.rating-flame__icon {
+  fill: none;
+  stroke: currentColor;
+  transition:
+    fill 0.12s,
+    stroke 0.12s;
+}
+
+.rating-flame.is-rated .rating-flame__icon {
+  fill: currentColor;
+}
+
+.rating-flame__value {
+  font-size: 13px;
+  font-weight: 700;
+  color: currentColor;
+  font-variant-numeric: tabular-nums;
+}
