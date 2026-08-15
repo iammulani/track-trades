@@ -11,6 +11,8 @@ import { Code33Summary } from './components/Code33Summary'
 import { DebtEquityExplainer } from './components/DebtEquityExplainer'
 import { DebtEquityGrid } from './components/DebtEquityGrid'
 import { FundamentalsTabs, type FundamentalsTab } from './components/FundamentalsTabs'
+import { InterestCoverageExplainer } from './components/InterestCoverageExplainer'
+import { InterestCoverageGrid } from './components/InterestCoverageGrid'
 import { QuarterlyGrid } from './components/QuarterlyGrid'
 import { useVerifyFundamental } from './hooks/useVerifyFundamental'
 import './VerifyFundamentalPage.css'
@@ -71,7 +73,7 @@ export function VerifyFundamentalPage() {
               <span className="verify-fundamental-page__symbol">{item.symbol}</span>
               <Code33Summary rating={code33} />
             </div>
-            {activeTab === 'code33' && (
+            {(activeTab === 'code33' || activeTab === 'interest-coverage') && (
               <label className="verify-fundamental-page__as-of">
                 As of
                 <AsOfPicker value={asOfPeriod} onChange={setAsOfPeriod} />
@@ -120,6 +122,25 @@ export function VerifyFundamentalPage() {
               )}
 
               <DebtEquityGrid rows={deYears} onChange={updateDebtEquityYear} />
+            </>
+          )}
+
+          {activeTab === 'interest-coverage' && (
+            <>
+              <InterestCoverageExplainer />
+
+              {rows.length > 0 && (
+                <button
+                  type="button"
+                  className="verify-fundamental-page__earlier"
+                  onClick={showEarlierQuarters}
+                >
+                  <Icon name="chevronLeft" size={13} />
+                  Show 4 earlier quarters
+                </button>
+              )}
+
+              <InterestCoverageGrid rows={rows} onChange={updateQuarter} />
             </>
           )}
 

@@ -20,6 +20,12 @@ export {
   type DebtEquityTone,
 } from './utils/debtEquity'
 export {
+  deriveInterestCoverage,
+  interestCoverageTone,
+  type InterestCoverageDerived,
+  type InterestCoverageTone,
+} from './utils/interestCoverage'
+export {
   buildQuarterTones,
   CODE33_STARS,
   code33Verdict,

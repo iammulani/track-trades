@@ -32,6 +32,8 @@ consumers, so this can't create a cycle (same relationship `place-trade`'s
     sales: string
     netProfit: string
     eps: string
+    operatingProfit?: string // Interest Coverage's numerator
+    interest?: string // Interest Coverage's denominator
   }
 
   interface DebtEquityYear {
@@ -57,6 +59,13 @@ consumers, so this can't create a cycle (same relationship `place-trade`'s
 - **Every value is the raw string typed**, not a parsed number — same rule `TradeParams` follows
   in [drafts.spec.md](drafts.spec.md): resuming has to restore what was typed, not a
   re-rendering of it. Parsing happens live, in the derivation, every time.
+
+- **`operatingProfit`/`interest` are optional** because they were added after `quarters` already
+  had live records — a quarter saved before Interest Coverage existed simply lacks the keys.
+  Normalized to `''` wherever a quarter is seeded into an editable grid (both on the live-state
+  side and in `useFundamentalsAutosave`'s own copy of that normalization, so the two can never
+  disagree about what an untouched legacy quarter looks like — see
+  [verify-fundamental.spec.md](verify-fundamental.spec.md)).
 
 - **`period` is a real, sortable key** ("YYYY-MM"), never free text and never a row position.
   Both the year-over-year lookup and the "3 consecutive quarters" check key off exact period
@@ -215,6 +224,27 @@ axis Code 33 uses:
 - **Never frozen** — same rule as the live quarters: only ever recomputed from the raw
   `debtEquityYears` on every render, nothing derived is stored.
 
+## Interest Coverage
+
+A third standalone metric — "can they comfortably afford the interest they owe?" — read
+alongside Debt to Equity rather than replacing it: D/E says how much debt there is, Interest
+Coverage says whether it can actually be afforded. Unlike Debt to Equity, this one **shares Code
+33's exact quarterly axis** rather than getting its own:
+
+- **`operatingProfit` and `interest` live directly on `QuarterFinancials`** (see Data above), not
+  a separate array — both come off the same "Quarterly Results" table on the source site as
+  Sales/Net Profit/EPS, for the same quarter, so there's no reason to make the trader pick an
+  "as of" quarter a second time. `asOfPeriod`/`quarterCount` and the sparse-write rule are shared
+  as-is with Code 33.
+- **Formula** (`utils/interestCoverage.ts`'s `deriveInterestCoverage()`):
+  `ratio = operatingProfit / interest` — `null` if `interest <= 0` or either input is blank.
+- **Fixed-threshold colour band** (`interestCoverageTone()`), same shape as `debtEquityTone()`:
+  ratio `< 3` → `bad` (Fragile), `3–5` → `caution` (Tight), `> 5` → `good` (Comfortable). No
+  aggregate score, only a per-quarter colour — same "informational, not scored" rule Debt to
+  Equity follows.
+- **Never frozen** — recomputed live from the raw `quarters` on every render, same as Code 33 and
+  Debt to Equity.
+
 ## Behaviour
 
 - **One record per watchlist item.** `fetchFundamentalsFor(watchlistItemId)`
@@ -247,7 +277,8 @@ frontend/src/modules/fundamentals/
 ├── utils/
 │   ├── quarterlyCalc.ts     # deriveQuarters(), priorYearPeriod(), formatPeriodLabel()
 │   ├── code33.ts            # CODE33_STARS, computeCode33(), code33Verdict(), metricTone(), buildQuarterTones(), toCode33Snapshot()
-│   └── debtEquity.ts        # deriveDebtEquity(), debtEquityTone() — fixed-threshold ratio read, not a scored rating
+│   ├── debtEquity.ts        # deriveDebtEquity(), debtEquityTone() — fixed-threshold ratio read, not a scored rating
+│   └── interestCoverage.ts  # deriveInterestCoverage(), interestCoverageTone() — fixed-threshold ratio read, shares Code 33's quarterly rows
 ├── components/
 │   └── Code33Badge.tsx      # the watchlist row's compact indicator — icon only, muted/accent by whether captured
 └── index.ts                 # barrel

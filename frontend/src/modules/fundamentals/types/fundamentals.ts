@@ -7,6 +7,11 @@ export interface QuarterFinancials {
   sales: string
   netProfit: string
   eps: string
+  /** Interest Coverage's two inputs — optional because they were added after `quarters` already
+   * had live records; a quarter saved before this existed simply lacks the keys. Normalized to
+   * `''` wherever a quarter is seeded into an editable grid, same as any other blank cell. */
+  operatingProfit?: string
+  interest?: string
 }
 
 /** One fiscal year's raw Balance Sheet figures for Debt to Equity, exactly as typed — same

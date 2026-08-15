@@ -7,7 +7,7 @@ import { generateYearPeriods } from '../utils/generateYears'
 import { previousQuarterPeriod } from '../utils/previousQuarter'
 import { useFundamentalsAutosave, type FundamentalsState } from './useFundamentalsAutosave'
 
-const EMPTY_QUARTER_FIELDS = { sales: '', netProfit: '', eps: '' }
+const EMPTY_QUARTER_FIELDS = { sales: '', netProfit: '', eps: '', operatingProfit: '', interest: '' }
 const EMPTY_DEBT_EQUITY_FIELDS = { borrowings: '', equityCapital: '', reserves: '' }
 
 /** Code 33 reads the most recent 3 quarter-over-quarter steps (4 quarters) — but each of those
@@ -110,7 +110,12 @@ export function useVerifyFundamental(watchlistItemId: string) {
         .map((period) => quartersByPeriod[period])
         .filter(
           (q): q is QuarterFinancials =>
-            q !== undefined && (q.sales !== '' || q.netProfit !== '' || q.eps !== ''),
+            q !== undefined &&
+            (q.sales !== '' ||
+              q.netProfit !== '' ||
+              q.eps !== '' ||
+              !!q.operatingProfit ||
+              !!q.interest),
         ),
     [periods, quartersByPeriod],
   )
@@ -152,7 +157,9 @@ export function useVerifyFundamental(watchlistItemId: string) {
       setAsOfPeriodState(autosave.hydrated.asOfPeriod)
       setQuarterCount(autosave.hydrated.quarterCount)
       const map: Record<string, QuarterFinancials> = {}
-      for (const q of autosave.hydrated.quarters) map[q.period] = q
+      // A quarter saved before Interest Coverage existed lacks operatingProfit/interest — merge
+      // over blankQuarter() so every seeded row is fully populated, never partially undefined.
+      for (const q of autosave.hydrated.quarters) map[q.period] = { ...blankQuarter(q.period), ...q }
       setQuartersByPeriod(map)
 
       setDebtEquityAsOfYearState(autosave.hydrated.debtEquityAsOfYear ?? DEFAULT_AS_OF_YEAR)

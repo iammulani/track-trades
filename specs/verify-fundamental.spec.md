@@ -2,11 +2,13 @@
 
 ## Purpose
 
-Lets the trader check a watchlist symbol's fundamentals — one metric per **tab**. The first two:
-Mark Minervini's "Code 33" (type in quarterly Sales, Net Profit and EPS, and see growth %,
-margin, and the rating worked out live) and **Debt to Equity** (type in annual Borrowings/Equity
-Capital/Reserves off the Balance Sheet, and see the ratio and a fixed safe/watch/fragile colour
-read). More tabs get added the same way as more metrics are specified — see
+Lets the trader check a watchlist symbol's fundamentals — one metric per **tab**. So far: Mark
+Minervini's "Code 33" (type in quarterly Sales, Net Profit and EPS, and see growth %, margin, and
+the rating worked out live), **Debt to Equity** (type in annual Borrowings/Equity Capital/Reserves
+off the Balance Sheet, and see the ratio and a fixed safe/watch/fragile colour read), and
+**Interest Coverage** (type in quarterly Operating Profit and Interest, and see whether the
+business can comfortably afford what it owes, same fixed-colour-band treatment as Debt to
+Equity). More tabs get added the same way as more metrics are specified — see
 [fundamentals.spec.md](fundamentals.spec.md). Unlike Place Trade, it never consumes the watchlist
 item: it's a repeat-visit enrichment (add a quarter or a year next reporting season), not a
 one-shot conversion.
@@ -17,12 +19,13 @@ one-shot conversion.
   no-separate-fetch pattern `usePlaceTrade` uses (see
   [place-trade.spec.md](place-trade.spec.md)).
 - Reads/writes its `FundamentalsRecord` via `modules/fundamentals` — see
-  [fundamentals.spec.md](fundamentals.spec.md) for the raw shape and the Code 33 and Debt to
-  Equity formulas. One record holds both metrics' data (the quarterly `asOfPeriod`/`quarterCount`/
-  `quarters` trio for Code 33, the annual `debtEquityAsOfYear`/`debtEquityYearCount`/
-  `debtEquityYears` trio for Debt to Equity), so there's one autosave path for the whole page, not
-  one per tab. Writes continuously through `useFundamentalsAutosave` (debounced POST-then-PATCH),
-  not on a submit action — there isn't one.
+  [fundamentals.spec.md](fundamentals.spec.md) for the raw shape and the Code 33, Debt to Equity,
+  and Interest Coverage formulas. One record holds all three metrics' data — the quarterly
+  `asOfPeriod`/`quarterCount`/`quarters` trio serves **both** Code 33 and Interest Coverage
+  (`operatingProfit`/`interest` live directly on each `QuarterFinancials` row), while the annual
+  `debtEquityAsOfYear`/`debtEquityYearCount`/`debtEquityYears` trio is Debt to Equity's own — so
+  there's one autosave path for the whole page, not one per tab. Writes continuously through
+  `useFundamentalsAutosave` (debounced POST-then-PATCH), not on a submit action — there isn't one.
 
 ## UI
 
@@ -47,8 +50,10 @@ continuously-editable form.
 2. **Title row** — the item's `SideBadge` + symbol, the compact **Code 33 rating**
    (`Code33Summary`) — `RatingStars` (from `shared/components`) + `N.N / 5`, sitting right after
    the symbol, always shown regardless of which tab is active (see point 5 for the detail it
-   reveals) — and a single **"As of"** field whose control depends on the active tab: on the
-   Code 33 tab, `AsOfPicker` (`<input type="date">`, capped at today, **defaults to today** — a
+   reveals) — and a single **"As of"** field whose control depends on the active tab's period
+   axis: on the Code 33 **and** Interest Coverage tabs (both quarterly, sharing the exact same
+   rows — see Data above), `AsOfPicker` (`<input type="date">`, capped at today, **defaults to
+   today** — a
    fresh visit is almost always "check this stock now," so the grid is populated from the moment
    the page loads, not a blank prompt). The trader picks any date, not a quarter directly —
    `AsOfPicker` derives the most recent calendar quarter that had **already closed** by that date
@@ -70,9 +75,10 @@ continuously-editable form.
    period), so it's a simpler control than `AsOfPicker`. Picking a new year resets that tab's
    window back to its default 7-year span, same reset-on-new-anchor rule the Code 33 tab follows.
 3. **Tabs** (`FundamentalsTabs`) — a `role="tablist"` pill bar directly under the title row:
-   **Code 33** and **Debt to Equity** so far, more to come as further metrics are specified (see
-   [fundamentals.spec.md](fundamentals.spec.md)). Switching tabs only changes which section below
-   renders — the title row above it (symbol, Code 33 rating, "as of" control) stays in place.
+   **Code 33**, **Debt to Equity**, and **Interest Coverage** so far, more to come as further
+   metrics are specified (see [fundamentals.spec.md](fundamentals.spec.md)). Switching tabs only
+   changes which section below renders — the title row above it (symbol, Code 33 rating, "as of"
+   control) stays in place.
 4. **Code 33 tab**:
    1. **"Show 4 earlier quarters"** button, directly above the grid — grows the window backward
       4 quarters at a time without moving "as of" or disturbing anything already entered. Hidden
@@ -141,17 +147,14 @@ continuously-editable form.
    1. **`DebtEquityExplainer`** — an **always-expanded static panel**, not a `HoverCard` like
       `Code33Explainer` (point 1). Deliberate: the trader is learning this ratio while typing
       figures in, so the question it answers, the formula, the colour bands, and a worked example
-      have to stay on screen, not sit behind a trigger. Fixed content, not built from the current
-      item: what question it answers ("how much of this business was built with borrowed
-      money?"), where the numbers come from (Balance Sheet, annual), the formula (`Debt/Equity =
-      Borrowings ÷ (Equity Capital + Reserves)`), the colour bands (`< 0.5` green Safe /
-      `0.5–1.0` amber Watch / `> 1.0` red Fragile), and a plain-language worked example with why
-      it matters. Deliberately kept to just those — a quick reference, not a longer explainer with
-      caveats. Laid out as a compact two-column reference — formula + colour-band chips on one
-      side, the worked example + why-it-matters on the other, reflowing to a single column on a
-      narrow viewport (`grid-template-columns: repeat(auto-fit, minmax(260px, 1fr))`) — rather
-      than one long stacked column, so it reads in full without pushing the grid below the fold.
-      The colour bands render as small inline pills, not a table, for the same reason.
+      have to stay on screen, not sit behind a trigger. Renders through the shared
+      `MetricExplainer` shell (see point 7.1's `InterestCoverageExplainer` — the same component,
+      just fed different content), passing: what question it answers ("how much of this business
+      was built with borrowed money?"), where the numbers come from (Balance Sheet, annual), the
+      formula (`Debt/Equity = Borrowings ÷ (Equity Capital + Reserves)`), the colour bands
+      (`< 0.5` green Safe / `0.5–1.0` amber Watch / `> 1.0` red Fragile), and a plain-language
+      worked example with why it matters. Deliberately kept to just those — a quick reference, not
+      a longer explainer with caveats.
    2. **"Show 5 earlier years"** button, directly above the grid — grows the window backward 5
       years at a time without moving "as of" or disturbing anything already entered. Hidden until
       an "as of" year is picked.
@@ -165,7 +168,27 @@ continuously-editable form.
       Purely informational: there's no aggregate score or star rating for this metric, only the
       per-year colour. A cell reads "—" until both `Equity Capital` and `Reserves` are entered
       and their sum is positive.
-7. **Footer** — a "← Back to Watchlist" link, and the autosave status ("Saving…" /
+7. **Interest Coverage tab**:
+   1. **`InterestCoverageExplainer`** — content rendered through the same shared `MetricExplainer`
+      shell `DebtEquityExplainer` uses (point 6.1): what question it answers ("can they
+      comfortably afford the interest they owe?"), where the numbers come from (Quarterly
+      Results, every quarter), the formula (`Interest Coverage = Operating Profit ÷ Interest`),
+      the colour bands (`< 3x` red Fragile / `3x–5x` amber Tight / `> 5x` green Comfortable), and
+      a plain-language worked example. Its "why it matters" text deliberately ties back to Debt to
+      Equity by name — the two are meant to be read together, not in isolation: D/E says how much
+      debt there is, this says whether it can be afforded.
+   2. **"Show 4 earlier quarters"** button — the *exact same* button/state
+      `showEarlierQuarters()`/`quarterCount` the Code 33 tab uses (point 4.1), not a second one of
+      its own, since both tabs share the same quarterly rows.
+   3. **Interest Coverage grid** (`InterestCoverageGrid`) — one row per generated quarter, the
+      same `rows` Code 33's grid renders (oldest → newest, `quarterCount` rows ending at "as of").
+      Columns: `Quarter` (read-only, formatted "Jun 2026"), `Operating Profit`, `Interest`
+      (number inputs, the only editable cells — stored directly on the shared `QuarterFinancials`
+      row alongside Sales/Net Profit/EPS), then a read-only derived `Interest Coverage` column
+      (formatted "N.NNx"), coloured against `interestCoverageTone()`'s fixed threshold the same
+      way `DebtEquityGrid`'s ratio column is — `is-good`/`is-caution`/`is-bad`. Purely
+      informational, no aggregate score.
+8. **Footer** — a "← Back to Watchlist" link, and the autosave status ("Saving…" /
    "Saved · <time>"), same language as Place Trade's draft-status footer.
 
 **States**: loading → "Loading…"; error → message; item not found (already placed or removed) →
@@ -218,6 +241,17 @@ message + back link — same three states as `PlaceTradePage`.
   clears or resets the other tab's state — `useVerifyFundamental` holds both the quarterly and
   annual state at once, and `useFundamentalsAutosave` writes them together as one record, so
   typing into one tab and switching away mid-edit doesn't lose anything.
+- **Interest Coverage shares Code 33's quarterly rows outright rather than tracking its own
+  copy.** `operatingProfit`/`interest` live directly on the same `QuarterFinancials` object each
+  row already carries `sales`/`netProfit`/`eps` on — one `updateQuarter(period, patch)` call
+  handles a patch to either tab's fields, and the sparse-write check that decides whether a quarter
+  is worth persisting looks at all five fields, not just Code 33's three. A quarter saved before
+  Interest Coverage existed simply lacks `operatingProfit`/`interest` on read; both
+  `useVerifyFundamental`'s seeding effect and `useFundamentalsAutosave`'s own `savedKeyRef`
+  computation backfill those two fields to `''` the same way (same key order, so an untouched
+  legacy quarter can never be mistaken for a change and trigger a spurious save the instant the
+  page loads — the same failure mode already fixed once for the Debt to Equity fields, and fixed
+  the identical way here).
 
 ## Module map
 
@@ -239,13 +273,16 @@ frontend/src/modules/verify-fundamental/
 │   ├── QuarterlyGrid.tsx(+.css)       # the generated grid: editable Sales/Net Profit/EPS + colour-coded derived columns (tone map built from rating.steps)
 │   ├── Code33Summary.tsx(+.css)       # compact stars + score for the title row; HoverCard reveals just the verdict line (mirrors TradeRatingBadge's collapsed-by-default shape, not its content)
 │   ├── Code33Explainer.tsx(+.css)     # header's "What is Code 33?" HoverCard — fixed generic reminder of the 3 metrics + the blind spots, not built from the current item's data
-│   ├── FundamentalsTabs.tsx(+.css)    # role="tablist" bar switching between metric sections — Code 33 / Debt to Equity so far
+│   ├── FundamentalsTabs.tsx(+.css)    # role="tablist" bar switching between metric sections — Code 33 / Debt to Equity / Interest Coverage so far
+│   ├── MetricExplainer.tsx(+.css)     # shared always-expanded panel shell (question/where, formula+colour-bands, example+why) — content-only props, no HoverCard
 │   ├── DebtEquityGrid.tsx(+.css)      # the generated grid: editable Borrowings/Equity Capital/Reserves + one derived Debt/Equity column, fixed-threshold colour
-│   └── DebtEquityExplainer.tsx(+.css) # always-expanded static panel — question/formula/colour-bands/example/trap, deliberately not a HoverCard
+│   ├── DebtEquityExplainer.tsx        # DebtEquityGrid's reference content, rendered through MetricExplainer
+│   ├── InterestCoverageGrid.tsx(+.css)# the generated grid: editable Operating Profit/Interest + one derived Interest Coverage column, fixed-threshold colour — reuses Code 33's rows
+│   └── InterestCoverageExplainer.tsx  # InterestCoverageGrid's reference content, rendered through MetricExplainer
 └── index.ts                           # exports VerifyFundamentalPage
 ```
 
-Depends on `modules/fundamentals` (the data + Code 33 and Debt to Equity derivations) and
-`modules/watchlist` (`useWatchlist`, to resolve the item by `:id`) — same shape of dependency
-`place-trade` has on `drafts` and `watchlist`. Route registered in `frontend/src/app/routes.tsx`
-next to `place-trade`'s.
+Depends on `modules/fundamentals` (the data + Code 33, Debt to Equity, and Interest Coverage
+derivations) and `modules/watchlist` (`useWatchlist`, to resolve the item by `:id`) — same shape
+of dependency `place-trade` has on `drafts` and `watchlist`. Route registered in
+`frontend/src/app/routes.tsx` next to `place-trade`'s.

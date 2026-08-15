@@ -23,6 +23,15 @@ export interface FundamentalsState {
   debtEquityYears: DebtEquityYear[]
 }
 
+// A quarter saved before Interest Coverage existed lacks operatingProfit/interest — backfilled
+// to '' here the same way `useVerifyFundamental`'s seeding effect backfills them via
+// `{ ...blankQuarter(period), ...q }` (same key order, so the two produce an identical JSON key
+// for an untouched legacy quarter). Without this, every pre-existing quarter would permanently
+// disagree with its own freshly-seeded copy and schedule a spurious save on load.
+function normalizeQuarter(q: QuarterFinancials): QuarterFinancials {
+  return { ...q, operatingProfit: q.operatingProfit ?? '', interest: q.interest ?? '' }
+}
+
 // The Debt to Equity fields are optional on `FundamentalsRecord` — added after Code 33 already
 // had live records, so a pre-existing record predates them and simply lacks the keys. Falling
 // back to `pristine`'s values (not a bare '' / 0 / []) matters: `useVerifyFundamental` seeds its
@@ -34,7 +43,7 @@ function toState(record: FundamentalsRecord, pristine: FundamentalsState): Funda
   return {
     asOfPeriod: record.asOfPeriod,
     quarterCount: record.quarterCount,
-    quarters: record.quarters,
+    quarters: record.quarters.map(normalizeQuarter),
     debtEquityAsOfYear: record.debtEquityAsOfYear ?? pristine.debtEquityAsOfYear,
     debtEquityYearCount: record.debtEquityYearCount ?? pristine.debtEquityYearCount,
     debtEquityYears: record.debtEquityYears ?? pristine.debtEquityYears,
