@@ -252,19 +252,17 @@ Reached via the **Watchlist** sidebar item. Top to bottom:
   to lose an entry to.
 - **Removing requires a reason** — clicking × opens `ExitWatchlistModal`; only
   confirming (with a reason picked) archives the item. The full item — including its
-  fundamentals record's raw quarters, if `useFundamentals().byWatchlistItemId` has one
+  fundamentals record's raw quarters (`useFundamentals().byWatchlistItemId`) and its
+  parked draft's raw stepper answers (`useDrafts().byWatchlistId`), if either exists
   for it — is first `POST`ed to `/exited-watchlist` (see
   [exited-watchlist.spec.md](exited-watchlist.spec.md)) along with the reason, optional
   note, and an `exitedAt` timestamp — **only once that succeeds** does
   `DELETE /watchlist/:id` run, so a failed archive never loses the row. It **also
-  discards that item's draft**, if it has one — a draft with no watchlist item behind
-  it can never be resumed, and unlike fundamentals a draft has nothing worth carrying
-  into a read-only archive (it's mid-entry stepper state, not captured research), so it
-  really is just deleted. This is the only place the Watchlist deletes a draft;
-  discarding one on its own belongs to the stepper. It **also deletes that item's live
-  fundamentals record**, the same way — but only *after* its quarters have already been
-  copied into the archived item, so the data survives the delete; see
-  [fundamentals.spec.md](fundamentals.spec.md) and
+  discards that item's live draft** and **deletes its live fundamentals record**, the
+  same way for both — but only *after* their data has already been copied into the
+  archived item, so nothing is lost to the delete. This is the only place the Watchlist
+  deletes a draft; discarding one on its own belongs to the stepper. See
+  [drafts.spec.md](drafts.spec.md), [fundamentals.spec.md](fundamentals.spec.md), and
   [exited-watchlist.spec.md](exited-watchlist.spec.md).
 - Refetches after add/remove/move/rate/note are silent (no loading flash) — only
   the first load shows the loading state. The open notes popup re-reads its item

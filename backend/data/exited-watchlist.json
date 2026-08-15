@@ -141,5 +141,83 @@
     "exitedAt": "2026-08-15T06:38:31.393Z",
     "sourceWatchlistId": "GjvovlISKr4",
     "id": "smLR4xlCYi0"
+  },
+  {
+    "symbol": "LLOYDSME",
+    "category": "active",
+    "side": "long",
+    "watchedSince": "2026-07-15T10:00:28.453Z",
+    "notes": "",
+    "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/LLOYDSME/4432129",
+    "rating": 0,
+    "draft": {
+      "stepIndex": 2,
+      "tradeParams": {
+        "entryPrice": "2029",
+        "stopLoss": "1840",
+        "target": "",
+        "quantity": "27",
+        "entryDate": "2026-07-16"
+      },
+      "stageBaseAnswers": {
+        "stage": "stage-2",
+        "base": "base-1"
+      },
+      "indicatorData": {
+        "rsi": "70",
+        "fiftyDayMa": "",
+        "week52Low": "",
+        "week52High": ""
+      },
+      "indicatorChecklistChecked": {
+        "ma-uptrend": true,
+        "ma-stacked": true,
+        "ma200-duration": true
+      },
+      "vcpStructureData": {
+        "baseStartDate": "",
+        "baseEndDate": "",
+        "contractions": [
+          {
+            "high": "",
+            "low": ""
+          },
+          {
+            "high": "",
+            "low": ""
+          }
+        ]
+      },
+      "finalChecksChecked": {}
+    },
+    "exitReason": "vcp-failed",
+    "exitNote": "base was okay at the start but did not get a proper entry point, then stock shoot up & fallen sharply afterwards with heavy volume on the weekly chart.",
+    "exitedAt": "2026-08-15T07:08:24.512Z",
+    "sourceWatchlistId": "Sv9nwYYWPwk",
+    "id": "Om0mWWgSemU"
+  },
+  {
+    "symbol": "NIVABUPA",
+    "category": "active",
+    "side": "long",
+    "watchedSince": "2026-07-19T20:06:57.792Z",
+    "notes": "",
+    "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/NIVABUPA/6936833",
+    "exitReason": "vcp-failed",
+    "exitedAt": "2026-08-15T07:20:34.339Z",
+    "sourceWatchlistId": "qgkPYSf61Vo",
+    "id": "ehg3IBVHcSs"
+  },
+  {
+    "symbol": "NH",
+    "category": "active",
+    "side": "long",
+    "watchedSince": "2026-07-19T20:08:22.276Z",
+    "notes": "",
+    "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/NH/3031041",
+    "exitReason": "vcp-failed",
+    "exitedAt": "2026-08-15T07:20:51.821Z",
+    "sourceWatchlistId": "weJJHqaYnIs",
+    "id": "aw-yusL6v7Q"
   }
 ]

@@ -59,12 +59,17 @@ imports neither of them** — it stays a leaf.
 
 - **One draft per watchlist item.** `fetchDraftFor(watchlistId)` (`GET /drafts?watchlistId=…`)
   is the lookup; there is no draft without a watchlist item behind it.
-- **A draft is deleted, never orphaned**, in three places:
+- **The live draft is deleted, never orphaned**, in three places:
   1. the trade is **placed** — it's a trade now, not a run in progress (`usePlaceTrade`);
   2. the draft is **discarded from inside the stepper** — the only place discarding is
      offered, so you're looking at the setup you're throwing away (`usePlaceTrade`);
-  3. the watchlist item is **removed** — nothing left to resume (`WatchlistPage`, via
-     `useDrafts().discard`).
+  3. the watchlist item is **exited** (`WatchlistPage`'s `handleExit`, via
+     `useDrafts().discard`) — but only *after* its raw `DraftStepperState` answers have
+     been copied onto the archived
+     [`ExitedWatchlistItem`](exited-watchlist.spec.md) being created, so exiting doesn't
+     lose what was typed into the stepper, just the live, resumable run. Unlike case 1/2,
+     there's no rating to preserve here either way — a draft's rating is never frozen, so
+     nothing beyond the raw answers was ever there to lose.
 
 ## Module map
 

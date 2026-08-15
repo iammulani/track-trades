@@ -114,11 +114,11 @@ export function WatchlistPage() {
 
   // Archive the full item into the Exited Watchlist first — only once that's saved do we
   // touch the active list, so a failed archive never loses the row. The fundamentals record
-  // (if any) is carried into the archive the same way notes/rating are, since it's data
-  // captured against this item too — only the parked stepper draft is dropped outright, since
-  // a draft with no watchlist item behind it can never be resumed either way.
+  // and any parked draft (if either exists) are carried into the archive the same way
+  // notes/rating are, since both are data captured against this item too.
   async function handleExit(item: WatchlistItemWithMetrics, reason: ExitReason, note: string) {
     const fundamentalsRecord = fundamentalsByItem[item.id]
+    const draftRecord = draftsByItem[item.id]
     await addExitedWatchlistItem({
       symbol: item.symbol,
       category: item.category,
@@ -132,6 +132,17 @@ export function WatchlistPage() {
             asOfPeriod: fundamentalsRecord.asOfPeriod,
             quarterCount: fundamentalsRecord.quarterCount,
             quarters: fundamentalsRecord.quarters,
+          }
+        : undefined,
+      draft: draftRecord
+        ? {
+            stepIndex: draftRecord.stepIndex,
+            tradeParams: draftRecord.tradeParams,
+            stageBaseAnswers: draftRecord.stageBaseAnswers,
+            indicatorData: draftRecord.indicatorData,
+            indicatorChecklistChecked: draftRecord.indicatorChecklistChecked,
+            vcpStructureData: draftRecord.vcpStructureData,
+            finalChecksChecked: draftRecord.finalChecksChecked,
           }
         : undefined,
       exitReason: reason,

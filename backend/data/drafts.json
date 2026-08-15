@@ -59,50 +59,6 @@
     "id": "vijaya-draft"
   },
   {
-    "watchlistId": "Sv9nwYYWPwk",
-    "stepIndex": 2,
-    "tradeParams": {
-      "entryPrice": "2029",
-      "stopLoss": "1840",
-      "target": "",
-      "quantity": "27",
-      "entryDate": "2026-07-16"
-    },
-    "stageBaseAnswers": {
-      "stage": "stage-2",
-      "base": "base-1"
-    },
-    "indicatorData": {
-      "rsi": "70",
-      "fiftyDayMa": "",
-      "week52Low": "",
-      "week52High": ""
-    },
-    "indicatorChecklistChecked": {
-      "ma-uptrend": true,
-      "ma-stacked": true,
-      "ma200-duration": true
-    },
-    "vcpStructureData": {
-      "baseStartDate": "",
-      "baseEndDate": "",
-      "contractions": [
-        {
-          "high": "",
-          "low": ""
-        },
-        {
-          "high": "",
-          "low": ""
-        }
-      ]
-    },
-    "finalChecksChecked": {},
-    "createdAt": "2026-07-16T04:26:20.102Z",
-    "updatedAt": "2026-07-27T08:37:42.071Z",
-    "id": "2KCShzw-sEE"
-  },
-  {
     "watchlistId": "j1uAQsf23QM",
     "stepIndex": 4,
     "tradeParams": {

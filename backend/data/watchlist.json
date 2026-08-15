@@ -18,18 +18,8 @@
     "id": "esvWIi7HCHw"
   },
   {
-    "symbol": "LLOYDSME",
-    "category": "active",
-    "side": "long",
-    "notes": "",
-    "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/LLOYDSME/4432129",
-    "watchedSince": "2026-07-15T10:00:28.453Z",
-    "id": "Sv9nwYYWPwk",
-    "rating": 0
-  },
-  {
     "symbol": "TIPSMUSIC",
-    "category": "active",
+    "category": "long-term",
     "side": "long",
     "notes": [
       {
@@ -95,7 +85,7 @@
   },
   {
     "symbol": "NYKAA",
-    "category": "active",
+    "category": "long-term",
     "side": "long",
     "notes": "",
     "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/NYKAA/1675521",
@@ -104,30 +94,12 @@
   },
   {
     "symbol": "NUVAMA",
-    "category": "active",
+    "category": "long-term",
     "side": "long",
     "notes": "",
     "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/NUVAMA/4792577",
     "watchedSince": "2026-07-19T20:02:53.993Z",
     "id": "ZinjOonPyt8"
-  },
-  {
-    "symbol": "NIVABUPA",
-    "category": "active",
-    "side": "long",
-    "notes": "",
-    "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/NIVABUPA/6936833",
-    "watchedSince": "2026-07-19T20:06:57.792Z",
-    "id": "qgkPYSf61Vo"
-  },
-  {
-    "symbol": "NH",
-    "category": "active",
-    "side": "long",
-    "notes": "",
-    "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/NH/3031041",
-    "watchedSince": "2026-07-19T20:08:22.276Z",
-    "id": "weJJHqaYnIs"
   },
   {
     "symbol": "SCHNEIDER",
@@ -214,7 +186,7 @@
   },
   {
     "symbol": "NAZARA",
-    "category": "active",
+    "category": "long-term",
     "side": "long",
     "notes": "",
     "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/NAZARA/764673",
@@ -250,7 +222,7 @@
   },
   {
     "symbol": "KIRLOSENG",
-    "category": "active",
+    "category": "long-term",
     "side": "short",
     "notes": [],
     "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/KIRLOSENG/5359617",

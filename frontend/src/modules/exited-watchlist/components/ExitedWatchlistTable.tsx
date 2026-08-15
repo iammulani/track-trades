@@ -12,6 +12,7 @@ import { categoryMeta, itemNotes, itemRating } from '../../watchlist'
 import type { ExitedWatchlistItem } from '../types/exitedWatchlistItem'
 import { exitReasonLabel } from '../utils/exitReasons'
 import { watchedDurationLabel } from '../utils/exitedMetrics'
+import { ExitedDraftModal } from './ExitedDraftModal'
 import { ExitedFundamentalsModal } from './ExitedFundamentalsModal'
 import { ExitedNotesModal } from './ExitedNotesModal'
 import './ExitedWatchlistTable.css'
@@ -25,6 +26,7 @@ export function ExitedWatchlistTable({ items, onRemove }: ExitedWatchlistTablePr
   const [pending, setPending] = useState<ExitedWatchlistItem | null>(null)
   const [notesFor, setNotesFor] = useState<ExitedWatchlistItem | null>(null)
   const [fundamentalsFor, setFundamentalsFor] = useState<ExitedWatchlistItem | null>(null)
+  const [draftFor, setDraftFor] = useState<ExitedWatchlistItem | null>(null)
 
   return (
     <Card className="exited-table">
@@ -62,6 +64,17 @@ export function ExitedWatchlistTable({ items, onRemove }: ExitedWatchlistTablePr
                         {item.symbol.slice(0, 2)}
                       </span>
                       <span className="exited-table__symbol">{item.symbol}</span>
+                      {item.draft && (
+                        <button
+                          type="button"
+                          className="exited-table__draft-pill"
+                          onClick={() => setDraftFor(item)}
+                          aria-label={`View the parked draft for ${item.symbol}`}
+                          title="View draft"
+                        >
+                          Draft
+                        </button>
+                      )}
                       {item.link && (
                         <a
                           href={item.link}
@@ -207,6 +220,7 @@ export function ExitedWatchlistTable({ items, onRemove }: ExitedWatchlistTablePr
 
       <ExitedNotesModal item={notesFor} onClose={() => setNotesFor(null)} />
       <ExitedFundamentalsModal item={fundamentalsFor} onClose={() => setFundamentalsFor(null)} />
+      <ExitedDraftModal item={draftFor} onClose={() => setDraftFor(null)} />
     </Card>
   )
 }

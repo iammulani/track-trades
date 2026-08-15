@@ -1,3 +1,4 @@
+import type { DraftStepperState } from '../../drafts'
 import type { QuarterFinancials } from '../../fundamentals'
 import type { WatchCategory, WatchNote, WatchRating, WatchSide } from '../../watchlist'
 
@@ -40,6 +41,11 @@ export interface ExitedWatchlistItem {
   /** The fundamentals record captured against the item, if any — absent if Verify
    * Fundamental was never opened for it. */
   fundamentals?: ExitedFundamentals
+  /** The parked place-trade stepper run captured against the item, if any — absent if it
+   * was never taken into the stepper (or was already placed/discarded). Carried over as
+   * the raw `DraftStepperState` `drafts` itself stores — nothing here is a judgement (no
+   * rating), so there's nothing to re-derive, just to display. */
+  draft?: DraftStepperState
   exitReason: ExitReason
   exitNote?: string
   /** ISO timestamp — when it was exited. */
