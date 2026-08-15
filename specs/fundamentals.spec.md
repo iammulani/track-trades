@@ -290,6 +290,17 @@ the source site:
   divestment, no real capex) correctly never fails the flag. `null` if either input is blank. Shown
   as a plain `Yes`/`No` per year, coloured `good`/`bad` — a boolean read, not a 3-band gradient like
   the ratio, since there's no "acceptable middle" for a yes/no question.
+- **`selfFundedNote(symbol, cashFromOperatingActivity, cashFromInvestingActivity)`** — a per-year
+  explanation of *why* a `Yes`/`No` landed where it did: the equation first (`CFO = 62, Investing
+  = -98 → 62 + (-98) = -36.`), then what it means named to the actual stock ("VIJAYA spent ₹98cr
+  on capex/investments but only generated ₹62cr from operations this year — a ₹36cr shortfall."),
+  then the verdict ("Not self-funded."). Figures are assumed Rs. Crores throughout, matching every
+  other worked example on this page and screener.in's own convention — there's no per-item unit
+  stored to read instead. Takes the same two figures `deriveCashConversion()` already computed the
+  flag from, so the two can never disagree; `null` under the same condition the flag itself is.
+  Surfaced per-cell in `CashConversionGrid` (see
+  [verify-fundamental.spec.md](verify-fundamental.spec.md)) — the column-header `HoverCard`
+  explains the formula once, this explains one year's actual arithmetic.
 - **Never frozen** — recomputed live from the raw `debtEquityYears` on every render, same as
   Debt to Equity.
 
@@ -327,7 +338,7 @@ frontend/src/modules/fundamentals/
 │   ├── code33.ts            # CODE33_STARS, computeCode33(), code33Verdict(), metricTone(), buildQuarterTones(), toCode33Snapshot()
 │   ├── debtEquity.ts        # deriveDebtEquity(), debtEquityTone() — fixed-threshold ratio read, not a scored rating
 │   ├── interestCoverage.ts  # deriveInterestCoverage(), interestCoverageTone() — fixed-threshold ratio read, shares Code 33's quarterly rows
-│   └── cashConversion.ts    # deriveCashConversion() (ratio + Self-Funded flag), cashConversionTone() — shares Debt to Equity's annual rows
+│   └── cashConversion.ts    # deriveCashConversion() (ratio + Self-Funded flag), cashConversionTone(), selfFundedNote() (per-year Yes/No explanation) — shares Debt to Equity's annual rows
 ├── components/
 │   └── Code33Badge.tsx      # the watchlist row's compact indicator — icon only, muted/accent by whether captured
 └── index.ts                 # barrel

@@ -28,6 +28,7 @@ export {
 export {
   cashConversionTone,
   deriveCashConversion,
+  selfFundedNote,
   type CashConversionDerived,
   type CashConversionTone,
 } from './utils/cashConversion'

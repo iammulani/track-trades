@@ -217,7 +217,26 @@ continuously-editable form.
       `is-bad` — a plain boolean read, not a 3-band gradient, since there's no "acceptable middle"
       for a yes/no question). The `Self-Funded?` header carries an info `HoverCard` (same pattern
       as Code 33's `Net Margin` header, point 4.2) spelling out the formula: "Cash from Operating
-      Activity > Capex." Purely informational, no aggregate score.
+      Activity > Capex." Each year's own `Yes`/`No` value is *itself* a second `HoverCard`
+      trigger (`hover-card__trigger--plain`, styled as a dotted-underlined version of the coloured
+      text rather than an icon) — hovering it reveals that specific year's arithmetic, equation
+      first then named to the actual stock (`selfFundedNote()`,
+      [fundamentals.spec.md](fundamentals.spec.md)), e.g. "CFO = 62, Investing = -98 → 62 +
+      (-98) = -36. VIJAYA spent ₹98cr on capex/investments but only generated ₹62cr from
+      operations this year — a ₹36cr shortfall. Not self-funded." The header's `HoverCard`
+      explains the formula once; each cell's explains that one year's actual numbers — a reader
+      can see *why* a specific year reads `No` without doing the arithmetic themselves. Purely
+      informational, no aggregate score.
+
+      This surfaced a real bug in the shared `HoverCard` itself (`shared/components/HoverCard`,
+      not owned by this spec) worth noting here since every grid's header `HoverCard`s were
+      affected too: the panel isn't portalled, so it renders inline wherever its trigger sits in
+      the DOM and was inheriting `white-space: nowrap` and `text-transform: uppercase` from the
+      dense-table `<td>`/`<th>` ancestors every grid uses — long panel text silently overflowed
+      sideways instead of wrapping, and every header-triggered panel (Net Margin, this one, …) was
+      rendering its explanation in ALL CAPS. Fixed once in `HoverCard.css` (explicit `white-space:
+      normal; text-transform: none;` on the panel) rather than per-consumer, since any future
+      HoverCard opened from inside a dense table would hit the identical inheritance leak.
 9. **Footer** — a "← Back to Watchlist" link, and the autosave status ("Saving…" /
    "Saved · <time>"), same language as Place Trade's draft-status footer.
 

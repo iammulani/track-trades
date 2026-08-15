@@ -1,10 +1,18 @@
 import { HoverCard } from '../../../shared/components/HoverCard'
 import { Icon } from '../../../shared/components/Icon'
-import { cashConversionTone, deriveCashConversion, type DebtEquityYear } from '../../fundamentals'
+import {
+  cashConversionTone,
+  deriveCashConversion,
+  selfFundedNote,
+  type DebtEquityYear,
+} from '../../fundamentals'
 import './CashConversionGrid.css'
 
 interface CashConversionGridProps {
   rows: DebtEquityYear[]
+  /** Named into each Self-Funded hover note ("VIJAYA spent ₹98cr on capex…") so the explanation
+   * reads like something said about this specific stock, not a generic template. */
+  symbol: string
   onChange: (year: string, patch: Partial<Omit<DebtEquityYear, 'year'>>) => void
 }
 
@@ -18,7 +26,7 @@ function toneClass(tone: string | null): string {
  * rows/period axis (same "as of" year, same year count) rather than a second one of its own —
  * both come off the same fiscal-year list on the source site. Purely informational: colour is a
  * fixed threshold read, not a scored rating. */
-export function CashConversionGrid({ rows, onChange }: CashConversionGridProps) {
+export function CashConversionGrid({ rows, symbol, onChange }: CashConversionGridProps) {
   if (rows.length === 0) {
     return <p className="cash-conversion-grid__empty">Pick an "As of" year above to generate the grid.</p>
   }
@@ -106,7 +114,19 @@ export function CashConversionGrid({ rows, onChange }: CashConversionGridProps) 
                 <td
                   className={`ta-right cash-conversion-grid__flag${toneClass(d.selfFunded === null ? null : d.selfFunded ? 'good' : 'bad')}`}
                 >
-                  {d.selfFunded === null ? '—' : d.selfFunded ? 'Yes' : 'No'}
+                  {d.selfFunded === null ? (
+                    '—'
+                  ) : (
+                    <HoverCard
+                      label={`Why ${row.year} is ${d.selfFunded ? 'Yes' : 'No'}`}
+                      triggerClassName="hover-card__trigger--plain cash-conversion-grid__flag-trigger"
+                      trigger={d.selfFunded ? 'Yes' : 'No'}
+                    >
+                      <p className="cash-conversion-grid__th-note-panel">
+                        {selfFundedNote(symbol, d.cashFromOperatingActivity, d.cashFromInvestingActivity)}
+                      </p>
+                    </HoverCard>
+                  )}
                 </td>
               </tr>
             )

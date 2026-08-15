@@ -55,6 +55,16 @@
   max-width: min(460px, calc(100vw - 24px));
   max-height: min(520px, calc(100vh - 24px));
   overflow-y: auto;
+  /* The panel isn't portalled — it renders inline wherever the trigger sits in the DOM, so it
+     otherwise inherits properties from whatever container it's opened from. Every grid's `<td>`/
+     `<th>` sets `white-space: nowrap` (so numbers don't wrap) and every `<th>` also sets
+     `text-transform: uppercase` (for the column-header caption style) — both are inherited CSS
+     properties, and this panel was silently picking up both: long body text overflowed sideways
+     instead of wrapping, and every header-triggered panel (Net Margin, Self-Funded, …) has been
+     rendering its explanation in ALL CAPS. Reset both explicitly so panel text always reads as
+     written, regardless of what container it's opened from. */
+  white-space: normal;
+  text-transform: none;
   padding: 20px;
   border-radius: var(--radius);
   border: 1px solid var(--border);

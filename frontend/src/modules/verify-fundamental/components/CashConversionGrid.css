@@ -92,3 +92,16 @@
 .cash-conversion-grid__flag.is-bad {
   color: var(--critical-text);
 }
+
+.cash-conversion-grid__flag-trigger {
+  /* Overrides the base .hover-card__trigger's `display: grid; line-height: 0` — sized right for
+     a circular icon button, but it collapses a plain text trigger like this one to zero height. */
+  display: inline;
+  line-height: inherit;
+  font-weight: inherit;
+  font-variant-numeric: inherit;
+  font-size: inherit;
+  cursor: help;
+  text-decoration: underline dotted;
+  text-underline-offset: 3px;
+}

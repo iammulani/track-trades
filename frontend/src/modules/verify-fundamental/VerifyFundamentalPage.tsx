@@ -161,7 +161,7 @@ export function VerifyFundamentalPage() {
                 </button>
               )}
 
-              <CashConversionGrid rows={deYears} onChange={updateDebtEquityYear} />
+              <CashConversionGrid rows={deYears} symbol={item.symbol} onChange={updateDebtEquityYear} />
             </>
           )}
 

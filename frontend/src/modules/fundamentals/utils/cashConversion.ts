@@ -69,3 +69,39 @@ export function cashConversionTone(ratio: number | null): CashConversionTone | n
   if (ratio >= 0.7) return 'caution'
   return 'bad'
 }
+
+/** The arithmetic behind a single year's Self-Funded read, spelled out — the equation first (`CFO
+ * = …, Investing = … → … = …`), then what it means in plain terms, named to the actual stock, then
+ * the verdict. `null` when there isn't enough data to explain (mirrors `selfFunded` itself being
+ * `null`). Figures are assumed Rs. Crores, matching every worked example elsewhere on this page
+ * (screener.in's own convention) and the ₹ used throughout — there's no per-item unit stored to
+ * read instead. */
+export function selfFundedNote(
+  symbol: string,
+  cashFromOperatingActivity: number | null,
+  cashFromInvestingActivity: number | null,
+): string | null {
+  if (cashFromOperatingActivity === null || cashFromInvestingActivity === null) return null
+  const cfo = cashFromOperatingActivity
+  const cfii = cashFromInvestingActivity
+  const net = cfo + cfii
+  const equation = `CFO = ${cfo}, Investing = ${cfii} → ${cfo} + (${cfii}) = ${net}.`
+
+  // The common case: investing activity is a cash outflow (capex). Framed as "CFO vs. capex,"
+  // the same terms the trader thinks in — see DebtEquityYear.cashFromInvestingActivity for why
+  // the formula itself adds the signed figure instead of subtracting a separately-flipped capex.
+  if (cfii <= 0) {
+    const capex = -cfii
+    if (net > 0) {
+      return `${equation} ${symbol} generated ₹${cfo}cr from operations against ₹${capex}cr of capex/investments — a ₹${net}cr surplus. Self-funded.`
+    }
+    if (net === 0) {
+      return `${equation} ${symbol} generated exactly ₹${cfo}cr from operations against ₹${capex}cr of capex/investments — no surplus left over. Not self-funded.`
+    }
+    return `${equation} ${symbol} spent ₹${capex}cr on capex/investments but only generated ₹${cfo}cr from operations this year — a ₹${-net}cr shortfall. Not self-funded.`
+  }
+
+  // Rare: a net investing *inflow* (e.g. a year with no real capex, or net divestment) — there's
+  // no capex outflow to weigh against, so the "CFO vs. capex" framing doesn't apply.
+  return `${equation} ${symbol} generated ₹${cfo}cr from operations, and investing activity added a further ₹${cfii}cr (net divestment, no real capex) — Self-funded.`
+}
