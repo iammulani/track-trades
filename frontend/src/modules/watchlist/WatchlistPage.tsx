@@ -132,6 +132,9 @@ export function WatchlistPage() {
             asOfPeriod: fundamentalsRecord.asOfPeriod,
             quarterCount: fundamentalsRecord.quarterCount,
             quarters: fundamentalsRecord.quarters,
+            debtEquityAsOfYear: fundamentalsRecord.debtEquityAsOfYear,
+            debtEquityYearCount: fundamentalsRecord.debtEquityYearCount,
+            debtEquityYears: fundamentalsRecord.debtEquityYears,
           }
         : undefined,
       draft: draftRecord

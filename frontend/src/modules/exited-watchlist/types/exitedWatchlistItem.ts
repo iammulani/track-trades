@@ -1,14 +1,18 @@
 import type { DraftStepperState } from '../../drafts'
-import type { QuarterFinancials } from '../../fundamentals'
+import type { DebtEquityYear, QuarterFinancials } from '../../fundamentals'
 import type { WatchCategory, WatchNote, WatchRating, WatchSide } from '../../watchlist'
 
-/** The raw quarterly figures captured for the item, if Verify Fundamental was ever opened —
- * carried over as-is, the same "derive don't store" rule as the live record: Code 33 is
- * recomputed from these on every render (via `computeCode33`), never persisted as a score. */
+/** The raw quarterly figures (and, if captured, Debt to Equity figures) for the item, if Verify
+ * Fundamental was ever opened — carried over as-is, the same "derive don't store" rule as the
+ * live record: Code 33 and the Debt/Equity ratio are recomputed from these on every render, never
+ * persisted as a score. */
 export interface ExitedFundamentals {
   asOfPeriod: string
   quarterCount: number
   quarters: QuarterFinancials[]
+  debtEquityAsOfYear?: string
+  debtEquityYearCount?: number
+  debtEquityYears?: DebtEquityYear[]
 }
 
 export type ExitReason =

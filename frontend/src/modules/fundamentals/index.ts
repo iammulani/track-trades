@@ -1,4 +1,9 @@
-export type { FundamentalsRecord, NewFundamentalsRecord, QuarterFinancials } from './types/fundamentals'
+export type {
+  DebtEquityYear,
+  FundamentalsRecord,
+  NewFundamentalsRecord,
+  QuarterFinancials,
+} from './types/fundamentals'
 export {
   createFundamentals,
   fetchFundamentals,
@@ -8,6 +13,12 @@ export {
 } from './api/fundamentalsApi'
 export { useFundamentals } from './hooks/useFundamentals'
 export { deriveQuarters, formatPeriodLabel, priorYearPeriod, type QuarterDerived } from './utils/quarterlyCalc'
+export {
+  debtEquityTone,
+  deriveDebtEquity,
+  type DebtEquityDerived,
+  type DebtEquityTone,
+} from './utils/debtEquity'
 export {
   buildQuarterTones,
   CODE33_STARS,

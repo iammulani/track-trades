@@ -1,0 +1,32 @@
+.fundamentals-tabs {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 999px;
+  background: var(--page);
+  border: 1px solid var(--border);
+  align-self: flex-start;
+}
+
+.fundamentals-tabs__tab {
+  padding: 7px 16px;
+  border-radius: 999px;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.fundamentals-tabs__tab:hover {
+  color: var(--text-primary);
+}
+
+.fundamentals-tabs__tab.is-active {
+  background: var(--surface);
+  color: var(--accent);
+  box-shadow: var(--shadow-sm);
+}

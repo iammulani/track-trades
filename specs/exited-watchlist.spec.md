@@ -43,12 +43,15 @@ exit.
   Too Extended / Late Entry · Better Setup Elsewhere · Sector Rotated Out · Low
   Liquidity · Lost Interest · Other.
 
-- **`ExitedFundamentals`** (`types/exitedWatchlistItem.ts`) — the raw quarterly figures
-  from [fundamentals.spec.md](fundamentals.spec.md)'s `FundamentalsRecord`, minus its
+- **`ExitedFundamentals`** (`types/exitedWatchlistItem.ts`) — the raw figures from
+  [fundamentals.spec.md](fundamentals.spec.md)'s `FundamentalsRecord`, minus its
   `id`/`watchlistItemId`/`updatedAt` (meaningless once archived): `{ asOfPeriod,
-  quarterCount, quarters }`. Only the raw quarters are carried, never a computed score —
-  same "derive, don't store" rule the live record follows. Absent if Verify Fundamental
-  was never opened for the item.
+  quarterCount, quarters, debtEquityAsOfYear?, debtEquityYearCount?, debtEquityYears? }`.
+  Only the raw figures are carried, never a computed score — same "derive, don't store"
+  rule the live record follows. Absent if Verify Fundamental was never opened for the
+  item. The Debt to Equity fields are carried over the same way the quarterly ones are
+  (so exiting an item never drops what was typed), but there's no archived-view rendering
+  of them yet — `ExitedFundamentalsModal` only displays the Code 33 side so far.
 - **`draft`** — [drafts.spec.md](drafts.spec.md)'s `DraftStepperState` verbatim (every
   step's raw typed answers plus `stepIndex`), the exact shape a `TradeDraft` stores minus
   its `id`/`watchlistId`/timestamps. Absent if the symbol was never taken into the

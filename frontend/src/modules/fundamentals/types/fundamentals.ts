@@ -9,6 +9,18 @@ export interface QuarterFinancials {
   eps: string
 }
 
+/** One fiscal year's raw Balance Sheet figures for Debt to Equity, exactly as typed — same
+ * "raw string, not parsed" rule as `QuarterFinancials`. Annual, not quarterly: a genuinely
+ * different period axis from Code 33's `QuarterFinancials`, so it's never mixed into `quarters`. */
+export interface DebtEquityYear {
+  /** "YYYY" — a fiscal-year label, e.g. "2026". Generated from `debtEquityAsOfYear`/
+   * `debtEquityYearCount`, never entered free-form (same rule `QuarterFinancials.period` follows). */
+  year: string
+  borrowings: string
+  equityCapital: string
+  reserves: string
+}
+
 /** Quarterly fundamentals captured for one watchlist item, as stored in db.json. */
 export interface FundamentalsRecord {
   id: string
@@ -22,6 +34,13 @@ export interface FundamentalsRecord {
   quarterCount: number
   /** Sparse — only quarters with at least one value entered. */
   quarters: QuarterFinancials[]
+  /** "YYYY" — the most recent fiscal year the Debt to Equity grid is evaluating. Same anchoring
+   * idea as `asOfPeriod`, just on an annual axis. */
+  debtEquityAsOfYear?: string
+  /** How many trailing years (stepping back from `debtEquityAsOfYear`) the grid shows. Starts at 7. */
+  debtEquityYearCount?: number
+  /** Sparse — only years with at least one value entered. */
+  debtEquityYears?: DebtEquityYear[]
   updatedAt: string
 }
 
@@ -31,4 +50,7 @@ export interface NewFundamentalsRecord {
   asOfPeriod: string
   quarterCount: number
   quarters: QuarterFinancials[]
+  debtEquityAsOfYear?: string
+  debtEquityYearCount?: number
+  debtEquityYears?: DebtEquityYear[]
 }

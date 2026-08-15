@@ -3,6 +3,7 @@ import {
   createFundamentals,
   fetchFundamentalsFor,
   updateFundamentals,
+  type DebtEquityYear,
   type FundamentalsRecord,
   type QuarterFinancials,
 } from '../../fundamentals'
@@ -17,10 +18,27 @@ export interface FundamentalsState {
   asOfPeriod: string
   quarterCount: number
   quarters: QuarterFinancials[]
+  debtEquityAsOfYear: string
+  debtEquityYearCount: number
+  debtEquityYears: DebtEquityYear[]
 }
 
-function toState(record: FundamentalsRecord): FundamentalsState {
-  return { asOfPeriod: record.asOfPeriod, quarterCount: record.quarterCount, quarters: record.quarters }
+// The Debt to Equity fields are optional on `FundamentalsRecord` — added after Code 33 already
+// had live records, so a pre-existing record predates them and simply lacks the keys. Falling
+// back to `pristine`'s values (not a bare '' / 0 / []) matters: `useVerifyFundamental` seeds its
+// local Debt to Equity state the same way (`?? DEFAULT_AS_OF_YEAR` etc, which *is* what `pristine`
+// holds), so an untouched pre-existing record hydrates to the exact same key this produces —
+// without this, the two would permanently disagree and every such record would schedule a
+// spurious save the instant its page loads, even though nothing was typed.
+function toState(record: FundamentalsRecord, pristine: FundamentalsState): FundamentalsState {
+  return {
+    asOfPeriod: record.asOfPeriod,
+    quarterCount: record.quarterCount,
+    quarters: record.quarters,
+    debtEquityAsOfYear: record.debtEquityAsOfYear ?? pristine.debtEquityAsOfYear,
+    debtEquityYearCount: record.debtEquityYearCount ?? pristine.debtEquityYearCount,
+    debtEquityYears: record.debtEquityYears ?? pristine.debtEquityYears,
+  }
 }
 
 interface FundamentalsAutosave {
@@ -76,7 +94,7 @@ export function useFundamentalsAutosave(
       .then((record) => {
         if (cancelled || !record) return
         recordIdRef.current = record.id
-        savedKeyRef.current = JSON.stringify(toState(record))
+        savedKeyRef.current = JSON.stringify(toState(record, pristine))
         setHydrated(record)
         setSavedAt(record.updatedAt)
         setStatus('saved')
@@ -90,7 +108,9 @@ export function useFundamentalsAutosave(
     return () => {
       cancelled = true
     }
-  }, [watchlistItemId])
+    // `pristine` is a stable module-level constant (see `PRISTINE` in `useVerifyFundamental`) —
+    // listed for exhaustive-deps correctness, not because it ever actually changes and re-triggers this.
+  }, [watchlistItemId, pristine])
 
   const save = useCallback(async () => {
     // Guards against the same stale-state window the scheduling effect below guards against —

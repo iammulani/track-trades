@@ -1,5 +1,10 @@
 import { apiClient } from '../../../shared/api/client'
-import type { FundamentalsRecord, NewFundamentalsRecord, QuarterFinancials } from '../types/fundamentals'
+import type {
+  DebtEquityYear,
+  FundamentalsRecord,
+  NewFundamentalsRecord,
+  QuarterFinancials,
+} from '../types/fundamentals'
 
 export async function fetchFundamentals(): Promise<FundamentalsRecord[]> {
   const { data } = await apiClient.get<FundamentalsRecord[]>('/fundamentals')
@@ -24,7 +29,14 @@ export async function createFundamentals(input: NewFundamentalsRecord): Promise<
 
 export async function updateFundamentals(
   id: string,
-  input: { asOfPeriod: string; quarterCount: number; quarters: QuarterFinancials[] },
+  input: {
+    asOfPeriod: string
+    quarterCount: number
+    quarters: QuarterFinancials[]
+    debtEquityAsOfYear?: string
+    debtEquityYearCount?: number
+    debtEquityYears?: DebtEquityYear[]
+  },
 ): Promise<FundamentalsRecord> {
   const { data } = await apiClient.patch<FundamentalsRecord>(`/fundamentals/${id}`, {
     ...input,

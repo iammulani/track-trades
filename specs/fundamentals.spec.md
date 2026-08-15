@@ -34,12 +34,22 @@ consumers, so this can't create a cycle (same relationship `place-trade`'s
     eps: string
   }
 
+  interface DebtEquityYear {
+    year: string // "YYYY" — a fiscal year, e.g. "2026"
+    borrowings: string
+    equityCapital: string
+    reserves: string
+  }
+
   interface FundamentalsRecord {
     id: string
     watchlistItemId: string
     asOfPeriod: string // "YYYY-MM" — the most recent quarter being evaluated
     quarterCount: number // how many trailing quarters (from asOfPeriod) the grid shows
     quarters: QuarterFinancials[] // sparse — only quarters with a value entered
+    debtEquityAsOfYear?: string // "YYYY" — the most recent fiscal year being evaluated
+    debtEquityYearCount?: number // how many trailing years (from debtEquityAsOfYear) the grid shows
+    debtEquityYears?: DebtEquityYear[] // sparse — only years with a value entered
     updatedAt: string
   }
   ```
@@ -175,6 +185,36 @@ consumers, so this can't create a cycle (same relationship `place-trade`'s
   technical rating (see [trades.spec.md](trades.spec.md)), just arriving via a different
   module's data instead of a live recomputation.
 
+## Debt to Equity
+
+A second, independent metric captured on the same record — "how much of this business was built
+with borrowed money?" — the first of several standalone fundamentals ratios planned alongside
+Code 33 (see [verify-fundamental.spec.md](verify-fundamental.spec.md) for the tab structure that
+houses them). Deliberately **not** built on the quarterly `asOfPeriod`/`quarterCount`/`quarters`
+axis Code 33 uses:
+
+- **Annual, off the Balance Sheet**, not quarterly off the P&L — `debtEquityAsOfYear` +
+  `debtEquityYearCount` drive a `DebtEquityYear[]` grid the same generated/sparse way `asOfPeriod`
+  + `quarterCount` drive `quarters` (`utils/generateYears.ts`'s `generateYearPeriods()`, the
+  annual analogue of `generateQuarters.ts`), just stepping back one year at a time instead of one
+  quarter. `debtEquityYearCount` starts at **7** and grows **5** at a time via "Show earlier
+  years"; picking a new `debtEquityAsOfYear` resets the count back to 7, same reset-on-new-anchor
+  rule `asOfPeriod` follows.
+- **Each year derives independently** — unlike Code 33's YoY-chained reads, Debt to Equity has no
+  cross-year dependency, so there's no "trailing usable run" or minimum-quarters-for-a-score
+  concept here; a single year with all three fields filled is fully readable on its own.
+- **Formula** (`utils/debtEquity.ts`'s `deriveDebtEquity()`):
+  `ratio = borrowings / (equityCapital + reserves)` — `null` if `equityCapital + reserves <= 0`
+  or either input is blank.
+- **Fixed-threshold colour band**, not a scored/weighted rating like Code 33
+  (`debtEquityTone()`): ratio `< 0.5` → `good` (Safe), `0.5–1.0` → `caution` (Watch), `> 1.0` →
+  `bad` (Fragile). Reuses the app's existing `'good' | 'caution' | 'bad'` tone vocabulary
+  (`Code33Verdict`'s `tone` field, `MetricTone`) and colour tokens
+  (`--good-text`/`--amber-text`/`--critical-text`), just banded by a fixed threshold instead of a
+  hit ratio — there's no aggregate "stars" read for this metric, only a per-year colour.
+- **Never frozen** — same rule as the live quarters: only ever recomputed from the raw
+  `debtEquityYears` on every render, nothing derived is stored.
+
 ## Behaviour
 
 - **One record per watchlist item.** `fetchFundamentalsFor(watchlistItemId)`
@@ -183,7 +223,8 @@ consumers, so this can't create a cycle (same relationship `place-trade`'s
 - **The live record is deleted, never orphaned**, in two places — in both, the watchlist
   item it was keyed to stops existing, so the record has nothing left to attach to:
   1. the watchlist item is **exited** (`WatchlistPage`'s `handleExit`) — but only *after*
-     its raw `quarters`/`asOfPeriod`/`quarterCount` have been copied onto the archived
+     its raw `quarters`/`asOfPeriod`/`quarterCount` **and** `debtEquityYears`/
+     `debtEquityAsOfYear`/`debtEquityYearCount` have been copied onto the archived
      [`ExitedWatchlistItem`](exited-watchlist.spec.md) being created, so exiting doesn't
      lose the captured figures, just the live, editable record;
   2. a trade is **placed** against it (`usePlaceTrade`'s `placeTrade()`, via
@@ -200,12 +241,13 @@ consumers, so this can't create a cycle (same relationship `place-trade`'s
 
 ```
 frontend/src/modules/fundamentals/
-├── types/fundamentals.ts    # QuarterFinancials, FundamentalsRecord, NewFundamentalsRecord
+├── types/fundamentals.ts    # QuarterFinancials, DebtEquityYear, FundamentalsRecord, NewFundamentalsRecord
 ├── api/fundamentalsApi.ts   # fetchFundamentals, fetchFundamentalsFor, createFundamentals, updateFundamentals, removeFundamentals
 ├── hooks/useFundamentals.ts # every record, indexed byWatchlistItemId, + removeFor() — for the Watchlist page
 ├── utils/
 │   ├── quarterlyCalc.ts     # deriveQuarters(), priorYearPeriod(), formatPeriodLabel()
-│   └── code33.ts            # CODE33_STARS, computeCode33(), code33Verdict(), metricTone(), buildQuarterTones(), toCode33Snapshot()
+│   ├── code33.ts            # CODE33_STARS, computeCode33(), code33Verdict(), metricTone(), buildQuarterTones(), toCode33Snapshot()
+│   └── debtEquity.ts        # deriveDebtEquity(), debtEquityTone() — fixed-threshold ratio read, not a scored rating
 ├── components/
 │   └── Code33Badge.tsx      # the watchlist row's compact indicator — icon only, muted/accent by whether captured
 └── index.ts                 # barrel

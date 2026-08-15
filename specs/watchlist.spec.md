@@ -252,7 +252,8 @@ Reached via the **Watchlist** sidebar item. Top to bottom:
   to lose an entry to.
 - **Removing requires a reason** — clicking × opens `ExitWatchlistModal`; only
   confirming (with a reason picked) archives the item. The full item — including its
-  fundamentals record's raw quarters (`useFundamentals().byWatchlistItemId`) and its
+  fundamentals record's raw quarters and Debt to Equity years
+  (`useFundamentals().byWatchlistItemId`) and its
   parked draft's raw stepper answers (`useDrafts().byWatchlistId`), if either exists
   for it — is first `POST`ed to `/exited-watchlist` (see
   [exited-watchlist.spec.md](exited-watchlist.spec.md)) along with the reason, optional

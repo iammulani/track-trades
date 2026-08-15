@@ -1,0 +1,78 @@
+.debt-equity-grid__empty {
+  color: var(--text-secondary);
+  padding: 24px 0;
+  text-align: center;
+}
+
+.debt-equity-grid__scroll {
+  overflow-x: auto;
+}
+
+.debt-equity-grid {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.debt-equity-grid th {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 8px 10px;
+  white-space: nowrap;
+}
+
+.debt-equity-grid td {
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.debt-equity-grid tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.debt-equity-grid__year {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.debt-equity-grid__input {
+  width: 130px;
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-strong);
+  background: var(--page);
+  color: var(--text-primary);
+  font-size: 13px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.debt-equity-grid__input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 20%, transparent);
+}
+
+.debt-equity-grid__ratio {
+  color: var(--text-secondary);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.debt-equity-grid__ratio.is-good {
+  color: var(--good-text);
+}
+
+.debt-equity-grid__ratio.is-caution {
+  color: var(--amber-text);
+}
+
+.debt-equity-grid__ratio.is-bad {
+  color: var(--critical-text);
+}
