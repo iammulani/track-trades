@@ -272,10 +272,65 @@
         "interest": "11"
       }
     ],
-    "updatedAt": "2026-08-15T17:20:00.953Z",
+    "updatedAt": "2026-08-15T17:28:58.000Z",
     "id": "6genxOFlM1o",
     "debtEquityAsOfYear": "2026",
-    "debtEquityYearCount": 7,
-    "debtEquityYears": []
+    "debtEquityYearCount": 9,
+    "debtEquityYears": [
+      {
+        "year": "2018",
+        "borrowings": "33",
+        "equityCapital": "5",
+        "reserves": "157"
+      },
+      {
+        "year": "2019",
+        "borrowings": "146",
+        "equityCapital": "5",
+        "reserves": "203"
+      },
+      {
+        "year": "2020",
+        "borrowings": "161",
+        "equityCapital": "5",
+        "reserves": "270"
+      },
+      {
+        "year": "2021",
+        "borrowings": "141",
+        "equityCapital": "5",
+        "reserves": "354"
+      },
+      {
+        "year": "2022",
+        "borrowings": "183",
+        "equityCapital": "10",
+        "reserves": "458"
+      },
+      {
+        "year": "2023",
+        "borrowings": "248",
+        "equityCapital": "10",
+        "reserves": "535"
+      },
+      {
+        "year": "2024",
+        "borrowings": "259",
+        "equityCapital": "10",
+        "reserves": "647"
+      },
+      {
+        "year": "2025",
+        "borrowings": "320",
+        "equityCapital": "10",
+        "reserves": "785"
+      },
+      {
+        "year": "2026",
+        "borrowings": "423",
+        "equityCapital": "10",
+        "reserves": "947"
+      }
+    ]
   }
 ]

@@ -16,7 +16,7 @@ export function InterestCoverageExplainer() {
         { tone: 'caution', value: '3x – 5x', label: 'Tight' },
         { tone: 'good', value: 'Above 5x', label: 'Comfortable' },
       ]}
-      example="You earn ₹90,000 a month and your EMI is ₹10,000 — easy. If the EMI were ₹45,000, one bad month and you're in trouble."
+      example="You earn ₹90,000 a month and your EMI is ₹10,000 — that's 9x coverage, easy. If the EMI were ₹45,000, that's 2x — one bad month and you're in trouble."
       body="Debt to Equity tells you how much debt there is; this tells you whether they can afford it. A company can have modest debt but weak profits — or heavy debt it services easily."
     />
   )
