@@ -219,5 +219,17 @@
     "exitedAt": "2026-08-15T07:20:51.821Z",
     "sourceWatchlistId": "weJJHqaYnIs",
     "id": "aw-yusL6v7Q"
+  },
+  {
+    "symbol": "PNBHOUSING",
+    "category": "daily",
+    "side": "long",
+    "watchedSince": "2026-07-30T09:41:36.875Z",
+    "notes": "",
+    "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/PNBHOUSING/4840449",
+    "exitReason": "lost-interest",
+    "exitedAt": "2026-08-15T11:24:24.043Z",
+    "sourceWatchlistId": "Zofe3q-QouE",
+    "id": "0o3pJ1C--ow"
   }
 ]

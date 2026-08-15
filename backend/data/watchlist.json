@@ -10,7 +10,7 @@
   },
   {
     "symbol": "VIJAYA",
-    "category": "daily",
+    "category": "active",
     "side": "long",
     "notes": "",
     "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/VIJAYA/1429761",
@@ -76,7 +76,7 @@
   },
   {
     "symbol": "PHOENIXLTD",
-    "category": "daily",
+    "category": "long-term",
     "side": "long",
     "notes": "",
     "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/BSE/PHOENIXLTD/128793604",
@@ -158,15 +158,6 @@
     "id": "X8IMrD4Feqg"
   },
   {
-    "symbol": "PNBHOUSING",
-    "category": "daily",
-    "side": "long",
-    "notes": "",
-    "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/PNBHOUSING/4840449",
-    "watchedSince": "2026-07-30T09:41:36.875Z",
-    "id": "Zofe3q-QouE"
-  },
-  {
     "symbol": "NETWEB",
     "category": "long-term",
     "side": "long",
@@ -177,7 +168,7 @@
   },
   {
     "symbol": "NESTLEIND",
-    "category": "active",
+    "category": "daily",
     "side": "long",
     "notes": "",
     "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/NESTLEIND/4598529",
@@ -204,7 +195,7 @@
   },
   {
     "symbol": "NAM-INDIA",
-    "category": "long-term",
+    "category": "active",
     "side": "long",
     "notes": [],
     "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/NAM-INDIA/91393",
