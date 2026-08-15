@@ -14,16 +14,35 @@ export interface QuarterFinancials {
   interest?: string
 }
 
-/** One fiscal year's raw Balance Sheet figures for Debt to Equity, exactly as typed — same
- * "raw string, not parsed" rule as `QuarterFinancials`. Annual, not quarterly: a genuinely
- * different period axis from Code 33's `QuarterFinancials`, so it's never mixed into `quarters`. */
+/** One fiscal year's raw annual figures, exactly as typed — same "raw string, not parsed" rule as
+ * `QuarterFinancials`. Annual, not quarterly: a genuinely different period axis from Code 33's
+ * `QuarterFinancials`, so it's never mixed into `quarters`. Holds every annual-cadence metric's
+ * inputs — Debt to Equity's Balance Sheet fields and Cash Conversion's Cash Flow fields — since
+ * they're read off the same fiscal-year list on the source site. Still named for the first metric
+ * that used it (and `FundamentalsRecord.debtEquityYears` below keeps that name too) rather than
+ * renamed to something generic like `AnnualFinancials` — real records already persist under the
+ * `debtEquityYears` key, and renaming it would risk orphaning that data on read, the same failure
+ * mode already hit once with the Debt to Equity/Interest Coverage optional-field additions. */
 export interface DebtEquityYear {
   /** "YYYY" — a fiscal-year label, e.g. "2026". Generated from `debtEquityAsOfYear`/
    * `debtEquityYearCount`, never entered free-form (same rule `QuarterFinancials.period` follows). */
   year: string
+  // Debt to Equity (Balance Sheet)
   borrowings: string
   equityCapital: string
   reserves: string
+  // Cash Conversion (Cash Flow) — optional, added after `debtEquityYears` already had live
+  // records, same "added later" story as QuarterFinancials.operatingProfit/interest.
+  cashFromOperatingActivity?: string
+  /** Typed as reported on the source site — usually negative when it's an outflow (capex). The
+   * Self-Funded flag reads it at face value (`cashFromOperatingActivity + cashFromInvestingActivity
+   * > 0`), not as a separately-signed "capex" number, so a positive investing figure (net
+   * divestment) correctly never fails the flag. */
+  cashFromInvestingActivity?: string
+  cashFromFinancingActivity?: string
+  /** The year's total Net Profit — sum of 4 quarters, captured directly rather than summed from
+   * Code 33's quarterly `netProfit` (that may not be fully entered for the same year). */
+  netProfit?: string
 }
 
 /** Quarterly fundamentals captured for one watchlist item, as stored in db.json. */

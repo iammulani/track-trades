@@ -8,7 +8,15 @@ import { previousQuarterPeriod } from '../utils/previousQuarter'
 import { useFundamentalsAutosave, type FundamentalsState } from './useFundamentalsAutosave'
 
 const EMPTY_QUARTER_FIELDS = { sales: '', netProfit: '', eps: '', operatingProfit: '', interest: '' }
-const EMPTY_DEBT_EQUITY_FIELDS = { borrowings: '', equityCapital: '', reserves: '' }
+const EMPTY_DEBT_EQUITY_FIELDS = {
+  borrowings: '',
+  equityCapital: '',
+  reserves: '',
+  cashFromOperatingActivity: '',
+  cashFromInvestingActivity: '',
+  cashFromFinancingActivity: '',
+  netProfit: '',
+}
 
 /** Code 33 reads the most recent 3 quarter-over-quarter steps (4 quarters) — but each of those
  * 4 needs its own same-quarter-prior-year match to compute YoY growth at all, so a *scoreable*
@@ -126,7 +134,14 @@ export function useVerifyFundamental(watchlistItemId: string) {
         .map((year) => debtEquityYearsByYear[year])
         .filter(
           (y): y is DebtEquityYear =>
-            y !== undefined && (y.borrowings !== '' || y.equityCapital !== '' || y.reserves !== ''),
+            y !== undefined &&
+            (y.borrowings !== '' ||
+              y.equityCapital !== '' ||
+              y.reserves !== '' ||
+              !!y.cashFromOperatingActivity ||
+              !!y.cashFromInvestingActivity ||
+              !!y.cashFromFinancingActivity ||
+              !!y.netProfit),
         ),
     [debtEquityPeriods, debtEquityYearsByYear],
   )
@@ -165,7 +180,11 @@ export function useVerifyFundamental(watchlistItemId: string) {
       setDebtEquityAsOfYearState(autosave.hydrated.debtEquityAsOfYear ?? DEFAULT_AS_OF_YEAR)
       setDebtEquityYearCount(autosave.hydrated.debtEquityYearCount ?? DEFAULT_YEAR_COUNT)
       const deMap: Record<string, DebtEquityYear> = {}
-      for (const y of autosave.hydrated.debtEquityYears ?? []) deMap[y.year] = y
+      // A year saved before Cash Conversion existed lacks its four fields — merge over
+      // blankDebtEquityYear() so every seeded row is fully populated, same fix as quarters above.
+      for (const y of autosave.hydrated.debtEquityYears ?? []) {
+        deMap[y.year] = { ...blankDebtEquityYear(y.year), ...y }
+      }
       setDebtEquityYearsByYear(deMap)
     }
     setSeeded(true)

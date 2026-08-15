@@ -54,7 +54,10 @@ exit.
   of them yet — `ExitedFundamentalsModal` only displays the Code 33 side so far. Interest
   Coverage's `operatingProfit`/`interest` need no separate handling here at all — they live
   directly on each `quarters` entry, so the existing `quarters` carry-over already includes
-  them; same "no archived view yet" caveat applies.
+  them; same "no archived view yet" caveat applies. Cash Conversion's four fields and the
+  Self-Funded flag are the same story one level up — they live directly on each
+  `debtEquityYears` entry, so the existing `debtEquityYears` carry-over already includes them
+  too.
 - **`draft`** — [drafts.spec.md](drafts.spec.md)'s `DraftStepperState` verbatim (every
   step's raw typed answers plus `stepIndex`), the exact shape a `TradeDraft` stores minus
   its `id`/`watchlistId`/timestamps. Absent if the symbol was never taken into the

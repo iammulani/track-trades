@@ -6,6 +6,8 @@ import { SideBadge } from '../../shared/components/SideBadge'
 import { formatDateTime } from '../../shared/utils/format'
 import { AsOfPicker } from './components/AsOfPicker'
 import { AsOfYearPicker } from './components/AsOfYearPicker'
+import { CashConversionExplainer } from './components/CashConversionExplainer'
+import { CashConversionGrid } from './components/CashConversionGrid'
 import { Code33Explainer } from './components/Code33Explainer'
 import { Code33Summary } from './components/Code33Summary'
 import { DebtEquityExplainer } from './components/DebtEquityExplainer'
@@ -79,7 +81,7 @@ export function VerifyFundamentalPage() {
                 <AsOfPicker value={asOfPeriod} onChange={setAsOfPeriod} />
               </label>
             )}
-            {activeTab === 'debt-equity' && (
+            {(activeTab === 'debt-equity' || activeTab === 'cash-conversion') && (
               <label className="verify-fundamental-page__as-of">
                 As of
                 <AsOfYearPicker value={debtEquityAsOfYear} onChange={setDebtEquityAsOfYear} />
@@ -141,6 +143,25 @@ export function VerifyFundamentalPage() {
               )}
 
               <InterestCoverageGrid rows={rows} onChange={updateQuarter} />
+            </>
+          )}
+
+          {activeTab === 'cash-conversion' && (
+            <>
+              <CashConversionExplainer />
+
+              {deYears.length > 0 && (
+                <button
+                  type="button"
+                  className="verify-fundamental-page__earlier"
+                  onClick={showEarlierDebtEquityYears}
+                >
+                  <Icon name="chevronLeft" size={13} />
+                  Show 5 earlier years
+                </button>
+              )}
+
+              <CashConversionGrid rows={deYears} onChange={updateDebtEquityYear} />
             </>
           )}
 

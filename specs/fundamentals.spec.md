@@ -41,6 +41,10 @@ consumers, so this can't create a cycle (same relationship `place-trade`'s
     borrowings: string
     equityCapital: string
     reserves: string
+    cashFromOperatingActivity?: string // Cash Conversion's numerator, also half of Self-Funded
+    cashFromInvestingActivity?: string // "capex" — Self-Funded's other half
+    cashFromFinancingActivity?: string
+    netProfit?: string // annual — sum of 4 quarters, Cash Conversion's denominator
   }
 
   interface FundamentalsRecord {
@@ -65,7 +69,17 @@ consumers, so this can't create a cycle (same relationship `place-trade`'s
   Normalized to `''` wherever a quarter is seeded into an editable grid (both on the live-state
   side and in `useFundamentalsAutosave`'s own copy of that normalization, so the two can never
   disagree about what an untouched legacy quarter looks like — see
-  [verify-fundamental.spec.md](verify-fundamental.spec.md)).
+  [verify-fundamental.spec.md](verify-fundamental.spec.md)). `DebtEquityYear`'s four Cash
+  Conversion fields are optional and normalized the identical way, for the identical reason — a
+  year saved before Cash Conversion existed lacks them.
+
+- **`DebtEquityYear` (and `FundamentalsRecord.debtEquityYears`) keep their original names on
+  purpose**, even though the type now also carries Cash Conversion's Cash Flow fields and
+  underpins the Self-Funded flag. Real records already persist under the `debtEquityYears` key —
+  renaming it to something generic (e.g. `AnnualFinancials`) would mean every already-saved year
+  reads back as missing unless the stored JSON were migrated too, the same class of risk that
+  already caused one real data loss during Interest Coverage's development. Not worth the risk for
+  a naming nicety; the type's own doc comment carries the explanation instead.
 
 - **`period` is a real, sortable key** ("YYYY-MM"), never free text and never a row position.
   Both the year-over-year lookup and the "3 consecutive quarters" check key off exact period
@@ -245,6 +259,40 @@ Coverage says whether it can actually be afforded. Unlike Debt to Equity, this o
 - **Never frozen** — recomputed live from the raw `quarters` on every render, same as Code 33 and
   Debt to Equity.
 
+## Cash Conversion (and the Self-Funded bonus flag)
+
+A fourth metric — "is the reported profit turning into real money?" — plus a related **bonus
+flag**, both read off the same three Cash Flow inputs rather than the flag getting a tab (or a
+manual judgement control) of its own. Like Debt to Equity, this is annual, off the Cash Flow
+statement, and **shares Debt to Equity's exact annual axis** (`debtEquityAsOfYear`/
+`debtEquityYearCount`) rather than getting its own — both come off the same fiscal-year list on
+the source site:
+
+- **`cashFromOperatingActivity`, `cashFromInvestingActivity`, `cashFromFinancingActivity`, and
+  `netProfit` live directly on `DebtEquityYear`** (see Data above), alongside Debt to Equity's own
+  three fields. `netProfit` here is the year's **total** — the sum of 4 quarters — captured
+  directly rather than summed from Code 33's quarterly `netProfit`, since that data may not be
+  fully entered for the same year (or Verify Fundamental may never have been used for Code 33 at
+  all against this item).
+- **Cash Conversion formula** (`utils/cashConversion.ts`'s `deriveCashConversion()`):
+  `ratio = cashFromOperatingActivity / netProfit` — `null` if `netProfit <= 0` (a loss-making or
+  break-even year makes the ratio meaningless) or either input is blank.
+- **Fixed-threshold colour band** (`cashConversionTone()`): ratio `< 0.7` → `bad` (Investigate),
+  `0.7–1.0` → `caution` (Acceptable), `> 1.0` → `good` (Profits are real). A single low year can
+  be timing (an invoice that clears late); the real "investigate" signal is the ratio staying
+  below 0.7 across several years, not any one year in isolation — the band still colours each year
+  independently, the trend-reading is left to the trader looking across the column.
+- **Self-Funded** (also `deriveCashConversion()`, returned alongside the ratio, not a separate
+  function): `cashFromOperatingActivity + cashFromInvestingActivity > 0`. `cashFromInvestingActivity`
+  is captured exactly as the source reports it — typically negative when it's an outflow (capex) —
+  so this reduces to "does operating cash exceed capex," without treating capex as a separately-signed
+  input the trader would have to flip the sign on. A positive investing figure (a year with net
+  divestment, no real capex) correctly never fails the flag. `null` if either input is blank. Shown
+  as a plain `Yes`/`No` per year, coloured `good`/`bad` — a boolean read, not a 3-band gradient like
+  the ratio, since there's no "acceptable middle" for a yes/no question.
+- **Never frozen** — recomputed live from the raw `debtEquityYears` on every render, same as
+  Debt to Equity.
+
 ## Behaviour
 
 - **One record per watchlist item.** `fetchFundamentalsFor(watchlistItemId)`
@@ -278,7 +326,8 @@ frontend/src/modules/fundamentals/
 │   ├── quarterlyCalc.ts     # deriveQuarters(), priorYearPeriod(), formatPeriodLabel()
 │   ├── code33.ts            # CODE33_STARS, computeCode33(), code33Verdict(), metricTone(), buildQuarterTones(), toCode33Snapshot()
 │   ├── debtEquity.ts        # deriveDebtEquity(), debtEquityTone() — fixed-threshold ratio read, not a scored rating
-│   └── interestCoverage.ts  # deriveInterestCoverage(), interestCoverageTone() — fixed-threshold ratio read, shares Code 33's quarterly rows
+│   ├── interestCoverage.ts  # deriveInterestCoverage(), interestCoverageTone() — fixed-threshold ratio read, shares Code 33's quarterly rows
+│   └── cashConversion.ts    # deriveCashConversion() (ratio + Self-Funded flag), cashConversionTone() — shares Debt to Equity's annual rows
 ├── components/
 │   └── Code33Badge.tsx      # the watchlist row's compact indicator — icon only, muted/accent by whether captured
 └── index.ts                 # barrel

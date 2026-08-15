@@ -32,6 +32,18 @@ function normalizeQuarter(q: QuarterFinancials): QuarterFinancials {
   return { ...q, operatingProfit: q.operatingProfit ?? '', interest: q.interest ?? '' }
 }
 
+// Same fix, same reasoning, for a Debt to Equity year saved before Cash Conversion existed —
+// backfilled to match `{ ...blankDebtEquityYear(year), ...y }`'s key order exactly.
+function normalizeAnnualYear(y: DebtEquityYear): DebtEquityYear {
+  return {
+    ...y,
+    cashFromOperatingActivity: y.cashFromOperatingActivity ?? '',
+    cashFromInvestingActivity: y.cashFromInvestingActivity ?? '',
+    cashFromFinancingActivity: y.cashFromFinancingActivity ?? '',
+    netProfit: y.netProfit ?? '',
+  }
+}
+
 // The Debt to Equity fields are optional on `FundamentalsRecord` — added after Code 33 already
 // had live records, so a pre-existing record predates them and simply lacks the keys. Falling
 // back to `pristine`'s values (not a bare '' / 0 / []) matters: `useVerifyFundamental` seeds its
@@ -46,7 +58,7 @@ function toState(record: FundamentalsRecord, pristine: FundamentalsState): Funda
     quarters: record.quarters.map(normalizeQuarter),
     debtEquityAsOfYear: record.debtEquityAsOfYear ?? pristine.debtEquityAsOfYear,
     debtEquityYearCount: record.debtEquityYearCount ?? pristine.debtEquityYearCount,
-    debtEquityYears: record.debtEquityYears ?? pristine.debtEquityYears,
+    debtEquityYears: (record.debtEquityYears ?? pristine.debtEquityYears).map(normalizeAnnualYear),
   }
 }
 

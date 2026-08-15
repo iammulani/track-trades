@@ -5,13 +5,15 @@
 Lets the trader check a watchlist symbol's fundamentals — one metric per **tab**. So far: Mark
 Minervini's "Code 33" (type in quarterly Sales, Net Profit and EPS, and see growth %, margin, and
 the rating worked out live), **Debt to Equity** (type in annual Borrowings/Equity Capital/Reserves
-off the Balance Sheet, and see the ratio and a fixed safe/watch/fragile colour read), and
-**Interest Coverage** (type in quarterly Operating Profit and Interest, and see whether the
-business can comfortably afford what it owes, same fixed-colour-band treatment as Debt to
-Equity). More tabs get added the same way as more metrics are specified — see
-[fundamentals.spec.md](fundamentals.spec.md). Unlike Place Trade, it never consumes the watchlist
-item: it's a repeat-visit enrichment (add a quarter or a year next reporting season), not a
-one-shot conversion.
+off the Balance Sheet, and see the ratio and a fixed safe/watch/fragile colour read), **Interest
+Coverage** (type in quarterly Operating Profit and Interest, and see whether the business can
+comfortably afford what it owes, same fixed-colour-band treatment as Debt to Equity), and **Cash
+Conversion** (type in annual Cash from Operating/Investing/Financing Activity and Net Profit off
+the Cash Flow statement, and see whether reported profit is turning into real cash — plus a
+related Self-Funded Yes/No flag read off the same figures). More tabs get added the same way as
+more metrics are specified — see [fundamentals.spec.md](fundamentals.spec.md). Unlike Place
+Trade, it never consumes the watchlist item: it's a repeat-visit enrichment (add a quarter or a
+year next reporting season), not a one-shot conversion.
 
 ## Data
 
@@ -20,11 +22,14 @@ one-shot conversion.
   [place-trade.spec.md](place-trade.spec.md)).
 - Reads/writes its `FundamentalsRecord` via `modules/fundamentals` — see
   [fundamentals.spec.md](fundamentals.spec.md) for the raw shape and the Code 33, Debt to Equity,
-  and Interest Coverage formulas. One record holds all three metrics' data — the quarterly
-  `asOfPeriod`/`quarterCount`/`quarters` trio serves **both** Code 33 and Interest Coverage
-  (`operatingProfit`/`interest` live directly on each `QuarterFinancials` row), while the annual
-  `debtEquityAsOfYear`/`debtEquityYearCount`/`debtEquityYears` trio is Debt to Equity's own — so
-  there's one autosave path for the whole page, not one per tab. Writes continuously through
+  Interest Coverage, and Cash Conversion formulas. One record holds all four metrics' data — the
+  quarterly `asOfPeriod`/`quarterCount`/`quarters` trio serves **both** Code 33 and Interest
+  Coverage (`operatingProfit`/`interest` live directly on each `QuarterFinancials` row), while the
+  annual `debtEquityAsOfYear`/`debtEquityYearCount`/`debtEquityYears` trio serves **both** Debt to
+  Equity and Cash Conversion (`cashFromOperatingActivity`/`cashFromInvestingActivity`/
+  `cashFromFinancingActivity`/`netProfit` live directly on each `DebtEquityYear` row, which keeps
+  its original name — see [fundamentals.spec.md](fundamentals.spec.md) for why) — so there's one
+  autosave path for the whole page, not one per tab. Writes continuously through
   `useFundamentalsAutosave` (debounced POST-then-PATCH), not on a submit action — there isn't one.
 
 ## UI
@@ -69,16 +74,17 @@ continuously-editable form.
    checked as they stood on the day of an old trade, not only the present. Picking a new "as of"
    date resets the grid back to its default 8-quarter window — extending history is a deliberate
    follow-up action on that anchor, not something a fresh pick should carry over.
-   On the Debt to Equity tab, `AsOfYearPicker` instead — a plain `<input type="number">` year
-   field capped at the current year, **defaults to the current year**. A year needs no "resolve to
-   the last closed period" logic the way a quarter does (a typed year already is the reporting
+   On the Debt to Equity **and** Cash Conversion tabs (both annual, sharing the exact same
+   rows — see Data above), `AsOfYearPicker` instead — a plain `<input type="number">` year field
+   capped at the current year, **defaults to the current year**. A year needs no "resolve to the
+   last closed period" logic the way a quarter does (a typed year already is the reporting
    period), so it's a simpler control than `AsOfPicker`. Picking a new year resets that tab's
    window back to its default 7-year span, same reset-on-new-anchor rule the Code 33 tab follows.
 3. **Tabs** (`FundamentalsTabs`) — a `role="tablist"` pill bar directly under the title row:
-   **Code 33**, **Debt to Equity**, and **Interest Coverage** so far, more to come as further
-   metrics are specified (see [fundamentals.spec.md](fundamentals.spec.md)). Switching tabs only
-   changes which section below renders — the title row above it (symbol, Code 33 rating, "as of"
-   control) stays in place.
+   **Code 33**, **Debt to Equity**, **Interest Coverage**, and **Cash Conversion** so far, more to
+   come as further metrics are specified (see [fundamentals.spec.md](fundamentals.spec.md)).
+   Switching tabs only changes which section below renders — the title row above it (symbol,
+   Code 33 rating, "as of" control) stays in place.
 4. **Code 33 tab**:
    1. **"Show 4 earlier quarters"** button, directly above the grid — grows the window backward
       4 quarters at a time without moving "as of" or disturbing anything already entered. Hidden
@@ -188,7 +194,31 @@ continuously-editable form.
       (formatted "N.NNx"), coloured against `interestCoverageTone()`'s fixed threshold the same
       way `DebtEquityGrid`'s ratio column is — `is-good`/`is-caution`/`is-bad`. Purely
       informational, no aggregate score.
-8. **Footer** — a "← Back to Watchlist" link, and the autosave status ("Saving…" /
+8. **Cash Conversion tab**:
+   1. **`CashConversionExplainer`** — content rendered through the same shared `MetricExplainer`
+      shell (point 6.1): what question it answers ("is the reported profit turning into real
+      money?"), where the numbers come from (Cash Flow section, annual figures), the formula
+      (`Cash Conversion = Cash from Operating Activity ÷ Net Profit`), the colour bands (`< 0.7`
+      red Investigate / `0.7–1.0` amber Acceptable / `> 1.0` green Profits are real), and a
+      plain-language worked example (a freelancer billing ₹50,000 but only part of it landing as
+      cash). Its "why it matters" text notes that "Investigate" is really about the ratio staying
+      low across *several* years, not any single one, and points at the Self-Funded column (point
+      8.3) as a related, sharper read off the same figures.
+   2. **"Show 5 earlier years"** button — the *exact same* button/state
+      `showEarlierDebtEquityYears()`/`debtEquityYearCount` the Debt to Equity tab uses (point
+      6.2), not a second one of its own, since both tabs share the same annual rows.
+   3. **Cash Conversion grid** (`CashConversionGrid`) — one row per generated fiscal year, the
+      same `deYears` Debt to Equity's grid renders. Columns: `Year` (read-only), `Operating`,
+      `Investing (Capex)`, `Financing`, `Net Profit` (number inputs, the only editable cells —
+      stored directly on the shared `DebtEquityYear` row alongside Borrowings/Equity
+      Capital/Reserves), then two read-only derived columns: `Cash Conversion` (formatted to 2
+      decimals, coloured against `cashConversionTone()`'s fixed threshold the same way
+      `DebtEquityGrid`'s ratio column is) and `Self-Funded?` (`Yes`/`No`, coloured `is-good`/
+      `is-bad` — a plain boolean read, not a 3-band gradient, since there's no "acceptable middle"
+      for a yes/no question). The `Self-Funded?` header carries an info `HoverCard` (same pattern
+      as Code 33's `Net Margin` header, point 4.2) spelling out the formula: "Cash from Operating
+      Activity > Capex." Purely informational, no aggregate score.
+9. **Footer** — a "← Back to Watchlist" link, and the autosave status ("Saving…" /
    "Saved · <time>"), same language as Place Trade's draft-status footer.
 
 **States**: loading → "Loading…"; error → message; item not found (already placed or removed) →
@@ -252,6 +282,17 @@ message + back link — same three states as `PlaceTradePage`.
   legacy quarter can never be mistaken for a change and trigger a spurious save the instant the
   page loads — the same failure mode already fixed once for the Debt to Equity fields, and fixed
   the identical way here).
+- **Cash Conversion (and the Self-Funded flag) share Debt to Equity's annual rows the identical
+  way Interest Coverage shares Code 33's quarterly ones.** `cashFromOperatingActivity`/
+  `cashFromInvestingActivity`/`cashFromFinancingActivity`/`netProfit` live directly on the same
+  `DebtEquityYear` object each row already carries `borrowings`/`equityCapital`/`reserves` on —
+  one `updateDebtEquityYear(year, patch)` call handles a patch to either tab's fields, and the
+  sparse-write check looks at all seven fields, not just Debt to Equity's three. A year saved
+  before Cash Conversion existed lacks the four new fields on read; both
+  `useVerifyFundamental`'s seeding effect and `useFundamentalsAutosave`'s own `savedKeyRef`
+  computation backfill them to `''` the same way (same key order), for the same reason the
+  quarterly fields are backfilled — an untouched legacy year must never look like a change and
+  schedule a spurious save.
 
 ## Module map
 
@@ -273,16 +314,18 @@ frontend/src/modules/verify-fundamental/
 │   ├── QuarterlyGrid.tsx(+.css)       # the generated grid: editable Sales/Net Profit/EPS + colour-coded derived columns (tone map built from rating.steps)
 │   ├── Code33Summary.tsx(+.css)       # compact stars + score for the title row; HoverCard reveals just the verdict line (mirrors TradeRatingBadge's collapsed-by-default shape, not its content)
 │   ├── Code33Explainer.tsx(+.css)     # header's "What is Code 33?" HoverCard — fixed generic reminder of the 3 metrics + the blind spots, not built from the current item's data
-│   ├── FundamentalsTabs.tsx(+.css)    # role="tablist" bar switching between metric sections — Code 33 / Debt to Equity / Interest Coverage so far
+│   ├── FundamentalsTabs.tsx(+.css)    # role="tablist" bar switching between metric sections — Code 33 / Debt to Equity / Interest Coverage / Cash Conversion
 │   ├── MetricExplainer.tsx(+.css)     # shared always-expanded panel shell (question/where, formula+colour-bands, example+why) — content-only props, no HoverCard
 │   ├── DebtEquityGrid.tsx(+.css)      # the generated grid: editable Borrowings/Equity Capital/Reserves + one derived Debt/Equity column, fixed-threshold colour
 │   ├── DebtEquityExplainer.tsx        # DebtEquityGrid's reference content, rendered through MetricExplainer
 │   ├── InterestCoverageGrid.tsx(+.css)# the generated grid: editable Operating Profit/Interest + one derived Interest Coverage column, fixed-threshold colour — reuses Code 33's rows
-│   └── InterestCoverageExplainer.tsx  # InterestCoverageGrid's reference content, rendered through MetricExplainer
+│   ├── InterestCoverageExplainer.tsx  # InterestCoverageGrid's reference content, rendered through MetricExplainer
+│   ├── CashConversionGrid.tsx(+.css)  # the generated grid: editable Operating/Investing/Financing/Net Profit + derived Cash Conversion + Self-Funded columns — reuses Debt to Equity's rows
+│   └── CashConversionExplainer.tsx    # CashConversionGrid's reference content, rendered through MetricExplainer
 └── index.ts                           # exports VerifyFundamentalPage
 ```
 
-Depends on `modules/fundamentals` (the data + Code 33, Debt to Equity, and Interest Coverage
-derivations) and `modules/watchlist` (`useWatchlist`, to resolve the item by `:id`) — same shape
-of dependency `place-trade` has on `drafts` and `watchlist`. Route registered in
-`frontend/src/app/routes.tsx` next to `place-trade`'s.
+Depends on `modules/fundamentals` (the data + Code 33, Debt to Equity, Interest Coverage, and
+Cash Conversion derivations) and `modules/watchlist` (`useWatchlist`, to resolve the item by
+`:id`) — same shape of dependency `place-trade` has on `drafts` and `watchlist`. Route registered
+in `frontend/src/app/routes.tsx` next to `place-trade`'s.

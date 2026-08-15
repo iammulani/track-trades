@@ -281,55 +281,91 @@
         "year": "2018",
         "borrowings": "33",
         "equityCapital": "5",
-        "reserves": "157"
+        "reserves": "157",
+        "cashFromOperatingActivity": "62",
+        "cashFromInvestingActivity": "-98",
+        "cashFromFinancingActivity": "-8",
+        "netProfit": "35"
       },
       {
         "year": "2019",
         "borrowings": "146",
         "equityCapital": "5",
-        "reserves": "203"
+        "reserves": "203",
+        "cashFromOperatingActivity": "91",
+        "cashFromInvestingActivity": "-90",
+        "cashFromFinancingActivity": "-7",
+        "netProfit": "46"
       },
       {
         "year": "2020",
         "borrowings": "161",
         "equityCapital": "5",
-        "reserves": "270"
+        "reserves": "270",
+        "cashFromOperatingActivity": "106",
+        "cashFromInvestingActivity": "-31",
+        "cashFromFinancingActivity": "-30",
+        "netProfit": "63"
       },
       {
         "year": "2021",
         "borrowings": "141",
         "equityCapital": "5",
-        "reserves": "354"
+        "reserves": "354",
+        "cashFromOperatingActivity": "130",
+        "cashFromInvestingActivity": "-130",
+        "cashFromFinancingActivity": "-49",
+        "netProfit": "85"
       },
       {
         "year": "2022",
         "borrowings": "183",
         "equityCapital": "10",
-        "reserves": "458"
+        "reserves": "458",
+        "cashFromOperatingActivity": "158",
+        "cashFromInvestingActivity": "-123",
+        "cashFromFinancingActivity": "-31",
+        "netProfit": "111"
       },
       {
         "year": "2023",
         "borrowings": "248",
         "equityCapital": "10",
-        "reserves": "535"
+        "reserves": "535",
+        "cashFromOperatingActivity": "165",
+        "cashFromInvestingActivity": "-110",
+        "cashFromFinancingActivity": "-42",
+        "netProfit": "85"
       },
       {
         "year": "2024",
         "borrowings": "259",
         "equityCapital": "10",
-        "reserves": "647"
+        "reserves": "647",
+        "cashFromOperatingActivity": "183",
+        "cashFromInvestingActivity": "-141",
+        "cashFromFinancingActivity": "-45",
+        "netProfit": "120"
       },
       {
         "year": "2025",
         "borrowings": "320",
         "equityCapital": "10",
-        "reserves": "785"
+        "reserves": "785",
+        "cashFromOperatingActivity": "224",
+        "cashFromInvestingActivity": "-182",
+        "cashFromFinancingActivity": "-52",
+        "netProfit": "144"
       },
       {
         "year": "2026",
         "borrowings": "423",
         "equityCapital": "10",
-        "reserves": "947"
+        "reserves": "947",
+        "cashFromOperatingActivity": "271",
+        "cashFromInvestingActivity": "-174",
+        "cashFromFinancingActivity": "-69",
+        "netProfit": "173"
       }
     ]
   }

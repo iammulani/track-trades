@@ -26,6 +26,12 @@ export {
   type InterestCoverageTone,
 } from './utils/interestCoverage'
 export {
+  cashConversionTone,
+  deriveCashConversion,
+  type CashConversionDerived,
+  type CashConversionTone,
+} from './utils/cashConversion'
+export {
   buildQuarterTones,
   CODE33_STARS,
   code33Verdict,
