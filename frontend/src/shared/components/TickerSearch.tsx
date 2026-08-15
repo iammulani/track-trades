@@ -1,4 +1,4 @@
-import { Icon } from '../../../shared/components/Icon'
+import { Icon } from './Icon'
 import './TickerSearch.css'
 
 interface TickerSearchProps {
@@ -6,7 +6,7 @@ interface TickerSearchProps {
   onChange: (value: string) => void
 }
 
-/** Client-side search — filters the visible watchlist by ticker as you type. */
+/** Client-side search — filters a visible list of symbols by ticker as you type. */
 export function TickerSearch({ value, onChange }: TickerSearchProps) {
   return (
     <div className="ticker-search">
@@ -16,7 +16,7 @@ export function TickerSearch({ value, onChange }: TickerSearchProps) {
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder="Search ticker…"
-        aria-label="Search watchlist by ticker"
+        aria-label="Search by ticker"
       />
     </div>
   )

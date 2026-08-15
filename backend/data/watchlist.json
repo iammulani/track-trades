@@ -130,23 +130,6 @@
     "id": "weJJHqaYnIs"
   },
   {
-    "symbol": "GRASIM",
-    "category": "active",
-    "side": "long",
-    "notes": [
-      {
-        "id": "b3d64447-57ef-47b4-a5cf-bfe6e36a2777",
-        "text": "Most of the peer stocks are hitting the bottom. Decided to stay away from buy.",
-        "date": "2026-08-14T17:05:23.539Z",
-        "conclusion": "Peer comparison : UltraTech Cem, Ambuja Cements,\tShree Cement, J K Cements, Dalmia BharatLtd, ACC",
-        "editedAt": "2026-08-14T17:07:14.487Z"
-      }
-    ],
-    "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/GRASIM/315393",
-    "watchedSince": "2026-07-22T07:47:18.241Z",
-    "id": "OvqMPl_ZypM"
-  },
-  {
     "symbol": "SCHNEIDER",
     "category": "long-term",
     "side": "long",
@@ -273,16 +256,6 @@
     "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/KIRLOSENG/5359617",
     "watchedSince": "2026-08-04T11:03:16.125Z",
     "id": "eQgvv4SCJyo"
-  },
-  {
-    "symbol": "JINDALSAW",
-    "category": "active",
-    "side": "long",
-    "notes": [],
-    "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/JINDALSAW/774145",
-    "watchedSince": "2026-08-04T11:17:02.243Z",
-    "id": "GjvovlISKr4",
-    "rating": 0
   },
   {
     "symbol": "IKS",

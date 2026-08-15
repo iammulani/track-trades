@@ -1,0 +1,145 @@
+[
+  {
+    "symbol": "GRASIM",
+    "category": "active",
+    "side": "long",
+    "watchedSince": "2026-07-22T07:47:18.241Z",
+    "notes": [
+      {
+        "id": "b3d64447-57ef-47b4-a5cf-bfe6e36a2777",
+        "text": "Most of the peer stocks are hitting the bottom. Decided to stay away from buy.",
+        "date": "2026-08-14T17:05:23.539Z",
+        "conclusion": "Peer comparison : UltraTech Cem, Ambuja Cements,\tShree Cement, J K Cements, Dalmia BharatLtd, ACC",
+        "editedAt": "2026-08-14T17:07:14.487Z"
+      }
+    ],
+    "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/GRASIM/315393",
+    "fundamentals": {
+      "asOfPeriod": "2026-06",
+      "quarterCount": 8,
+      "quarters": [
+        {
+          "period": "2024-09",
+          "sales": "34223",
+          "netProfit": "983",
+          "eps": "4.78"
+        },
+        {
+          "period": "2024-12",
+          "sales": "35378",
+          "netProfit": "1734",
+          "eps": "12.45"
+        },
+        {
+          "period": "2025-03",
+          "sales": "44267",
+          "netProfit": "2973",
+          "eps": "21.98"
+        },
+        {
+          "period": "2025-06",
+          "sales": "40118",
+          "netProfit": "2771",
+          "eps": "20.87"
+        },
+        {
+          "period": "2025-09",
+          "sales": "39900",
+          "netProfit": "1498",
+          "eps": "8.13"
+        },
+        {
+          "period": "2025-12",
+          "sales": "44312",
+          "netProfit": "2233",
+          "eps": "15.23"
+        },
+        {
+          "period": "2026-03",
+          "sales": "51101",
+          "netProfit": "3684",
+          "eps": "27.86"
+        },
+        {
+          "period": "2026-06",
+          "sales": "48716",
+          "netProfit": "3846",
+          "eps": "31.53"
+        }
+      ]
+    },
+    "exitReason": "peer-comparison-failed",
+    "exitNote": "verified peer companies & most of them are in downtrend.",
+    "exitedAt": "2026-08-15T06:15:08.433Z",
+    "sourceWatchlistId": "OvqMPl_ZypM",
+    "id": "egsoelJxnyg"
+  },
+  {
+    "symbol": "JINDALSAW",
+    "category": "active",
+    "side": "long",
+    "watchedSince": "2026-08-04T11:17:02.243Z",
+    "notes": [],
+    "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/JINDALSAW/774145",
+    "rating": 0,
+    "fundamentals": {
+      "asOfPeriod": "2026-06",
+      "quarterCount": 8,
+      "quarters": [
+        {
+          "period": "2024-09",
+          "sales": "5572",
+          "netProfit": "475",
+          "eps": "7.81"
+        },
+        {
+          "period": "2024-12",
+          "sales": "5271",
+          "netProfit": "479",
+          "eps": "7.92"
+        },
+        {
+          "period": "2025-03",
+          "sales": "5047",
+          "netProfit": "87",
+          "eps": "4.55"
+        },
+        {
+          "period": "2025-06",
+          "sales": "4085",
+          "netProfit": "415",
+          "eps": "6.63"
+        },
+        {
+          "period": "2025-09",
+          "sales": "4234",
+          "netProfit": "139",
+          "eps": "2.38"
+        },
+        {
+          "period": "2025-12",
+          "sales": "4943",
+          "netProfit": "248",
+          "eps": "4.03"
+        },
+        {
+          "period": "2026-03",
+          "sales": "4633",
+          "netProfit": "124",
+          "eps": "2.18"
+        },
+        {
+          "period": "2026-06",
+          "sales": "4452",
+          "netProfit": "91",
+          "eps": "1.63"
+        }
+      ]
+    },
+    "exitReason": "fundamentals-poor",
+    "exitNote": "Fundamentals are week,",
+    "exitedAt": "2026-08-15T06:38:31.393Z",
+    "sourceWatchlistId": "GjvovlISKr4",
+    "id": "smLR4xlCYi0"
+  }
+]

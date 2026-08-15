@@ -210,9 +210,16 @@ Reached via the **Watchlist** sidebar item. Top to bottom:
    being deleted is already on screen to read. An empty log needs no empty-state
    copy while the composer is unfolded — the placeholder text already says what
    goes there; "No notes yet." only shows if you fold the composer away.
-6. **Remove confirmation** (`ConfirmDialog`, shared `Modal`) — shows the
+6. **Exit confirmation** (`ExitWatchlistModal`, shared `Modal`) — shows the
    symbol prominently (avatar chip + bold ticker, not buried in a sentence) so
-   it's unambiguous which stock is about to be removed.
+   it's unambiguous which stock is about to be removed, a **required** reason
+   `<select>` (options from `modules/exited-watchlist`'s `EXIT_REASONS` — Fundamentals
+   Poor, Peer Comparison Failed, VCP / Base Failed, and others; see
+   [exited-watchlist.spec.md](exited-watchlist.spec.md)), and an **optional** note
+   textarea. Submit is disabled until a reason is picked. This replaced a plain
+   `ConfirmDialog` once removing stopped being destructive — the row now moves to
+   the Exited Watchlist instead of being deleted, so what used to be "are you sure"
+   is now "why".
 
 ## Behaviour
 
@@ -243,12 +250,22 @@ Reached via the **Watchlist** sidebar item. Top to bottom:
   the same silent refetch runs. One API call covers all three because the array is
   small and this is a single-user local-first journal — there's no concurrent writer
   to lose an entry to.
-- **Removing requires confirmation** — clicking × opens `ConfirmDialog`; only
-  confirming calls `DELETE /watchlist/:id`. It **also discards that item's draft**,
-  if it has one — a draft with no watchlist item behind it can never be resumed.
-  This is the only place the Watchlist deletes a draft; discarding one on its own
-  belongs to the stepper. It **also deletes that item's fundamentals record**, if
-  one exists, the same way — see [fundamentals.spec.md](fundamentals.spec.md).
+- **Removing requires a reason** — clicking × opens `ExitWatchlistModal`; only
+  confirming (with a reason picked) archives the item. The full item — including its
+  fundamentals record's raw quarters, if `useFundamentals().byWatchlistItemId` has one
+  for it — is first `POST`ed to `/exited-watchlist` (see
+  [exited-watchlist.spec.md](exited-watchlist.spec.md)) along with the reason, optional
+  note, and an `exitedAt` timestamp — **only once that succeeds** does
+  `DELETE /watchlist/:id` run, so a failed archive never loses the row. It **also
+  discards that item's draft**, if it has one — a draft with no watchlist item behind
+  it can never be resumed, and unlike fundamentals a draft has nothing worth carrying
+  into a read-only archive (it's mid-entry stepper state, not captured research), so it
+  really is just deleted. This is the only place the Watchlist deletes a draft;
+  discarding one on its own belongs to the stepper. It **also deletes that item's live
+  fundamentals record**, the same way — but only *after* its quarters have already been
+  copied into the archived item, so the data survives the delete; see
+  [fundamentals.spec.md](fundamentals.spec.md) and
+  [exited-watchlist.spec.md](exited-watchlist.spec.md).
 - Refetches after add/remove/move/rate/note are silent (no loading flash) — only
   the first load shows the loading state. The open notes popup re-reads its item
   from the refreshed list by id, so a save flows straight back into it instead of
@@ -276,16 +293,17 @@ frontend/src/modules/watchlist/
 └── components/
     ├── AddTickerModal.tsx      # popup: ticker + side + category + opening note, duplicate-ticker warning/block
     ├── NotesModal.tsx          # popup: the dated notes log — fact + optional conclusion per entry
-    ├── TickerSearch.tsx        # client-side ticker search box
+    ├── ExitWatchlistModal.tsx  # popup: required exit reason + optional note, replaces the old remove confirm
     ├── CategoryFilterTabs.tsx  # All/Active/Daily/Long-term, with counts
     ├── RatingFilterTabs.tsx    # Any/★1-★5/Unrated, with counts — reuses CategoryFilterTabs.css pills
     ├── CategorySelect.tsx      # icon-only chip over a real <select> — reassigns an item's category
     ├── RatingStar.tsx          # compact rating control — star icon + number, click cycles unrated→1..5→unrated
-    └── WatchlistTable.tsx      # the detail table; owns the remove-confirmation flow
+    └── WatchlistTable.tsx      # the detail table; owns the exit-and-archive flow
 
 frontend/src/shared/components/
 ├── PageHeader.tsx               # icon chip + title + subtitle, used by every page
 ├── SideBadge.tsx                # long/short pill — shared with the dashboard's trades table
+├── TickerSearch.tsx              # client-side ticker search box — promoted here once modules/exited-watchlist needed it too
 ├── Modal.tsx                    # backdrop + card shell (Escape/backdrop-click to close)
 └── ConfirmDialog.tsx            # confirm/cancel modal built on Modal; message accepts rich content
 ```
@@ -318,3 +336,11 @@ way it depends on `modules/drafts` — both are domain-only leaves that neither
 imports back, so there's no cycle. See
 [fundamentals.spec.md](fundamentals.spec.md) and
 [verify-fundamental.spec.md](verify-fundamental.spec.md).
+
+Also depends on `modules/exited-watchlist` for `EXIT_REASONS`/`ExitReason`
+(used by `ExitWatchlistModal`) and `addExitedWatchlistItem` (called from
+`WatchlistPage` when a row is exited) — one-way, `exited-watchlist` never
+imports back. The barrel here also exports `itemRating`, `itemNotes`,
+`categoryMeta`, `CATEGORIES`, and `formatWatchedLabel` specifically so
+`exited-watchlist` can reuse them rather than reimplementing. See
+[exited-watchlist.spec.md](exited-watchlist.spec.md).

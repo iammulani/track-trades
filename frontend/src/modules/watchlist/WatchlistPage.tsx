@@ -1,16 +1,17 @@
 import { useMemo, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
+import { addExitedWatchlistItem, type ExitReason } from '../exited-watchlist'
 import { Icon } from '../../shared/components/Icon'
 import { PageHeader } from '../../shared/components/PageHeader'
+import { TickerSearch } from '../../shared/components/TickerSearch'
 import { useDrafts } from '../drafts'
 import { useFundamentals } from '../fundamentals'
 import { AddTickerModal } from './components/AddTickerModal'
 import { CategoryFilterTabs, type CategoryFilter } from './components/CategoryFilterTabs'
 import { RatingFilterTabs, type RatingFilter } from './components/RatingFilterTabs'
-import { TickerSearch } from './components/TickerSearch'
 import { WatchlistTable } from './components/WatchlistTable'
 import { useWatchlist } from './hooks/useWatchlist'
-import type { NewWatchlistItem } from './types/watchlistItem'
+import type { NewWatchlistItem, WatchlistItemWithMetrics } from './types/watchlistItem'
 import { CATEGORIES } from './utils/categories'
 import { itemRating, RATING_VALUES } from './utils/ratings'
 import './WatchlistPage.css'
@@ -111,12 +112,36 @@ export function WatchlistPage() {
     setSearchParams({})
   }
 
-  // Drop the parked stepper run and any fundamentals record along with the symbol — neither
-  // can be resumed/attached to a watchlist item that no longer exists.
-  async function handleRemove(id: string) {
-    await removeItem(id)
-    await discardDraft(id)
-    await removeFundamentalsFor(id)
+  // Archive the full item into the Exited Watchlist first — only once that's saved do we
+  // touch the active list, so a failed archive never loses the row. The fundamentals record
+  // (if any) is carried into the archive the same way notes/rating are, since it's data
+  // captured against this item too — only the parked stepper draft is dropped outright, since
+  // a draft with no watchlist item behind it can never be resumed either way.
+  async function handleExit(item: WatchlistItemWithMetrics, reason: ExitReason, note: string) {
+    const fundamentalsRecord = fundamentalsByItem[item.id]
+    await addExitedWatchlistItem({
+      symbol: item.symbol,
+      category: item.category,
+      side: item.side,
+      watchedSince: item.watchedSince,
+      notes: item.notes,
+      link: item.link,
+      rating: item.rating,
+      fundamentals: fundamentalsRecord
+        ? {
+            asOfPeriod: fundamentalsRecord.asOfPeriod,
+            quarterCount: fundamentalsRecord.quarterCount,
+            quarters: fundamentalsRecord.quarters,
+          }
+        : undefined,
+      exitReason: reason,
+      exitNote: note.trim() || undefined,
+      exitedAt: new Date().toISOString(),
+      sourceWatchlistId: item.id,
+    })
+    await removeItem(item.id)
+    await discardDraft(item.id)
+    await removeFundamentalsFor(item.id)
   }
 
   return (
@@ -181,7 +206,7 @@ export function WatchlistPage() {
               items={filtered}
               drafts={draftsByItem}
               fundamentals={fundamentalsByItem}
-              onRemove={handleRemove}
+              onExit={handleExit}
               onUpdateCategory={updateCategory}
               onUpdateRating={updateRating}
               onUpdateNotes={updateNotes}

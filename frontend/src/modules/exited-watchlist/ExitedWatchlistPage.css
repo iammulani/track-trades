@@ -1,0 +1,23 @@
+.exited-watchlist-page {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 1240px;
+  margin: 0 auto;
+}
+
+.exited-watchlist-page__toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.exited-watchlist-page__state {
+  color: var(--text-secondary);
+  padding: 8px 0;
+}
+
+.exited-watchlist-page__state--error {
+  color: var(--critical-text);
+}

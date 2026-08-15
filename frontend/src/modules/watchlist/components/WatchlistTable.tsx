@@ -1,12 +1,12 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Card } from '../../../shared/components/Card'
-import { ConfirmDialog } from '../../../shared/components/ConfirmDialog'
 import { Icon } from '../../../shared/components/Icon'
 import { SideBadge } from '../../../shared/components/SideBadge'
 import { avatarColor } from '../../../shared/utils/avatarColor'
 import { formatDate, formatDateTime } from '../../../shared/utils/format'
 import type { TradeDraft } from '../../drafts'
+import type { ExitReason } from '../../exited-watchlist'
 import { Code33Badge, type FundamentalsRecord } from '../../fundamentals'
 import type {
   WatchCategory,
@@ -17,6 +17,7 @@ import type {
 import { noteCount } from '../utils/notes'
 import { itemRating } from '../utils/ratings'
 import { CategorySelect } from './CategorySelect'
+import { ExitWatchlistModal } from './ExitWatchlistModal'
 import { NotesModal } from './NotesModal'
 import { RatingStar } from './RatingStar'
 import './WatchlistTable.css'
@@ -27,7 +28,7 @@ interface WatchlistTableProps {
   drafts: Record<string, TradeDraft>
   /** Quarterly fundamentals, keyed by watchlist item id — drives the Code 33 badge. */
   fundamentals: Record<string, FundamentalsRecord>
-  onRemove: (id: string) => void
+  onExit: (item: WatchlistItemWithMetrics, reason: ExitReason, note: string) => Promise<void>
   onUpdateCategory: (id: string, category: WatchCategory) => void
   onUpdateRating: (id: string, rating: WatchRating) => void
   onUpdateNotes: (id: string, notes: WatchNote[]) => Promise<void>
@@ -37,12 +38,13 @@ export function WatchlistTable({
   items,
   drafts,
   fundamentals,
-  onRemove,
+  onExit,
   onUpdateCategory,
   onUpdateRating,
   onUpdateNotes,
 }: WatchlistTableProps) {
   const [pending, setPending] = useState<WatchlistItemWithMetrics | null>(null)
+  const [exiting, setExiting] = useState(false)
   const [notesFor, setNotesFor] = useState<WatchlistItemWithMetrics | null>(null)
 
   // The open item is re-read from `items` so a save's silent refetch flows straight
@@ -168,8 +170,8 @@ export function WatchlistTable({
                         type="button"
                         className="watch-table__remove"
                         onClick={() => setPending(item)}
-                        aria-label={`Remove ${item.symbol} from watchlist`}
-                        title="Remove"
+                        aria-label={`Exit ${item.symbol} from watchlist`}
+                        title="Exit watchlist"
                       >
                         <Icon name="x" size={14} />
                       </button>
@@ -182,33 +184,18 @@ export function WatchlistTable({
         </table>
       </div>
 
-      <ConfirmDialog
-        open={pending !== null}
-        title="Remove from watchlist?"
-        message={
-          pending && (
-            <div className="remove-confirm">
-              <span
-                className="remove-confirm__avatar"
-                style={{ background: avatarColor(pending.symbol) }}
-                aria-hidden="true"
-              >
-                {pending.symbol.slice(0, 2)}
-              </span>
-              <div>
-                <div className="remove-confirm__symbol">{pending.symbol}</div>
-                <div className="remove-confirm__note">
-                  Will be removed from your watchlist. This can't be undone.
-                </div>
-              </div>
-            </div>
-          )
-        }
-        confirmLabel="Remove"
-        onCancel={() => setPending(null)}
-        onConfirm={() => {
-          if (pending) onRemove(pending.id)
-          setPending(null)
+      <ExitWatchlistModal
+        item={pending}
+        exiting={exiting}
+        onClose={() => setPending(null)}
+        onExit={async (item, reason, note) => {
+          setExiting(true)
+          try {
+            await onExit(item, reason, note)
+            setPending(null)
+          } finally {
+            setExiting(false)
+          }
         }}
       />
 

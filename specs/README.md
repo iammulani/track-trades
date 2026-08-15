@@ -53,6 +53,7 @@ The files this feature owns under `modules/<feature>/`.
 | Report        | [report.spec.md](report.spec.md)           | `frontend/src/modules/report`      |
 | Equity Curve  | [equity.spec.md](equity.spec.md)           | `frontend/src/modules/equity`      |
 | Watchlist     | [watchlist.spec.md](watchlist.spec.md)     | `frontend/src/modules/watchlist`   |
+| Exited Watchlist | [exited-watchlist.spec.md](exited-watchlist.spec.md) | `frontend/src/modules/exited-watchlist` |
 | Place Trade   | [place-trade.spec.md](place-trade.spec.md) | `frontend/src/modules/place-trade` |
 | Drafts domain | [drafts.spec.md](drafts.spec.md)           | `frontend/src/modules/drafts`      |
 | Trade Detail  | [trade-detail.spec.md](trade-detail.spec.md) | `frontend/src/modules/trade-detail` |

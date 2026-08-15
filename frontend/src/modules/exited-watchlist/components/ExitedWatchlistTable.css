@@ -1,0 +1,230 @@
+.exited-table {
+  padding: 4px 4px 8px;
+}
+
+.exited-table__scroll {
+  overflow-x: auto;
+}
+
+.exited-table__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.exited-table__table th {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 10px 12px;
+  background: var(--surface-2);
+  white-space: nowrap;
+}
+
+.exited-table__table th:first-child {
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+.exited-table__table th:last-child {
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.exited-table__table td {
+  padding: 12px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-secondary);
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.exited-table__table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.exited-table__table tbody tr:hover td {
+  background: var(--surface-2);
+}
+
+.exited-table__stock {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.exited-table__avatar {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.exited-table__symbol {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.exited-table__link {
+  display: inline-grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  color: var(--text-muted);
+}
+
+.exited-table__link:hover {
+  background: var(--surface-2);
+  color: var(--accent);
+}
+
+.exited-table__cat {
+  display: inline-grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+}
+
+.exited-table__cat--amber {
+  color: var(--amber);
+  background-color: color-mix(in srgb, var(--amber) 16%, transparent);
+}
+
+.exited-table__cat--accent {
+  color: var(--accent);
+  background-color: color-mix(in srgb, var(--accent) 14%, transparent);
+}
+
+.exited-table__cat--violet {
+  color: var(--violet);
+  background-color: color-mix(in srgb, var(--violet) 14%, transparent);
+}
+
+.exited-table__watched {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.exited-table__unrated,
+.exited-table__no-notes {
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.exited-table__notes-btn,
+.exited-table__fundamentals-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  border: none;
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  color: var(--accent);
+  cursor: pointer;
+}
+
+.exited-table__notes-btn {
+  width: auto;
+  padding: 0 6px;
+  min-width: 26px;
+}
+
+.exited-table__notes-btn:hover,
+.exited-table__fundamentals-btn:hover {
+  background: color-mix(in srgb, var(--accent) 20%, transparent);
+}
+
+.exited-table__reason {
+  font-size: 13px;
+  color: var(--text-primary);
+}
+
+.exited-table__exit-note {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  color: var(--accent);
+}
+
+.exited-table__exit-note:hover,
+.exited-table__exit-note:focus-visible {
+  background: color-mix(in srgb, var(--accent) 20%, transparent);
+  color: var(--accent);
+}
+
+.exited-table__exit-note-panel {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--text-primary);
+  white-space: pre-wrap;
+}
+
+.exited-table__exited {
+  color: var(--text-secondary);
+}
+
+.exited-table__remove {
+  display: inline-grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.exited-table__remove:hover {
+  background: color-mix(in srgb, var(--critical) 12%, transparent);
+  color: var(--critical);
+}
+
+.exited-remove-confirm {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.exited-remove-confirm__avatar {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  flex-shrink: 0;
+}
+
+.exited-remove-confirm__symbol {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.exited-remove-confirm__note {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}

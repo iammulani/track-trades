@@ -180,14 +180,18 @@ consumers, so this can't create a cycle (same relationship `place-trade`'s
 - **One record per watchlist item.** `fetchFundamentalsFor(watchlistItemId)`
   (`GET /fundamentals?watchlistItemId=…`) is the lookup; there is no record without a watchlist
   item behind it.
-- **A record is deleted, never orphaned**, in two places:
-  1. the watchlist item is **removed** (`WatchlistPage`, via `useFundamentals().removeFor`) —
-     nothing left to attach it to;
+- **The live record is deleted, never orphaned**, in two places — in both, the watchlist
+  item it was keyed to stops existing, so the record has nothing left to attach to:
+  1. the watchlist item is **exited** (`WatchlistPage`'s `handleExit`) — but only *after*
+     its raw `quarters`/`asOfPeriod`/`quarterCount` have been copied onto the archived
+     [`ExitedWatchlistItem`](exited-watchlist.spec.md) being created, so exiting doesn't
+     lose the captured figures, just the live, editable record;
   2. a trade is **placed** against it (`usePlaceTrade`'s `placeTrade()`, via
-     `removeFundamentals()` directly) — the watchlist item is gone the same way, just through a
-     different removal path (`removeItem` called straight from the stepper, not through
-     `WatchlistPage`'s remove handler), which is why this needed its own explicit cleanup call
-     rather than being covered by path 1. See [place-trade.spec.md](place-trade.spec.md).
+     `removeFundamentals()` directly) — a different removal path (`removeItem` called
+     straight from the stepper, not through `WatchlistPage`'s exit handler), which is why
+     this needed its own explicit cleanup call. Here the score (not just the raw quarters)
+     is what's preserved, via `toCode33Snapshot()` onto the trade — see
+     [place-trade.spec.md](place-trade.spec.md).
 - **Nothing is ever "submitted."** Unlike a place-trade draft, there's no consuming action that
   converts or discards the record — it's autosaved indefinitely as
   [verify-fundamental.spec.md](verify-fundamental.spec.md) edits it.

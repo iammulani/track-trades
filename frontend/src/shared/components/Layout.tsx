@@ -15,6 +15,7 @@ const NAV: NavItem[] = [
   { to: '/report', label: 'Report', icon: 'report' },
   { to: '/equity', label: 'Equity Curve', icon: 'trending' },
   { to: '/watchlist', label: 'Watchlist', icon: 'eye' },
+  { to: '/exited-watchlist', label: 'Exited Watchlist', icon: 'archive' },
   { to: '/settings', label: 'Settings', icon: 'settings' },
   { to: '/about', label: 'About', icon: 'about' },
 ]
