@@ -4,8 +4,147 @@
     "watchlistItemId": "hFaaiaa-qPk",
     "asOfPeriod": "2026-06",
     "quarterCount": 8,
-    "quarters": [],
-    "updatedAt": "2026-08-14T10:07:12.187Z"
+    "quarters": [
+      {
+        "period": "2024-09",
+        "sales": "10932",
+        "netProfit": "-7176",
+        "eps": "-1.03",
+        "operatingProfit": "4550",
+        "interest": "6614"
+      },
+      {
+        "period": "2024-12",
+        "sales": "11117",
+        "netProfit": "-6609",
+        "eps": "-0.95",
+        "operatingProfit": "4712",
+        "interest": "5940"
+      },
+      {
+        "period": "2025-03",
+        "sales": "11015",
+        "netProfit": "-7167",
+        "eps": "-1.00",
+        "operatingProfit": "4659",
+        "interest": "6471"
+      },
+      {
+        "period": "2025-06",
+        "sales": "11022",
+        "netProfit": "-6608",
+        "eps": "-0.61",
+        "operatingProfit": "4612",
+        "interest": "5893"
+      },
+      {
+        "period": "2025-09",
+        "sales": "11195",
+        "netProfit": "-5524",
+        "eps": "-0.51",
+        "operatingProfit": "4684",
+        "interest": "4784"
+      },
+      {
+        "period": "2025-12",
+        "sales": "11323",
+        "netProfit": "-5286",
+        "eps": "-0.49",
+        "operatingProfit": "4817",
+        "interest": "5828"
+      },
+      {
+        "period": "2026-03",
+        "sales": "11332",
+        "netProfit": "51970",
+        "eps": "4.80",
+        "operatingProfit": "4889",
+        "interest": "4990"
+      },
+      {
+        "period": "2026-06",
+        "sales": "11689",
+        "netProfit": "-3754",
+        "eps": "-0.35",
+        "operatingProfit": "5034",
+        "interest": "5120"
+      }
+    ],
+    "updatedAt": "2026-08-16T00:00:00.000Z",
+    "debtEquityAsOfYear": "2026",
+    "debtEquityYearCount": 7,
+    "debtEquityYears": [
+      {
+        "year": "2020",
+        "borrowings": "114996",
+        "equityCapital": "28735",
+        "reserves": "-22756",
+        "cashFromOperatingActivity": "7328",
+        "cashFromInvestingActivity": "-2698",
+        "cashFromFinancingActivity": "-5019",
+        "netProfit": "-73878"
+      },
+      {
+        "year": "2021",
+        "borrowings": "201720",
+        "equityCapital": "28735",
+        "reserves": "-66963",
+        "cashFromOperatingActivity": "15640",
+        "cashFromInvestingActivity": "1075",
+        "cashFromFinancingActivity": "-16731",
+        "netProfit": "-44233"
+      },
+      {
+        "year": "2022",
+        "borrowings": "213761",
+        "equityCapital": "32119",
+        "reserves": "-94084",
+        "cashFromOperatingActivity": "17387",
+        "cashFromInvestingActivity": "-5730",
+        "cashFromFinancingActivity": "-10554",
+        "netProfit": "-28245"
+      },
+      {
+        "year": "2023",
+        "borrowings": "237766",
+        "equityCapital": "48680",
+        "reserves": "-123039",
+        "cashFromOperatingActivity": "18869",
+        "cashFromInvestingActivity": "-5414",
+        "cashFromFinancingActivity": "-14680",
+        "netProfit": "-29301"
+      },
+      {
+        "year": "2024",
+        "borrowings": "243809",
+        "equityCapital": "50120",
+        "reserves": "-154287",
+        "cashFromOperatingActivity": "20826",
+        "cashFromInvestingActivity": "-1907",
+        "cashFromFinancingActivity": "-18980",
+        "netProfit": "-31238"
+      },
+      {
+        "year": "2025",
+        "borrowings": "233229",
+        "equityCapital": "71393",
+        "reserves": "-141713",
+        "cashFromOperatingActivity": "9290",
+        "cashFromInvestingActivity": "-16248",
+        "cashFromFinancingActivity": "7047",
+        "netProfit": "-27384"
+      },
+      {
+        "year": "2026",
+        "borrowings": "192528",
+        "equityCapital": "108343",
+        "reserves": "-144101",
+        "cashFromOperatingActivity": "19411",
+        "cashFromInvestingActivity": "-6104",
+        "cashFromFinancingActivity": "-11458",
+        "netProfit": "34552"
+      }
+    ]
   },
   {
     "watchlistItemId": "t-u495-Bi0w",
