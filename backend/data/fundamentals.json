@@ -244,53 +244,143 @@
         "period": "2024-09",
         "sales": "571",
         "netProfit": "360",
-        "eps": "5.69"
+        "eps": "5.69",
+        "operatingProfit": "374",
+        "interest": "2"
       },
       {
         "period": "2024-12",
         "sales": "588",
         "netProfit": "295",
-        "eps": "4.66"
+        "eps": "4.66",
+        "operatingProfit": "386",
+        "interest": "2"
       },
       {
         "period": "2025-03",
         "sales": "567",
         "netProfit": "299",
-        "eps": "4.70"
+        "eps": "4.70",
+        "operatingProfit": "365",
+        "interest": "2"
       },
       {
         "period": "2025-06",
         "sales": "607",
         "netProfit": "396",
-        "eps": "6.23"
+        "eps": "6.23",
+        "operatingProfit": "388",
+        "interest": "2"
       },
       {
         "period": "2025-09",
         "sales": "658",
         "netProfit": "345",
-        "eps": "5.41"
+        "eps": "5.41",
+        "operatingProfit": "430",
+        "interest": "2"
       },
       {
         "period": "2025-12",
         "sales": "705",
         "netProfit": "404",
-        "eps": "6.34"
+        "eps": "6.34",
+        "operatingProfit": "470",
+        "interest": "2"
       },
       {
         "period": "2026-03",
         "sales": "739",
         "netProfit": "385",
-        "eps": "6.03"
+        "eps": "6.03",
+        "operatingProfit": "507",
+        "interest": "2"
       },
       {
         "period": "2026-06",
         "sales": "767",
         "netProfit": "504",
-        "eps": "7.88"
+        "eps": "7.88",
+        "operatingProfit": "508",
+        "interest": "2"
       }
     ],
-    "updatedAt": "2026-08-15T14:18:40.558Z",
-    "id": "tTjlT1kExmw"
+    "updatedAt": "2026-08-16T00:00:00.000Z",
+    "id": "tTjlT1kExmw",
+    "debtEquityAsOfYear": "2026",
+    "debtEquityYearCount": 7,
+    "debtEquityYears": [
+      {
+        "year": "2020",
+        "borrowings": "0",
+        "equityCapital": "612",
+        "reserves": "1981",
+        "cashFromOperatingActivity": "605",
+        "cashFromInvestingActivity": "37",
+        "cashFromFinancingActivity": "-468",
+        "netProfit": "415"
+      },
+      {
+        "year": "2021",
+        "borrowings": "0",
+        "equityCapital": "616",
+        "reserves": "2484",
+        "cashFromOperatingActivity": "456",
+        "cashFromInvestingActivity": "-402",
+        "cashFromFinancingActivity": "-239",
+        "netProfit": "680"
+      },
+      {
+        "year": "2022",
+        "borrowings": "0",
+        "equityCapital": "622",
+        "reserves": "2857",
+        "cashFromOperatingActivity": "580",
+        "cashFromInvestingActivity": "-125",
+        "cashFromFinancingActivity": "-426",
+        "netProfit": "744"
+      },
+      {
+        "year": "2023",
+        "borrowings": "0",
+        "equityCapital": "623",
+        "reserves": "2892",
+        "cashFromOperatingActivity": "587",
+        "cashFromInvestingActivity": "98",
+        "cashFromFinancingActivity": "-712",
+        "netProfit": "723"
+      },
+      {
+        "year": "2024",
+        "borrowings": "79",
+        "equityCapital": "630",
+        "reserves": "3352",
+        "cashFromOperatingActivity": "777",
+        "cashFromInvestingActivity": "-104",
+        "cashFromFinancingActivity": "-671",
+        "netProfit": "1107"
+      },
+      {
+        "year": "2025",
+        "borrowings": "88",
+        "equityCapital": "635",
+        "reserves": "3578",
+        "cashFromOperatingActivity": "1200",
+        "cashFromInvestingActivity": "-82",
+        "cashFromFinancingActivity": "-1116",
+        "netProfit": "1286"
+      },
+      {
+        "year": "2026",
+        "borrowings": "75",
+        "equityCapital": "638",
+        "reserves": "4021",
+        "cashFromOperatingActivity": "1466",
+        "cashFromInvestingActivity": "-326",
+        "cashFromFinancingActivity": "-1150",
+        "netProfit": "1529"
+      }
+    ]
   },
   {
     "watchlistItemId": "esvWIi7HCHw",

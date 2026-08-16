@@ -21,7 +21,8 @@
     ],
     "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/VIJAYA/1429761",
     "watchedSince": "2026-06-29T12:01:07.556Z",
-    "id": "esvWIi7HCHw"
+    "id": "esvWIi7HCHw",
+    "rating": 5
   },
   {
     "symbol": "TIPSMUSIC",
@@ -249,5 +250,14 @@
     "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/IDEA/3677697",
     "watchedSince": "2026-08-04T11:25:37.727Z",
     "id": "hFaaiaa-qPk"
+  },
+  {
+    "symbol": "GRANULES",
+    "category": "daily",
+    "side": "long",
+    "notes": [],
+    "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/GRANULES/3039233",
+    "watchedSince": "2026-08-16T06:34:32.670Z",
+    "id": "WNlwmKJKPTk"
   }
 ]
