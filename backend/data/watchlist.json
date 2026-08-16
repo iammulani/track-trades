@@ -213,7 +213,8 @@
     "notes": [],
     "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/NAM-INDIA/91393",
     "watchedSince": "2026-08-03T17:15:13.561Z",
-    "id": "MoaxcPiQdok"
+    "id": "MoaxcPiQdok",
+    "rating": 3
   },
   {
     "symbol": "MOTHERSON",
@@ -253,11 +254,20 @@
   },
   {
     "symbol": "GRANULES",
-    "category": "daily",
+    "category": "active",
     "side": "long",
     "notes": [],
     "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/GRANULES/3039233",
     "watchedSince": "2026-08-16T06:34:32.670Z",
     "id": "WNlwmKJKPTk"
+  },
+  {
+    "symbol": "HFCL",
+    "category": "active",
+    "side": "long",
+    "notes": [],
+    "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/HFCL/5619457",
+    "watchedSince": "2026-08-16T07:26:25.215Z",
+    "id": "fcBJTo8P4Xg"
   }
 ]
