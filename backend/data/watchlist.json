@@ -12,7 +12,13 @@
     "symbol": "VIJAYA",
     "category": "active",
     "side": "long",
-    "notes": "",
+    "notes": [
+      {
+        "id": "cf15e287-71a8-42a7-954d-a7ef1492983a",
+        "text": "verified peers looks good.",
+        "date": "2026-08-16T05:36:19.716Z"
+      }
+    ],
     "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/VIJAYA/1429761",
     "watchedSince": "2026-06-29T12:01:07.556Z",
     "id": "esvWIi7HCHw"
@@ -114,7 +120,13 @@
     "symbol": "APOLLOHOSP",
     "category": "active",
     "side": "long",
-    "notes": "",
+    "notes": [
+      {
+        "id": "90474e97-8677-4bb4-b6b1-ce406998f840",
+        "text": "verified peers looks good.",
+        "date": "2026-08-16T05:33:04.299Z"
+      }
+    ],
     "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/APOLLOHOSP/40193",
     "watchedSince": "2026-07-27T04:47:34.078Z",
     "id": "t-u495-Bi0w",
