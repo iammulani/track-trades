@@ -61,7 +61,7 @@
     "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/SYRMA/2763009",
     "watchedSince": "2026-07-18T08:55:47.397Z",
     "id": "FKmnpSLuNxA",
-    "rating": 3
+    "rating": 4
   },
   {
     "symbol": "SONACOMS",
@@ -268,6 +268,7 @@
     "notes": [],
     "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/HFCL/5619457",
     "watchedSince": "2026-08-16T07:26:25.215Z",
-    "id": "fcBJTo8P4Xg"
+    "id": "fcBJTo8P4Xg",
+    "rating": 5
   }
 ]
