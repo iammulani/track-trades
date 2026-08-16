@@ -16,53 +16,143 @@
         "period": "2024-09",
         "sales": "5589",
         "netProfit": "396",
-        "eps": "26.34"
+        "eps": "26.34",
+        "operatingProfit": "816",
+        "interest": "118"
       },
       {
         "period": "2024-12",
         "sales": "5527",
         "netProfit": "379",
-        "eps": "25.89"
+        "eps": "25.89",
+        "operatingProfit": "762",
+        "interest": "110"
       },
       {
         "period": "2025-03",
         "sales": "5592",
         "netProfit": "414",
-        "eps": "27.10"
+        "eps": "27.10",
+        "operatingProfit": "770",
+        "interest": "115"
       },
       {
         "period": "2025-06",
         "sales": "5842",
         "netProfit": "441",
-        "eps": "30.10"
+        "eps": "30.10",
+        "operatingProfit": "852",
+        "interest": "108"
       },
       {
         "period": "2025-09",
         "sales": "6304",
         "netProfit": "494",
-        "eps": "33.19"
+        "eps": "33.19",
+        "operatingProfit": "941",
+        "interest": "110"
       },
       {
         "period": "2025-12",
         "sales": "6477",
         "netProfit": "516",
-        "eps": "34.93"
+        "eps": "34.93",
+        "operatingProfit": "965",
+        "interest": "113"
       },
       {
         "period": "2026-03",
         "sales": "6606",
         "netProfit": "551",
-        "eps": "36.81"
+        "eps": "36.81",
+        "operatingProfit": "1011",
+        "interest": "119"
       },
       {
         "period": "2026-06",
         "sales": "7044",
         "netProfit": "610",
-        "eps": "40.39"
+        "eps": "40.39",
+        "operatingProfit": "1092",
+        "interest": "120"
       }
     ],
-    "updatedAt": "2026-08-14T12:12:22.981Z",
-    "id": "xonapTAMqr8"
+    "updatedAt": "2026-08-16T00:00:00.000Z",
+    "id": "xonapTAMqr8",
+    "debtEquityAsOfYear": "2026",
+    "debtEquityYearCount": 7,
+    "debtEquityYears": [
+      {
+        "year": "2020",
+        "borrowings": "3596",
+        "equityCapital": "70",
+        "reserves": "3270",
+        "cashFromOperatingActivity": "1293",
+        "cashFromInvestingActivity": "-289",
+        "cashFromFinancingActivity": "-910",
+        "netProfit": "432"
+      },
+      {
+        "year": "2021",
+        "borrowings": "4160",
+        "equityCapital": "72",
+        "reserves": "4531",
+        "cashFromOperatingActivity": "1265",
+        "cashFromInvestingActivity": "-880",
+        "cashFromFinancingActivity": "-340",
+        "netProfit": "137"
+      },
+      {
+        "year": "2022",
+        "borrowings": "4068",
+        "equityCapital": "72",
+        "reserves": "5551",
+        "cashFromOperatingActivity": "1696",
+        "cashFromInvestingActivity": "-747",
+        "cashFromFinancingActivity": "-792",
+        "netProfit": "1108"
+      },
+      {
+        "year": "2023",
+        "borrowings": "4332",
+        "equityCapital": "72",
+        "reserves": "6126",
+        "cashFromOperatingActivity": "1377",
+        "cashFromInvestingActivity": "-857",
+        "cashFromFinancingActivity": "-633",
+        "netProfit": "844"
+      },
+      {
+        "year": "2024",
+        "borrowings": "5333",
+        "equityCapital": "72",
+        "reserves": "6864",
+        "cashFromOperatingActivity": "1920",
+        "cashFromInvestingActivity": "-1537",
+        "cashFromFinancingActivity": "-311",
+        "netProfit": "935"
+      },
+      {
+        "year": "2025",
+        "borrowings": "7864",
+        "equityCapital": "72",
+        "reserves": "8140",
+        "cashFromOperatingActivity": "2136",
+        "cashFromInvestingActivity": "-3383",
+        "cashFromFinancingActivity": "1319",
+        "netProfit": "1505"
+      },
+      {
+        "year": "2026",
+        "borrowings": "8493",
+        "equityCapital": "72",
+        "reserves": "9408",
+        "cashFromOperatingActivity": "2856",
+        "cashFromInvestingActivity": "-2145",
+        "cashFromFinancingActivity": "-478",
+        "netProfit": "2003"
+      }
+    ]
   },
   {
     "watchlistItemId": "FKmnpSLuNxA",
