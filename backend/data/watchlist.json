@@ -270,5 +270,14 @@
     "watchedSince": "2026-08-16T07:26:25.215Z",
     "id": "fcBJTo8P4Xg",
     "rating": 5
+  },
+  {
+    "symbol": "BHEL",
+    "category": "active",
+    "side": "long",
+    "notes": [],
+    "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/BHEL/112129",
+    "watchedSince": "2026-08-17T06:29:11.758Z",
+    "id": "oFWawQqeSxQ"
   }
 ]

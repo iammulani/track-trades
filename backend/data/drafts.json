@@ -3,21 +3,21 @@
     "watchlistId": "esvWIi7HCHw",
     "stepIndex": 6,
     "tradeParams": {
-      "entryPrice": "1412",
-      "stopLoss": "1320",
+      "entryPrice": "1485",
+      "stopLoss": "1410",
       "target": "",
       "quantity": "80",
-      "entryDate": "2026-07-14"
+      "entryDate": "2026-08-17"
     },
     "stageBaseAnswers": {
       "stage": "stage-2",
       "base": "base-1"
     },
     "indicatorData": {
-      "rsi": "69",
-      "fiftyDayMa": "1312.23",
-      "week52Low": "862",
-      "week52High": "1412"
+      "rsi": "70",
+      "fiftyDayMa": "1354",
+      "week52Low": "861.40",
+      "week52High": "1510.60"
     },
     "indicatorChecklistChecked": {
       "ma200-duration": true,
@@ -29,20 +29,16 @@
       "baseEndDate": "2026-07-14",
       "contractions": [
         {
-          "high": "1380",
-          "low": "1213"
+          "high": "1374",
+          "low": "1207"
         },
         {
-          "high": "1430",
-          "low": "1261"
+          "high": "1376",
+          "low": "1250"
         },
         {
-          "high": "1391",
-          "low": "1283"
-        },
-        {
-          "high": "1410",
-          "low": "1304"
+          "high": "1417",
+          "low": "1338"
         }
       ]
     },
@@ -50,12 +46,12 @@
       "volume-price-quiet": true,
       "weak-holders-shaken-out": true,
       "minimal-overhead-resistance": true,
-      "volume-confirms-breakout": false,
-      "market-bullish": false,
-      "group-positive": false
+      "volume-confirms-breakout": true,
+      "market-bullish": true,
+      "group-positive": true
     },
     "createdAt": "2026-07-14T03:44:48.746168Z",
-    "updatedAt": "2026-07-17T06:40:07.296Z",
+    "updatedAt": "2026-08-17T04:20:06.701Z",
     "id": "vijaya-draft"
   },
   {
