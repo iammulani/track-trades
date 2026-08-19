@@ -288,5 +288,14 @@
     "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/TVSMOTOR/2170625",
     "watchedSince": "2026-08-18T06:42:08.280Z",
     "id": "-uQa5s9_2dA"
+  },
+  {
+    "symbol": "ABB",
+    "category": "active",
+    "side": "long",
+    "notes": [],
+    "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/ABB/3329",
+    "watchedSince": "2026-08-19T09:27:23.971Z",
+    "id": "WqzJT1pdjMA"
   }
 ]

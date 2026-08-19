@@ -663,9 +663,9 @@
     "side": "long",
     "quantity": 2,
     "entryPrice": 19100,
-    "exitPrice": null,
+    "exitPrice": 19908,
     "entryTime": "2026-08-13T06:25:53.986Z",
-    "exitTime": null,
+    "exitTime": "2026-08-19T05:49:00.000Z",
     "notes": "",
     "setup": {
       "watchedSince": "2026-07-15T06:37:09.084Z",
@@ -896,6 +896,12 @@
         ]
       }
     },
-    "id": "VjA_ZyZE1oM"
+    "id": "VjA_ZyZE1oM",
+    "exitLearnings": [
+      {
+        "reason": "thesis-changed",
+        "note": "Marking is not reacting properly. its been played on around top & dropped. I have exited 1 stock at 20,100.00 & other at 19,716.00,"
+      }
+    ]
   }
 ]
