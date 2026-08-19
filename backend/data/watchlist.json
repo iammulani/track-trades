@@ -293,7 +293,14 @@
     "symbol": "ABB",
     "category": "active",
     "side": "long",
-    "notes": [],
+    "notes": [
+      {
+        "id": "0d5c2810-9a70-417c-9547-04acbf595ab5",
+        "text": "Mar 2026 EPS spiked to 84.17 (vs ~20 normal) on a ₹1,442cr Exceptional Item inside Other Income. Operating Profit that quarter (408cr) was actually the lowest of the trailing 8 quarters. Jun 2026 already reverted to a normal 17.10 EPS.",
+        "conclusion": "One-off gain, not operating growth — don't read the Mar 2026 print as a trend.",
+        "date": "2026-08-19T00:00:00.000Z"
+      }
+    ],
     "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/ABB/3329",
     "watchedSince": "2026-08-19T09:27:23.971Z",
     "id": "WqzJT1pdjMA"
