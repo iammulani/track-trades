@@ -304,5 +304,104 @@
     "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/ABB/3329",
     "watchedSince": "2026-08-19T09:27:23.971Z",
     "id": "WqzJT1pdjMA"
+  },
+  {
+    "symbol": "MOBILISE-S",
+    "category": "long-term",
+    "side": "long",
+    "notes": [],
+    "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/MOBILISE-SM/194610177",
+    "watchedSince": "2026-08-21T06:44:59.022Z",
+    "id": "w8_9B_AmqwE"
+  },
+  {
+    "symbol": "AYE",
+    "category": "active",
+    "side": "long",
+    "notes": [],
+    "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/AYE/194811137",
+    "watchedSince": "2026-08-21T06:45:20.355Z",
+    "id": "sHWKgmc_2eU"
+  },
+  {
+    "symbol": "CLEANMAX",
+    "category": "daily",
+    "side": "long",
+    "notes": [],
+    "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/CLEANMAX/194606849",
+    "watchedSince": "2026-08-21T06:51:00.757Z",
+    "id": "Zcm8xQYpy4A"
+  },
+  {
+    "symbol": "PNGSREVA",
+    "category": "daily",
+    "side": "long",
+    "notes": [],
+    "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/PNGSREVA/194621953",
+    "watchedSince": "2026-08-21T06:52:33.106Z",
+    "id": "eN2UOBYZdPU"
+  },
+  {
+    "symbol": "GSPCROP",
+    "category": "daily",
+    "side": "long",
+    "notes": [],
+    "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/GSPCROP/195133185",
+    "watchedSince": "2026-08-21T06:57:35.376Z",
+    "id": "csY8Dl0sdaY"
+  },
+  {
+    "symbol": "TIPCO",
+    "category": "daily",
+    "side": "long",
+    "notes": [],
+    "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/BSE/TIPCO/139453444",
+    "watchedSince": "2026-08-21T07:03:02.108Z",
+    "id": "unUWLxOFxKI"
+  },
+  {
+    "symbol": "HIGHNESS",
+    "category": "active",
+    "side": "long",
+    "notes": [],
+    "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/BSE/HIGHNESS/139453700",
+    "watchedSince": "2026-08-21T07:04:05.707Z",
+    "id": "yNYxXNX9iZo"
+  },
+  {
+    "symbol": "AEROPLANE",
+    "category": "long-term",
+    "side": "long",
+    "notes": [],
+    "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/AEROPLANE/194987521",
+    "watchedSince": "2026-08-21T07:17:56.760Z",
+    "id": "g1IjFHlUCvU"
+  },
+  {
+    "symbol": "RECODE",
+    "category": "long-term",
+    "side": "long",
+    "notes": [],
+    "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/BSE/RECODE/139457284",
+    "watchedSince": "2026-08-21T07:30:34.365Z",
+    "id": "73SPE6Z1BA4"
+  },
+  {
+    "symbol": "SIMCA-SM",
+    "category": "active",
+    "side": "long",
+    "notes": [],
+    "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/SIMCA-SM/195424001",
+    "watchedSince": "2026-08-21T07:31:54.115Z",
+    "id": "Gd3_fDzbKgo"
+  },
+  {
+    "symbol": "TEAMTECH-S",
+    "category": "active",
+    "side": "long",
+    "notes": [],
+    "link": "https://kite.zerodha.com/markets/ext/chart/web/tvc/NSE/TEAMTECH-ST/195474177",
+    "watchedSince": "2026-08-21T07:34:50.784Z",
+    "id": "LGmsZD1hkHc"
   }
 ]

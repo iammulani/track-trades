@@ -1275,5 +1275,152 @@
     ],
     "updatedAt": "2026-08-19T00:00:00.000Z",
     "id": "sstIBVp0pTe"
+  },
+  {
+    "watchlistItemId": "mOWrDXPKFcY",
+    "asOfPeriod": "2026-06",
+    "quarterCount": 8,
+    "quarters": [
+      {
+        "period": "2024-09",
+        "sales": "22608",
+        "netProfit": "1989",
+        "eps": "13.64",
+        "operatingProfit": "3766",
+        "interest": "910"
+      },
+      {
+        "period": "2024-12",
+        "sales": "22848",
+        "netProfit": "229",
+        "eps": "0.45",
+        "operatingProfit": "3070",
+        "interest": "2141"
+      },
+      {
+        "period": "2025-03",
+        "sales": "26966",
+        "netProfit": "4015",
+        "eps": "29.74",
+        "operatingProfit": "3710",
+        "interest": "1796"
+      },
+      {
+        "period": "2025-06",
+        "sales": "21961",
+        "netProfit": "976",
+        "eps": "6.85",
+        "operatingProfit": "3310",
+        "interest": "1035"
+      },
+      {
+        "period": "2025-09",
+        "sales": "21249",
+        "netProfit": "3414",
+        "eps": "24.74",
+        "operatingProfit": "3307",
+        "interest": "1711"
+      },
+      {
+        "period": "2025-12",
+        "sales": "24820",
+        "netProfit": "5727",
+        "eps": "43.53",
+        "operatingProfit": "3642",
+        "interest": "1626"
+      },
+      {
+        "period": "2026-03",
+        "sales": "32439",
+        "netProfit": "-167",
+        "eps": "-0.81",
+        "operatingProfit": "3731",
+        "interest": "1646"
+      },
+      {
+        "period": "2026-06",
+        "sales": "32924",
+        "netProfit": "-1462",
+        "eps": "-8.92",
+        "operatingProfit": "5019",
+        "interest": "2421"
+      }
+    ],
+    "debtEquityAsOfYear": "2026",
+    "debtEquityYearCount": 7,
+    "debtEquityYears": [
+      {
+        "year": "2020",
+        "borrowings": "12419",
+        "equityCapital": "110",
+        "reserves": "16837",
+        "cashFromOperatingActivity": "2454",
+        "cashFromInvestingActivity": "-1082",
+        "cashFromFinancingActivity": "-221",
+        "netProfit": "1040"
+      },
+      {
+        "year": "2021",
+        "borrowings": "16227",
+        "equityCapital": "110",
+        "reserves": "17049",
+        "cashFromOperatingActivity": "4043",
+        "cashFromInvestingActivity": "-8611",
+        "cashFromFinancingActivity": "3109",
+        "netProfit": "1046"
+      },
+      {
+        "year": "2022",
+        "borrowings": "41604",
+        "equityCapital": "110",
+        "reserves": "22147",
+        "cashFromOperatingActivity": "1385",
+        "cashFromInvestingActivity": "-17041",
+        "cashFromFinancingActivity": "15901",
+        "netProfit": "788"
+      },
+      {
+        "year": "2023",
+        "borrowings": "53200",
+        "equityCapital": "114",
+        "reserves": "32937",
+        "cashFromOperatingActivity": "17626",
+        "cashFromInvestingActivity": "-15459",
+        "cashFromFinancingActivity": "-1198",
+        "netProfit": "2422"
+      },
+      {
+        "year": "2024",
+        "borrowings": "65310",
+        "equityCapital": "114",
+        "reserves": "38962",
+        "cashFromOperatingActivity": "10312",
+        "cashFromInvestingActivity": "-18767",
+        "cashFromFinancingActivity": "8879",
+        "netProfit": "3335"
+      },
+      {
+        "year": "2025",
+        "borrowings": "91473",
+        "equityCapital": "115",
+        "reserves": "50199",
+        "cashFromOperatingActivity": "4513",
+        "cashFromInvestingActivity": "-26417",
+        "cashFromFinancingActivity": "22655",
+        "netProfit": "8005"
+      },
+      {
+        "year": "2026",
+        "borrowings": "106622",
+        "equityCapital": "129",
+        "reserves": "80797",
+        "cashFromOperatingActivity": "2357",
+        "cashFromInvestingActivity": "-27680",
+        "cashFromFinancingActivity": "28484",
+        "netProfit": "9951"
+      }
+    ],
+    "updatedAt": "2026-08-20T00:00:00.000Z",
+    "id": "RKM8TiTT8dj"
   }
 ]
